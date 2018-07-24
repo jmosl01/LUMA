@@ -1,7 +1,7 @@
 Package: LUMA
 Type: Package
 Title: LCMS-Based Untargeted Metabolomics Assistant
-Version: 0.1.0
+Version: 0.1.0.9000
 Author: Jonathan Mosley
 Maintainer: Jonathan Mosley <mosley.jonathan@epa.gov>
 Description: The LCMS-Based Untargeted Metabolomics Assistant package (LUMA) performs quality control (QC) and feature reduction steps on the output of XCMS and CAMERA to generate usable data matrices for discovery-based studies.
