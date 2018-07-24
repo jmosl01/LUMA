@@ -424,7 +424,7 @@ IHL.search=function(Peak.list,Annotated.library,rules,search.par,ion.mode,lib_db
       bin <- paste(Ion.Mode,"_",search.list$EIC_ID,"_", sep = "")
 
     } else {
-      break("You must include the ionization mode!")
+      stop("You must include the ionization mode!")
     }
   }
   x <- rules$charge
