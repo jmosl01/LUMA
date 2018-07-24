@@ -16,8 +16,6 @@ install:
   - ./travis-tool.sh install_deps
   - ./travis-tool.sh install_bioc_deps
 
-install:
-
 script: ./travis-tool.sh run_tests
 
 after_failure:
