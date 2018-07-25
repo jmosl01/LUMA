@@ -5,8 +5,13 @@
 #   https://github.com/craigcitro/r-travis/wiki
 
 language: r
-sudo: false
+sudo: required
 cache: packages
+
+before_install:
+ - sudo apt-get update
+ - sudo apt-get install libnetcdf-dev netcdf-bin
+
 bioc_packages:
  - BiocParallel
  - CAMERA
