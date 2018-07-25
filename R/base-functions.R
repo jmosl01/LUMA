@@ -8,7 +8,7 @@
 #' @param ion.mode a character string defining the ionization mode.  Must be either "Positive" or "Negative"
 #' @return a table of class "tbl_df",tbl" or "data.frame" with variables as columns.  Has all of the columns as the original data frame with one additional column "Correlation.stat"
 #' @importFrom stats cor dist
-#' @importFrom utils setWinProgressBar
+#' @importFrom utils setTxtProgressBar
 #' @importFrom flashClust flashClust
 Calc.corr.stat=function(Sample.df,Peak.list,get.mg,BLANK,ion.mode)  {
 
@@ -47,7 +47,7 @@ Calc.corr.stat=function(Sample.df,Peak.list,get.mg,BLANK,ion.mode)  {
   corr.df
   total = length(get.mg)
   # i = 17  For debugging purposes
-  pb = winProgressBar(title = "Generating Correlation Matrices.", min = 0, max = total, width = 300)
+  pb = txtProgressBar(title = "Generating Correlation Matrices.", min = 0, max = total, width = NA)
   for(i in 1:length(corr.group)) {
     my.df <- Peak.list[which(Peak.list$metabolite_group %in% get.mg[i]),]
     colnames(my.df)
@@ -102,7 +102,7 @@ Calc.corr.stat=function(Sample.df,Peak.list,get.mg,BLANK,ion.mode)  {
 
       }
     }
-    setWinProgressBar(pb,i, title=paste("Generating Correlation Matrices: ",round(i/total*100,0),"% done", sep = ""))
+    setTxtProgressBar(pb,i, title=paste("Generating Correlation Matrices: ",round(i/total*100,0),"% done", sep = ""))
   }
   Peak.list.pspec[,"Correlation.stat"] <- corr.df
   close(pb)
@@ -400,7 +400,7 @@ return(Peak.list.summed)
 #' @return data frame containing the original table with added columns "Name","MS.ID","Formula","Annotated.adduct" and any additional info columns from Annotated.library
 #' @importFrom dplyr "%>%" select copy_to tbl between
 #' @importFrom glue collapse
-#' @importFrom utils str winProgressBar
+#' @importFrom utils str txtProgressBar
 IHL.search=function(Peak.list,Annotated.library,rules,search.par,ion.mode,lib_db)  {
   search.list <- Peak.list %>%
     select(EIC_ID,mz,rt) %>%
@@ -455,7 +455,7 @@ IHL.search=function(Peak.list,Annotated.library,rules,search.par,ion.mode,lib_db
   #! things up considerably
   # i = 27  ##Used for debugging purposes
   total = nrow(search.list)
-  pb = winProgressBar(title = "Annotating Features.", min = 0, max = total, width = 300)
+  pb = txtProgressBar(title = "Annotating Features.", min = 0, max = total, width = NA)
   counter = 1
   for(i in 1:nrow(search.list)) {
     mz.min = search.list$mz.min[i]
@@ -484,7 +484,7 @@ IHL.search=function(Peak.list,Annotated.library,rules,search.par,ion.mode,lib_db
       }
     }
 
-    setWinProgressBar(pb,i, title=paste("Annotating Features: ",round(i/total*100,0),"% done", sep = ""))
+    setTxtProgressBar(pb,i, title=paste("Annotating Features: ",round(i/total*100,0),"% done", sep = ""))
   }
   close(pb)
   named.peak.list <- search.list[,8:ncol(search.list)]
