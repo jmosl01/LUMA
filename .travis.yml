@@ -13,7 +13,7 @@ before_install:
   - ./travis-tool.sh bootstrap
 
 install:
-  - ./travis-tool.sh install_r ncdf
+  - ./travis-tool.sh install_r ncdf4
   - ./travis-tool.sh install_deps
   - ./travis-tool.sh install_bioc_deps
 
