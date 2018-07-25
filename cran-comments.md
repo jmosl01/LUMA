@@ -1,7 +1,7 @@
 ## Test environments
 * local Win >= 8 x64 install, R 3.4.2
 * win-builder (devel and release)
-* ubuntu 14.04 (on travis-ci), R 3.4.4
+* ubuntu 14.04.5 LTS (on travis-ci), R 3.5.0
 
 ##R CMD check results
 There were no ERRORs or WARNINGs.

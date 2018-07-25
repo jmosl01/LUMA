@@ -7,3 +7,7 @@
 language: r
 sudo: false
 cache: packages
+bioc_packages:
+ - BiocParallel
+ - CAMERA
+ - xcms
