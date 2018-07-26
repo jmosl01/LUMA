@@ -5,12 +5,13 @@
 #   https://github.com/craigcitro/r-travis/wiki
 
 language: r
-sudo: required
 cache: packages
+sudo: false
 
-before_install:
- - sudo apt-get update
- - sudo apt-get install libnetcdf-dev netcdf-bin
+addons:
+  apt:
+    packages:
+      - libnetcdf-dev # for mzR, a dependency of xcms
 
 bioc_packages:
  - BiocParallel

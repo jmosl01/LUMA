@@ -4,7 +4,11 @@
 * ubuntu 14.04.5 LTS (on travis-ci), R 3.5.0
 
 ##R CMD check results
-There were no ERRORs or WARNINGs.
+There were no ERRORs.
+
+There was 1 WARNING:
+* checking for code which exercises the package ... WARNING
+No examples, no tests, no vignettes
 
 There was 1 NOTE:
 * checking CRAN incoming feasibility ... NOTE
