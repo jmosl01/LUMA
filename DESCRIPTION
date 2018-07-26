@@ -32,3 +32,6 @@ Imports:
   BiocParallel,
   igraph,
   gtools
+Suggests: knitr,
+    rmarkdown
+VignetteBuilder: knitr
