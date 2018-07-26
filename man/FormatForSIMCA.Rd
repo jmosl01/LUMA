@@ -10,14 +10,14 @@ FormatForSIMCA(Peak.list = NULL, Sample.df, Sample.data, tbl.id = NULL,
 \arguments{
 \item{Peak.list}{data frame containing combined ion mode peaklist with ion mode duplicates removed.  Alternatively can be retrieved from databases.  Default is NULL}
 
-\item{Sample.df}{data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns "Sex","Class","n","Endogenous".}
+\item{Sample.df}{data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns 'Sex','Class','n','Endogenous'.}
 
-\item{Sample.data}{data frame with phenotype data as columns and a row for each study sample.  First column must be a unique sample identifier with the header "CT-ID".  Phenotype columns may vary, but must include two columns called "Plate Number" and "Plate Position" for determining run order.
-"Plate Number" must be numeric and is equivalent to batch number.  "Plate Position" must be alphanumeric and corresponds to row(alpha) and column(numeric) positions on, e.g. a 96-well plate}
+\item{Sample.data}{data frame with phenotype data as columns and a row for each study sample.  First column must be a unique sample identifier with the header 'CT-ID'.  Phenotype columns may vary, but must include two columns called 'Plate Number' and 'Plate Position' for determining run order.
+'Plate Number' must be numeric and is equivalent to batch number.  'Plate Position' must be alphanumeric and corresponds to row(alpha) and column(numeric) positions on, e.g. a 96-well plate}
 
 \item{tbl.id}{character vector of table names to draw from databases.  First value should be table name from positive ionization peak database, second should be table name from negative ionization peak database. Default is NULL}
 
-\item{QC.id}{character vector specifying identifier in filename designating a Pooled QC sample.  Only the first value will be used.  Default is "Pooled_QC_"}
+\item{QC.id}{character vector specifying identifier in filename designating a Pooled QC sample.  Only the first value will be used.  Default is 'Pooled_QC_'}
 
 \item{...}{Arguments to pass parameters to database functions}
 }

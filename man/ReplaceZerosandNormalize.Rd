@@ -10,11 +10,11 @@ ReplaceZerosandNormalize(Peak.list = NULL, Sample.df, tbl.id = NULL,
 \arguments{
 \item{Peak.list}{a data frame containing combined ion mode peaklist with ion mode duplicates removed.  Alternatively can be retrieved from databases.  Default is NULL}
 
-\item{Sample.df}{a data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns "Sex","Class","n","Endogenous".}
+\item{Sample.df}{a data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns 'Sex','Class','n','Endogenous'.}
 
 \item{tbl.id}{character vector of table names to draw from databases.  First value should be table name from positive ionization peak database, second should be table name from negative ionization peak database. Default is NULL}
 
-\item{QC.id}{character vector specifying identifier in filename designating a Pooled QC sample.  Only the first value will be used.  Default is "Pooled_QC_"}
+\item{QC.id}{character vector specifying identifier in filename designating a Pooled QC sample.  Only the first value will be used.  Default is 'Pooled_QC_'}
 
 \item{mult}{numeric multiplier to be added to unit normalization.  Default is 1000}
 

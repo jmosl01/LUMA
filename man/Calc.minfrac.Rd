@@ -7,16 +7,16 @@
 Calc.minfrac(Sample.df, xset4, BLANK, Peak.list)
 }
 \arguments{
-\item{Sample.df}{a data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns "Sex","Class","n","Endogenous".}
+\item{Sample.df}{a data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns 'Sex','Class','n','Endogenous'.}
 
 \item{xset4}{an xcms object that has had peak picking, retention time alignment, peak grouping, and imputing missing values performed}
 
 \item{BLANK}{a logical indicating whether blanks are being evaluated}
 
-\item{Peak.list}{a table of class "tbl_df",tbl" or "data.frame" with variables as columns.  Should contain all output columns from XCMS and CAMERA, and additional columns from IHL.search.}
+\item{Peak.list}{a table of class 'tbl_df',tbl' or 'data.frame' with variables as columns.  Should contain all output columns from XCMS and CAMERA, and additional columns from IHL.search.}
 }
 \value{
-data frame containing the original table with one additional column "Minfrac" at the end, followed by the CAMERA columns "isotopes","adduct","pcgroup"
+data frame containing the original table with one additional column 'Minfrac' at the end, followed by the CAMERA columns 'isotopes','adduct','pcgroup'
 }
 \description{
 Calculates the fraction of samples within each class that contains a given feature.  Only the minimum fraction across all sample classes is returned.

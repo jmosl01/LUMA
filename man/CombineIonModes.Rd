@@ -7,13 +7,13 @@
 CombineIonModes(Peak.list, search.par, ion.id, QC.id, tbl.id, ...)
 }
 \arguments{
-\item{Peak.list}{a named list of data frames \(one per ionization mode\) containing intensity matrices across all study samples and Pooled QCs.  Names must be c("Positive","Negative").  Alternatively may use existing database connections by setting to NULL and specifying database parameters with ...}
+\item{Peak.list}{a named list of data frames \(one per ionization mode\) containing intensity matrices across all study samples and Pooled QCs.  Names must be c('Positive','Negative').  Alternatively may use existing database connections by setting to NULL and specifying database parameters with ...}
 
-\item{search.par}{a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns "ppm","rt","Voidrt","Corr.stat.pos","Corr.stat.neg","CV","Minfrac","Endogenous","Solvent","gen.plots","keep.singletons".}
+\item{search.par}{a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.}
 
-\item{ion.id}{character vector specifying identifier in filename designating positive or negative ionization mode or both.  Positive identifier must come first. Default is c("Pos","Neg")}
+\item{ion.id}{character vector specifying identifier in filename designating positive or negative ionization mode or both.  Positive identifier must come first. Default is c('Pos','Neg')}
 
-\item{QC.id}{character vector specifying identifier in filename designating a Pooled QC sample.  Only the first value will be used.  Default is "Pooled_QC_"}
+\item{QC.id}{character vector specifying identifier in filename designating a Pooled QC sample.  Only the first value will be used.  Default is 'Pooled_QC_'}
 
 \item{tbl.id}{character vector of table names to draw from databases.  First value should be table name from positive ionization peak database, second should be table name from negative ionization peak database. Default is NULL}
 
