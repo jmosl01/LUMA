@@ -2,34 +2,37 @@ Package: LUMA
 Type: Package
 Title: LCMS-Based Untargeted Metabolomics Assistant
 Version: 0.1.0.9000
-Author: Jonathan Mosley
-Maintainer: Jonathan Mosley <mosley.jonathan@epa.gov>
-Description: Performs quality control and feature reduction steps on the output of 'XCMS' and 'CAMERA' to generate data matrices for discovery-based studies.  
+Authors@R: person("Jonathan","Mosley",comment = c(ORCID = "0000-0002-9300-6924"), 
+               email = "mosley.jonathan@epa.gov", role = c("aut","cre"))
+Description: Performs quality control and feature reduction steps on the output of 'XCMS'
+    and 'CAMERA' to generate data matrices for discovery-based studies.  
 License: CC0
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
 Imports:
-  plyr,
-  dplyr,
-  utils,
-  flashClust,
-  xcms,
-  CAMERA,
-  data.table,
-  stats,
-  stringr,
-  glue,
-  openxlsx,
-  DBI,
-  RSQLite,
-  grDevices,
-  graphics,
-  Hmisc,
-  corrplot,
-  BiocParallel,
-  igraph,
-  gtools
-Suggests: knitr,
+    BiocParallel,
+    CAMERA,
+    corrplot,
+    data.table,
+    DBI,
+    dplyr,
+    flashClust,
+    glue,
+    graphics,
+    grDevices,
+    gtools,
+    igraph,
+    Hmisc,
+    openxlsx,
+    plyr,
+    RSQLite,
+    stats,
+    stringr,
+    utils,
+    xcms
+Suggests: 
+    knitr,
     rmarkdown
-VignetteBuilder: knitr
+VignetteBuilder: 
+    knitr
