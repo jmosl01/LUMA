@@ -7,7 +7,7 @@
 Calc.corr.stat(Sample.df, Peak.list, get.mg, BLANK, ion.mode)
 }
 \arguments{
-\item{Sample.df}{a data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns "Sex","Class","n","Endogenous".}
+\item{Sample.df}{a data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns 'Sex','Class','n','Endogenous'.}
 
 \item{Peak.list}{a data frame from CAMERA that has been parsed.  Should contain all output columns from XCMS and CAMERA, and additional columns from IHL.search, Calc.MinFrac and CAMERA.parser.}
 
@@ -15,10 +15,10 @@ Calc.corr.stat(Sample.df, Peak.list, get.mg, BLANK, ion.mode)
 
 \item{BLANK}{a logical indicating whether blanks are being evaluated}
 
-\item{ion.mode}{a character string defining the ionization mode.  Must be either "Positive" or "Negative"}
+\item{ion.mode}{a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'}
 }
 \value{
-a table of class "tbl_df",tbl" or "data.frame" with variables as columns.  Has all of the columns as the original data frame with one additional column "Correlation.stat"
+a table of class 'tbl_df',tbl' or 'data.frame' with variables as columns.  Has all of the columns as the original data frame with one additional column 'Correlation.stat'
 }
 \description{
 Calculates the correlation matrices for metabolite groups based on the best feature within the group that belongs to the primary metabolite

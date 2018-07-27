@@ -9,7 +9,7 @@ Trim.MF(Peak.list, search.par)
 \arguments{
 \item{Peak.list}{data frame. Must have MinFrac column.  Should contain output columns from XCMS and CAMERA, and additional columns from IHL.search, Calc.MinFrac, CAMERA.parser, Calc.corr.stat and Combine.phenodata base functions.}
 
-\item{search.par}{a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns "ppm","rt","Voidrt","Corr.stat.pos","Corr.stat.neg","CV","Minfrac","Endogenous","Solvent","gen.plots","keep.singletons".}
+\item{search.par}{a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.}
 }
 \value{
 data frame Peak.list.trimmed original Peak.list containing all metabolite groups containing at least one feature that has MinFrac value greater than user specified threshold

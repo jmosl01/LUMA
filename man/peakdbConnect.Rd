@@ -9,7 +9,7 @@ peakdbConnect(file.base, db.dir)
 \arguments{
 \item{file.base}{character return from filebase.gen function}
 
-\item{db.dir}{character what should the database directory be called.  Default is "db"}
+\item{db.dir}{character what should the database directory be called.  Default is 'db'}
 }
 \value{
 Formal class SQLiteConnection

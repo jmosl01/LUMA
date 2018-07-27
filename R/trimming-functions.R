@@ -3,37 +3,37 @@
 #' @export
 #' @description Removes features found in the void volume of the chromatographic run
 #' @param Peak.list data frame. Must have Correlation.stat column.  Should contain output columns from XCMS and CAMERA, and additional columns from IHL.search, Calc.MinFrac, Calc.corr.stat and EIC.plotter functions.
-#' @param search.par a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns "ppm","rt","Voidrt","Corr.stat.pos","Corr.stat.neg","CV","Minfrac","Endogenous","Solvent","gen.plots","keep.singletons".
+#' @param search.par a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.
 #' @return data frame Peak.list.trimmed original Peak.list without all metabolite groups containing at least one feature in the void volume
-Trim.RT=function(Peak.list,search.par) {
-  rt.list<-Peak.list["rt"]
-  void.rt <- as.numeric(search.par[1,"Voidrt"])
-  drops <- Peak.list[rt.list<void.rt,"metabolite_group"] #Creates a vector of metabolite groups that contain at least one feature with rt in the void volume
-  length(which(!unlist(Peak.list[,"metabolite_group"]) %in% unlist(drops)))
-  met.list <- Peak.list["metabolite_group"]
-  str(met.list)
-  Peak.list.trimmed<-Peak.list[which(!unlist(met.list) %in% unlist(drops)),]
-  return(Peak.list.trimmed)
+Trim.RT = function(Peak.list, search.par) {
+    rt.list <- Peak.list["rt"]
+    void.rt <- as.numeric(search.par[1, "Voidrt"])
+    drops <- Peak.list[rt.list < void.rt, "metabolite_group"]  #Creates a vector of metabolite groups that contain at least one feature with rt in the void volume
+    length(which(!unlist(Peak.list[, "metabolite_group"]) %in% unlist(drops)))
+    met.list <- Peak.list["metabolite_group"]
+    str(met.list)
+    Peak.list.trimmed <- Peak.list[which(!unlist(met.list) %in% unlist(drops)), ]
+    return(Peak.list.trimmed)
 }
 
 #' @title Trim by CV
 #'
 #' @export
 #' @description Removes metabolites with %CV greater than the user specified threshold, calculated from the QC samples
-#' @param Peak.list data frame. Must have QC sample columns that contain the string "Pooled_QC_".  Should contain output columns from XCMS and CAMERA, and additional columns from IHL.search, Calc.MinFrac, CAMERA.parser, Calc.corr.stat and Combine.phenodata base functions.
-#' @param search.par a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns "ppm","rt","Voidrt","Corr.stat.pos","Corr.stat.neg","CV","Minfrac","Endogenous","Solvent","gen.plots","keep.singletons".
+#' @param Peak.list data frame. Must have QC sample columns that contain the string 'Pooled_QC_'.  Should contain output columns from XCMS and CAMERA, and additional columns from IHL.search, Calc.MinFrac, CAMERA.parser, Calc.corr.stat and Combine.phenodata base functions.
+#' @param search.par a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.
 #' @return data frame Peak.list.trimmed original Peak.list without all metabolite groups with %CV greater than user specified threshold
 #' @importFrom stats sd
-Trim.CV=function(Peak.list,search.par) {
-  res<-lapply(colnames(Peak.list), function(ch) grep("Pooled_QC_", ch))
-  QC.list<-Peak.list[sapply(res, function(x) length(x)>0)]
-  QCsd<-apply((as.matrix(QC.list)),1,sd)
-  QCmean<-rowMeans(QC.list)
-  RSD<-QCsd/QCmean
-  Peak.list[,"%CV"] <- RSD
-  CV.cutoff <- as.numeric(search.par[1,"CV"])
-  Peak.list.trimmed<-Peak.list[RSD<CV.cutoff,]
-  return(Peak.list.trimmed)
+Trim.CV = function(Peak.list, search.par) {
+    res <- lapply(colnames(Peak.list), function(ch) grep("Pooled_QC_", ch))
+    QC.list <- Peak.list[sapply(res, function(x) length(x) > 0)]
+    QCsd <- apply((as.matrix(QC.list)), 1, sd)
+    QCmean <- rowMeans(QC.list)
+    RSD <- QCsd/QCmean
+    Peak.list[, "%CV"] <- RSD
+    CV.cutoff <- as.numeric(search.par[1, "CV"])
+    Peak.list.trimmed <- Peak.list[RSD < CV.cutoff, ]
+    return(Peak.list.trimmed)
 }
 
 #' @title Trim by MinFrac
@@ -41,17 +41,18 @@ Trim.CV=function(Peak.list,search.par) {
 #' @export
 #' @description Removes metabolites with MinFrac smaller than the user specified threshold. The maximum MinFrac value is chosen from all features within a metabolite group.
 #' @param Peak.list data frame. Must have MinFrac column.  Should contain output columns from XCMS and CAMERA, and additional columns from IHL.search, Calc.MinFrac, CAMERA.parser, Calc.corr.stat and Combine.phenodata base functions.
-#' @param search.par a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns "ppm","rt","Voidrt","Corr.stat.pos","Corr.stat.neg","CV","Minfrac","Endogenous","Solvent","gen.plots","keep.singletons".
+#' @param search.par a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.
 #' @return data frame Peak.list.trimmed original Peak.list containing all metabolite groups containing at least one feature that has MinFrac value greater than user specified threshold
-Trim.MF=function(Peak.list,search.par) {
-  MF <- Peak.list[,"MinFrac"]
-  AllMF <- strsplit(MF,split = ";")
-  AllMF <- lapply(AllMF, function(x) as.numeric(x)) #Convert character values to numeric values
-  MaxMF <- lapply(AllMF, function(x) max(x))
-  # MeanMF <- lapply(AllMF, function(x) mean(x)) #calculates mean values for minfrac trimming; not used
-  MF.cutoff <- as.numeric(search.par[1,"Minfrac"])
-  # temp <- data.frame(MinFrac = MF, Max.cutoff = MaxMF>=MF.cutoff, Mean.cutoff = MeanMF>=MF.cutoff, CV = Peak.list[,"%CV"], Corr.stat = Peak.list[,"Correlation.stat"])
-  # temp[which(temp$Max.cutoff!=temp$Mean.cutoff),] #compares mean thresholding to max thresholding
-  Peak.list.trimmed<-Peak.list[MaxMF>=MF.cutoff,]
-return(Peak.list.trimmed)
+Trim.MF = function(Peak.list, search.par) {
+    MF <- Peak.list[, "MinFrac"]
+    AllMF <- strsplit(MF, split = ";")
+    AllMF <- lapply(AllMF, function(x) as.numeric(x))  #Convert character values to numeric values
+    MaxMF <- lapply(AllMF, function(x) max(x))
+    # MeanMF <- lapply(AllMF, function(x) mean(x)) #calculates mean values for minfrac trimming; not used
+    MF.cutoff <- as.numeric(search.par[1, "Minfrac"])
+    # temp <- data.frame(MinFrac = MF, Max.cutoff = MaxMF>=MF.cutoff, Mean.cutoff = MeanMF>=MF.cutoff, CV =
+    # Peak.list[,'%CV'], Corr.stat = Peak.list[,'Correlation.stat'])
+    # temp[which(temp$Max.cutoff!=temp$Mean.cutoff),] #compares mean thresholding to max thresholding
+    Peak.list.trimmed <- Peak.list[MaxMF >= MF.cutoff, ]
+    return(Peak.list.trimmed)
 }

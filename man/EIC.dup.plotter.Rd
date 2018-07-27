@@ -20,9 +20,9 @@ EIC.dup.plotter(anposGa, xpos.cor, annegGa, xneg.cor, Peak.list, gen.plots,
 
 \item{gen.plots}{a logical indicating whether to create plots for metabolite groups.  Default is FALSE}
 
-\item{file.base}{character string used to name graphical output. Default is "EIC_plots"}
+\item{file.base}{character string used to name graphical output. Default is 'EIC_plots'}
 
-\item{QC.id}{character identifier for pooled QC samples. Default is "Pooled_QC"}
+\item{QC.id}{character identifier for pooled QC samples. Default is 'Pooled_QC'}
 
 \item{...}{parameters to be passed to database functions}
 }
