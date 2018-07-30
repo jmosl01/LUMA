@@ -19,7 +19,7 @@ replace_zeros_normalize = function(Peak.list = NULL, Sample.df, tbl.id = NULL, Q
         stop("Need to specify tbl.id if using databases to retrieve Peak.list!", call. = FALSE)
     }
     if (is.null(Peak.list)) {
-        Peak.list <- Readtbl(tbl.id, peak.db, asdf = TRUE)
+        Peak.list <- read_tbl(tbl.id, peak.db, asdf = TRUE)
     }
     sexes <- unique(paste(Sample.df$Sex, "_", sep = ""))  ## Generate search string for all sexes
     samples <- vector(mode = "character", length = length(colnames(Peak.list)))

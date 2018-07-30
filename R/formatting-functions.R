@@ -22,7 +22,7 @@ format_simca = function(Peak.list = NULL, Sample.df, Sample.data, tbl.id = NULL,
         stop("Need to specify tbl.id if using databases to retrieve Peak.list!", call. = FALSE)
     }
     if (is.null(Peak.list)) {
-        Peak.list <- Readtbl(tbl.id, peak.db)
+        Peak.list <- read_tbl(tbl.id, peak.db)
     }
     groups <- paste(Sample.df$Sex, Sample.df$Class, sep = "_")  ## Generate search string for all classes
     sexes <- unique(paste(Sample.df$Sex, "_", sep = ""))  ## Generate search string for all sexes

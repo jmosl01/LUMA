@@ -32,12 +32,12 @@ remove_background_peaks = function(Peak.list, Sample.df, search.par, ion.id, QC.
         stop("Need to specify tbl.id if using databases to retrieve Peak.list!", call. = FALSE)
     }
     if (is.null(Peak.list)) {
-        mydbs <- LUMA_dbConnect(db.list, db.dir)
+        mydbs <- connect_lumadb(db.list, db.dir)
         nm = names(mydbs)[-1]
         nm1 = nm[-grep("blanks", nm)]  # Return all sample databases
         nm2 = nm[grep("blanks", nm)]  #Return all blank databases
-        list1 <- llply(nm1, .fun = function(x) Readtbl(tbl.id[1], mydbs[[x]]))
-        list2 <- llply(nm2, .fun = function(x) Readtbl(tbl.id[2], mydbs[[x]]))
+        list1 <- llply(nm1, .fun = function(x) read_tbl(tbl.id[1], mydbs[[x]]))
+        list2 <- llply(nm2, .fun = function(x) read_tbl(tbl.id[2], mydbs[[x]]))
         names(list1) <- gsub("_db", "\\1", nm1)
         names(list2) <- gsub("_db", "\\1", nm2)
         Peak.list <- list1
@@ -49,8 +49,8 @@ remove_background_peaks = function(Peak.list, Sample.df, search.par, ion.id, QC.
         Solv.list <- Peak.list[nm2]
         Peak.list <- Peak.list[nm1]
     }
-    lib_db <- libdbConnect(lib.db = lib.db, db.dir = db.dir)
-    peak_db <- LUMA_dbConnect(db.list = db.list, db.dir = db.dir, new.db = new.db)
+    lib_db <- connect_libdb(lib.db = lib.db, db.dir = db.dir)
+    peak_db <- connect_lumadb(db.list = db.list, db.dir = db.dir, new.db = new.db)
 
     endo.groups <- as.matrix(paste(Sample.df[which(Sample.df[, "Endogenous"] == TRUE), "Sex"], Sample.df[which(Sample.df[,
         "Endogenous"] == TRUE), "Class"], sep = "_"))
@@ -170,8 +170,8 @@ pre_combine_ion_modes = function(Peak.list, tbl.id, ...) {
         stop("Need to specify tbl.id if using databases to retrieve Peak.list!", call. = FALSE)
     }
     if (is.null(Peak.list)) {
-        df1 <- Readtbl(tbl.id[1], peak.db)
-        df2 <- Readtbl(tbl.id[2], peak.db)
+        df1 <- read_tbl(tbl.id[1], peak.db)
+        df2 <- read_tbl(tbl.id[2], peak.db)
         Peak.list.pos <- df1
         Peak.list.neg <- df2
     } else {

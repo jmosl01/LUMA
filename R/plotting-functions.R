@@ -168,7 +168,7 @@ plot_ionduplicate = function(anposGa, xpos.cor, annegGa, xneg.cor, Peak.list, ge
     pos.QC.files <- pos.filenames[grep(QC.id, pos.filenames)]
 
     # Read Peak.list from database
-    Peak.list <- Readtbl(myname, peak.db)
+    Peak.list <- read_tbl(myname, peak.db)
 
     # Get the unique list of Duplicate IDs
     x <- sapply(Peak.list$Duplicate_ID, function(x) sum(as.numeric(Peak.list$Duplicate_ID == x)))
