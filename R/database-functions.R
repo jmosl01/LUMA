@@ -1,4 +1,4 @@
-#' @title Filebase.gen
+#' @title Generate Filebase
 #'
 #' @export
 #' @description Generates filebase for reading and writing to databases
@@ -7,7 +7,7 @@
 #' @param ion.mode a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'
 #' @param ion.id character vector of length 2 specifying identifier in filename designating positive or negative ionization mode.  Positive identifier must come first.
 #' @return character
-filebase.gen = function(mzdatafiles, BLANK, ion.id, ion.mode) {
+gen_filebase = function(mzdatafiles, BLANK, ion.id, ion.mode) {
     if (ion.mode == "Positive" && BLANK == TRUE) {
         mzdatafiles <- subset(mzdatafiles, subset = grepl(paste(ion.id[1]), mzdatafiles, ignore.case = TRUE))
         file.base = "Blanks_Pos"
@@ -32,25 +32,25 @@ filebase.gen = function(mzdatafiles, BLANK, ion.id, ion.mode) {
                   stop()
                 }
             }
-            
+
         }
-        
+
     }
     return(file.base)
 }
 
 
-#' @title peakdbConnect
+#' @title Connects to peak database
 #'
 #' @export
 #' @description Establishes a connection to an RSQLite database for storing data; if doesn't exist, creates new database
-#' @param file.base character return from filebase.gen function
+#' @param file.base character return from gen_filebase function
 #' @param db.dir character what should the database directory be called.  Default is 'db'
 #' @return Formal class SQLiteConnection
 #' @importFrom DBI dbConnect
 #' @importFrom RSQLite SQLite
-peakdbConnect = function(file.base, db.dir) {
-    if (missing(db.dir)) 
+connect_peakdb = function(file.base, db.dir) {
+    if (missing(db.dir))
         db.dir = "db"
     peak_db_file <- paste(file.base, db.dir, sep = "_")
     dir.create(db.dir, recursive = FALSE, showWarnings = FALSE)
@@ -58,7 +58,7 @@ peakdbConnect = function(file.base, db.dir) {
     return(peak_db)
 }
 
-#' @title libdbConnect
+#' @title Connects to library database
 #'
 #' @export
 #' @description Establishes a connection to an RSQLite database for library searching; if doesn't exist, creates new database
@@ -67,12 +67,12 @@ peakdbConnect = function(file.base, db.dir) {
 #' @return Formal class SQLiteConnection
 #' @importFrom DBI dbConnect
 #' @importFrom RSQLite SQLite
-libdbConnect = function(lib.db, db.dir) {
+connect_libdb = function(lib.db, db.dir) {
     lib_db <- DBI::dbConnect(RSQLite::SQLite(), paste(db.dir, lib.db, sep = "/"))
     return(lib_db)
 }
 
-#' @title LUMA_dbConnect
+#' @title Connects to LUMA database
 #'
 #' @export
 #' @description Establishes a connection to an RSQLite database for combining two datasets together from two different ionization modes
@@ -82,8 +82,8 @@ libdbConnect = function(lib.db, db.dir) {
 #' @return list of Formal class SQLiteConnections, starting with new.db entry followed by one for each db.list entry and
 #' @importFrom DBI dbConnect
 #' @importFrom RSQLite SQLite
-LUMA_dbConnect = function(db.list, db.dir, new.db) {
-    if (missing(new.db)) 
+connect_lumadb = function(db.list, db.dir, new.db) {
+    if (missing(new.db))
         new.db = "Peaklist_db"
     peak_db <- DBI::dbConnect(RSQLite::SQLite(), paste(db.dir, new.db, sep = "/"))
     pos_db <- DBI::dbConnect(RSQLite::SQLite(), paste(db.dir, db.list[[1]], sep = "/"))
@@ -93,7 +93,7 @@ LUMA_dbConnect = function(db.list, db.dir, new.db) {
     return(list(peak_db = peak_db, pos_db = pos_db, neg_db = neg_db, blanks_pos_db = blanks_pos_db, blanks_neg_db = blanks_neg_db))
 }
 
-#' @title Readtbl
+#' @title Reads table from database
 #'
 #' @export
 #' @description Extract table from an RSQLite database as a tibble.  Alternatively load into memory as a data frame
@@ -101,8 +101,8 @@ LUMA_dbConnect = function(db.list, db.dir, new.db) {
 #' @param peak.db Formal class SQLiteConnection
 #' @param asdf logical indicating whether to return a data frame instead of a tibble. Default is FALSE
 #' @return tbl alternatively a data frame
-Readtbl = function(myname, peak.db, asdf) {
-    if (missing(asdf)) 
+read_tbl = function(myname, peak.db, asdf) {
+    if (missing(asdf))
         asdf = FALSE
     if (asdf) {
         mydf <- dplyr::tbl(peak.db, myname) %>% dplyr::collect() %>% data.frame
@@ -113,7 +113,7 @@ Readtbl = function(myname, peak.db, asdf) {
     }
 }
 
-#' @title Writetbl
+#' @title Writes table to database
 #'
 #' @export
 #' @description Writes tbl or dataframe to an RSQLite database
@@ -121,25 +121,30 @@ Readtbl = function(myname, peak.db, asdf) {
 #' @param peak.db Formal class SQLiteConnection
 #' @param myname character what should the table be called
 #' @return a tbl object in the remote source
-Writetbl = function(mytbl, peak.db, myname) {
+write_tbl = function(mytbl, peak.db, myname) {
     copy_to(peak.db, mytbl, name = myname, temporary = FALSE, overwrite = TRUE)
 }
 
-#' @title GetFeatures
+#' @title Retrieves features from database
 #'
 #' @description Returns mz/rt features from a RSQLite database
 #' @param myname character name of table in database to return
 #' @param peak.db Formal class SQLiteConnection
 #' @param asdf logical indicating whether to return a data frame instead of a tibble. Default is FALSE
 #' @return tbl alternatively a data frame
-GetFeatures = function(myname, peak.db, asdf) {
-    if (missing(asdf)) 
+get_features = function(myname, peak.db, asdf) {
+    if (missing(asdf))
         asdf = FALSE
     if (asdf) {
-        mydf <- dplyr::tbl(peak.db, myname) %>% select(EIC_ID, mz, rt) %>% dplyr::collect() %>% data.frame
+        mydf <- dplyr::tbl(peak.db, myname) %>%
+          select(EIC_ID, mz, rt) %>%
+          dplyr::collect() %>%
+          data.frame
         return(mydf)
     } else {
-        mytibble <- dplyr::tbl(peak.db, myname) %>% select(EIC_ID, mz, rt) %>% dplyr::collect()
+        mytibble <- dplyr::tbl(peak.db, myname) %>%
+          select(EIC_ID, mz, rt) %>%
+          dplyr::collect()
         return(mytibble)
     }
 }
