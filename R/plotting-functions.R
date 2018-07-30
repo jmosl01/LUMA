@@ -18,30 +18,30 @@
 #' @importFrom graphics layout par plot text
 #' @importFrom Hmisc rcorr
 #' @importFrom corrplot corrplot
-EIC.plotter = function(anposGa, Sample.df, Peak.list, center, BLANK, gen.plots, ion.mode, file.base, QC.id) {
-    if (missing(BLANK)) 
+EIC-plotter = function(anposGa, Sample.df, Peak.list, center, BLANK, gen.plots, ion.mode, file.base, QC.id) {
+    if (missing(BLANK))
         BLANK = FALSE
-    if (missing(gen.plots)) 
+    if (missing(gen.plots))
         gen.plots = FALSE
-    if (missing(QC.id)) 
+    if (missing(QC.id))
         QC.id = "Pooled_QC"
-    
+
     # Change the psspectra list in the xsAnnotate object to be the unique list of metabolite_groups
     X <- split(Peak.list$EIC_ID, as.numeric(Peak.list$metabolite_group))
     names(X) <- sort(unique(Peak.list$metabolite_group))
     new_anposGa <- anposGa
     new_anposGa@pspectra <- X
-    
+
     ## Need to set a numeric value in this slot, else plotEICs will give error
     new_anposGa@sample <- c(1:nrow(new_anposGa@xcmsSet@phenoData))
-    
+
     # Gets the EICs and Psspectra for each metabolite group that has more than one feature
     pspec.length <- sapply(new_anposGa@pspectra, function(x) length(x))
     get.mg <- which(pspec.length > 1)
     names(get.mg) <- NULL
-    
+
     Peak.list.pspec <- Calc.corr.stat(Sample.df, Peak.list, get.mg, BLANK, ion.mode)
-    validate.df <- Peak.list.pspec[order(Peak.list.pspec$metabolite_group), c("MS.ID", "mz", "rt", "Name", "Formula", 
+    validate.df <- Peak.list.pspec[order(Peak.list.pspec$metabolite_group), c("MS.ID", "mz", "rt", "Name", "Formula",
         "Annotated.adduct", "isotopes", "adduct", "mono_mass", "metabolite_group", "Correlation.stat")]
     Peak.list.new <- list(Peak.list.pspec, validate.df)
     return(Peak.list.new)  #Use the second element in the list to validate CAMERA
@@ -52,17 +52,17 @@ EIC.plotter = function(anposGa, Sample.df, Peak.list, center, BLANK, gen.plots, 
     new_anposGa@psSamples <- rep(center, length(X))  #Tells CAMERA to select all psspectra from the center file
     # new_anposGa@psSamples <- rep(-1, length(X)) #Experimental new_anposGa@sample <- as.numeric(NA) #doesn't work
     # for some reason
-    
+
     # New code to plot correlation matrix plots for each metabolite group containing more than one feature
     if (gen.plots && !BLANK) {
         sexes <- unique(paste(Sample.df$Sex, "_", sep = ""))
-        sample.cols <- grep(paste(QC.id, paste(strsplit(sexes, "(?<=.[_])", perl = TRUE), collapse = "|"), sep = "|"), 
+        sample.cols <- grep(paste(QC.id, paste(strsplit(sexes, "(?<=.[_])", perl = TRUE), collapse = "|"), sep = "|"),
             colnames(Peak.list))
         pdf(file = paste(file.base, "CorrPlots.pdf", sep = "_"))
-        
+
         par(mar = c(5, 4, 4, 2) + 0.1)
-        
-        
+
+
         total = length(get.mg)
         i = 8  #For Debugging purposes
         for (i in 1:length(get.mg)) {
@@ -73,25 +73,25 @@ EIC.plotter = function(anposGa, Sample.df, Peak.list, center, BLANK, gen.plots, 
             if (nrow(my.df) == 1) {
             } else {
                 if (nrow(my.df) == 2) {
-                  my.mat <- as.matrix(my.df[, grep(paste(QC.id, paste(strsplit(sexes, "(?<=.[_])", perl = TRUE), 
+                  my.mat <- as.matrix(my.df[, grep(paste(QC.id, paste(strsplit(sexes, "(?<=.[_])", perl = TRUE),
                     collapse = "|"), sep = "|"), colnames(my.df))])
                   test.mat <- as.matrix(t(my.mat))
                   dimnames(test.mat) <- list(colnames(my.df[, sample.cols]), my.df$EIC_ID)
                   plot(c(0, 1), c(0, 1), ann = F, bty = "n", type = "n", xaxt = "n", yaxt = "n")
-                  text(x = 0.5, y = 0.5, paste("Dendrograms can't be plotted for two features.\n", "Use the correlation plot to the left to \n", 
+                  text(x = 0.5, y = 0.5, paste("Dendrograms can't be plotted for two features.\n", "Use the correlation plot to the left to \n",
                     "Tell if two features are from the same metabolite"), cex = 1.6, col = "black")
                   res2 <- rcorr(test.mat)
                   # Insignificant correlations are leaved blank
-                  corrplot(res2$r, type = "upper", order = "hclust", p.mat = res2$P, sig.level = 0.01, insig = "blank", 
+                  corrplot(res2$r, type = "upper", order = "hclust", p.mat = res2$P, sig.level = 0.01, insig = "blank",
                     tl.col = rainbow(maxlabel))
-                  
+
                   # Plots the EICs and Pseudo-spectra for each metabolite group containing more than one feature in a for loop
                   EIC.plots <- plotEICs(new_anposGa, pspec = get.mg[i], maxlabel = maxlabel, sleep = 0)  ## Plot the EICs
-                  
+
                   plotPsSpectrum(new_anposGa, pspec = get.mg[i], maxlabel = maxlabel, sleep = 0)  #Plot the Mass Spectra
-                  
+
                 } else {
-                  my.mat <- as.matrix(my.df[, grep(paste(QC.id, paste(strsplit(sexes, "(?<=.[_])", perl = TRUE), 
+                  my.mat <- as.matrix(my.df[, grep(paste(QC.id, paste(strsplit(sexes, "(?<=.[_])", perl = TRUE),
                     collapse = "|"), sep = "|"), colnames(my.df))])
                   test.mat <- as.matrix(t(my.mat))
                   dimnames(test.mat) <- list(colnames(my.df[, sample.cols]), my.df$EIC_ID)
@@ -136,81 +136,81 @@ EIC.plotter = function(anposGa, Sample.df, Peak.list, center, BLANK, gen.plots, 
 #' @return NULL testing
 #' @importFrom xcms getEIC
 #' @importFrom graphics abline title
-EIC.dup.plotter = function(anposGa, xpos.cor, annegGa, xneg.cor, Peak.list, gen.plots, file.base, QC.id, ...) {
-    if (missing(Peak.list)) 
+EIC-dup-plotter = function(anposGa, xpos.cor, annegGa, xneg.cor, Peak.list, gen.plots, file.base, QC.id, ...) {
+    if (missing(Peak.list))
         Peak.list = NULL
-    if (missing(gen.plots)) 
+    if (missing(gen.plots))
         gen.plots = FALSE
-    if (missing(xpos.cor)) 
+    if (missing(xpos.cor))
         xpos.cor = anposGa@xcmsSet
-    if (missing(xneg.cor)) 
+    if (missing(xneg.cor))
         xneg.cor = annegGa@xcmsSet
-    if (missing(QC.id)) 
+    if (missing(QC.id))
         QC.id = "Pooled_QC"
-    if (missing(myname)) 
+    if (missing(myname))
         myname = NULL
-    if (missing(peak.db)) 
+    if (missing(peak.db))
         peak.db = NULL
-    if (missing(file.base)) 
+    if (missing(file.base))
         file.base = "EIC_plots"
-    
+
     if (is.null(Peak.list)) {
         if (is.null(myname) || is.null(peak.db)) {
             stop("Must specify database parameters if not providing Peak.list!", call. = FALSE)
         }
     }
-    
+
     # Read the file names for study samples and pooled QCs
     neg.filenames <- row.names(xneg.cor@phenoData)
     neg.QC.files <- neg.filenames[grep(QC.id, neg.filenames)]
-    
+
     pos.filenames <- row.names(xpos.cor@phenoData)
     pos.QC.files <- pos.filenames[grep(QC.id, pos.filenames)]
-    
+
     # Read Peak.list from database
     Peak.list <- Readtbl(myname, peak.db)
-    
+
     # Get the unique list of Duplicate IDs
     x <- sapply(Peak.list$Duplicate_ID, function(x) sum(as.numeric(Peak.list$Duplicate_ID == x)))
     x
     drops <- Peak.list$Duplicate_ID[x == 1]
     drops  #Duplicate IDs which only appear once
-    
+
     List.ID <- Peak.list$Duplicate_ID
     List.ID  #List of all duplicate IDs
     res <- !List.ID %in% drops
     Un.ID <- unique(Peak.list$Duplicate_ID[sapply(res, function(x) x == TRUE)])
     Un.ID  #List of unique duplicate IDs to get EICs for
-    
+
     # List of duplicate IDs for both positive and negative modes
-    Dup.ID.Pos <- Peak.list$Duplicate_ID[sapply(res, function(x) x == TRUE) & sapply(Peak.list$`Ion Mode`, function(x) x == 
+    Dup.ID.Pos <- Peak.list$Duplicate_ID[sapply(res, function(x) x == TRUE) & sapply(Peak.list$`Ion Mode`, function(x) x ==
         "Pos")]
-    Dup.ID.Neg <- Peak.list$Duplicate_ID[sapply(res, function(x) x == TRUE) & sapply(Peak.list$`Ion Mode`, function(x) x == 
+    Dup.ID.Neg <- Peak.list$Duplicate_ID[sapply(res, function(x) x == TRUE) & sapply(Peak.list$`Ion Mode`, function(x) x ==
         "Neg")]
-    
+
     ## Code to plot EICs for all Duplicate IDs in a loop.####
     if (gen.plots) {
         total = length(Un.ID)
-        
+
         pdf(file = paste(file.base, ".pdf", sep = ""))
         for (i in Un.ID) {
             EIC.table <- Peak.list[Peak.list$Duplicate_ID %in% i, ]  #Data frame containing features with adduct info
             res <- lapply(colnames(EIC.table), function(ch) grep(QC.id, ch))
             QC.list <- EIC.table[sapply(res, function(x) length(x) > 0)]
-            
+
             EIC.list <- split(EIC.table, as.factor(EIC.table$`Ion Mode`))
             EIC.pos <- EIC.list$Pos$EIC_ID
             EIC.neg <- EIC.list$Neg$EIC_ID
             Name.pos <- as.character(EIC.list$Pos$Name)
             Name.neg <- as.character(EIC.list$Neg$Name)
-            
+
             Index.Pos <- which(Dup.ID.Pos %in% i)
             Index.Neg <- which(Dup.ID.Neg %in% i)
-            
+
             par(mar = c(5 + 2, 4, 4, 2) + 0.1)
-            
+
             if (length(EIC.list) == 1) {
-                
+
             } else if (length(EIC.pos) * length(EIC.neg) != 0) {
                 ## has duplicate in both modes
                 pos = list()
@@ -225,8 +225,8 @@ EIC.dup.plotter = function(anposGa, xpos.cor, annegGa, xneg.cor, Peak.list, gen.
                 rt <- neg[[1]]@rtrange
                 rt.min <- min(rt[, "rtmin"])
                 rt.max <- max(rt[, "rtmax"])
-                color.palette <- c("black", "blue", "mediumslateblue", "red", "green", "khaki3", "lavenderblush3", 
-                  "lawngreen", "lightseagreen", "purple", "skyblue1", "darkgreen", "darkgoldenrod1", "seashell4", 
+                color.palette <- c("black", "blue", "mediumslateblue", "red", "green", "khaki3", "lavenderblush3",
+                  "lawngreen", "lightseagreen", "purple", "skyblue1", "darkgreen", "darkgoldenrod1", "seashell4",
                   "sienna3", "salmon4", "hotpink")
                 Adduct.No <- length(EIC.pos) + length(EIC.neg)
                 layout(matrix(c(1:Adduct.No), nrow = Adduct.No, ncol = 1, byrow = TRUE))
@@ -234,8 +234,8 @@ EIC.dup.plotter = function(anposGa, xpos.cor, annegGa, xneg.cor, Peak.list, gen.
                   rt <- EIC.table[which(EIC.table$EIC_ID %in% EIC.pos[j]), "rt"] * 60
                   QCmax <- max(QC.list[which(EIC.table$EIC_ID %in% EIC.pos[j]), ])
                   plot(pos[[j]], col = color.palette, rtrange = cbind(rt.min, rt.max))
-                  title(sub = paste(paste("Positive #", Index.Pos[j], ", EIC_ID:", EIC.pos[j]), paste(strwrap(Name.pos[j], 
-                    width = 0.9 * getOption("width")), collapse = "\n"), sep = "\n"), cex.sub = 1, col.sub = "limegreen", 
+                  title(sub = paste(paste("Positive #", Index.Pos[j], ", EIC_ID:", EIC.pos[j]), paste(strwrap(Name.pos[j],
+                    width = 0.9 * getOption("width")), collapse = "\n"), sep = "\n"), cex.sub = 1, col.sub = "limegreen",
                     line = 6)
                   abline(v = rt, col = "blue", lty = 2)
                 }
@@ -243,8 +243,8 @@ EIC.dup.plotter = function(anposGa, xpos.cor, annegGa, xneg.cor, Peak.list, gen.
                   rt <- EIC.table[which(EIC.table$EIC_ID %in% EIC.neg[j]), "rt"] * 60
                   QCmax <- max(QC.list[which(EIC.table$EIC_ID %in% EIC.neg[j]), ])
                   plot(neg[[j]], col = color.palette, rtrange = cbind(rt.min, rt.max))
-                  title(sub = paste(paste("Negative #", Index.Neg[j], ", EIC_ID:", EIC.neg[j]), paste(strwrap(Name.neg[j], 
-                    width = 0.9 * getOption("width")), collapse = "\n"), sep = "\n"), cex.sub = 1, col.sub = "red", 
+                  title(sub = paste(paste("Negative #", Index.Neg[j], ", EIC_ID:", EIC.neg[j]), paste(strwrap(Name.neg[j],
+                    width = 0.9 * getOption("width")), collapse = "\n"), sep = "\n"), cex.sub = 1, col.sub = "red",
                     line = 6)
                   abline(v = rt, col = "blue", lty = 2)
                 }
@@ -257,8 +257,8 @@ EIC.dup.plotter = function(anposGa, xpos.cor, annegGa, xneg.cor, Peak.list, gen.
                 rt <- neg[[1]]@rtrange
                 rt.min <- min(rt[, "rtmin"])
                 rt.max <- max(rt[, "rtmax"])
-                color.palette <- c("black", "blue", "mediumslateblue", "red", "green", "khaki3", "lavenderblush3", 
-                  "lawngreen", "lightseagreen", "purple", "skyblue1", "darkgreen", "darkgoldenrod1", "seashell4", 
+                color.palette <- c("black", "blue", "mediumslateblue", "red", "green", "khaki3", "lavenderblush3",
+                  "lawngreen", "lightseagreen", "purple", "skyblue1", "darkgreen", "darkgoldenrod1", "seashell4",
                   "sienna3", "salmon4", "hotpink")
                 Adduct.No <- length(EIC.pos) + length(EIC.neg)
                 layout(matrix(c(1:Adduct.No), nrow = Adduct.No, ncol = 1, byrow = TRUE))
@@ -266,8 +266,8 @@ EIC.dup.plotter = function(anposGa, xpos.cor, annegGa, xneg.cor, Peak.list, gen.
                   rt <- EIC.table[which(EIC.table$EIC_ID %in% EIC.neg[j]), "rt"] * 60
                   QCmax <- max(QC.list[which(EIC.table$EIC_ID %in% EIC.neg[j]), ])
                   plot(neg[[j]], col = color.palette, rtrange = cbind(rt.min, rt.max))
-                  title(sub = paste(paste("Negative #", Index.Neg[j], ", EIC_ID:", EIC.neg[j]), paste(strwrap(Name.neg[j], 
-                    width = 0.9 * getOption("width")), collapse = "\n"), sep = "\n"), cex.sub = 1, col.sub = "red", 
+                  title(sub = paste(paste("Negative #", Index.Neg[j], ", EIC_ID:", EIC.neg[j]), paste(strwrap(Name.neg[j],
+                    width = 0.9 * getOption("width")), collapse = "\n"), sep = "\n"), cex.sub = 1, col.sub = "red",
                     line = 6)
                   abline(v = rt, col = "blue", lty = 2)
                 }
@@ -280,8 +280,8 @@ EIC.dup.plotter = function(anposGa, xpos.cor, annegGa, xneg.cor, Peak.list, gen.
                 rt <- pos[[1]]@rtrange
                 rt.min <- min(rt[, "rtmin"])
                 rt.max <- max(rt[, "rtmax"])
-                color.palette <- c("black", "blue", "mediumslateblue", "red", "green", "khaki3", "lavenderblush3", 
-                  "lawngreen", "lightseagreen", "purple", "skyblue1", "darkgreen", "darkgoldenrod1", "seashell4", 
+                color.palette <- c("black", "blue", "mediumslateblue", "red", "green", "khaki3", "lavenderblush3",
+                  "lawngreen", "lightseagreen", "purple", "skyblue1", "darkgreen", "darkgoldenrod1", "seashell4",
                   "sienna3", "salmon4", "hotpink")
                 Adduct.No <- length(EIC.pos) + length(EIC.neg)
                 layout(matrix(c(1:Adduct.No), nrow = Adduct.No, ncol = 1, byrow = TRUE))
@@ -289,8 +289,8 @@ EIC.dup.plotter = function(anposGa, xpos.cor, annegGa, xneg.cor, Peak.list, gen.
                   rt <- EIC.table[which(EIC.table$EIC_ID %in% EIC.pos[j]), "rt"] * 60
                   QCmax <- max(QC.list[which(EIC.table$EIC_ID %in% EIC.pos[j]), ])
                   plot(pos[[j]], col = color.palette, rtrange = cbind(rt.min, rt.max))
-                  title(sub = paste(paste("Positive #", Index.Pos[j], ", EIC_ID:", EIC.pos[j]), paste(strwrap(Name.pos[j], 
-                    width = 0.9 * getOption("width")), collapse = "\n"), sep = "\n"), cex.sub = 1, col.sub = "limegreen", 
+                  title(sub = paste(paste("Positive #", Index.Pos[j], ", EIC_ID:", EIC.pos[j]), paste(strwrap(Name.pos[j],
+                    width = 0.9 * getOption("width")), collapse = "\n"), sep = "\n"), cex.sub = 1, col.sub = "limegreen",
                     line = 6)
                   abline(v = rt, col = "blue", lty = 2)
                 }
@@ -302,5 +302,5 @@ EIC.dup.plotter = function(anposGa, xpos.cor, annegGa, xneg.cor, Peak.list, gen.
         return(list(x.pos, x.neg))
         ## End Plotting code####
     }
-    
+
 }

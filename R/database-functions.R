@@ -1,4 +1,4 @@
-#' @title Filebase.gen
+#' @title Filebase-gen
 #'
 #' @export
 #' @description Generates filebase for reading and writing to databases
@@ -7,7 +7,7 @@
 #' @param ion.mode a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'
 #' @param ion.id character vector of length 2 specifying identifier in filename designating positive or negative ionization mode.  Positive identifier must come first.
 #' @return character
-filebase.gen = function(mzdatafiles, BLANK, ion.id, ion.mode) {
+filebase-gen = function(mzdatafiles, BLANK, ion.id, ion.mode) {
     if (ion.mode == "Positive" && BLANK == TRUE) {
         mzdatafiles <- subset(mzdatafiles, subset = grepl(paste(ion.id[1]), mzdatafiles, ignore.case = TRUE))
         file.base = "Blanks_Pos"
@@ -32,9 +32,9 @@ filebase.gen = function(mzdatafiles, BLANK, ion.id, ion.mode) {
                   stop()
                 }
             }
-            
+
         }
-        
+
     }
     return(file.base)
 }
@@ -50,7 +50,7 @@ filebase.gen = function(mzdatafiles, BLANK, ion.id, ion.mode) {
 #' @importFrom DBI dbConnect
 #' @importFrom RSQLite SQLite
 peakdbConnect = function(file.base, db.dir) {
-    if (missing(db.dir)) 
+    if (missing(db.dir))
         db.dir = "db"
     peak_db_file <- paste(file.base, db.dir, sep = "_")
     dir.create(db.dir, recursive = FALSE, showWarnings = FALSE)
@@ -72,7 +72,7 @@ libdbConnect = function(lib.db, db.dir) {
     return(lib_db)
 }
 
-#' @title LUMA_dbConnect
+#' @title LUMA-dbConnect
 #'
 #' @export
 #' @description Establishes a connection to an RSQLite database for combining two datasets together from two different ionization modes
@@ -82,8 +82,8 @@ libdbConnect = function(lib.db, db.dir) {
 #' @return list of Formal class SQLiteConnections, starting with new.db entry followed by one for each db.list entry and
 #' @importFrom DBI dbConnect
 #' @importFrom RSQLite SQLite
-LUMA_dbConnect = function(db.list, db.dir, new.db) {
-    if (missing(new.db)) 
+LUMA-dbConnect = function(db.list, db.dir, new.db) {
+    if (missing(new.db))
         new.db = "Peaklist_db"
     peak_db <- DBI::dbConnect(RSQLite::SQLite(), paste(db.dir, new.db, sep = "/"))
     pos_db <- DBI::dbConnect(RSQLite::SQLite(), paste(db.dir, db.list[[1]], sep = "/"))
@@ -102,7 +102,7 @@ LUMA_dbConnect = function(db.list, db.dir, new.db) {
 #' @param asdf logical indicating whether to return a data frame instead of a tibble. Default is FALSE
 #' @return tbl alternatively a data frame
 Readtbl = function(myname, peak.db, asdf) {
-    if (missing(asdf)) 
+    if (missing(asdf))
         asdf = FALSE
     if (asdf) {
         mydf <- dplyr::tbl(peak.db, myname) %>% dplyr::collect() %>% data.frame
@@ -133,7 +133,7 @@ Writetbl = function(mytbl, peak.db, myname) {
 #' @param asdf logical indicating whether to return a data frame instead of a tibble. Default is FALSE
 #' @return tbl alternatively a data frame
 GetFeatures = function(myname, peak.db, asdf) {
-    if (missing(asdf)) 
+    if (missing(asdf))
         asdf = FALSE
     if (asdf) {
         mydf <- dplyr::tbl(peak.db, myname) %>% select(EIC_ID, mz, rt) %>% dplyr::collect() %>% data.frame
