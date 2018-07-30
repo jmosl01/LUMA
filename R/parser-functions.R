@@ -6,7 +6,7 @@
 #' @param rule a data frame containing the rule list used by CAMERA to annotate ion adducts and fragments.  Must contain the columns "name","nmol","charge","massdiff","oidscore","quasi","ips".
 #' @param ion.mode a character string defining the ionization mode.  Must be "Positive"
 #' @return data frame parsed version of the original data frame with additional columns "mono_mass","metabolite_group","monoisotopic_flg","adduct_flg","isotope_flg","ambiguity_flg","Selection_flg"
-CAMERA-parser-pos=function(raw,rule,ion.mode){
+parse_pos_results=function(raw,rule,ion.mode){
   ##This code is a modified version of CAMERA_parser.m from the Ressom Omics Lab at Georgetown University (http://omics.georgetown.edu/) adapted for the R environment
   ##*******************************************************
   ##*******************POSITIVE   MODE*********************
@@ -420,7 +420,7 @@ CAMERA-parser-pos=function(raw,rule,ion.mode){
 #' @param rule a data frame containing the rule list used by CAMERA to annotate ion adducts and fragments.  Must contain the columns "name","nmol","charge","massdiff","oidscore","quasi","ips".
 #' @param ion.mode a character string defining the ionization mode.  Must be "Negative"
 #' @return data frame parsed version of the original data frame with additional columns "mono_mass","metabolite_group","monoisotopic_flg","adduct_flg","isotope_flg","ambiguity_flg","Selection_flg"
-CAMERA-parser-neg=function(raw,rule,ion.mode){
+parse_neg_results=function(raw,rule,ion.mode){
   ##This code is a modified version of CAMERA_parser.m from the Ressom Omics Lab at Georgetown University (http://omics.georgetown.edu/) adapted for the R environment
   ##*******************************************************
   ##*******************NEGATIVE   MODE*********************

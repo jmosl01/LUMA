@@ -1,7 +1,7 @@
-#' @title FindExogenousandSolventPeak
+#' @title Exogenous and background peak algorithm
 #'
 #' @export
-#' @description Searches mz/rt features for exogenous features.  Defined by mean abundance in endogenous samples below user-defined threshold
+#' @description Searches mz/rt features for exogenous features and removes background features.  Exogenous is defined as mean abundance in endogenous samples below user-defined threshold.  Background determined from process blanks.
 #' @param Peak.list a named list of data frames (two per ionization mode) containing intensity matrices across all study samples and Pooled QCs and process blanks.  Names should be c('pos','neg','blanks_pos','blanks_neg').  Alternatively may use existing database connections by setting to NULL and specifying database parameters with ...
 #' @param Sample.df a data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns 'Sex','Class','n','Endogenous'.
 #' @param search.par a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.
@@ -15,18 +15,18 @@
 #' @return nested list a list for each ionization mode, each containing a list of two dataframes: the first contains the intensity matrix for the peaklist with solvent peaks removed, the second contains the intensity matrix for the solvent peaks
 #' @importFrom plyr llply
 #' @importFrom dplyr filter
-FindExogenousandSolventPeak = function(Peak.list, Sample.df, search.par, ion.id, QC.id, MB.id, tbl.id, db.id, 
+remove_background_peaks = function(Peak.list, Sample.df, search.par, ion.id, QC.id, MB.id, tbl.id, db.id,
     ion.modes, ...) {
     if (missing(ion.id)) {
         ion.id = c("Pos", "Neg")
     }
-    if (missing(QC.id)) 
+    if (missing(QC.id))
         QC.id = "Pooled_QC_"
-    if (missing(MB.id)) 
+    if (missing(MB.id))
         MB.id = "^MB"
-    if (missing(tbl.id)) 
+    if (missing(tbl.id))
         tbl.id = NULL
-    if (missing(db.id)) 
+    if (missing(db.id))
         db.id = c("Peaklist", "Blanks")
     if (is.null(Peak.list) && is.null(tbl.id)) {
         stop("Need to specify tbl.id if using databases to retrieve Peak.list!", call. = FALSE)
@@ -51,8 +51,8 @@ FindExogenousandSolventPeak = function(Peak.list, Sample.df, search.par, ion.id,
     }
     lib_db <- libdbConnect(lib.db = lib.db, db.dir = db.dir)
     peak_db <- LUMA_dbConnect(db.list = db.list, db.dir = db.dir, new.db = new.db)
-    
-    endo.groups <- as.matrix(paste(Sample.df[which(Sample.df[, "Endogenous"] == TRUE), "Sex"], Sample.df[which(Sample.df[, 
+
+    endo.groups <- as.matrix(paste(Sample.df[which(Sample.df[, "Endogenous"] == TRUE), "Sex"], Sample.df[which(Sample.df[,
         "Endogenous"] == TRUE), "Class"], sep = "_"))
     list.length = length(ion.modes)
     mylist <- NULL
@@ -64,11 +64,11 @@ FindExogenousandSolventPeak = function(Peak.list, Sample.df, search.par, ion.id,
         blank.base = paste(db.id[2], ion.id[i], sep = "_")
         cur.Peaklist <- Peak.list[[i]]
         cur.Solvlist <- Solv.list[[i]]
-        
+
         res <- as.numeric(unlist(apply(endo.groups, 1, function(X) grep(X, colnames(cur.Peaklist)))))
         Endo.list <- cur.Peaklist[, res]
         search.list <- cur.Peaklist %>% select(EIC_ID, mz, rt) %>% dplyr::collect()
-        
+
         # Calculate the mean of QC values for each compound
         res <- lapply(colnames(cur.Peaklist), function(ch) grep(QC.id, ch))
         QC.list <- cur.Peaklist[sapply(res, function(x) length(x) > 0)]
@@ -78,7 +78,7 @@ FindExogenousandSolventPeak = function(Peak.list, Sample.df, search.par, ion.id,
         Endo.lim <- as.numeric(search.par[1, "Endogenous"])
         Endo.flag <- Endo.mean > Endo.lim
         cur.Peaklist[, "Endogenous_flag"] <- Endo.flag
-        
+
         # Calculate the mean of MB values for each compound
         res <- lapply(colnames(cur.Solvlist), function(ch) unique(grep(MB.id, ch)))  #Flags the EIC_ID and Isotope cluster columns
         Solvent.new.list <- cur.Solvlist[sapply(res, function(x) length(x) > 0)]  #Extracts the EIC_ID and Isotope cluster columns
@@ -98,13 +98,13 @@ FindExogenousandSolventPeak = function(Peak.list, Sample.df, search.par, ion.id,
         # calculates the min and max range values for searching against the solvent list
         d.mz <- search.list$mz * as.numeric(search.par[1, "ppm"])/10^6
         d.rt <- as.numeric(search.par[1, "rt"])
-        
+
         search.list$mz.min <- search.list$mz - d.mz
         search.list$mz.max <- search.list$mz + d.mz
         search.list$rt.min <- search.list$rt - d.rt
         search.list$rt.max <- search.list$rt + d.rt
         search.list$sample.mean = QCmean
-        
+
         bin = vector(mode = "logical", length = search.list %>% nrow)
         Solvent.ratio <- as.numeric(search.par[1, "Solvent"])
         ## attempts to match all peaks against the In House Library ! Try to build a query using *apply functions to
@@ -115,25 +115,25 @@ FindExogenousandSolventPeak = function(Peak.list, Sample.df, search.par, ion.id,
             mz.max = search.list$mz.max[j]
             rt.min = search.list$rt.min[j]
             rt.max = search.list$rt.max[j]
-            test.list <- IHL %>% filter(between(mz, mz.min, mz.max)) %>% filter(between(rt, rt.min, rt.max)) %>% 
+            test.list <- IHL %>% filter(between(mz, mz.min, mz.max)) %>% filter(between(rt, rt.min, rt.max)) %>%
                 dplyr::collect()
             if (nrow(test.list) == 0) {
             } else {
                 if (nrow(test.list) == 1) {
                   if (search.list$sample.mean[j]/test.list$mean <= Solvent.ratio) {
-                    cat("\n\n\nSolvent peak removed for match number ", counter, " in ", cur.ion, " ionization.\n", 
+                    cat("\n\n\nSolvent peak removed for match number ", counter, " in ", cur.ion, " ionization.\n",
                       sep = "")
-                    temp <- test.list[, c("MS.ID", "Formula", "Name", "Annotated.adduct", "Conf.Level", "FISh.Coverage", 
+                    temp <- test.list[, c("MS.ID", "Formula", "Name", "Annotated.adduct", "Conf.Level", "FISh.Coverage",
                       "isotopes", "adduct")]
                     bin[j] = TRUE
                     counter = counter + 1
                   }
-                  
+
                 } else {
                   if (nrow(test.list) >= 1) {
                     if (search.list$sample.mean[j]/max(test.list$mean) <= Solvent.ratio) {
                       cat("\n\n\nSolvent peak removed for match number ", counter, ".\n", sep = "")
-                      temp <- test.list[, c("MS.ID", "Formula", "Name", "Annotated.adduct", "Conf.Level", "FISh.Coverage", 
+                      temp <- test.list[, c("MS.ID", "Formula", "Name", "Annotated.adduct", "Conf.Level", "FISh.Coverage",
                         "isotopes", "adduct")]
                       bin[j] = TRUE
                       counter = counter + 1
@@ -143,7 +143,7 @@ FindExogenousandSolventPeak = function(Peak.list, Sample.df, search.par, ion.id,
             }
         }
         cur.Peaklist$Solv_flag <- bin
-        
+
         length(which(cur.Peaklist$Solv_flag %in% FALSE))  # The number of features matched between Peaklist and Endolist
         cur.Peaklist.trimmed <- cur.Peaklist[which(cur.Peaklist$Solv_flag %in% FALSE), ]
         Solv.list.trimmed <- cur.Peaklist[which(cur.Peaklist$Solv_flag %in% TRUE), ]
@@ -155,7 +155,7 @@ FindExogenousandSolventPeak = function(Peak.list, Sample.df, search.par, ion.id,
     return(masterlist)
 }
 
-#' @title PreCombineIonModes
+#' @title Combines ion mode data simply
 #'
 #' @export
 #' @description Combines peaklists from both ionization modes \(positive and negative\) for a first look at class separations
@@ -163,8 +163,8 @@ FindExogenousandSolventPeak = function(Peak.list, Sample.df, search.par, ion.id,
 #' @param tbl.id character vector of table names to draw from database.  First value should be table name for positive mode, second should be table name for negative mode. Default is NULL
 #' @param ... Arguments to pass parameters to database functions
 #' @return NULL testing
-PreCombineIonModes = function(Peak.list, tbl.id, ...) {
-    if (missing(tbl.id)) 
+pre_combine_ion_modes = function(Peak.list, tbl.id, ...) {
+    if (missing(tbl.id))
         tbl.id = NULL
     if (is.null(tbl.id) && is.null(Peak.list)) {
         stop("Need to specify tbl.id if using databases to retrieve Peak.list!", call. = FALSE)
@@ -179,17 +179,17 @@ PreCombineIonModes = function(Peak.list, tbl.id, ...) {
         if (length(grep("Positive", names(Peak.list))) == 0 || length(grep("Negative", names(Peak.list))) == 0) {
             stop("Peaklist must be a named list. Try \n> names(Peak.list) = c(\"Positive\",\"Negative\")", call. = FALSE)
         }
-        
+
         Peak.list.pos <- Peak.list["Positive"]
         Peak.list.neg <- Peak.list["Negative"]
     }
     Peak.list.pos[, "Ion Mode"] <- "Pos"
     Peak.list.neg[, "Ion Mode"] <- "Neg"
-    
-    
+
+
     Col.names.pos <- colnames(Peak.list.pos)
     colnames(Peak.list.neg) <- Col.names.pos
-    
+
     Peak.list.combined <- rbind(Peak.list.pos, Peak.list.neg)
     return(Peak.list.combined)
 }

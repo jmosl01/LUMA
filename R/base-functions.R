@@ -10,7 +10,7 @@
 #' @importFrom stats cor dist
 #' @importFrom utils setTxtProgressBar
 #' @importFrom flashClust flashClust
-Calc-corr-stat = function(Sample.df, Peak.list, get.mg, BLANK, ion.mode) {
+calc_corrstat = function(Sample.df, Peak.list, get.mg, BLANK, ion.mode) {
 
     ## Error check
     Peak.list.pspec <- Peak.list[which(Peak.list$metabolite_group %in% get.mg), ]
@@ -121,7 +121,7 @@ Calc-corr-stat = function(Sample.df, Peak.list, get.mg, BLANK, ion.mode) {
 #' @importFrom xcms peakTable
 #' @importFrom utils read.table write.table str head
 #' @importFrom stats variable.names
-Calc-minfrac = function(Sample.df, xset4, BLANK, Peak.list) {
+calc_minfrac = function(Sample.df, xset4, BLANK, Peak.list) {
     peakSN <- peakTable(xset4, filebase = "SN_Livers_All classes", value = "sn")  #writes the SN peak table to file
     SN.list <- read.table(file = "SN_Livers_All classes.tsv", sep = "\t", header = TRUE)  #reads the SN peak table
     file.remove("SN_Livers_All classes.tsv")
@@ -318,7 +318,7 @@ Calc-minfrac = function(Sample.df, xset4, BLANK, Peak.list) {
 #' @importFrom dplyr '%>%' mutate_if summarise bind_cols
 #' @importFrom utils str txtProgressBar setTxtProgressBar
 #' @importFrom stringr str_count
-Combine-phenodata = function(Sample.df, Peak.list, Summed.list, search.par, BLANK, ion.mode) {
+combine_phenodata = function(Sample.df, Peak.list, Summed.list, search.par, BLANK, ion.mode) {
     if (ion.mode == "Positive") {
         cor.stat <- as.numeric(search.par[1, "Corr.stat.pos"])
     } else {
@@ -360,7 +360,7 @@ Combine-phenodata = function(Sample.df, Peak.list, Summed.list, search.par, BLAN
             # X=paste0(MS.ID, collapse = ';'))[2]
             new.pheno.list[, colnames(pheno.list)[i]] <- ddply(pheno.list, ~metabolite_group, function(x) mypaste(x,
                 i))[2]
-        } else if (is.whole(pheno.list[, i])) {
+        } else if (is_whole(pheno.list[, i])) {
             new.pheno.list[, colnames(pheno.list)[i]] <- ddply(pheno.list, ~metabolite_group, function(x) mypaste(x,
                 i))[2]
         }
@@ -409,7 +409,7 @@ Combine-phenodata = function(Sample.df, Peak.list, Summed.list, search.par, BLAN
 #' @importFrom dplyr '%>%' select copy_to tbl between
 #' @importFrom glue collapse
 #' @importFrom utils str txtProgressBar
-IHL-search = function(Peak.list, Annotated.library, rules, search.par, ion.mode, lib_db) {
+search_IHL = function(Peak.list, Annotated.library, rules, search.par, ion.mode, lib_db) {
     search.list <- Peak.list %>% select(EIC_ID, mz, rt) %>% dplyr::collect()
 
     ## Creates full adduct list for all compounds in the Annotated library
@@ -506,7 +506,7 @@ IHL-search = function(Peak.list, Annotated.library, rules, search.par, ion.mode,
 #' @description Tests if a vector or array contains only whole numbers
 #' @param a a vector or array to test
 #' @return logical
-is.whole <- function(a) {
+is_whole <- function(a) {
     (is.numeric(a) && floor(a) == a) || (is.complex(a) && floor(Re(a)) == Re(a) && floor(Im(a)) == Im(a))
 }
 
@@ -521,7 +521,7 @@ is.whole <- function(a) {
 #' @param ion.mode a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'
 #' @return data table data frame sum.range.list with the first column containing metabolite group and the rest containing sample and QC columns
 #' @importFrom data.table as.data.table
-Sum-features = function(Sample.df, Peak.list, search.par, BLANK, ion.mode) {
+sum_features = function(Sample.df, Peak.list, search.par, BLANK, ion.mode) {
     if (ion.mode == "Positive") {
         cor.stat <- as.numeric(search.par[1, "Corr.stat.pos"])
     } else {

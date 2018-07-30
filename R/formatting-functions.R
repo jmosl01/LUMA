@@ -1,4 +1,4 @@
-#' @title FormatForSIMCA
+#' @title Formats for SIMCA
 #'
 #' @export
 #' @description Formats LUMA output for import into SIMCA
@@ -13,10 +13,10 @@
 #' @importFrom stats setNames
 #' @importFrom gtools mixedorder
 #' @importFrom plyr rbind.fill
-FormatForSIMCA = function(Peak.list = NULL, Sample.df, Sample.data, tbl.id = NULL, QC.id = "Pooled_QC_", ...) {
-    if (missing(Peak.list)) 
+format_simca = function(Peak.list = NULL, Sample.df, Sample.data, tbl.id = NULL, QC.id = "Pooled_QC_", ...) {
+    if (missing(Peak.list))
         Peak.list = NULL
-    if (missing(tbl.id)) 
+    if (missing(tbl.id))
         tbl.id = NULL
     if (is.null(tbl.id) && is.null(Peak.list)) {
         stop("Need to specify tbl.id if using databases to retrieve Peak.list!", call. = FALSE)
@@ -38,10 +38,10 @@ FormatForSIMCA = function(Peak.list = NULL, Sample.df, Sample.data, tbl.id = NUL
         rows_loop <- grep(groups[i], colnames(sample.peaks))
         group[rows_loop] <- groups[i]
     }
-    
+
     # modify sample data to include the user defined exposure class
     Sample.data <- Sample.data[order(Sample.data$CT.ID), ]
-    Sample.data <- setNames(cbind.data.frame(Sample.data[, 1], group, Sample.data[-1]), c(colnames(Sample.data[1]), 
+    Sample.data <- setNames(cbind.data.frame(Sample.data[, 1], group, Sample.data[-1]), c(colnames(Sample.data[1]),
         "Exposure Class", colnames(Sample.data[-1])))
     sample.ID <- as.numeric(sub("\\D*(\\d{6}).*", "\\1", colnames(sample.peaks)))  #pulls out the 6-digit numeric sample codes into a vector for matching against the Sample data spreadsheet
     if (all(is.na(sample.ID))) {
@@ -52,7 +52,7 @@ FormatForSIMCA = function(Peak.list = NULL, Sample.df, Sample.data, tbl.id = NUL
     # Create a new ID for each metabolite and record how many features were combined into that metabolite for
     # metadata
     temp <- as.character(sample.peaks[, 1])
-    
+
     no.features <- str_count(temp, ",") + 1
     MetID <- gsub("^(.*?),.*", "\\1", temp)
     Metbase <- sub("_([^_]*)$", "", MetID)
@@ -60,17 +60,17 @@ FormatForSIMCA = function(Peak.list = NULL, Sample.df, Sample.data, tbl.id = NUL
     Mettag[which(grepl("Annotated", temp, fixed = TRUE))] <- "Annotated"
     MetID <- paste(Metbase, Mettag, sep = "_")
     # End new ID generation
-    
+
     tsample.peaks <- setNames(data.frame(t(sample.peaks[, -1])), MetID)
     # add columns for sex, sample class, and all phenotype data for each sample
     tsample.peaks <- cbind.data.frame(X = sample.ID, tsample.peaks)
     colnames(tsample.peaks)[1] = colnames(Sample.data)[1]
     tsample.peaks <- merge(Sample.data, tsample.peaks, by = colnames(tsample.peaks)[1])
-    
+
     mylist <- split(tsample.peaks, f = tsample.peaks$Plate.Number)
     new.list <- lapply(mylist, function(X) X[mixedorder(X[, "Plate.Position"]), ])
     tsample.peaks <- rbind.fill(new.list)
-    
+
     # make a dataframe of metabolite intensity values for pooled QC samples then transpose so the colnames are the
     # same as metabolite names: Pos_###_Annotated
     Pooled.QC <- QC.id  ## Generate search string for all sexes
@@ -85,8 +85,8 @@ FormatForSIMCA = function(Peak.list = NULL, Sample.df, Sample.data, tbl.id = NUL
     # add columns for sex, sample class, and all phenotype data for Pooled QCs, and fill with NA
     dummy.data <- setNames(data.frame(matrix(ncol = length(Sample.data), nrow = nrow(tQC.peaks))), colnames(Sample.data))
     tQC.peaks <- cbind.data.frame(dummy.data, tQC.peaks)
-    
-    
+
+
     # make a dataframe of all metadata columns then transpose so the colnames are the same as the metabolite
     # names: Pos_###_Annotated
     log.list <- list()
@@ -103,13 +103,13 @@ FormatForSIMCA = function(Peak.list = NULL, Sample.df, Sample.data, tbl.id = NUL
     dummy.data <- setNames(data.frame(matrix(ncol = length(Sample.data), nrow = nrow(tmeta.peaks))), colnames(Sample.data))
     tmeta.peaks <- cbind.data.frame(dummy.data, tmeta.peaks)
     # pheno.peaks <- Peak.list[,-grep('[MF]_',colnames(Peak.list))] colnames(pheno.peaks)
-    
+
     # combine the three dataframes, first sample data, then QC data, lastly metadata
     SIMCA.data <- rbind.data.frame(tsample.peaks, tQC.peaks, tmeta.peaks)
     SIMCA.data <- cbind.data.frame(X = rownames(SIMCA.data), SIMCA.data)
     SIMCA.data[, 1] <- gsub("^X", "\\1", SIMCA.data[, 1])
     SIMCA.data <- setNames(cbind.data.frame(SIMCA.data, row.names = NULL), c("", colnames(SIMCA.data)[-1]))
-    
-    
-    
+
+
+
 }

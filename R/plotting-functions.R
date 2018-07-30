@@ -18,7 +18,7 @@
 #' @importFrom graphics layout par plot text
 #' @importFrom Hmisc rcorr
 #' @importFrom corrplot corrplot
-EIC-plotter = function(anposGa, Sample.df, Peak.list, center, BLANK, gen.plots, ion.mode, file.base, QC.id) {
+plot_metgroup = function(anposGa, Sample.df, Peak.list, center, BLANK, gen.plots, ion.mode, file.base, QC.id) {
     if (missing(BLANK))
         BLANK = FALSE
     if (missing(gen.plots))
@@ -40,7 +40,7 @@ EIC-plotter = function(anposGa, Sample.df, Peak.list, center, BLANK, gen.plots, 
     get.mg <- which(pspec.length > 1)
     names(get.mg) <- NULL
 
-    Peak.list.pspec <- Calc.corr.stat(Sample.df, Peak.list, get.mg, BLANK, ion.mode)
+    Peak.list.pspec <- calc_corrstat(Sample.df, Peak.list, get.mg, BLANK, ion.mode)
     validate.df <- Peak.list.pspec[order(Peak.list.pspec$metabolite_group), c("MS.ID", "mz", "rt", "Name", "Formula",
         "Annotated.adduct", "isotopes", "adduct", "mono_mass", "metabolite_group", "Correlation.stat")]
     Peak.list.new <- list(Peak.list.pspec, validate.df)
@@ -105,19 +105,19 @@ EIC-plotter = function(anposGa, Sample.df, Peak.list, center, BLANK, gen.plots, 
                   res2 <- rcorr(test.mat)
                   # Insignificant correlation are crossed corrplot(res2$r, type='upper', order='hclust', p.mat = res2$P,
                   # sig.level = 0.01, insig = 'pch', pch = 3) Insignificant correlations are leaved blank
-                  corrplot(res2$r, type = "upper", order = "hclust", p.mat = res2$P, sig.level = 0.01, insig = "blank", 
+                  corrplot(res2$r, type = "upper", order = "hclust", p.mat = res2$P, sig.level = 0.01, insig = "blank",
                     tl.col = rainbow(maxlabel))
                   # Plots the EICs and Pseudo-spectra for each metabolite group containing more than one feature in a for loop
                   EIC.plots <- plotEICs(new_anposGa, pspec = get.mg[i], maxlabel = maxlabel, sleep = 0)  ## Plot the EICs
-                  
+
                   plotPsSpectrum(new_anposGa, pspec = get.mg[i], maxlabel = maxlabel, sleep = 0)  #Plot the Mass Spectra
                 }
             }
         }
         dev.off()
     }
-    
-    
+
+
 }
 
 #' @title Loop-based EIC Plotter for Ion Mode Duplicates
@@ -136,7 +136,7 @@ EIC-plotter = function(anposGa, Sample.df, Peak.list, center, BLANK, gen.plots, 
 #' @return NULL testing
 #' @importFrom xcms getEIC
 #' @importFrom graphics abline title
-EIC-dup-plotter = function(anposGa, xpos.cor, annegGa, xneg.cor, Peak.list, gen.plots, file.base, QC.id, ...) {
+plot_ionduplicate = function(anposGa, xpos.cor, annegGa, xneg.cor, Peak.list, gen.plots, file.base, QC.id, ...) {
     if (missing(Peak.list))
         Peak.list = NULL
     if (missing(gen.plots))
