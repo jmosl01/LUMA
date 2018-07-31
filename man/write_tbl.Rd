@@ -4,10 +4,10 @@
 \alias{write_tbl}
 \title{Writes table to database}
 \usage{
-write_tbl(mytbl, peak.db, myname)
+write_tbl(mydf, peak.db, myname)
 }
 \arguments{
-\item{mytbl}{tbl or dataframe to write}
+\item{mydf}{tbl or dataframe to write}
 
 \item{peak.db}{Formal class SQLiteConnection}
 

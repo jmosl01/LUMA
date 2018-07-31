@@ -97,18 +97,18 @@ connect_lumadb = function(db.list, db.dir, new.db) {
 #'
 #' @export
 #' @description Extract table from an RSQLite database as a tibble.  Alternatively load into memory as a data frame
-#' @param myname character name of table in database to return
+#' @param mytable character name of table in database to return
 #' @param peak.db Formal class SQLiteConnection
 #' @param asdf logical indicating whether to return a data frame instead of a tibble. Default is FALSE
 #' @return tbl alternatively a data frame
-read_tbl = function(myname, peak.db, asdf) {
+read_tbl = function(mytable, peak.db, asdf) {
     if (missing(asdf))
         asdf = FALSE
     if (asdf) {
-        mydf <- dplyr::tbl(peak.db, myname) %>% dplyr::collect() %>% data.frame
+        mydf <- dplyr::tbl(peak.db, mytable) %>% dplyr::collect() %>% data.frame
         return(mydf)
     } else {
-        mytibble <- dplyr::tbl(peak.db, myname) %>% dplyr::collect()
+        mytibble <- dplyr::tbl(peak.db, mytable) %>% dplyr::collect()
         return(mytibble)
     }
 }
@@ -117,32 +117,32 @@ read_tbl = function(myname, peak.db, asdf) {
 #'
 #' @export
 #' @description Writes tbl or dataframe to an RSQLite database
-#' @param mytbl tbl or dataframe to write
+#' @param mydf tbl or dataframe to write
 #' @param peak.db Formal class SQLiteConnection
 #' @param myname character what should the table be called
 #' @return a tbl object in the remote source
-write_tbl = function(mytbl, peak.db, myname) {
-    copy_to(peak.db, mytbl, name = myname, temporary = FALSE, overwrite = TRUE)
+write_tbl = function(mydf, peak.db, myname) {
+    copy_to(peak.db, mydf, name = myname, temporary = FALSE, overwrite = TRUE)
 }
 
 #' @title Retrieves features from database
 #'
 #' @description Returns mz/rt features from a RSQLite database
-#' @param myname character name of table in database to return
+#' @param mytbl character name of table in database to return
 #' @param peak.db Formal class SQLiteConnection
 #' @param asdf logical indicating whether to return a data frame instead of a tibble. Default is FALSE
 #' @return tbl alternatively a data frame
-get_features = function(myname, peak.db, asdf) {
+get_features = function(mytbl, peak.db, asdf) {
     if (missing(asdf))
         asdf = FALSE
     if (asdf) {
-        mydf <- dplyr::tbl(peak.db, myname) %>%
+        mydf <- dplyr::tbl(peak.db, mytbl) %>%
           select(EIC_ID, mz, rt) %>%
           dplyr::collect() %>%
           data.frame
         return(mydf)
     } else {
-        mytibble <- dplyr::tbl(peak.db, myname) %>%
+        mytibble <- dplyr::tbl(peak.db, mytbl) %>%
           select(EIC_ID, mz, rt) %>%
           dplyr::collect()
         return(mytibble)

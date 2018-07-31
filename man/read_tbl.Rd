@@ -4,10 +4,10 @@
 \alias{read_tbl}
 \title{Reads table from database}
 \usage{
-read_tbl(myname, peak.db, asdf)
+read_tbl(mytable, peak.db, asdf)
 }
 \arguments{
-\item{myname}{character name of table in database to return}
+\item{mytable}{character name of table in database to return}
 
 \item{peak.db}{Formal class SQLiteConnection}
 

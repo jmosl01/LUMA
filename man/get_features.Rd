@@ -4,10 +4,10 @@
 \alias{get_features}
 \title{Retrieves features from database}
 \usage{
-get_features(myname, peak.db, asdf)
+get_features(mytbl, peak.db, asdf)
 }
 \arguments{
-\item{myname}{character name of table in database to return}
+\item{mytbl}{character name of table in database to return}
 
 \item{peak.db}{Formal class SQLiteConnection}
 

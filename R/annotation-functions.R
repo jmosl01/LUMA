@@ -9,33 +9,33 @@
 #' @param ion.mode a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'
 #' @param lib_db RSQLite connection
 #' @param mycols a character vector containing all the names to include in the search output
-#' @param ... parameters to pass to database functions
+#' @param mytbl character name of table in database to return
+#' @param ... Arguments to pass parameters to database functions
 #' @return data frame containing the original table with added columns 'Name','MS.ID','Formula','Annotated.adduct' and any additional info columns from Annotated.library
 #' @importFrom dplyr '%>%' select copy_to tbl between
 #' @importFrom glue collapse
 #' @importFrom utils str txtProgressBar
-search_IHL = function(Peak.list, Annotated.library, rules, search.par, ion.mode, lib_db, mycols, ...) {
+search_IHL = function(Peak.list, Annotated.library, rules, search.par,
+                      ion.mode, lib_db, mycols, mytbl, ...) {
   if (ion.mode == "Positive") {
-    Ion.Mode <- "Pos"
-    bin <- paste(Ion.Mode, "_", search.list$EIC_ID, "_", sep = "")
+    bin <- paste("Pos_", search.list$EIC_ID, "_", sep = "")
 
   } else {
     if (ion.mode == "Negative") {
-      Ion.Mode <- "Neg"
-      bin <- paste(Ion.Mode, "_", search.list$EIC_ID, "_", sep = "")
+      bin <- paste("Neg_", search.list$EIC_ID, "_", sep = "")
 
     } else {
-      stop("You must include the ionization mode!")
+      stop("You must include the ionization mode! Try\n ion.mode = c(\"Positive\",\"Negative\"")
     }
   }
 
-  search.list <- get_features(myname,
+  search.list <- get_features(mytbl = mytbl,
                               peak.db,
                               asdf=TRUE)
   IHL <- gen_adducts(Annotated.library,
                      rules,
                      ion.mode)
-  write_tbl(mytbl = IHL,
+  write_tbl(mydf = IHL,
             peak.db = lib_db,
             myname = "Annotated Library")
   new.search.list <- calc_ranges(search.list,
