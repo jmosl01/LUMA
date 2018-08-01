@@ -17,20 +17,21 @@
 #' @importFrom utils str txtProgressBar
 search_IHL = function(Peak.list, Annotated.library, rules, search.par,
                       ion.mode, lib_db, mycols, mytbl, ...) {
+  res <- select_rt(Annotated.library)
+
   if (ion.mode == "Positive") {
-    bin <- paste("Pos_", search.list$EIC_ID, "_", sep = "")
+    bin <- paste("Pos_", Peak.list$EIC_ID, "_", sep = "")
 
   } else {
     if (ion.mode == "Negative") {
-      bin <- paste("Neg_", search.list$EIC_ID, "_", sep = "")
+      bin <- paste("Neg_", Peak.list$EIC_ID, "_", sep = "")
 
     } else {
       stop("You must include the ionization mode! Try\n ion.mode = c(\"Positive\",\"Negative\"")
     }
   }
-
   search.list <- get_features(mytbl = mytbl,
-                              peak.db,
+                              peak.db = peak.db,
                               asdf=TRUE)
   IHL <- gen_adducts(Annotated.library,
                      rules,
@@ -55,8 +56,12 @@ search_IHL = function(Peak.list, Annotated.library, rules, search.par,
     rt.min = search.list$rt.min[i]
     rt.max = search.list$rt.max[i]
     test.list <- IHL %>%
-                      dplyr::filter(between(mz, mz.min, mz.max)) %>%
-                            dplyr::filter(between(RT..min., rt.min, rt.max)) %>%
+                      dplyr::filter(between(x = IHL[,"mz"],
+                                            left = mz.min,
+                                            right = mz.max)) %>%
+                            dplyr::filter(between(x = IHL[,res[4]],
+                                                  left = rt.min,
+                                                  right = rt.max)) %>%
                                   dplyr::collect()
     if (nrow(test.list) == 0) {
       search.list$MS.ID[i] = paste(bin[i], "Unidentified", sep = "")
