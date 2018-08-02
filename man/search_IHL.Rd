@@ -5,7 +5,7 @@
 \title{Searches metabolite data against In House Library (IHL)}
 \usage{
 search_IHL(Peak.list, Annotated.library, rules, search.par, ion.mode,
-  lib_db, mycols, mytbl, ...)
+  lib_db, mycols, ...)
 }
 \arguments{
 \item{Peak.list}{a table of class 'tbl_dbi', 'tbl_sql', 'tbl_lazy', or 'tbl' with samples as columns.  Should contain all output columns from XCMS and CAMERA, both metadata and sample data. Retention times must be in min.}
@@ -22,9 +22,7 @@ search_IHL(Peak.list, Annotated.library, rules, search.par, ion.mode,
 
 \item{mycols}{a character vector containing all the names to include in the search output}
 
-\item{mytbl}{character name of table in database to return}
-
-\item{...}{Arguments to pass parameters to database functions}
+\item{...}{parameters to pass to database functions}
 }
 \value{
 data frame containing the original table with added columns 'Name','MS.ID','Formula','Annotated.adduct' and any additional info columns from Annotated.library
