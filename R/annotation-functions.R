@@ -15,19 +15,6 @@
 #' @importFrom glue collapse
 #' @importFrom utils str txtProgressBar
 search_IHL = function(Peak.list, Annotated.library, rules, search.par, ion.mode, lib_db, mycols, ...) {
-  if (ion.mode == "Positive") {
-    Ion.Mode <- "Pos"
-    bin <- paste(Ion.Mode, "_", search.list$EIC_ID, "_", sep = "")
-
-  } else {
-    if (ion.mode == "Negative") {
-      Ion.Mode <- "Neg"
-      bin <- paste(Ion.Mode, "_", search.list$EIC_ID, "_", sep = "")
-
-    } else {
-      stop("You must include the ionization mode!")
-    }
-  }
 
   search.list <- get_features(myname,
                               peak.db,
@@ -98,7 +85,7 @@ search_IHL = function(Peak.list, Annotated.library, rules, search.par, ion.mode,
 #' @param mycols a character vector containing all the names to include in the search output
 #' @return NULL testing
 calc_ranges = function(search.list,search.par,mycols) {
-  if(ncol(search.list) != 3) {
+  if(ncols(search.list) != 3) {
     ##error check
     stop("search.list must contain only three columns, \"EIC_ID\", \"mz\", and \"rt\"!")
   }
@@ -132,14 +119,18 @@ gen_adducts = function(Annotated.library,rules,ion.mode) {
   x <- rules$massdiff
   if (ion.mode == "Positive") {
     IHL.temp <- sweep(IHL.temp, 1, x, "+")
+    Ion.Mode <- "Pos"
+    bin <- paste(Ion.Mode, "_", search.list$EIC_ID, "_", sep = "")
 
   } else {
     if (ion.mode == "Negative") {
       IHL.temp <- sweep(IHL.temp, 1, x, "+")
       IHL.temp <- sweep(IHL.temp, 1, -1, "*")
+      Ion.Mode <- "Neg"
+      bin <- paste(Ion.Mode, "_", search.list$EIC_ID, "_", sep = "")
 
     } else {
-      stop("You must include the ionization mode! Try\n ion.mode = c(\"Positive\",\"Negative\"")
+      stop("You must include the ionization mode!")
     }
   }
   x <- rules$charge
