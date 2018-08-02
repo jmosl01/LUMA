@@ -122,9 +122,8 @@ calc_corrstat = function(Sample.df, Peak.list, get.mg, BLANK, ion.mode) {
 #' @importFrom utils read.table write.table str head
 #' @importFrom stats variable.names
 calc_minfrac = function(Sample.df, xset4, BLANK, Peak.list) {
-    peakSN <- peakTable(xset4, filebase = "SN_Livers_All classes", value = "sn")  #writes the SN peak table to file
-    SN.list <- read.table(file = "SN_Livers_All classes.tsv", sep = "\t", header = TRUE)  #reads the SN peak table
-    file.remove("SN_Livers_All classes.tsv")
+    peakSN <- peakTable(xset4, filebase=NULL, value="sn") #writes the SN peak table to file
+    SN.list <- data.frame(X = rownames(peakSN),peakSN)
 
     if (BLANK == TRUE) {
     } else {
@@ -135,10 +134,7 @@ calc_minfrac = function(Sample.df, xset4, BLANK, Peak.list) {
             samples[rows_loop] <- sexes[i]
         }
         sum.range.list <- SN.list[, samples %in% sexes]
-        t.list <- t(sum.range.list)  #transposes the SN list
-        write.table(t.list, file = "SN_transposed.csv", sep = ",", row.names = FALSE)
-        t.list <- read.table(file = "SN_transposed.csv", sep = ",", header = TRUE)  #reads the transposed SN peak table
-        file.remove("SN_transposed.csv")
+        t.list<-as.data.frame(t(sum.range.list)) #transposes the SN list
 
         ## Grabs the unique sample ID number for each sample, if present in the filename
         bin <- variable.names(t.list, full = TRUE)
