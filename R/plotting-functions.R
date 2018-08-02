@@ -9,7 +9,7 @@
 #' @param gen.plots a logical indicating whether to create plots for metabolite groups.  Default is FALSE
 #' @param ion.mode a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'
 #' @param anposGa xsannotate object with annotated isotopes and ion adducts and fragments
-#' @param file.base character string used to name graphical output
+#' @param file.base character string used to name graphical output.  Will be appended with '_CorrPlots.pdf'
 #' @param QC.id character identifier for pooled QC samples. Default is 'Pooled_QC'
 #' @return List of length 2.  1st element is a data frame with all columns as the original data frame with one additional column 'Correlation.stat'.  2nd element is a data frame specifically used to validate CAMERA results.
 #' @importFrom  CAMERA plotEICs
@@ -44,7 +44,6 @@ plot_metgroup = function(anposGa, Sample.df, Peak.list, center, BLANK, gen.plots
     validate.df <- Peak.list.pspec[order(Peak.list.pspec$metabolite_group), c("MS.ID", "mz", "rt", "Name", "Formula",
         "Annotated.adduct", "isotopes", "adduct", "mono_mass", "metabolite_group", "Correlation.stat")]
     Peak.list.new <- list(Peak.list.pspec, validate.df)
-    return(Peak.list.new)  #Use the second element in the list to validate CAMERA
     # ! Very important!! Needs a sample index for each new psspectrum; without it, it will only find files ! for
     # the first n spectra, where n is the original number of psspectra. ! Find out how CAMERA performs automatic
     # selection, then replicate here for the new psspectra ! For now, I am using the center sample for every
@@ -117,6 +116,7 @@ plot_metgroup = function(anposGa, Sample.df, Peak.list, center, BLANK, gen.plots
         dev.off()
     }
 
+    return(Peak.list.new)  #Use the second element in the list to validate CAMERA
 
 }
 

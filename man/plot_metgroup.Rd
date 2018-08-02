@@ -22,7 +22,7 @@ plot_metgroup(anposGa, Sample.df, Peak.list, center, BLANK, gen.plots,
 
 \item{ion.mode}{a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'}
 
-\item{file.base}{character string used to name graphical output}
+\item{file.base}{character string used to name graphical output.  Will be appended with '_CorrPlots'}
 
 \item{QC.id}{character identifier for pooled QC samples. Default is 'Pooled_QC'}
 }
