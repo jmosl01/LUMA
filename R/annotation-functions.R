@@ -8,17 +8,14 @@
 #' @param search.par a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.
 #' @param ion.mode a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'
 #' @param lib_db RSQLite connection
-#' @param mycols a character vector containing all the names to include in the search output
 #' @param ... parameters to pass to database functions
 #' @return data frame containing the original table with added columns 'Name','MS.ID','Formula','Annotated.adduct' and any additional info columns from Annotated.library
 #' @importFrom dplyr '%>%' select copy_to tbl between
 #' @importFrom glue collapse
 #' @importFrom utils str txtProgressBar
-search_IHL = function(Peak.list, Annotated.library, rules, search.par, ion.mode, lib_db, mycols, ...) {
+search_IHL = function(Peak.list, Annotated.library, rules, search.par, ion.mode, lib_db, ...) {
 
-  search.list <- get_features(myname,
-                              peak.db,
-                              asdf=TRUE)
+  search.list <- get_features(myname,peak.db,asdf=TRUE)
   IHL <- gen_adducts(Annotated.library,
                      rules,
                      ion.mode)
@@ -26,8 +23,7 @@ search_IHL = function(Peak.list, Annotated.library, rules, search.par, ion.mode,
             peak.db = lib_db,
             myname = "Annotated Library")
   new.search.list <- calc_ranges(search.list,
-                                 search.par,
-                                 mycols)
+                                 search.par)
   search.list <- new.search.list
   ## attempts to match all peaks against the In House Library
   ## Try to build a query using *apply functions to
@@ -84,7 +80,7 @@ search_IHL = function(Peak.list, Annotated.library, rules, search.par, ion.mode,
 #' @param search.par a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.
 #' @param mycols a character vector containing all the names to include in the search output
 #' @return NULL testing
-calc_ranges = function(search.list,search.par,mycols) {
+calc_ranges = function(search.list,search.par) {
   if(ncols(search.list) != 3) {
     ##error check
     stop("search.list must contain only three columns, \"EIC_ID\", \"mz\", and \"rt\"!")
@@ -98,8 +94,8 @@ calc_ranges = function(search.list,search.par,mycols) {
   mylist$mz.max <- search.list$mz + d.mz
   mylist$rt.min <- search.list$rt - d.rt
   mylist$rt.max <- search.list$rt + d.rt
-  n <- length(mycols) + 7
-  mylist[,8:n] <- NA
+  n <- length(mycols) + 5
+  mylist[,6:n] = NA
   colnames(mylist) <- c(colnames(search.list),"mz.min","mz.max","rt.min","rt.max",mycols)
   return(mylist)
 }
@@ -107,7 +103,7 @@ calc_ranges = function(search.list,search.par,mycols) {
 #' @title Generates adducts for in house library
 #'
 #' @description Generates a list of adducts for all metabolites in the supplied annotation library based on the rules input
-#' @param Annotated.library a data frame with annotated metabolite entries. Must contain columns called 'Name', 'Formula', Molecular.Weight' and 'RT..Min.'.  Can contain additional info as separate columns.
+#' @param @param Annotated.library a data frame with annotated metabolite entries. Must contain columns called 'Name', 'Formula', Molecular.Weight' and 'RT..Min.'.  Can contain additional info as separate columns.
 #' @param rules a data frame containing the rule list used by CAMERA to annotate ion adducts and fragments.  Must contain the columns 'name','nmol','charge','massdiff','oidscore','quasi','ips'.
 #' @param ion.mode a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'
 #' @return NULL testing
