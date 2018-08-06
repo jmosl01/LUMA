@@ -21,7 +21,7 @@ wrap_xcms = function(mzdatafiles, XCMS.par) {
 
     xset4 <- fillPeaks(xset3, BPPARAM = SnowParam(workers = snowWorkers(), type = "SOCK", stop.on.error = TRUE,
         progressbar = TRUE))
-    return(xset, xset4)
+    return(list(xset, xset4))
 }
 
 #' @title Wraps CAMERA
@@ -56,6 +56,6 @@ wrap_camera = function(xset4, CAMERA.par, ion.mode) {
     peakGa <- getPeaklist(object = anposGa)
     EIC_ID <- row.names(peakGa)
     peak_data <- cbind(EIC_ID, peakGa)
-    return(mz1setpos, anposGa)
+    return(list(mz1setpos, anposGa))
 }
 
