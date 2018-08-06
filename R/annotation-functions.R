@@ -10,7 +10,7 @@
 #' @param lib_db RSQLite connection
 #' @return data frame containing the original table with added columns 'Name','MS.ID','Formula','Annotated.adduct' and any additional info columns from Annotated.library
 #' @importFrom dplyr '%>%' select copy_to tbl between
-#' @importFrom glue collapse
+#' @importFrom glue glue_collapse
 #' @importFrom utils str txtProgressBar
 search_IHL = function(Peak.list, Annotated.library, rules, search.par, ion.mode, lib_db) {
   search.list <- Peak.list %>% select(EIC_ID, mz, rt) %>% dplyr::collect()
@@ -79,12 +79,12 @@ search_IHL = function(Peak.list, Annotated.library, rules, search.par, ion.mode,
         cat("\n\n\nFeature annotated for match number ", counter, ".\nMatch results below.\n\n\n", sep = "")
         str(test.list)
         search.list$MS.ID[i] = paste(bin[i], "Annotated", sep = "")
-        search.list$Name[i] = glue::collapse(test.list$Name, sep = ";", width = Inf, last = " or ")
-        search.list$Formula[i] = glue::collapse(unique(gsub(" ", "", test.list$Formula)), sep = ";", width = Inf,
+        search.list$Name[i] = glue_collapse(test.list$Name, sep = ";", width = Inf, last = " or ")
+        search.list$Formula[i] = glue_collapse(unique(gsub(" ", "", test.list$Formula)), sep = ";", width = Inf,
                                                 last = " or ")
-        search.list$Annotated.adduct[i] = glue::collapse(test.list$adduct, sep = ";", width = Inf, last = " or ")
-        search.list$Conf.Level[i] = glue::collapse(test.list$Levels, sep = ";", width = Inf, last = " or ")
-        search.list$FISh.Coverage[i] = glue::collapse(test.list$Fish.Coverage, sep = ";", width = Inf,
+        search.list$Annotated.adduct[i] = glue_collapse(test.list$adduct, sep = ";", width = Inf, last = " or ")
+        search.list$Conf.Level[i] = glue_collapse(test.list$Levels, sep = ";", width = Inf, last = " or ")
+        search.list$FISh.Coverage[i] = glue_collapse(test.list$Fish.Coverage, sep = ";", width = Inf,
                                                       last = " or ")
         counter = counter + 1
       }
