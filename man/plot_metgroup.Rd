@@ -5,7 +5,7 @@
 \title{Loop-based EIC Plotter}
 \usage{
 plot_metgroup(anposGa, Sample.df, Peak.list, center, BLANK, gen.plots,
-  ion.mode, file.base, QC.id)
+  ion.mode, file.base, QC.id, maxlabel)
 }
 \arguments{
 \item{anposGa}{xsannotate object with annotated isotopes and ion adducts and fragments}
@@ -25,6 +25,8 @@ plot_metgroup(anposGa, Sample.df, Peak.list, center, BLANK, gen.plots,
 \item{file.base}{character string used to name graphical output.  Will be appended with '_CorrPlots.pdf'}
 
 \item{QC.id}{character identifier for pooled QC samples. Default is 'Pooled_QC'}
+
+\item{maxlabel}{numeric How many m/z labels to print}
 }
 \value{
 List of length 2.  1st element is a data frame with all columns as the original data frame with one additional column 'Correlation.stat'.  2nd element is a data frame specifically used to validate CAMERA results.

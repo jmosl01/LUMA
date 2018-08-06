@@ -11,20 +11,24 @@
 #' @param anposGa xsannotate object with annotated isotopes and ion adducts and fragments
 #' @param file.base character string used to name graphical output.  Will be appended with '_CorrPlots.pdf'
 #' @param QC.id character identifier for pooled QC samples. Default is 'Pooled_QC'
+#' @param maxlabel numeric How many m/z labels to print
 #' @return List of length 2.  1st element is a data frame with all columns as the original data frame with one additional column 'Correlation.stat'.  2nd element is a data frame specifically used to validate CAMERA results.
 #' @importFrom  CAMERA plotEICs
 #' @importFrom CAMERA plotPsSpectrum
 #' @importFrom grDevices dev.off pdf rainbow
 #' @importFrom graphics layout par plot text
 #' @importFrom Hmisc rcorr
-#' @importFrom corrplot corrplot
-plot_metgroup = function(anposGa, Sample.df, Peak.list, center, BLANK, gen.plots, ion.mode, file.base, QC.id) {
+#' @importFrom corrplot corrplot corrMatOrder
+plot_metgroup = function(anposGa, Sample.df, Peak.list, center, BLANK, gen.plots, ion.mode, file.base, QC.id, maxlabel) {
     if (missing(BLANK))
         BLANK = FALSE
     if (missing(gen.plots))
         gen.plots = FALSE
     if (missing(QC.id))
         QC.id = "Pooled_QC"
+    if (missing(maxlabel))
+        maxlabel = 10
+
 
     # Change the psspectra list in the xsAnnotate object to be the unique list of metabolite_groups
     X <- split(Peak.list$EIC_ID, as.numeric(Peak.list$metabolite_group))
@@ -66,7 +70,6 @@ plot_metgroup = function(anposGa, Sample.df, Peak.list, center, BLANK, gen.plots
         i = 8  #For Debugging purposes
         for (i in 1:length(get.mg)) {
             layout(matrix(c(2, 1, 1, 4, 3, 3, 4, 3, 3), nrow = 3, ncol = 3, byrow = TRUE))
-            maxlabel = 10
             ## Code to plot Upper Correlation matrix
             my.df <- Peak.list[which(Peak.list$metabolite_group %in% get.mg[i]), ]
             if (nrow(my.df) == 1) {
@@ -80,9 +83,13 @@ plot_metgroup = function(anposGa, Sample.df, Peak.list, center, BLANK, gen.plots
                   text(x = 0.5, y = 0.5, paste("Dendrograms can't be plotted for two features.\n", "Use the correlation plot to the left to \n",
                     "Tell if two features are from the same metabolite"), cex = 1.6, col = "black")
                   res2 <- rcorr(test.mat)
+                  M <- res2$r
+                  P <- res2$P
                   # Insignificant correlations are leaved blank
-                  corrplot(res2$r, type = "upper", order = "hclust", p.mat = res2$P, sig.level = 0.01, insig = "blank",
-                    tl.col = rainbow(maxlabel))
+                  order.hc2 <- corrplot:::corrMatOrder(M, order = "hclust", hclust.method = "ward")
+                  new.col = rainbow(maxlabel)[order.hc2]
+                  corrplot(M, type = "upper", order = "hclust", p.mat = P, sig.level = 0.01, insig = "blank",
+                    tl.col = new.col)
 
                   # Plots the EICs and Pseudo-spectra for each metabolite group containing more than one feature in a for loop
                   EIC.plots <- plotEICs(new_anposGa, pspec = get.mg[i], maxlabel = maxlabel, sleep = 0)  ## Plot the EICs
@@ -102,10 +109,14 @@ plot_metgroup = function(anposGa, Sample.df, Peak.list, center, BLANK, gen.plots
                   labels(d)
                   plot(sim.by.hclust)
                   res2 <- rcorr(test.mat)
-                  # Insignificant correlation are crossed corrplot(res2$r, type='upper', order='hclust', p.mat = res2$P,
+                  M <- res2$r
+                  P <- res2$P
+                  # Insignificant correlation are crossed corrplot(M, type='upper', order='hclust', p.mat = P,
                   # sig.level = 0.01, insig = 'pch', pch = 3) Insignificant correlations are leaved blank
-                  corrplot(res2$r, type = "upper", order = "hclust", p.mat = res2$P, sig.level = 0.01, insig = "blank",
-                    tl.col = rainbow(maxlabel))
+                  order.hc2 <- corrplot:::corrMatOrder(M, order = "hclust", hclust.method = "ward")
+                  new.col = rainbow(maxlabel)[order.hc2]
+                  corrplot(M, type = "upper", order = "hclust", p.mat = P, sig.level = 0.01, insig = "blank",
+                    tl.col = new.col)
                   # Plots the EICs and Pseudo-spectra for each metabolite group containing more than one feature in a for loop
                   EIC.plots <- plotEICs(new_anposGa, pspec = get.mg[i], maxlabel = maxlabel, sleep = 0)  ## Plot the EICs
 
