@@ -356,7 +356,7 @@ combine_phenodata = function(Sample.df, Peak.list, Summed.list, search.par, BLAN
             # X=paste0(MS.ID, collapse = ';'))[2]
             new.pheno.list[, colnames(pheno.list)[i]] <- ddply(pheno.list, ~metabolite_group, function(x) mypaste(x,
                 i))[2]
-        } else if (is_whole(pheno.list[, i])) {
+        } else if (is.whole(pheno.list[, i])) {
             new.pheno.list[, colnames(pheno.list)[i]] <- ddply(pheno.list, ~metabolite_group, function(x) mypaste(x,
                 i))[2]
         }
@@ -391,14 +391,6 @@ combine_phenodata = function(Sample.df, Peak.list, Summed.list, search.par, BLAN
     return(Peak.list.summed)
 }
 
-#' @title Is whole number
-#'
-#' @description Tests if a vector or array contains only whole numbers
-#' @param a a vector or array to test
-#' @return logical
-is_whole <- function(a) {
-    (is.numeric(a) && floor(a) == a) || (is.complex(a) && floor(Re(a)) == Re(a) && floor(Im(a)) == Im(a))
-}
 
 #' @title Sum Features into Metabolites
 #'
@@ -439,4 +431,8 @@ sum_features = function(Sample.df, Peak.list, search.par, BLANK, ion.mode) {
     DT <- as.data.table(sum.range.list)  #Puts the summing columns in data table format
     sum.range.list <- DT[, lapply(.SD, sum), by = metabolite_group]  #sums features within each sample by metabolite group
     return(sum.range.list)
+}
+
+is.whole <- function(a) {
+  (is.numeric(a) && floor(a) == a) || (is.complex(a) && floor(Re(a)) == Re(a) && floor(Im(a)) == Im(a))
 }
