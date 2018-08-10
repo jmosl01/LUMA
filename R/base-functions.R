@@ -315,37 +315,22 @@ calc_minfrac = function(Sample.df, xset4, BLANK, Peak.list) {
 #' @importFrom utils str txtProgressBar setTxtProgressBar
 #' @importFrom stringr str_count
 combine_phenodata = function(Sample.df, Peak.list, Summed.list, search.par, BLANK, ion.mode) {
-    if (ion.mode == "Positive") {
-        cor.stat <- as.numeric(search.par[1, "Corr.stat.pos"])
-    } else {
-        if (ion.mode == "Negative") {
-            cor.stat <- as.numeric(search.par[1, "Corr.stat.neg"])
-        }
-    }
-    Peak.list.summed <- Peak.list[which(Peak.list$Correlation.stat >= cor.stat), ]
-    if (BLANK == FALSE) {
-        sexes <- unique(paste(Sample.df$Sex, "_", sep = ""))
-        paste(sexes, sep = "|")
-        res <- lapply(colnames(Peak.list.summed), function(ch) unique(grep(paste("Pooled_QC_", paste(strsplit(sexes,
-            "(?<=.[_])", perl = TRUE), collapse = "|"), sep = "|"), ch)))  #Flags all of the sample columns and the metabolite group data
-    } else {
-        if (ion.mode == "Positive" && BLANK == TRUE) {
-            res <- lapply(colnames(Peak.list.summed), function(ch) unique(grep("_Pos", ch, ignore.case = TRUE)))  #Flags all of the sample columns and the metabolite group data
-        } else {
-            if (ion.mode == "Negative" && BLANK == TRUE) {
-                res <- lapply(colnames(Peak.list.summed), function(ch) unique(grep("_Neg", ch, ignore.case = TRUE)))  #Flags all of the sample columns and the metabolite group data
-            }
-        }
-    }
+
+  mylist <- gen_res(ion.mode,search.par,Peak.list,Sample.df,BLANK)
+  Peaklist_corstat <- mylist[[1]]
+  res <- mylist[[2]]
+
     # Creates a data frame with only the pheno data columns combined for each metabolite group
-    pheno.list <- Peak.list.summed[sapply(res, function(x) length(x) < 1)]  #Extracts all of the sample columns for summing by metabolite group
+    pheno.list <- Peaklist_corstat[sapply(res, function(x) length(x) < 1)]  #Extracts all of the pheno columns for combining by metabolite group
+    pheno.list[,"metabolite_group"] <- Peaklist_corstat[,"metabolite_group"]
     pheno.list <- pheno.list %>% mutate_if(is.factor, as.character)
     attributes(pheno.list)
     str(pheno.list)
-    mylist <- sort(unique(Peak.list.summed$metabolite_group))
+    mylist <- sort(unique(Peaklist_corstat$metabolite_group))
     new.pheno.list <- as.data.frame(mylist)
     # i = 11 ##for debugging purposes
     total = length(colnames(pheno.list))
+    cat("Combining metadata for isotopes and adducts.\n\n\n")
     pb <- txtProgressBar(min = 0, max = total, style = 3)
     mypaste = function(pheno.list, i) {
         summarise(pheno.list, X = paste0(pheno.list[, i], collapse = ";"))
@@ -356,7 +341,7 @@ combine_phenodata = function(Sample.df, Peak.list, Summed.list, search.par, BLAN
             # X=paste0(MS.ID, collapse = ';'))[2]
             new.pheno.list[, colnames(pheno.list)[i]] <- ddply(pheno.list, ~metabolite_group, function(x) mypaste(x,
                 i))[2]
-        } else if (is.whole(pheno.list[, i])) {
+        } else if (!is.na(is.whole(pheno.list[, i]))) {
             new.pheno.list[, colnames(pheno.list)[i]] <- ddply(pheno.list, ~metabolite_group, function(x) mypaste(x,
                 i))[2]
         }
@@ -404,30 +389,10 @@ combine_phenodata = function(Sample.df, Peak.list, Summed.list, search.par, BLAN
 #' @return data table data frame sum.range.list with the first column containing metabolite group and the rest containing sample and QC columns
 #' @importFrom data.table as.data.table
 sum_features = function(Sample.df, Peak.list, search.par, BLANK, ion.mode) {
-    if (ion.mode == "Positive") {
-        cor.stat <- as.numeric(search.par[1, "Corr.stat.pos"])
-    } else {
-        if (ion.mode == "Negative") {
-            cor.stat <- as.numeric(search.par[1, "Corr.stat.neg"])
-        }
-    }
-    Peak.list.summed <- Peak.list[which(Peak.list$Correlation.stat >= cor.stat), ]
-    if (BLANK == FALSE) {
-        sexes <- unique(paste(Sample.df$Sex, "_", sep = ""))
-        paste(sexes, sep = "|")
-        res <- lapply(colnames(Peak.list.summed), function(ch) unique(grep(paste("Pooled_QC_", paste(strsplit(sexes,
-            "(?<=.[_])", perl = TRUE), collapse = "|"), "metabolite_group", sep = "|"), ch)))  #Flags all of the sample columns and the metabolite group data
-    } else {
-        if (ion.mode == "Positive" && BLANK == TRUE) {
-            res <- lapply(colnames(Peak.list.summed), function(ch) unique(grep("_Pos|metabolite_group", ch, ignore.case = TRUE)))  #Flags all of the sample columns and the metabolite group data
-        } else {
-            if (ion.mode == "Negative" && BLANK == TRUE) {
-                res <- lapply(colnames(Peak.list.summed), function(ch) unique(grep("_Neg|metabolite_group", ch,
-                  ignore.case = TRUE)))  #Flags all of the sample columns and the metabolite group data
-            }
-        }
-    }
-    sum.range.list <- Peak.list.summed[sapply(res, function(x) length(x) > 0)]  #Extracts all of the sample columns for summing by metabolite group
+    mylist <- gen_res(ion.mode,search.par,Peak.list,Sample.df,BLANK)
+    Peaklist_corstat <- mylist[[1]]
+    res <- mylist[[2]]
+    sum.range.list <- Peaklist_corstat[sapply(res, function(x) length(x) > 0)]  #Extracts all of the sample columns for summing by metabolite group
     DT <- as.data.table(sum.range.list)  #Puts the summing columns in data table format
     sum.range.list <- DT[, lapply(.SD, sum), by = metabolite_group]  #sums features within each sample by metabolite group
     return(sum.range.list)
@@ -435,4 +400,31 @@ sum_features = function(Sample.df, Peak.list, search.par, BLANK, ion.mode) {
 
 is.whole <- function(a) {
   (is.numeric(a) && floor(a) == a) || (is.complex(a) && floor(Re(a)) == Re(a) && floor(Im(a)) == Im(a))
+}
+
+gen_res <- function(ion.mode,search.par,Peak.list,Sample.df,BLANK) {
+  if (ion.mode == "Positive") {
+    cor.stat <- as.numeric(search.par[1, "Corr.stat.pos"])
+  } else {
+    if (ion.mode == "Negative") {
+      cor.stat <- as.numeric(search.par[1, "Corr.stat.neg"])
+    }
+  }
+  Peaklist_corstat <- Peak.list[which(Peak.list$Correlation.stat >= cor.stat), ]
+  if (BLANK == FALSE) {
+    sexes <- unique(paste(Sample.df$Sex, "_", sep = ""))
+    paste(sexes, sep = "|")
+    res <- lapply(colnames(Peaklist_corstat), function(ch) unique(grep(paste("Pooled_QC_", paste(strsplit(sexes,
+                                                                                                          "(?<=.[_])", perl = TRUE), collapse = "|"), "metabolite_group", sep = "|"), ch)))  #Flags all of the sample columns and the metabolite group data
+  } else {
+    if (ion.mode == "Positive" && BLANK == TRUE) {
+      res <- lapply(colnames(Peaklist_corstat), function(ch) unique(grep("_Pos|metabolite_group", ch, ignore.case = TRUE)))  #Flags all of the sample columns and the metabolite group data
+    } else {
+      if (ion.mode == "Negative" && BLANK == TRUE) {
+        res <- lapply(colnames(Peaklist_corstat), function(ch) unique(grep("_Neg|metabolite_group", ch,
+                                                                           ignore.case = TRUE)))  #Flags all of the sample columns and the metabolite group data
+      }
+    }
+  }
+  return(list(Peaklist_corstat,res))
 }
