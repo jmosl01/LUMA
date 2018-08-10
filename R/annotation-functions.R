@@ -60,11 +60,12 @@ search_IHL = function(Peak.list, Annotated.library, rules, search.par, ion.mode,
   search.list$FISh.Coverage = NA
 
   ## attempts to match all peaks against the In House Library ! Try to build a query using *apply functions to
-  ## search all of the search list at once; should speed ! things up considerably i = 27 ##Used for debugging
-  ## purposes
+  ## search all of the search list at once; should speed ! things up considerably
+  ## i = 27 Used for debugging purposes
   total = nrow(search.list)
+  cat("Annotating features against the In House Library.\n\n\n")
   pb = txtProgressBar(title = "Annotating Features.", min = 0, max = total, width = NA)
-  counter = 1
+  cnt = 1
   for (i in 1:nrow(search.list)) {
     mz.min = search.list$mz.min[i]
     mz.max = search.list$mz.max[i]
@@ -75,9 +76,10 @@ search_IHL = function(Peak.list, Annotated.library, rules, search.par, ion.mode,
     if (nrow(test.list) == 0) {
       search.list$MS.ID[i] = paste(bin[i], "Unidentified", sep = "")
     } else {
-      if (nrow(test.list) >= 1) {
-        cat("\n\n\nFeature annotated for match number ", counter, ".\nMatch results below.\n\n\n", sep = "")
-        str(test.list)
+      if (nrow(test.list) >= 1) { ##Matches all features against the In House Library
+        #Prints the results of the match to console
+        # cat("\n\n\nFeature annotated for match number ", cnt, ".\nMatch results below.\n\n\n", sep = "")
+        # str(test.list)
         search.list$MS.ID[i] = paste(bin[i], "Annotated", sep = "")
         search.list$Name[i] = glue_collapse(test.list$Name, sep = ";", width = Inf, last = " or ")
         search.list$Formula[i] = glue_collapse(unique(gsub(" ", "", test.list$Formula)), sep = ";", width = Inf,
@@ -86,11 +88,11 @@ search_IHL = function(Peak.list, Annotated.library, rules, search.par, ion.mode,
         search.list$Conf.Level[i] = glue_collapse(test.list$Levels, sep = ";", width = Inf, last = " or ")
         search.list$FISh.Coverage[i] = glue_collapse(test.list$Fish.Coverage, sep = ";", width = Inf,
                                                       last = " or ")
-        counter = counter + 1
+        cnt = cnt + 1
       }
     }
 
-    setTxtProgressBar(pb, i, title = paste("Annotating Features: ", round(i/total * 100, 0), "% done", sep = ""))
+    setTxtProgressBar(pb, i)
   }
   close(pb)
   named.peak.list <- search.list[, 8:ncol(search.list)]

@@ -48,7 +48,8 @@ calc_corrstat = function(Sample.df, Peak.list, get.mg, BLANK, ion.mode) {
     corr.df
     total = length(get.mg)
     # i = 17 For debugging purposes
-    pb = txtProgressBar(title = "Generating Correlation Matrices.", min = 0, max = total, width = NA)
+    cat("Generating Correlation Matrices.\n\n\n")
+    pb = txtProgressBar(min = 0, max = total, width = NA)
     for (i in 1:length(corr.group)) {
         my.df <- Peak.list[which(Peak.list$metabolite_group %in% get.mg[i]), ]
         colnames(my.df)
@@ -101,8 +102,7 @@ calc_corrstat = function(Sample.df, Peak.list, get.mg, BLANK, ion.mode) {
 
             }
         }
-        setTxtProgressBar(pb, i, title = paste("Generating Correlation Matrices: ", round(i/total * 100, 0), "% done",
-            sep = ""))
+        setTxtProgressBar(pb, i)
     }
     Peak.list.pspec[, "Correlation.stat"] <- corr.df
     close(pb)
