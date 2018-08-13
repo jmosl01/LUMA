@@ -159,7 +159,8 @@ calc_minfrac = function(Sample.df, xset4, BLANK, Peak.list) {
 
             # Create matrix to contain all of the minfrac values for each group from each list in sn.list
             min.frac.fulltable <- matrix(nrow = length(bin), ncol = sum(sapply(sn.list, function(x) length(x))))
-            # j = 1 This and following line used for debugging purposes k = 1
+            # j = 1 This and following line used for debugging purposes
+            k = 1
             for (j in 1:length(sn.list)) {
                 na_count <- sapply(as.data.frame(sn.list[j]), function(x, y) sum(length(which(is.na(x)))), y = group)  #counts the number of na values per feature across each group
                 na_count <- data.frame(na_count)  #puts the list in a data frame
