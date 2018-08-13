@@ -64,7 +64,7 @@ search_IHL = function(Peak.list, Annotated.library, rules, search.par, ion.mode,
   ## i = 27 Used for debugging purposes
   total = nrow(search.list)
   cat("Annotating features against the In House Library.\n\n\n")
-  pb = txtProgressBar(title = "Annotating Features.", min = 0, max = total, width = NA)
+  pb = txtProgressBar(min = 0, max = total, style = 3)
   cnt = 1
   for (i in 1:nrow(search.list)) {
     mz.min = search.list$mz.min[i]

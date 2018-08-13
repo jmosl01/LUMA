@@ -49,7 +49,7 @@ calc_corrstat = function(Sample.df, Peak.list, get.mg, BLANK, ion.mode) {
     total = length(get.mg)
     # i = 17 For debugging purposes
     cat("Generating Correlation Matrices.\n\n\n")
-    pb = txtProgressBar(min = 0, max = total, width = NA)
+    pb = txtProgressBar(min = 0, max = total, style = 3)
     for (i in 1:length(corr.group)) {
         my.df <- Peak.list[which(Peak.list$metabolite_group %in% get.mg[i]), ]
         colnames(my.df)
