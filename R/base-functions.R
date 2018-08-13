@@ -144,12 +144,17 @@ calc_minfrac = function(Sample.df, xset4, BLANK, Peak.list) {
         colnames(sum.range.list)
 
         ## Creates a new column for grouping by class based on user input
-        groups <- paste(Sample.df$Sex, Sample.df$Class, sep = "_")
+        groups <- paste(Sample.df$Sex, Sample.df$Class, sep = ";")
+        groups <- strsplit(groups, split = ";")
+        names(groups) <- paste(Sample.df$Sex, Sample.df$Class, sep = "_")
         group <- vector(mode = "character", length = length(colnames(sum.range.list)))
         for (i in 1:length(groups)) {
-            rows_loop <- grep(groups[i], colnames(sum.range.list))
-            group[rows_loop] <- groups[i]
+            rows_loop <- intersect(grep(groups[[i]][1],colnames(sum.range.list)),
+                                   grep(groups[[i]][2],colnames(sum.range.list))
+                                   )
+            group[rows_loop] <- names(groups)[i]
         }
+        group <- unlist(group)
         class.n <- unique(Sample.df$n)
 
         if (length(class.n) > 1) {
@@ -165,9 +170,12 @@ calc_minfrac = function(Sample.df, xset4, BLANK, Peak.list) {
                 na_count <- sapply(as.data.frame(sn.list[j]), function(x, y) sum(length(which(is.na(x)))), y = group)  #counts the number of na values per feature across each group
                 na_count <- data.frame(na_count)  #puts the list in a data frame
                 for (i in 1:length(groups)) {
-                  rows_loop <- grep(groups[i], rownames(na_count))
-                  group[rows_loop] <- groups[i]
+                  rows_loop <- intersect(grep(groups[[i]][1], rownames(na_count)),
+                                         grep(groups[[i]][2], rownames(na_count))
+                                         )
+                  group[rows_loop] <- names(groups)[i]
                 }
+                group <- unlist(group)
                 na_count <- cbind(group, na_count)  #combines the grouping variable with the na count values
                 na.count.list <- split(na_count, as.factor(group))  #Splits the data frame into lists of data frames by the grouping variable
                 str(na.count.list)
@@ -176,9 +184,12 @@ calc_minfrac = function(Sample.df, xset4, BLANK, Peak.list) {
                 all_count <- data.frame(all_count)  #puts the list in a data frame
                 str(all_count)
                 for (i in 1:length(groups)) {
-                  rows_loop <- grep(groups[i], rownames(all_count))
-                  group[rows_loop] <- groups[i]
+                  rows_loop <- intersect(grep(groups[[i]][1], rownames(all_count)),
+                                         grep(groups[[i]][2], rownames(all_count))
+                                         )
+                  group[rows_loop] <- names(groups)[i]
                 }
+                group <- unlist(group)
                 all_count <- cbind(group, all_count)  #combines the grouping variable with the na count values
                 all.count.list <- split(all_count, as.factor(group))  #Splits the data frame into lists of data frames by the grouping variable
                 str(all.count.list)
@@ -233,17 +244,23 @@ calc_minfrac = function(Sample.df, xset4, BLANK, Peak.list) {
                 # group<-unlist(strsplit(gsub('(([MF])_([RN])S_T([0482]))|.', '\\1', rownames(na_count)), '\\s+'))
                 # #generates a character vector of grouping variables for each na count value
                 for (i in 1:length(groups)) {
-                  rows_loop <- grep(groups[i], rownames(na_count))
-                  group[rows_loop] <- groups[i]
+                  rows_loop <- intersect(grep(groups[[i]][1], rownames(na_count)),
+                                         grep(groups[[i]][2], rownames(na_count))
+                                         )
+                  group[rows_loop] <- names(groups)[i]
                 }
+                group <- unlist(group)
                 na_count <- cbind(group, na_count)  #combines the grouping variable with the na count values
                 na.count.list <- split(na_count, as.factor(group))  #Splits the data frame into lists of data frames by the grouping variable
                 all_count <- sapply(as.data.frame(sn.list), function(x, y) length(x), y = group)  #counts the number of na values per feature across each group
                 all_count <- data.frame(all_count)  #puts the list in a data frame
                 for (i in 1:length(groups)) {
-                  rows_loop <- grep(groups[i], rownames(all_count))
-                  group[rows_loop] <- groups[i]
+                  rows_loop <- intersect(grep(groups[[i]][1], rownames(all_count)),
+                                         grep(groups[[i]][2], rownames(all_count))
+                                         )
+                  group[rows_loop] <- names(groups)[i]
                 }
+                group <- unlist(group)
                 all_count <- cbind(group, all_count)  #combines the grouping variable with the na count values
                 all.count.list <- split(all_count, as.factor(group))  #Splits the data frame into lists of data frames by the grouping variable
 
