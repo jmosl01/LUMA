@@ -1,7 +1,7 @@
 Package: LUMA
 Type: Package
 Title: LCMS-Based Untargeted Metabolomics Assistant
-Version: 0.1.2.9104
+Version: 0.1.2.9105
 Authors@R: person("Jonathan","Mosley",comment = c(ORCID = "0000-0002-9300-6924"), 
                email = "mosley.jonathan@epa.gov", role = c("aut","cre"))
 Description: Performs quality control and feature reduction steps on the output of 'XCMS'

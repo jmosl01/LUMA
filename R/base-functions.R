@@ -126,6 +126,7 @@ calc_minfrac = function(Sample.df, xset4, BLANK, Peak.list) {
     SN.list <- data.frame(X = rownames(peakSN),peakSN)
 
     if (BLANK == TRUE) {
+      MinFrac.table <- NA
     } else {
         sexes <- unique(paste(Sample.df$Sex, "_", sep = ""))
         samples <- vector(mode = "character", length = length(colnames(SN.list)))
