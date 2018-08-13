@@ -432,16 +432,20 @@ gen_res <- function(ion.mode,search.par,Peak.list,Sample.df,BLANK) {
   Peaklist_corstat <- Peak.list[which(Peak.list$Correlation.stat >= cor.stat), ]
   if (BLANK == FALSE) {
     sexes <- unique(paste(Sample.df$Sex, "_", sep = ""))
-    paste(sexes, sep = "|")
-    res <- lapply(colnames(Peaklist_corstat), function(ch) unique(grep(paste("Pooled_QC_", paste(strsplit(sexes,
-                                                                                                          "(?<=.[_])", perl = TRUE), collapse = "|"), "metabolite_group", sep = "|"), ch)))  #Flags all of the sample columns and the metabolite group data
+    #Flags all of the sample columns and the metabolite group data
+    res <- lapply(colnames(Peaklist_corstat),
+                  function(ch) unique(grep(paste("Pooled_QC_", paste(strsplit(sexes,"(?<=.[_]$)", perl = TRUE), collapse = "|"),
+                                                 "metabolite_group", sep = "|"), ch)))
   } else {
     if (ion.mode == "Positive" && BLANK == TRUE) {
-      res <- lapply(colnames(Peaklist_corstat), function(ch) unique(grep("_Pos|metabolite_group", ch, ignore.case = TRUE)))  #Flags all of the sample columns and the metabolite group data
+      #Flags all of the sample columns and the metabolite group data
+      res <- lapply(colnames(Peaklist_corstat),
+                    function(ch) unique(grep("_Pos|metabolite_group", ch, ignore.case = TRUE)))
     } else {
       if (ion.mode == "Negative" && BLANK == TRUE) {
-        res <- lapply(colnames(Peaklist_corstat), function(ch) unique(grep("_Neg|metabolite_group", ch,
-                                                                           ignore.case = TRUE)))  #Flags all of the sample columns and the metabolite group data
+        #Flags all of the sample columns and the metabolite group data
+        res <- lapply(colnames(Peaklist_corstat),
+                      function(ch) unique(grep("_Neg|metabolite_group", ch, ignore.case = TRUE)))
       }
     }
   }
