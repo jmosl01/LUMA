@@ -15,6 +15,6 @@ if(getRversion() >= "2.15.1")
 
     #database variables
     "db.list","db.dir","lib.db","new.db","peak.db",
-    #Possible FindExogenousandSolventPeak variables
-    "ion.modes","pos_db","neg_db","blanks_pos_db","blanks_neg_db","lib_db","peak_db")
+    #Possible Exogenous_and_Solvent_Peak-Algorithm variables
+    "ion.modes","pos_db","neg_db","blanks_pos_db","blanks_neg_db","lib_db","peak_db","mono_mass","meanRT")
   )
