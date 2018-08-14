@@ -10,7 +10,7 @@ combine_phenodata(Sample.df, Peak.list, Summed.list, search.par, BLANK,
 \arguments{
 \item{Sample.df}{a data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns 'Sex','Class','n','Endogenous'.}
 
-\item{Peak.list}{data frame. Must have Correlation.stat column.  Should contain output columns from XCMS and CAMERA, and additional columns from IHL.search, Calc.MinFrac, CAMERA.parser and EIC.plotter functions.}
+\item{Peak.list}{data frame. Must have Correlation.stat, metabolite_group, and mono_mass columns.  Should contain output columns from XCMS and CAMERA, and additional columns from IHL.search, Calc.MinFrac, CAMERA.parser and EIC.plotter functions.}
 
 \item{Summed.list}{data frame containing metabolite group as first column and the rest summed intensities for each sample}
 

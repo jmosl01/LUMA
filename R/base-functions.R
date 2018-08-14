@@ -323,7 +323,7 @@ calc_minfrac = function(Sample.df, xset4, BLANK, Peak.list) {
 #' @export
 #' @description Combine phenotype data for each metabolite group with summed intensity values
 #' @param Sample.df a data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns 'Sex','Class','n','Endogenous'.
-#' @param Peak.list data frame. Must have Correlation.stat column.  Should contain output columns from XCMS and CAMERA, and additional columns from IHL.search, Calc.MinFrac, CAMERA.parser and EIC.plotter functions.
+#' @param Peak.list data frame. Must have Correlation.stat, metabolite_group, and mono_mass columns.  Should contain output columns from XCMS and CAMERA, and additional columns from IHL.search, Calc.MinFrac, CAMERA.parser and EIC.plotter functions.
 #' @param Summed.list data frame containing metabolite group as first column and the rest summed intensities for each sample
 #' @param search.par a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.
 #' @param BLANK a logical indicating whether blanks are being evaluated
@@ -385,6 +385,8 @@ combine_phenodata = function(Sample.df, Peak.list, Summed.list, search.par, BLAN
     colnames(Peak.list.summed)
     temp <- as.character(Peak.list.summed$MS.ID)
     str(temp)
+
+    #Drop Singletons
     no.features <- str_count(temp, ";") + 1
     drop.singletons = !search.par[1, "keep.singletons"]
     if (drop.singletons & BLANK == FALSE) {
@@ -392,6 +394,13 @@ combine_phenodata = function(Sample.df, Peak.list, Summed.list, search.par, BLAN
         temp <- Peak.list.summed[drops, ]
         Peak.list.summed <- Peak.list.summed[-drops, ]
     }
+
+    #Combine monomolecular mass values into a single value
+    myMonoMass <- Peak.list.summed$mono_mass
+    allMonoMass <- strsplit(myMonoMass, split = ";")
+    allMonoMass <- lapply(allMonoMass, function(x) as.numeric(x))
+    meanMonoMass <- lapply(allMonoMass, function(x) mean(x))
+    Peak.list.summed$mono_mass <- unlist(meanMonoMass)
     return(Peak.list.summed)
 }
 
