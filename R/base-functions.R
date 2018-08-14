@@ -401,6 +401,14 @@ combine_phenodata = function(Sample.df, Peak.list, Summed.list, search.par, BLAN
     allMonoMass <- lapply(allMonoMass, function(x) as.numeric(x))
     meanMonoMass <- lapply(allMonoMass, function(x) mean(x))
     Peak.list.summed$mono_mass <- unlist(meanMonoMass)
+
+    #Combine rt values into a single value
+    myRT <- Peak.list.summed$rt
+    allRT <- strsplit(myRT, split = ";")
+    allRT <- lapply(allRT, function(x) as.numeric(x))
+    meanRT <- lapply(allRT, function(x) mean(x))
+    Peak.list.summed$meanRT <- unlist(meanRT)
+
     return(Peak.list.summed)
 }
 
