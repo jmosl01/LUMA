@@ -5,7 +5,7 @@
 \title{Loop-based EIC Plotter for Ion Mode Duplicates}
 \usage{
 plot_ionduplicate(anposGa, xpos.cor, annegGa, xneg.cor, Peak.list,
-  gen.plots, file.base, QC.id, ...)
+  gen.plots, file.base, QC.id, mytable, ...)
 }
 \arguments{
 \item{anposGa}{xsannotate object with annotated isotopes and ion adducts and fragments for positive mode.}
@@ -23,6 +23,8 @@ plot_ionduplicate(anposGa, xpos.cor, annegGa, xneg.cor, Peak.list,
 \item{file.base}{character string used to name graphical output. Default is 'EIC_plots'}
 
 \item{QC.id}{character identifier for pooled QC samples. Default is 'Pooled_QC'}
+
+\item{mytable}{character name of table in database to return}
 
 \item{...}{parameters to be passed to database functions}
 }

@@ -3,6 +3,7 @@
 \name{LUMA}
 \alias{LUMA_getPeaklist}
 \alias{LUMA_order}
+\alias{convert_EIC}
 \alias{gen_res}
 \alias{is.whole}
 \title{LCMS Untargeted Metabolomics Assistant}

@@ -143,11 +143,12 @@ plot_metgroup = function(anposGa, Sample.df, Peak.list, center, BLANK, gen.plots
 #' @param xneg.cor xcmsSet object shoud have grouping, retention time correction and fillPeaks applied.  Default is to look for this in annegGa
 #' @param file.base character string used to name graphical output. Default is 'EIC_plots'
 #' @param QC.id character identifier for pooled QC samples. Default is 'Pooled_QC'
+#' @param mytable character name of table in database to return
 #' @param ... parameters to be passed to database functions
 #' @return NULL testing
 #' @importFrom xcms getEIC
 #' @importFrom graphics abline title
-plot_ionduplicate = function(anposGa, xpos.cor, annegGa, xneg.cor, Peak.list, gen.plots, file.base, QC.id, ...) {
+plot_ionduplicate = function(anposGa, xpos.cor, annegGa, xneg.cor, Peak.list, gen.plots, file.base, QC.id, mytable, ...) {
     if (missing(Peak.list))
         Peak.list = NULL
     if (missing(gen.plots))
@@ -158,18 +159,20 @@ plot_ionduplicate = function(anposGa, xpos.cor, annegGa, xneg.cor, Peak.list, ge
         xneg.cor = annegGa@xcmsSet
     if (missing(QC.id))
         QC.id = "Pooled_QC"
-    if (missing(myname))
-        myname = NULL
-    if (missing(peak.db))
-        peak.db = NULL
+    if (missing(mytable))
+        mytable = NULL
     if (missing(file.base))
         file.base = "EIC_plots"
 
     if (is.null(Peak.list)) {
-        if (is.null(myname) || is.null(peak.db)) {
-            stop("Must specify database parameters if not providing Peak.list!", call. = FALSE)
+        if (is.null(Peak.list) && is.null(mytable)) {
+            stop("Must specify database parameters `myname` and `peak.db` if not providing Peak.list!", call. = FALSE)
+        } else {
+          # Read Peak.list from database
+          Peak.list <- read_tbl(mytable, peak.db)
         }
     }
+
 
     # Read the file names for study samples and pooled QCs
     neg.filenames <- row.names(xneg.cor@phenoData)
@@ -177,9 +180,6 @@ plot_ionduplicate = function(anposGa, xpos.cor, annegGa, xneg.cor, Peak.list, ge
 
     pos.filenames <- row.names(xpos.cor@phenoData)
     pos.QC.files <- pos.filenames[grep(QC.id, pos.filenames)]
-
-    # Read Peak.list from database
-    Peak.list <- read_tbl(myname, peak.db)
 
     # Get the unique list of Duplicate IDs
     x <- sapply(Peak.list$Duplicate_ID, function(x) sum(as.numeric(Peak.list$Duplicate_ID == x)))
@@ -210,15 +210,16 @@ plot_ionduplicate = function(anposGa, xpos.cor, annegGa, xneg.cor, Peak.list, ge
             QC.list <- EIC.table[sapply(res, function(x) length(x) > 0)]
 
             EIC.list <- split(EIC.table, as.factor(EIC.table$`Ion Mode`))
-            EIC.pos <- EIC.list$Pos$EIC_ID
-            EIC.neg <- EIC.list$Neg$EIC_ID
+            EIC.pos <- convert_EIC(EIC.list$Pos$EIC_ID)
+            EIC.neg <- convert_EIC(EIC.list$Neg$EIC_ID)
+
             Name.pos <- as.character(EIC.list$Pos$Name)
             Name.neg <- as.character(EIC.list$Neg$Name)
 
             Index.Pos <- which(Dup.ID.Pos %in% i)
             Index.Neg <- which(Dup.ID.Neg %in% i)
 
-            par(mar = c(5 + 2, 4, 4, 2) + 0.1)
+            par(mar = c(2, 4, 4, 2) + 0.1)
 
             if (length(EIC.list) == 1) {
 
@@ -240,10 +241,28 @@ plot_ionduplicate = function(anposGa, xpos.cor, annegGa, xneg.cor, Peak.list, ge
                   "lawngreen", "lightseagreen", "purple", "skyblue1", "darkgreen", "darkgoldenrod1", "seashell4",
                   "sienna3", "salmon4", "hotpink")
                 Adduct.No <- length(EIC.pos) + length(EIC.neg)
-                layout(matrix(c(1:Adduct.No), nrow = Adduct.No, ncol = 1, byrow = TRUE))
+                nrow <- max(length(EIC.pos),length(EIC.neg))
+                if(length(EIC.pos) == length(EIC.neg)) {
+                  mymatrix <- matrix(c(1:Adduct.No), nrow = nrow, ncol = 2, byrow = TRUE)
+                } else {
+                  p = length(EIC.pos)
+                  n = length(EIC.neg)
+                  if(p<n) {
+                    new.p <- c(1:p,rep(0,times = n-p))
+                    new.n <- c(max(p)+1:n)
+                    mydim <- c(new.p,new.n)
+                  } else {
+                    new.p <- c(1:p)
+                    new.n <- c(max(p)+1:n,rep(0,times = p-n))
+                    mydim <- c(new.p,new.n)
+                  }
+                  mymatrix <- matrix(mydim, nrow = nrow, ncol = 2, byrow = FALSE)
+                }
+                layout(mymatrix)
+
                 for (j in 1:length(EIC.pos)) {
-                  rt <- EIC.table[which(EIC.table$EIC_ID %in% EIC.pos[j]), "rt"] * 60
-                  QCmax <- max(QC.list[which(EIC.table$EIC_ID %in% EIC.pos[j]), ])
+                  rt <- EIC.table[which(EIC.table$`Ion Mode` %in% "Pos"), "meanRT"] * 60
+                  QCmax <- max(QC.list[which(EIC.table$`Ion Mode` %in% "Pos"), ])
                   plot(pos[[j]], col = color.palette, rtrange = cbind(rt.min, rt.max))
                   title(sub = paste(paste("Positive #", Index.Pos[j], ", EIC_ID:", EIC.pos[j]), paste(strwrap(Name.pos[j],
                     width = 0.9 * getOption("width")), collapse = "\n"), sep = "\n"), cex.sub = 1, col.sub = "limegreen",
@@ -251,15 +270,16 @@ plot_ionduplicate = function(anposGa, xpos.cor, annegGa, xneg.cor, Peak.list, ge
                   abline(v = rt, col = "blue", lty = 2)
                 }
                 for (j in 1:length(EIC.neg)) {
-                  rt <- EIC.table[which(EIC.table$EIC_ID %in% EIC.neg[j]), "rt"] * 60
-                  QCmax <- max(QC.list[which(EIC.table$EIC_ID %in% EIC.neg[j]), ])
+                  rt <- EIC.table[which(EIC.table$`Ion Mode` %in% "Neg"), "meanRT"] * 60
+                  QCmax <- max(QC.list[which(EIC.table$`Ion Mode` %in% "Neg"), ])
                   plot(neg[[j]], col = color.palette, rtrange = cbind(rt.min, rt.max))
                   title(sub = paste(paste("Negative #", Index.Neg[j], ", EIC_ID:", EIC.neg[j]), paste(strwrap(Name.neg[j],
                     width = 0.9 * getOption("width")), collapse = "\n"), sep = "\n"), cex.sub = 1, col.sub = "red",
                     line = 6)
                   abline(v = rt, col = "blue", lty = 2)
                 }
-            } else if (length(EIC.pos) == 0) {
+            } else
+              if (length(EIC.pos) == 0) {
                 ## has duplicate in negative mode ONLY
                 neg = list()
                 for (j in 1:length(EIC.neg)) {
@@ -274,8 +294,8 @@ plot_ionduplicate = function(anposGa, xpos.cor, annegGa, xneg.cor, Peak.list, ge
                 Adduct.No <- length(EIC.pos) + length(EIC.neg)
                 layout(matrix(c(1:Adduct.No), nrow = Adduct.No, ncol = 1, byrow = TRUE))
                 for (j in 1:length(EIC.neg)) {
-                  rt <- EIC.table[which(EIC.table$EIC_ID %in% EIC.neg[j]), "rt"] * 60
-                  QCmax <- max(QC.list[which(EIC.table$EIC_ID %in% EIC.neg[j]), ])
+                  rt <- EIC.table[which(EIC.table$`Ion Mode` %in% "Neg"), "meanRT"] * 60
+                  QCmax <- max(QC.list[which(EIC.table$`Ion Mode` %in% "Neg"), ])
                   plot(neg[[j]], col = color.palette, rtrange = cbind(rt.min, rt.max))
                   title(sub = paste(paste("Negative #", Index.Neg[j], ", EIC_ID:", EIC.neg[j]), paste(strwrap(Name.neg[j],
                     width = 0.9 * getOption("width")), collapse = "\n"), sep = "\n"), cex.sub = 1, col.sub = "red",
@@ -297,8 +317,8 @@ plot_ionduplicate = function(anposGa, xpos.cor, annegGa, xneg.cor, Peak.list, ge
                 Adduct.No <- length(EIC.pos) + length(EIC.neg)
                 layout(matrix(c(1:Adduct.No), nrow = Adduct.No, ncol = 1, byrow = TRUE))
                 for (j in 1:length(EIC.pos)) {
-                  rt <- EIC.table[which(EIC.table$EIC_ID %in% EIC.pos[j]), "rt"] * 60
-                  QCmax <- max(QC.list[which(EIC.table$EIC_ID %in% EIC.pos[j]), ])
+                  rt <- EIC.table[which(EIC.table$`Ion Mode` %in% "Pos"), "meanRT"] * 60
+                  QCmax <- max(QC.list[which(EIC.table$`Ion Mode` %in% "Pos"), ])
                   plot(pos[[j]], col = color.palette, rtrange = cbind(rt.min, rt.max))
                   title(sub = paste(paste("Positive #", Index.Pos[j], ", EIC_ID:", EIC.pos[j]), paste(strwrap(Name.pos[j],
                     width = 0.9 * getOption("width")), collapse = "\n"), sep = "\n"), cex.sub = 1, col.sub = "limegreen",
@@ -318,4 +338,11 @@ plot_ionduplicate = function(anposGa, xpos.cor, annegGa, xneg.cor, Peak.list, ge
 
 LUMA_order = function(object){
 return(object)
+}
+
+convert_EIC = function(EIC) {
+  EIC_split <- strsplit(EIC, split = ";")
+  EIC_num <- lapply(EIC_split, function(x) as.numeric(x))
+  EICs <- unlist(EIC_num)
+  return(EICs)
 }
