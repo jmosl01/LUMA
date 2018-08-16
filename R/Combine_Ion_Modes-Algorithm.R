@@ -6,12 +6,13 @@
 #' @param search.par a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.
 #' @param ion.id character vector specifying identifier in filename designating positive or negative ionization mode or both.  Positive identifier must come first. Default is c('Pos','Neg')
 #' @param QC.id character vector specifying identifier in filename designating a Pooled QC sample.  Only the first value will be used.  Default is 'Pooled_QC_'
-#' @param tbl.id character vector of table names to draw from databases.  First value should be table name from positive ionization peak database, second should be table name from negative ionization peak database. Default is NULL
+#' @param tbl.id character vector of table names to draw from databases.  First value should be table containing compounds from positive ionization, second should be table containing compounds from negative ionization. Default is NULL
+#' @param method which method to use.  Can be monoMass or mz
 #' @param ... Arguments to pass parameters to database functions
-#' @return data frama containing the intensity matrix for the peaklist with Duplicate IDs
+#' @return data frame containing the intensity matrix for the peaklist with Duplicate IDs
 #' @importFrom igraph clusters graph.adjacency
 #' @importFrom stats ave
-combine_ion_modes = function(Peak.list, search.par, ion.id, QC.id, tbl.id, ...) {
+combine_ion_modes = function(Peak.list, search.par, ion.id, QC.id, tbl.id, method, ...) {
     if (missing(Peak.list))
         Peak.list = NULL
     if (missing(ion.id))
@@ -24,8 +25,8 @@ combine_ion_modes = function(Peak.list, search.par, ion.id, QC.id, tbl.id, ...) 
         stop("Need to specify tbl.id if using databases to retrieve Peak.list!", call. = FALSE)
     }
     if (is.null(Peak.list)) {
-        df1 <- read_tbl(tbl.id[1], peak.db)
-        df2 <- read_tbl(tbl.id[2], peak.db)
+        df1 <- read_tbl(mytable = tbl.id[1], peak.db = peak.db)
+        df2 <- read_tbl(mytable = tbl.id[2], peak.db = peak.db)
         Peak.list.pos <- df1
         Peak.list.neg <- df2
     } else {
@@ -40,48 +41,8 @@ combine_ion_modes = function(Peak.list, search.par, ion.id, QC.id, tbl.id, ...) 
     Peak.list.pos[, "Ion Mode"] <- "Pos"
     Peak.list.neg[, "Ion Mode"] <- "Neg"
 
-    ## Trim the feature table down to just those columns necessary for duplicate matching
-    col.names <- c("Ion Mode", "EIC_ID", "mono_mass", "rt")
-    mono.pos <- subset(Peak.list.pos, select = paste(col.names))
-
-    mono.neg <- subset(Peak.list.neg, select = paste(col.names))
-
-    mono.comb <- rbind(mono.pos, mono.neg)
-
-    # get the distance matrices for mz and rt
-    system.time({
-        d.mz <- as.matrix(dist(mono.comb$mono_mass))
-        dim(d.mz)
-        v = as.numeric(as.character(mono.comb$mono_mass))
-        v2 <- rep(v, each = dim(d.mz)[1])
-        d.amu <- d.mz
-        d.ppm <- d.amu/v2
-        v = rep(10^6, length = ncol(d.ppm))
-        v2 <- rep(v, each = dim(d.ppm)[1])
-        d.mz <- d.ppm * v2
-    })
-    system.time(d.rt <- as.matrix(dist(mono.comb$rt)))
-
-    # build the adjacency matrix
-    m <- d.mz <= as.numeric(search.par[1, "ppm"]) & d.rt <= as.numeric(search.par[1, "rt"])
-
-    # obtain the connected features
-    g <- graph.adjacency(m)
-    z <- clusters(g)$membership
-    mono.comb$Duplicate_EIC <- ave(as.character(mono.comb$EIC_ID), z, FUN = function(s) paste(s, collapse = ","))
-    mono.comb$Duplicate_ID <- z
-    bin <- row.names(mono.comb)
-    bin
-
-    # Combine peaklists and add duplicate flag and ID
-    colnames(Peak.list.pos)
-    colnames(Peak.list.neg)
-    colnames(Peak.list.neg) <- colnames(Peak.list.pos)
-    Peak.list.combined <- as.data.frame(rbind(Peak.list.pos, Peak.list.neg))
-
-    Peak.list.combined[, "Duplicate_ID"] <- mono.comb$Duplicate_ID
-    Peak.list.combined[, "Duplicate_EIC"] <- mono.comb$Duplicate_EIC
-
+    class(method) <- method
+    Peak.list.combined <- search_IonDup(method,Peak.list.pos,Peak.list.neg)
     return(Peak.list.combined)
 }
 
@@ -151,4 +112,98 @@ remove_ion_dup = function(Peak.list, Key.list, tbl.id, ...) {
     Peak.list.trimmed <- Peak.list[!Peak.list$EIC_ID %in% EICs, ]
     return(Peak.list.trimmed)
 
+}
+
+search_IonDup <- function(object, ...) {
+  UseMethod("search_IonDup", object)
+}
+
+search_IonDup.mz  <- function(object,Peak.list.pos,Peak.list.neg) {
+  ## Trim the feature table down to just those columns necessary for duplicate matching
+  col.names <- c("Ion Mode", "EIC_ID", "mono_mass", "rt")
+  mono.pos <- subset(Peak.list.pos, select = paste(col.names))
+
+  mono.neg <- subset(Peak.list.neg, select = paste(col.names))
+
+  mono.comb <- rbind(mono.pos, mono.neg)
+
+  # get the distance matrices for mz and rt
+  system.time({
+    d.mz <- as.matrix(dist(mono.comb$mono_mass))
+    dim(d.mz)
+    v = as.numeric(as.character(mono.comb$mono_mass))
+    v2 <- rep(v, each = dim(d.mz)[1])
+    d.amu <- d.mz
+    d.ppm <- d.amu/v2
+    v = rep(10^6, length = ncol(d.ppm))
+    v2 <- rep(v, each = dim(d.ppm)[1])
+    d.mz <- d.ppm * v2
+  })
+  system.time(d.rt <- as.matrix(dist(mono.comb$rt)))
+
+  # build the adjacency matrix
+  m <- d.mz <= as.numeric(search.par[1, "ppm"]) & d.rt <= as.numeric(search.par[1, "rt"])
+
+  # obtain the connected features
+  g <- graph.adjacency(m)
+  z <- clusters(g)$membership
+  mono.comb$Duplicate_EIC <- ave(as.character(mono.comb$EIC_ID), z, FUN = function(s) paste(s, collapse = ","))
+  mono.comb$Duplicate_ID <- z
+  bin <- row.names(mono.comb)
+  bin
+
+  # Combine peaklists and add duplicate flag and ID
+  colnames(Peak.list.pos)
+  colnames(Peak.list.neg)
+  colnames(Peak.list.neg) <- colnames(Peak.list.pos)
+  Peak.list.combined <- as.data.frame(rbind(Peak.list.pos, Peak.list.neg))
+
+  Peak.list.combined[, "Duplicate_ID"] <- mono.comb$Duplicate_ID
+  Peak.list.combined[, "Duplicate_EIC"] <- mono.comb$Duplicate_EIC
+  return(Peak.list.combined)
+}
+
+search_IonDup.monoMass  <- function(object,Peak.list.pos,Peak.list.neg) {
+  ## Trim the feature table down to just those columns necessary for duplicate matching
+  col.names <- c("Ion Mode", "EIC_ID", "mono_mass", "meanRT")
+  mono.pos <- subset(Peak.list.pos, select = paste(col.names))
+
+  mono.neg <- subset(Peak.list.neg, select = paste(col.names))
+
+  mono.comb <- rbind(mono.pos, mono.neg)
+
+  # get the distance matrices for mz and rt
+  system.time({
+    d.mz <- as.matrix(dist(mono.comb$mono_mass))
+    dim(d.mz)
+    v = as.numeric(as.character(mono.comb$mono_mass))
+    v2 <- rep(v, each = dim(d.mz)[1])
+    d.amu <- d.mz
+    d.ppm <- d.amu/v2
+    v = rep(10^6, length = ncol(d.ppm))
+    v2 <- rep(v, each = dim(d.ppm)[1])
+    d.mz <- d.ppm * v2
+  })
+  system.time(d.rt <- as.matrix(dist(mono.comb$meanRT)))
+
+  # build the adjacency matrix
+  m <- d.mz <= as.numeric(search.par[1, "ppm"]) & d.rt <= as.numeric(search.par[1, "rt"])
+
+  # obtain the connected features
+  g <- graph.adjacency(m)
+  z <- clusters(g)$membership
+  mono.comb$Duplicate_EIC <- ave(as.character(mono.comb$EIC_ID), z, FUN = function(s) paste(s, collapse = ","))
+  mono.comb$Duplicate_ID <- z
+  bin <- row.names(mono.comb)
+  bin
+
+  # Combine peaklists and add duplicate flag and ID
+  colnames(Peak.list.pos)
+  colnames(Peak.list.neg)
+  colnames(Peak.list.neg) <- colnames(Peak.list.pos)
+  Peak.list.combined <- as.data.frame(rbind(Peak.list.pos, Peak.list.neg))
+
+  Peak.list.combined[, "Duplicate_ID"] <- mono.comb$Duplicate_ID
+  Peak.list.combined[, "Duplicate_EIC"] <- mono.comb$Duplicate_EIC
+  return(Peak.list.combined)
 }

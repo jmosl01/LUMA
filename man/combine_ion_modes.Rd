@@ -4,7 +4,8 @@
 \alias{combine_ion_modes}
 \title{Combines Ion Modes}
 \usage{
-combine_ion_modes(Peak.list, search.par, ion.id, QC.id, tbl.id, ...)
+combine_ion_modes(Peak.list, search.par, ion.id, QC.id, tbl.id, method,
+  ...)
 }
 \arguments{
 \item{Peak.list}{a named list of data frames \(one per ionization mode\) containing intensity matrices across all study samples and Pooled QCs.  Names must be c('Positive','Negative').  Alternatively may use existing database connections by setting to NULL and specifying database parameters with ...}
@@ -15,12 +16,14 @@ combine_ion_modes(Peak.list, search.par, ion.id, QC.id, tbl.id, ...)
 
 \item{QC.id}{character vector specifying identifier in filename designating a Pooled QC sample.  Only the first value will be used.  Default is 'Pooled_QC_'}
 
-\item{tbl.id}{character vector of table names to draw from databases.  First value should be table name from positive ionization peak database, second should be table name from negative ionization peak database. Default is NULL}
+\item{tbl.id}{character vector of table names to draw from databases.  First value should be table containing compounds from positive ionization, second should be table containing compounds from negative ionization. Default is NULL}
+
+\item{method}{which method to use.  Can be monoMass or mz}
 
 \item{...}{Arguments to pass parameters to database functions}
 }
 \value{
-data frama containing the intensity matrix for the peaklist with Duplicate IDs
+data frame containing the intensity matrix for the peaklist with Duplicate IDs
 }
 \description{
 Combines the two single adduct ion mode feature tables into one for EIC plotting
