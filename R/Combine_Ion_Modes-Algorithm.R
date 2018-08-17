@@ -42,7 +42,7 @@ combine_ion_modes = function(Peak.list, search.par, ion.id, QC.id, tbl.id, metho
     Peak.list.neg[, "Ion Mode"] <- "Neg"
 
     class(method) <- method
-    Peak.list.combined <- search_IonDup(method,Peak.list.pos,Peak.list.neg)
+    Peak.list.combined <- search_IonDup(method,Peak.list.pos,Peak.list.neg,search.par)
     return(Peak.list.combined)
 }
 
@@ -118,7 +118,7 @@ search_IonDup <- function(object, ...) {
   UseMethod("search_IonDup", object)
 }
 
-search_IonDup.mz  <- function(object,Peak.list.pos,Peak.list.neg) {
+search_IonDup.mz  <- function(object,Peak.list.pos,Peak.list.neg,search.par) {
   ## Trim the feature table down to just those columns necessary for duplicate matching
   col.names <- c("Ion Mode", "EIC_ID", "mono_mass", "rt")
   mono.pos <- subset(Peak.list.pos, select = paste(col.names))
