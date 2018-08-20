@@ -163,7 +163,7 @@ search_IonDup.mz  <- function(object,Peak.list.pos,Peak.list.neg,search.par) {
   return(Peak.list.combined)
 }
 
-search_IonDup.monoMass  <- function(object,Peak.list.pos,Peak.list.neg) {
+search_IonDup.monoMass  <- function(object,Peak.list.pos,Peak.list.neg,search.par) {
   ## Trim the feature table down to just those columns necessary for duplicate matching
   col.names <- c("Ion Mode", "EIC_ID", "mono_mass", "meanRT")
   mono.pos <- subset(Peak.list.pos, select = paste(col.names))
