@@ -219,7 +219,7 @@ plot_ionduplicate = function(anposGa, xpos.cor, annegGa, xneg.cor, Peak.list, ge
             Index.Pos <- which(Dup.ID.Pos %in% i)
             Index.Neg <- which(Dup.ID.Neg %in% i)
 
-            par(mar = c(2, 4, 4, 2) + 0.1)
+            par(mar = c(5 + 2, 4, 4, 2) + 0.1)
 
             if (length(EIC.list) == 1) {
 
