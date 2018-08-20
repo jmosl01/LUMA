@@ -243,7 +243,7 @@ plot_ionduplicate = function(anposGa, xpos.cor, annegGa, xneg.cor, Peak.list, ge
                 Adduct.No <- length(EIC.pos) + length(EIC.neg)
                 nrow <- max(length(EIC.pos),length(EIC.neg))
                 if(length(EIC.pos) == length(EIC.neg)) {
-                  mymatrix <- matrix(c(1:Adduct.No), nrow = nrow, ncol = 2, byrow = TRUE)
+                  mymatrix <- matrix(c(1:Adduct.No), nrow = nrow, ncol = 2, byrow = FALSE)
                 } else {
                   p = length(EIC.pos)
                   n = length(EIC.neg)
