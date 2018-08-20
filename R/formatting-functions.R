@@ -40,7 +40,7 @@ format_simca = function(Peak.list = NULL, Sample.df, Sample.data, tbl.id = NULL,
     }
 
     # modify sample data to include the user defined exposure class
-    Sample.data <- Sample.data[order(Sample.data$CT.ID), ]
+    Sample.data <- Sample.data[order(Sample.data[,1]), ]
     Sample.data <- setNames(cbind.data.frame(Sample.data[, 1], group, Sample.data[-1]), c(colnames(Sample.data[1]),
         "Exposure Class", colnames(Sample.data[-1])))
     sample.ID <- as.numeric(sub("\\D*(\\d{6}).*", "\\1", colnames(sample.peaks)))  #pulls out the 6-digit numeric sample codes into a vector for matching against the Sample data spreadsheet
@@ -93,7 +93,7 @@ format_simca = function(Peak.list = NULL, Sample.df, Sample.data, tbl.id = NULL,
     log.list[[1]] <- res
     log.list[[2]] <- QC
     meta.peaks <- Peak.list[, !Reduce("|", log.list)]
-    temp <- str_count(meta.peaks$Duplicate_EIC, ",")
+    temp <- str_count(meta.peaks$Duplicate_EIC, ";")
     Ion.duplicate <- vector(mode = "logical", length = length(temp))
     Ion.duplicate[which(temp > 0)] = TRUE  #add flag for the metabolites detected in both ion modes
     endo <- meta.peaks[, "Endogenous_flag"]
