@@ -90,10 +90,10 @@ plot_metgroup = function(anposGa, Sample.df, Peak.list, center, BLANK, gen.plots
                   M <- res2$r
                   P <- res2$P
                   # Insignificant correlations are leaved blank
-                  order.hc2 <- corrplot::corrMatOrder(M, order = "hclust", hclust.method = "ward")
-                  new.col = rainbow(maxlabel)[order.hc2]
-                  corrplot(M, type = "upper", order = "hclust", p.mat = P, sig.level = 0.01, insig = "blank",
-                    tl.col = new.col)
+                  order.hc2 <- corrplot::corrMatOrder(M, order = "hclust", hclust.method = "complete")
+                  col.new = rainbow(maxlabel)[order.hc2]
+                  corrplot(M, type = "upper", order = "hclust", hclust.method = "complete", p.mat = P, sig.level = 0.01, insig = "blank",
+                    tl.col = col.new)
 
                   # Plots the EICs and Pseudo-spectra for each metabolite group containing more than one feature in a for loop
                   EIC.plots <- plotEICs(new_anposGa, pspec = get.mg[i], maxlabel = maxlabel, sleep = 0)  ## Plot the EICs
@@ -117,10 +117,10 @@ plot_metgroup = function(anposGa, Sample.df, Peak.list, center, BLANK, gen.plots
                   P <- res2$P
                   # Insignificant correlation are crossed corrplot(M, type='upper', order='hclust', p.mat = P,
                   # sig.level = 0.01, insig = 'pch', pch = 3) Insignificant correlations are leaved blank
-                  order.hc2 <- corrplot::corrMatOrder(M, order = "hclust", hclust.method = "ward")
-                  new.col = rainbow(maxlabel)[order.hc2]
-                  corrplot(M, type = "upper", order = "hclust", p.mat = P, sig.level = 0.01, insig = "blank",
-                    tl.col = new.col)
+                  order.hc2 <- corrplot::corrMatOrder(M, order = "hclust", hclust.method = "complete")
+                  col.new = rainbow(maxlabel)[order.hc2]
+                  corrplot(M, type = "upper", order = "hclust", hclust.method = "complete", p.mat = P, sig.level = 0.01, insig = "blank",
+                    tl.col = col.new)
                   # Plots the EICs and Pseudo-spectra for each metabolite group containing more than one feature in a for loop
                   EIC.plots <- plotEICs(new_anposGa, pspec = get.mg[i], maxlabel = maxlabel, sleep = 0)  ## Plot the EICs
 
