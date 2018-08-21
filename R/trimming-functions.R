@@ -1,18 +1,16 @@
-#' @title Trims by void volume
+#' @title Removes void volume
 #'
 #' @export
 #' @description Removes features found in the void volume of the chromatographic run
 #' @param Peak.list data frame. Must have Correlation.stat column.  Should contain output columns from XCMS and CAMERA, and additional columns from IHL.search, Calc.MinFrac, Calc.corr.stat and EIC.plotter functions.
 #' @param search.par a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.
+#' @param method which method to use.  Can be monoMass or mz
 #' @return data frame Peak.list.trimmed original Peak.list without all metabolite groups containing at least one feature in the void volume
-trim_rt = function(Peak.list, search.par) {
+remove_void_volume = function(Peak.list, search.par,method) {
     rt.list <- Peak.list["rt"]
     void.rt <- as.numeric(search.par[1, "Voidrt"])
-    drops <- Peak.list[rt.list < void.rt, "metabolite_group"]  #Creates a vector of metabolite groups that contain at least one feature with rt in the void volume
-    length(which(!unlist(Peak.list[, "metabolite_group"]) %in% unlist(drops)))
-    met.list <- Peak.list["metabolite_group"]
-    str(met.list)
-    Peak.list.trimmed <- Peak.list[which(!unlist(met.list) %in% unlist(drops)), ]
+    class(Peak.list) <- c(class(Peak.list),method)
+    Peak.list.trimmed <- trim_rt(Peak.list,rt.list,void.rt)
     return(Peak.list.trimmed)
 }
 
@@ -55,4 +53,23 @@ trim_minfrac = function(Peak.list, search.par) {
     # temp[which(temp$Max.cutoff!=temp$Mean.cutoff),] #compares mean thresholding to max thresholding
     Peak.list.trimmed <- Peak.list[MaxMF >= MF.cutoff, ]
     return(Peak.list.trimmed)
+}
+
+trim_rt <- function(Peak.list, ...) {
+  UseMethod("trim_rt", Peak.list)
+}
+
+trim_rt.mz <- function(Peak.list,rt.list,void.rt) {
+  drops <- Peak.list[rt.list < void.rt, "EIC_ID"]
+  Peak.list.trimmed <- Peak.list[which(!(Peak.list$EIC_ID) %in% drops),]
+  return(Peak.list.trimmed)
+}
+
+trim_rt.monoMass  <- function(Peak.list,rt.list,void.rt) {
+  drops <- Peak.list[rt.list < void.rt, "metabolite_group"]  #Creates a vector of metabolite groups that contain at least one feature with rt in the void volume
+  length(which(!unlist(Peak.list[, "metabolite_group"]) %in% unlist(drops)))
+  met.list <- Peak.list["metabolite_group"]
+  str(met.list)
+  Peak.list.trimmed <- Peak.list[which(!unlist(met.list) %in% unlist(drops)), ]
+  return(Peak.list.trimmed)
 }
