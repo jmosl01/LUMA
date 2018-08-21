@@ -71,3 +71,34 @@ LUMA_getPeaklist = function(object,convert.rt) {
   peak_data["rt"] <- rt.min
   return(peak_data)
 }
+
+#' @title Writes xlsx table
+#'
+#' @export
+#' @description Write xlsx table output from validate_metgroup.  Essentially a wrapper for xlsx::saveWorkbook
+#' @param file.base character return from gen_filebase function
+#' @param validate.sheets list of sheets to write to xlsx file.  Currently must be of length 2
+#' @param myname name to append to file.base to create file name for xlsx
+#' @param mysheets character vector to name sheets in xlsx file. Currently must be of length 2
+#' @return class jobjRef object
+#' @importFrom xlsx createWorkbook createSheet addDataFrame saveWorkbook
+write_xlsx <- function(validate.sheets,file.base,myname,mysheets) {
+  if(!is.list(validate.sheets) || length(validate.sheets) != 2)
+    stop("validate.sheets must be a list with exactly two objects.", call. = FALSE)
+  if(missing(mysheets))
+    mysheets <- c("Sheet 1","Sheet 2")
+  if(!is.vector(mysheets) || length(mysheets) != 2)
+    stop("mysheets must be a vector of length 2!", call. = FALSE)
+
+  wb = createWorkbook()
+  sheet = createSheet(wb, mysheets[1])
+  validate.sheets$clear %>% data.frame() %>% addDataFrame(sheet = sheet,
+                                                          startColumn = 1,
+                                                          row.names = FALSE)
+  sheet = createSheet(wb, mysheets[2])
+  validate.sheets$muddy %>% data.frame() %>% addDataFrame(sheet = sheet,
+                                                          startColumn = 1,
+                                                          row.names = FALSE)
+  saveWorkbook(wb, paste(file.base,paste(myname,".xlsx", sep = ""), sep = "_"))
+  return(wb)
+}
