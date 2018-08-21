@@ -12,6 +12,7 @@
 #' @param file.base character string used to name graphical output.  Will be appended with '_CorrPlots.pdf'
 #' @param QC.id character identifier for pooled QC samples. Default is 'Pooled_QC'
 #' @param maxlabel numeric How many m/z labels to print
+#' @param method Which method to use.
 #' @return List of length 2.  1st element is a data frame with all columns as the original data frame with one additional column 'Correlation.stat'.  2nd element is a data frame specifically used to validate CAMERA results.
 #' @importFrom  CAMERA plotEICs
 #' @importFrom CAMERA plotPsSpectrum
@@ -28,6 +29,8 @@ plot_metgroup = function(anposGa, Sample.df, Peak.list, center, BLANK, gen.plots
         QC.id = "Pooled_QC"
     if (missing(maxlabel))
         maxlabel = 10
+    if (missing(method))
+        method = "new"
 
 
     # Change the psspectra list in the xsAnnotate object to be the unique list of metabolite_groups
@@ -45,9 +48,10 @@ plot_metgroup = function(anposGa, Sample.df, Peak.list, center, BLANK, gen.plots
     names(get.mg) <- NULL
 
     Peak.list.pspec <- calc_corrstat(Sample.df, Peak.list, get.mg, BLANK, ion.mode)
-    validate.df <- Peak.list.pspec[order(Peak.list.pspec$metabolite_group), c("MS.ID", "mz", "rt", "Name", "Formula",
-        "Annotated.adduct", "isotopes", "adduct", "mono_mass", "metabolite_group", "Correlation.stat")]
-    Peak.list.new <- list(Peak.list.pspec, validate.df)
+    class(Peak.list.pspec) <- c(class(Peak.list.pspec),method)
+    validate.list <- validate_metgroup(Peak.list.pspec)
+
+    Peak.list.new <- list(Peak.list.pspec, validate.list)
     # ! Very important!! Needs a sample index for each new psspectrum; without it, it will only find files ! for
     # the first n spectra, where n is the original number of psspectra. ! Find out how CAMERA performs automatic
     # selection, then replicate here for the new psspectra ! For now, I am using the center sample for every
@@ -345,4 +349,60 @@ convert_EIC = function(EIC) {
   EIC_num <- lapply(EIC_split, function(x) as.numeric(x))
   EICs <- unlist(EIC_num)
   return(EICs)
+}
+
+validate_metgroup <- function(Peak.list.pspec, ...) {
+  UseMethod("validate_metgroup", Peak.list.pspec)
+}
+
+validate_metgroup.old <- function(Peak.list.pspec) {
+  validate.df <- Peak.list.pspec[order(Peak.list.pspec$metabolite_group), c("MS.ID", "mz", "rt", "Name",
+                                                                            "Formula","Annotated.adduct",
+                                                                            "isotopes", "adduct",
+                                                                            "mono_mass", "metabolite_group",
+                                                                            "Correlation.stat")]
+  return(validate.df)
+}
+
+validate_metgroup.new <- function(Peak.list.pspec) {
+  validate.df <- Peak.list.pspec[order(Peak.list.pspec$metabolite_group), c("MS.ID", "mz", "rt", "Name",
+                                                                            "Formula","Annotated.adduct",
+                                                                            "isotopes", "adduct",
+                                                                            "mono_mass", "metabolite_group",
+                                                                            "Correlation.stat")]
+  mytbl <- validate.df %>%
+    group_by(metabolite_group)
+
+  mytbl <- mytbl %>%
+    summarise(max = max(Correlation.stat[Correlation.stat!=max(Correlation.stat)]),
+              min = min(Correlation.stat))
+  f1 <- which(mytbl$min >= 0.7)
+  f2 <- which(mytbl$max <= 0.2)
+  clear.groups <- mytbl[(union(f1,f2)),"metabolite_group"] %>%
+    data.frame()
+  TP.groups <- mytbl[f1,"metabolite_group"] %>%
+    data.frame()
+  TN.groups <- mytbl[f2,"metabolite_group"] %>%
+    data.frame()
+  muddy.groups <- mytbl[-(union(f1,f2)),"metabolite_group"] %>%
+    data.frame()
+  ##Error Check
+  if(nrow(clear.groups) != nrow(TP.groups) + nrow(TN.groups))
+    stop("The number of true positives and true negatives does not equal the number of clear cut metabolite groups!", call. = FALSE)
+  n.col <- ncol(validate.df)
+  col.names <- colnames(validate.df)
+  validate.df[,(n.col+1:(n.col+3))] <- NA
+  colnames(validate.df) <- c(col.names,"Category Score1","Category Score2","Category Score3")
+  validate.df$`Category Score2` <- validate.df$Correlation.stat
+  validate.df[which(validate.df$metabolite_group %in% TP.groups$metabolite_group),
+              c("Category Score1","Category Score3")] <- 1
+  validate.df[which(validate.df$metabolite_group %in% TN.groups$metabolite_group),
+              c("Category Score1","Category Score3")] <- 0
+  x <- which(validate.df$metabolite_group %in% clear.groups$metabolite_group)
+  y <- which(validate.df$metabolite_group %in% muddy.groups$metabolite_group)
+  myfactor <- factor(NA, levels = c("clear","muddy"))
+  myfactor[x] <- "clear"
+  myfactor[y] <- "muddy"
+  validate.list <- split(validate.df,myfactor)
+  return(validate.list)
 }
