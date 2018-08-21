@@ -12,7 +12,6 @@
 #' @param file.base character string used to name graphical output.  Will be appended with '_CorrPlots.pdf'
 #' @param QC.id character identifier for pooled QC samples. Default is 'Pooled_QC'
 #' @param maxlabel numeric How many m/z labels to print
-#' @param method Which method to use.
 #' @return List of length 2.  1st element is a data frame with all columns as the original data frame with one additional column 'Correlation.stat'.  2nd element is a data frame specifically used to validate CAMERA results.
 #' @importFrom  CAMERA plotEICs
 #' @importFrom CAMERA plotPsSpectrum
@@ -20,6 +19,7 @@
 #' @importFrom graphics layout par plot text
 #' @importFrom Hmisc rcorr
 #' @importFrom corrplot corrplot corrMatOrder
+#' @importFrom dplyr group_by
 plot_metgroup = function(anposGa, Sample.df, Peak.list, center, BLANK, gen.plots, ion.mode, file.base, QC.id, maxlabel) {
     if (missing(BLANK))
         BLANK = FALSE
@@ -29,8 +29,6 @@ plot_metgroup = function(anposGa, Sample.df, Peak.list, center, BLANK, gen.plots
         QC.id = "Pooled_QC"
     if (missing(maxlabel))
         maxlabel = 10
-    if (missing(method))
-        method = "new"
 
 
     # Change the psspectra list in the xsAnnotate object to be the unique list of metabolite_groups
@@ -48,7 +46,6 @@ plot_metgroup = function(anposGa, Sample.df, Peak.list, center, BLANK, gen.plots
     names(get.mg) <- NULL
 
     Peak.list.pspec <- calc_corrstat(Sample.df, Peak.list, get.mg, BLANK, ion.mode)
-    class(Peak.list.pspec) <- c(class(Peak.list.pspec),method)
     validate.list <- validate_metgroup(Peak.list.pspec)
 
     Peak.list.new <- list(Peak.list.pspec, validate.list)
@@ -351,20 +348,7 @@ convert_EIC = function(EIC) {
   return(EICs)
 }
 
-validate_metgroup <- function(Peak.list.pspec, ...) {
-  UseMethod("validate_metgroup", Peak.list.pspec)
-}
-
-validate_metgroup.old <- function(Peak.list.pspec) {
-  validate.df <- Peak.list.pspec[order(Peak.list.pspec$metabolite_group), c("MS.ID", "mz", "rt", "Name",
-                                                                            "Formula","Annotated.adduct",
-                                                                            "isotopes", "adduct",
-                                                                            "mono_mass", "metabolite_group",
-                                                                            "Correlation.stat")]
-  return(validate.df)
-}
-
-validate_metgroup.new <- function(Peak.list.pspec) {
+validate_metgroup <- function(Peak.list.pspec) {
   validate.df <- Peak.list.pspec[order(Peak.list.pspec$metabolite_group), c("MS.ID", "mz", "rt", "Name",
                                                                             "Formula","Annotated.adduct",
                                                                             "isotopes", "adduct",

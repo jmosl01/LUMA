@@ -27,8 +27,6 @@ plot_metgroup(anposGa, Sample.df, Peak.list, center, BLANK, gen.plots,
 \item{QC.id}{character identifier for pooled QC samples. Default is 'Pooled_QC'}
 
 \item{maxlabel}{numeric How many m/z labels to print}
-
-\item{method}{Which method to use.}
 }
 \value{
 List of length 2.  1st element is a data frame with all columns as the original data frame with one additional column 'Correlation.stat'.  2nd element is a data frame specifically used to validate CAMERA results.
