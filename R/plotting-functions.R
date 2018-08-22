@@ -145,11 +145,12 @@ plot_metgroup = function(anposGa, Sample.df, Peak.list, center, BLANK, gen.plots
 #' @param file.base character string used to name graphical output. Default is 'EIC_plots'
 #' @param QC.id character identifier for pooled QC samples. Default is 'Pooled_QC'
 #' @param mytable character name of table in database to return
+#' @param maxEIC numeric How many EICs to plot for each metabolite
 #' @param ... parameters to be passed to database functions
 #' @return NULL testing
 #' @importFrom xcms getEIC
 #' @importFrom graphics abline title
-plot_ionduplicate = function(anposGa, xpos.cor, annegGa, xneg.cor, Peak.list, gen.plots, file.base, QC.id, mytable, ...) {
+plot_ionduplicate = function(anposGa, xpos.cor, annegGa, xneg.cor, Peak.list, gen.plots, file.base, QC.id, mytable, maxEIC, ...) {
     if (missing(Peak.list))
         Peak.list = NULL
     if (missing(gen.plots))
@@ -164,6 +165,8 @@ plot_ionduplicate = function(anposGa, xpos.cor, annegGa, xneg.cor, Peak.list, ge
         mytable = NULL
     if (missing(file.base))
         file.base = "EIC_plots"
+    if (missing(maxEIC))
+        maxEIC = 2
 
     if (is.null(Peak.list)) {
         if (is.null(Peak.list) && is.null(mytable)) {
@@ -219,6 +222,11 @@ plot_ionduplicate = function(anposGa, xpos.cor, annegGa, xneg.cor, Peak.list, ge
 
             Index.Pos <- which(Dup.ID.Pos %in% i)
             Index.Neg <- which(Dup.ID.Neg %in% i)
+
+            if (length(EIC.pos) > maxEIC)
+              EIC.pos <- EIC.pos[1:maxEIC]
+            if (length(EIC.neg) > maxEIC)
+              EIC.neg <- EIC.neg[1:maxEIC]
 
             par(mar = c(5 + 2, 4, 4, 2) + 0.1)
 
