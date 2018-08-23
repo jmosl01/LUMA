@@ -350,10 +350,13 @@ return(object)
 }
 
 convert_EIC = function(EIC) {
-  EIC_split <- strsplit(EIC, split = ";")
-  EIC_num <- lapply(EIC_split, function(x) as.numeric(x))
-  EICs <- unlist(EIC_num)
-  return(EICs)
+  if(is.null(EIC))
+    return(EIC) else {
+      EIC_split <- strsplit(EIC, split = ";")
+      EIC_num <- lapply(EIC_split, function(x) as.numeric(x))
+      EICs <- unlist(EIC_num)
+      return(EICs)
+    }
 }
 
 validate_metgroup <- function(Peak.list.pspec) {
