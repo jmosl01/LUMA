@@ -139,9 +139,10 @@ plot_metgroup = function(anposGa, Sample.df, Peak.list, center, BLANK, gen.plots
 #' @param Peak.list a data frame containing combined ion mode peaklist with Duplicate IDs.  Alternatively can be retrieved from databases.  Default is NULL
 #' @param gen.plots a logical indicating whether to create plots for metabolite groups.  Default is FALSE
 #' @param anposGa xsannotate object with annotated isotopes and ion adducts and fragments for positive mode.
-#' @param xpos.cor xcmsSet object shoud have grouping, retention time correction and fillPeaks applied.  Default is to look for this in anposGa
+#' @param xpos xcmsSet object shoud have grouping, retention time correction and fillPeaks applied.  Default is to look for this in anposGa
 #' @param annegGa xsannotate object with annotated isotopes and ion adducts and fragments for negative mode.
-#' @param xneg.cor xcmsSet object shoud have grouping, retention time correction and fillPeaks applied.  Default is to look for this in annegGa
+#' @param xneg xcmsSet object shoud have grouping, retention time correction and fillPeaks applied.  Default is to look for this in annegGa
+#' @param rt.method Which method to use for EIC. Can be "corrected" or "raw"
 #' @param file.base character string used to name graphical output. Default is 'EIC_plots'
 #' @param QC.id character identifier for pooled QC samples. Default is 'Pooled_QC'
 #' @param mytable character name of table in database to return
@@ -151,16 +152,18 @@ plot_metgroup = function(anposGa, Sample.df, Peak.list, center, BLANK, gen.plots
 #' @return NULL testing
 #' @importFrom xcms getEIC
 #' @importFrom graphics abline title
-plot_ionduplicate = function(anposGa, xpos.cor, annegGa, xneg.cor, Peak.list, gen.plots,
+plot_ionduplicate = function(anposGa, xpos, annegGa, xneg, rt.method, Peak.list, gen.plots,
                              file.base, QC.id, mytable, maxEIC, maxQC, ...) {
     if (missing(Peak.list))
         Peak.list = NULL
     if (missing(gen.plots))
         gen.plots = FALSE
-    if (missing(xpos.cor))
-        xpos.cor = anposGa@xcmsSet
-    if (missing(xneg.cor))
-        xneg.cor = annegGa@xcmsSet
+    if (missing(xpos))
+        xpos = anposGa@xcmsSet
+    if (missing(xneg))
+        xneg = annegGa@xcmsSet
+    if (missing(rt.method))
+      rt.method = "corrected"
     if (missing(QC.id))
         QC.id = "Pooled_QC"
     if (missing(mytable))
@@ -183,7 +186,7 @@ plot_ionduplicate = function(anposGa, xpos.cor, annegGa, xneg.cor, Peak.list, ge
 
 
     # Read the file names for study samples and pooled QCs
-    neg.filenames <- row.names(xneg.cor@phenoData)
+    neg.filenames <- row.names(xneg@phenoData)
     neg.QC.files <- neg.filenames[grep(QC.id, neg.filenames)]
 
     if(maxQC > length(neg.QC.files)) {
@@ -193,7 +196,7 @@ plot_ionduplicate = function(anposGa, xpos.cor, annegGa, xneg.cor, Peak.list, ge
       neg.QC.files <- neg.QC.files[rand.QC.ind]
     }
 
-    pos.filenames <- row.names(xpos.cor@phenoData)
+    pos.filenames <- row.names(xpos@phenoData)
     pos.QC.files <- pos.filenames[grep(QC.id, pos.filenames)]
 
     if(maxQC > length(pos.QC.files)) {
@@ -254,11 +257,11 @@ plot_ionduplicate = function(anposGa, xpos.cor, annegGa, xneg.cor, Peak.list, ge
                 pos = list()
                 cat("Be patient! EIC group No.", which(Un.ID[] %in% i), "out of a total of", length(Un.ID), "\n")
                 for (i in 1:length(EIC.pos)) {
-                  pos[i] = getEIC(xpos.cor, rt = "corrected", groupidx = EIC.pos[i], sampleidx = pos.QC.files)
+                  pos[i] = getEIC(xpos, rt = rt.method, groupidx = EIC.pos[i], sampleidx = pos.QC.files)
                 }
                 neg = list()
                 for (i in 1:length(EIC.neg)) {
-                  neg[i] = getEIC(xneg.cor, rt = "corrected", groupidx = EIC.neg[i], sampleidx = neg.QC.files)
+                  neg[i] = getEIC(xneg, rt = rt.method, groupidx = EIC.neg[i], sampleidx = neg.QC.files)
                 }
                 rt <- neg[[1]]@rtrange
                 rt.min <- min(rt[, "rtmin"])
@@ -309,7 +312,7 @@ plot_ionduplicate = function(anposGa, xpos.cor, annegGa, xneg.cor, Peak.list, ge
                 ## has duplicate in negative mode ONLY
                 neg = list()
                 for (j in 1:length(EIC.neg)) {
-                  neg[j] = getEIC(xneg.cor, rt = "corrected", groupidx = EIC.neg[j], sampleidx = neg.QC.files)
+                  neg[j] = getEIC(xneg, rt = rt.method, groupidx = EIC.neg[j], sampleidx = neg.QC.files)
                 }
                 rt <- neg[[1]]@rtrange
                 rt.min <- min(rt[, "rtmin"])
@@ -332,7 +335,7 @@ plot_ionduplicate = function(anposGa, xpos.cor, annegGa, xneg.cor, Peak.list, ge
                 ## has duplicate in positive mode ONLY
                 pos = list()
                 for (j in 1:length(EIC.pos)) {
-                  pos[j] = getEIC(xpos.cor, rt = "corrected", groupidx = EIC.pos[j], sampleidx = pos.QC.files)
+                  pos[j] = getEIC(xpos, rt = rt.method, groupidx = EIC.pos[j], sampleidx = pos.QC.files)
                 }
                 rt <- pos[[1]]@rtrange
                 rt.min <- min(rt[, "rtmin"])
