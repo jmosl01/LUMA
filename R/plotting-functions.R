@@ -185,24 +185,50 @@ plot_ionduplicate = function(anposGa, xpos, annegGa, xneg, rt.method, Peak.list,
     }
 
 
-    # Read the file names for study samples and pooled QCs
+  ## Read the file names for study samples and pooled QCs
+
+    #Selects QC file(s) to plot EICs for Negative Mode
     neg.filenames <- row.names(xneg@phenoData)
     neg.QC.files <- neg.filenames[grep(QC.id, neg.filenames)]
 
-    if(maxQC > length(neg.QC.files)) {
-      stop("maxQC cannot be larger than the number of QC files!")
+    if(maxQC == 1) {
+      mymat <- matrix(nrow = nrow(xneg@phenoData), ncol = 2)
+      mymat[,1] <- neg.filenames
+      for(i in seq_along(neg.filenames)) {
+        raw <- xneg@rt$raw[[i]]
+        corrected <- xneg@rt$corrected[[i]]
+        mymat[i,2] <- identical(raw,corrected, num.eq = TRUE)
+      }
+      neg.QC.files <- mymat[which(mymat[,2] %in% TRUE),1]
     } else {
-      rand.QC.ind <- sample(seq_along(neg.QC.files), size = maxQC, replace = FALSE)
-      neg.QC.files <- neg.QC.files[rand.QC.ind]
+      if(maxQC > length(neg.QC.files)) {
+        stop("maxQC cannot be larger than the number of QC files!")
+      } else {
+        rand.QC.ind <- sample(seq_along(neg.QC.files), size = maxQC, replace = FALSE)
+        neg.QC.files <- neg.QC.files[rand.QC.ind]
+      }
     }
 
+
+    #Selects QC file(s) to plot EICs for Positive Mode
     pos.filenames <- row.names(xpos@phenoData)
     pos.QC.files <- pos.filenames[grep(QC.id, pos.filenames)]
 
-    if(maxQC > length(pos.QC.files)) {
-      stop("maxQC cannot be larger than the number of QC files!")
+    if(maxQC == 1) {
+      mymat <- matrix(nrow = nrow(xpos@phenoData), ncol = 2)
+      mymat[,1] <- pos.filenames
+      for(i in seq_along(pos.filenames)) {
+        raw <- xpos@rt$raw[[i]]
+        corrected <- xpos@rt$corrected[[i]]
+        mymat[i,2] <- identical(raw,corrected, num.eq = TRUE)
+      }
+      pos.QC.files <- mymat[which(mymat[,2] %in% TRUE),1]
     } else {
-      pos.QC.files <- pos.QC.files[rand.QC.ind]
+      if(maxQC > length(pos.QC.files)) {
+        stop("maxQC cannot be larger than the number of QC files!")
+      } else {
+        pos.QC.files <- pos.QC.files[rand.QC.ind]
+      }
     }
 
     # Get the unique list of Duplicate IDs
@@ -223,7 +249,7 @@ plot_ionduplicate = function(anposGa, xpos, annegGa, xneg, rt.method, Peak.list,
     Dup.ID.Neg <- Peak.list$Duplicate_ID[sapply(res, function(x) x == TRUE) & sapply(Peak.list$`Ion Mode`, function(x) x ==
         "Neg")]
 
-    ## Code to plot EICs for all Duplicate IDs in a loop.####
+  ## Code to plot EICs for all Duplicate IDs in a loop.####
     if (gen.plots) {
         total = length(Un.ID)
 
@@ -311,6 +337,7 @@ plot_ionduplicate = function(anposGa, xpos, annegGa, xneg, rt.method, Peak.list,
               if (length(EIC.pos) == 0) {
                 ## has duplicate in negative mode ONLY
                 neg = list()
+                cat("Neg mode only! EIC group No.", which(Un.ID[] %in% i), "out of a total of", length(Un.ID), "\n")
                 for (j in 1:length(EIC.neg)) {
                   neg[j] = getEIC(xneg, rt = rt.method, groupidx = EIC.neg[j], sampleidx = neg.QC.files)
                 }
@@ -334,6 +361,7 @@ plot_ionduplicate = function(anposGa, xpos, annegGa, xneg, rt.method, Peak.list,
             } else {
                 ## has duplicate in positive mode ONLY
                 pos = list()
+                cat("Pos mode only! EIC group No.", which(Un.ID[] %in% i), "out of a total of", length(Un.ID), "\n")
                 for (j in 1:length(EIC.pos)) {
                   pos[j] = getEIC(xpos, rt = rt.method, groupidx = EIC.pos[j], sampleidx = pos.QC.files)
                 }
