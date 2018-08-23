@@ -146,11 +146,13 @@ plot_metgroup = function(anposGa, Sample.df, Peak.list, center, BLANK, gen.plots
 #' @param QC.id character identifier for pooled QC samples. Default is 'Pooled_QC'
 #' @param mytable character name of table in database to return
 #' @param maxEIC numeric How many EICs to plot for each metabolite
+#' @param maxQC numeric How many QCs will be used to plot EICs
 #' @param ... parameters to be passed to database functions
 #' @return NULL testing
 #' @importFrom xcms getEIC
 #' @importFrom graphics abline title
-plot_ionduplicate = function(anposGa, xpos.cor, annegGa, xneg.cor, Peak.list, gen.plots, file.base, QC.id, mytable, maxEIC, ...) {
+plot_ionduplicate = function(anposGa, xpos.cor, annegGa, xneg.cor, Peak.list, gen.plots,
+                             file.base, QC.id, mytable, maxEIC, maxQC, ...) {
     if (missing(Peak.list))
         Peak.list = NULL
     if (missing(gen.plots))
@@ -167,6 +169,8 @@ plot_ionduplicate = function(anposGa, xpos.cor, annegGa, xneg.cor, Peak.list, ge
         file.base = "EIC_plots"
     if (missing(maxEIC))
         maxEIC = 2
+    if (missing(maxQC))
+        maxQC = 1
 
     if (is.null(Peak.list)) {
         if (is.null(Peak.list) && is.null(mytable)) {
@@ -182,8 +186,21 @@ plot_ionduplicate = function(anposGa, xpos.cor, annegGa, xneg.cor, Peak.list, ge
     neg.filenames <- row.names(xneg.cor@phenoData)
     neg.QC.files <- neg.filenames[grep(QC.id, neg.filenames)]
 
+    if(maxQC > length(neg.QC.files)) {
+      stop("maxQC cannot be larger than the number of QC files!")
+    } else {
+      rand.QC.ind <- sample(seq_along(neg.QC.files), size = maxQC, replace = FALSE)
+      neg.QC.files <- neg.QC.files[rand.QC.ind]
+    }
+
     pos.filenames <- row.names(xpos.cor@phenoData)
     pos.QC.files <- pos.filenames[grep(QC.id, pos.filenames)]
+
+    if(maxQC > length(pos.QC.files)) {
+      stop("maxQC cannot be larger than the number of QC files!")
+    } else {
+      pos.QC.files <- pos.QC.files[rand.QC.ind]
+    }
 
     # Get the unique list of Duplicate IDs
     x <- sapply(Peak.list$Duplicate_ID, function(x) sum(as.numeric(Peak.list$Duplicate_ID == x)))
@@ -230,7 +247,7 @@ plot_ionduplicate = function(anposGa, xpos.cor, annegGa, xneg.cor, Peak.list, ge
 
             par(mar = c(5 + 2, 4, 4, 2) + 0.1)
 
-            if (length(EIC.list) == 1) {
+            if (length(EIC.list) == 0) {
 
             } else if (length(EIC.pos) * length(EIC.neg) != 0) {
                 ## has duplicate in both modes
