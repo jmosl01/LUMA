@@ -24,7 +24,6 @@ format_simca = function(Peak.list = NULL, Sample.df, Sample.data, tbl.id = NULL,
     if (is.null(Peak.list)) {
         Peak.list <- read_tbl(tbl.id, peak.db)
     }
-    groups <- paste(Sample.df$Sex, Sample.df$Class, sep = "_")  ## Generate search string for all classes
     sexes <- unique(paste(Sample.df$Sex, "_", sep = ""))  ## Generate search string for all sexes
     samples <- vector(mode = "character", length = length(colnames(Peak.list)))
     for (i in 1:length(sexes)) {
@@ -33,11 +32,20 @@ format_simca = function(Peak.list = NULL, Sample.df, Sample.data, tbl.id = NULL,
     }
     res <- samples %in% sexes
     sample.peaks <- Peak.list[, res]
+
+
+  ## Creates a new column for grouping by class based on user input
+    groups <- paste(Sample.df$Sex, Sample.df$Class, sep = ";")  ## Generate search string for all classes
+    groups <- strsplit(groups, split = ";")
+    names(groups) <- paste(Sample.df$Sex, Sample.df$Class, sep = "_")
     group <- vector(mode = "character", length = length(colnames(sample.peaks)))
     for (i in 1:length(groups)) {
-        rows_loop <- grep(groups[i], colnames(sample.peaks))
-        group[rows_loop] <- groups[i]
+        rows_loop <- intersect(grep(groups[[i]][1], colnames(sample.peaks)),
+                               grep(groups[[i]][2], colnames(sample.peaks))
+                               )
+        group[rows_loop] <- names(groups)[i]
     }
+    group <- unlist(group)
 
     # modify sample data to include the user defined exposure class
     Sample.data <- Sample.data[order(Sample.data[,1]), ]
