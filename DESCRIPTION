@@ -30,7 +30,8 @@ Imports:
     stats,
     stringr,
     utils,
-    xcms
+    xcms,
+    xlsx
 Suggests: 
     knitr,
     rmarkdown
