@@ -317,6 +317,7 @@ plot_ionduplicate = function(anposGa, xpos, annegGa, xneg, rt.method, Peak.list,
 
                 for (j in 1:length(EIC.pos)) {
                   rt <- EIC.table[which(EIC.table$`Ion Mode` %in% "Pos"), "meanRT"] * 60
+                  rt <- as.numeric(unlist(rt))
                   QCmax <- max(QC.list[which(EIC.table$`Ion Mode` %in% "Pos"), ])
                   plot(pos[[j]], col = color.palette, rtrange = cbind(rt.min, rt.max))
                   title(sub = paste(paste("Positive #", Index.Pos[j], ", EIC_ID:", EIC.pos[j]), paste(strwrap(Name.pos[j],
@@ -326,6 +327,7 @@ plot_ionduplicate = function(anposGa, xpos, annegGa, xneg, rt.method, Peak.list,
                 }
                 for (j in 1:length(EIC.neg)) {
                   rt <- EIC.table[which(EIC.table$`Ion Mode` %in% "Neg"), "meanRT"] * 60
+                  rt <- as.numeric(unlist(rt))
                   QCmax <- max(QC.list[which(EIC.table$`Ion Mode` %in% "Neg"), ])
                   plot(neg[[j]], col = color.palette, rtrange = cbind(rt.min, rt.max))
                   title(sub = paste(paste("Negative #", Index.Neg[j], ", EIC_ID:", EIC.neg[j]), paste(strwrap(Name.neg[j],
@@ -351,14 +353,15 @@ plot_ionduplicate = function(anposGa, xpos, annegGa, xneg, rt.method, Peak.list,
                 layout(matrix(c(1:Adduct.No), nrow = Adduct.No, ncol = 1, byrow = TRUE))
                 for (j in 1:length(EIC.neg)) {
                   rt <- EIC.table[which(EIC.table$`Ion Mode` %in% "Neg"), "meanRT"] * 60
+                  rt <- as.numeric(unlist(rt))
                   QCmax <- max(QC.list[which(EIC.table$`Ion Mode` %in% "Neg"), ])
                   plot(neg[[j]], col = color.palette, rtrange = cbind(rt.min, rt.max))
                   title(sub = paste(paste("Negative #", Index.Neg[j], ", EIC_ID:", EIC.neg[j]), paste(strwrap(Name.neg[j],
-                    width = 0.9 * getOption("width")), collapse = "\n"), sep = "\n"), cex.sub = 1, col.sub = "red",
-                    line = 6)
+                                    width = 0.9 * getOption("width")), collapse = "\n"), sep = "\n"), cex.sub = 1, col.sub = "red",
+                                    line = 6)
                   abline(v = rt, col = "blue", lty = 2)
                 }
-            } else {
+              } else {
                 ## has duplicate in positive mode ONLY
                 pos = list()
                 cat("Pos mode only! EIC group No.", which(Un.ID[] %in% i), "out of a total of", length(Un.ID), "\n")
@@ -375,6 +378,7 @@ plot_ionduplicate = function(anposGa, xpos, annegGa, xneg, rt.method, Peak.list,
                 layout(matrix(c(1:Adduct.No), nrow = Adduct.No, ncol = 1, byrow = TRUE))
                 for (j in 1:length(EIC.pos)) {
                   rt <- EIC.table[which(EIC.table$`Ion Mode` %in% "Pos"), "meanRT"] * 60
+                  rt <- as.numeric(unlist(rt))
                   QCmax <- max(QC.list[which(EIC.table$`Ion Mode` %in% "Pos"), ])
                   plot(pos[[j]], col = color.palette, rtrange = cbind(rt.min, rt.max))
                   title(sub = paste(paste("Positive #", Index.Pos[j], ", EIC_ID:", EIC.pos[j]), paste(strwrap(Name.pos[j],
