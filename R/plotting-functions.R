@@ -244,10 +244,10 @@ plot_ionduplicate = function(anposGa, xpos, annegGa, xneg, rt.method, Peak.list,
     Un.ID  #List of unique duplicate IDs to get EICs for
 
     # List of duplicate IDs for both positive and negative modes
-    Dup.ID.Pos <- Peak.list$Duplicate_ID[sapply(res, function(x) x == TRUE) & sapply(Peak.list$`Ion Mode`, function(x) x ==
-        "Pos")]
-    Dup.ID.Neg <- Peak.list$Duplicate_ID[sapply(res, function(x) x == TRUE) & sapply(Peak.list$`Ion Mode`, function(x) x ==
-        "Neg")]
+    Dup.ID.Pos <- Peak.list$Duplicate_ID[sapply(res, function(x) x == TRUE) &
+                                           sapply(Peak.list$`Ion Mode`, function(x) x == "Pos")]
+    Dup.ID.Neg <- Peak.list$Duplicate_ID[sapply(res, function(x) x == TRUE) &
+                                           sapply(Peak.list$`Ion Mode`, function(x) x == "Neg")]
 
   ## Code to plot EICs for all Duplicate IDs in a loop.####
     if (gen.plots) {
@@ -283,11 +283,11 @@ plot_ionduplicate = function(anposGa, xpos, annegGa, xneg, rt.method, Peak.list,
                 pos = list()
                 cat("Be patient! EIC group No.", which(Un.ID[] %in% i), "out of a total of", length(Un.ID), "\n")
                 for (i in 1:length(EIC.pos)) {
-                  pos[i] = getEIC(xpos, rt = rt.method, groupidx = EIC.pos[i], sampleidx = pos.QC.files)
+                  pos[[i]] = getEIC(xpos, rt = rt.method, groupidx = EIC.pos[i], sampleidx = pos.QC.files)
                 }
                 neg = list()
                 for (i in 1:length(EIC.neg)) {
-                  neg[i] = getEIC(xneg, rt = rt.method, groupidx = EIC.neg[i], sampleidx = neg.QC.files)
+                  neg[[i]] = getEIC(xneg, rt = rt.method, groupidx = EIC.neg[i], sampleidx = neg.QC.files)
                 }
                 rt <- neg[[1]]@rtrange
                 rt.min <- min(rt[, "rtmin"])
@@ -339,7 +339,7 @@ plot_ionduplicate = function(anposGa, xpos, annegGa, xneg, rt.method, Peak.list,
                 neg = list()
                 cat("Neg mode only! EIC group No.", which(Un.ID[] %in% i), "out of a total of", length(Un.ID), "\n")
                 for (j in 1:length(EIC.neg)) {
-                  neg[j] = getEIC(xneg, rt = rt.method, groupidx = EIC.neg[j], sampleidx = neg.QC.files)
+                  neg[[j]] = getEIC(xneg, rt = rt.method, groupidx = EIC.neg[j], sampleidx = neg.QC.files)
                 }
                 rt <- neg[[1]]@rtrange
                 rt.min <- min(rt[, "rtmin"])
@@ -363,7 +363,7 @@ plot_ionduplicate = function(anposGa, xpos, annegGa, xneg, rt.method, Peak.list,
                 pos = list()
                 cat("Pos mode only! EIC group No.", which(Un.ID[] %in% i), "out of a total of", length(Un.ID), "\n")
                 for (j in 1:length(EIC.pos)) {
-                  pos[j] = getEIC(xpos, rt = rt.method, groupidx = EIC.pos[j], sampleidx = pos.QC.files)
+                  pos[[j]] = getEIC(xpos, rt = rt.method, groupidx = EIC.pos[j], sampleidx = pos.QC.files)
                 }
                 rt <- pos[[1]]@rtrange
                 rt.min <- min(rt[, "rtmin"])
