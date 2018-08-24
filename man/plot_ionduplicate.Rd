@@ -35,7 +35,7 @@ plot_ionduplicate(anposGa, xpos, annegGa, xneg, rt.method, Peak.list,
 \item{...}{parameters to be passed to database functions}
 }
 \value{
-NULL testing
+list of length 2 EIC indices for the ion duplicate plots
 }
 \description{
 Plots EICs and Pseudospectra from (parsed) metabolite groups using plotEICs-methods and plotPsSpectrum-methods from CAMERA. Also plots correlation matrices and clustered dendrograms for each (parsed) metabolite group.

@@ -149,7 +149,7 @@ plot_metgroup = function(anposGa, Sample.df, Peak.list, center, BLANK, gen.plots
 #' @param maxEIC numeric How many EICs to plot for each metabolite
 #' @param maxQC numeric How many QCs will be used to plot EICs
 #' @param ... parameters to be passed to database functions
-#' @return NULL testing
+#' @return list of length 2 EIC indices for the ion duplicate plots
 #' @importFrom xcms getEIC
 #' @importFrom graphics abline title
 plot_ionduplicate = function(anposGa, xpos, annegGa, xneg, rt.method, Peak.list, gen.plots,
@@ -393,6 +393,10 @@ plot_ionduplicate = function(anposGa, xpos, annegGa, xneg, rt.method, Peak.list,
         x.neg <- rep(1, length.out = length(Dup.ID.Neg))  #needs to be as long as the number of negative plots in the PDF file
         return(list(x.pos, x.neg))
         ## End Plotting code####
+    } else {
+      x.pos <- rep(1, length.out = length(Dup.ID.Pos))  #needs to be as long as the number of positive plots in the PDF file
+      x.neg <- rep(1, length.out = length(Dup.ID.Neg))  #needs to be as long as the number of negative plots in the PDF file
+      return(list(x.pos, x.neg))
     }
 
 }
