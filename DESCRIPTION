@@ -33,6 +33,7 @@ Imports:
     xcms,
     xlsx
 Suggests: 
+    BiocStyle,
     knitr,
     rmarkdown
 VignetteBuilder: 
