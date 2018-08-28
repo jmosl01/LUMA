@@ -1,0 +1,26 @@
+---
+title: "Running LUMA in R"
+author: 
+- affiliation: U.S. Environmental Protection Agency
+  email: mosley.jonathan@epa.gov
+  name: Jonathan Mosley
+date: "`r Sys.Date()`"
+output: 
+  BiocStyle::html_document: default
+  bookdown::pdf_document2: default
+package: LUMA
+abstract: >
+  The LCMS-Based Untargeted Metabolomics Assistant package (LUMA) performs quality control (QC) and feature reduction steps on the output of XCMS and CAMERA to generate usable data matrices for discovery-based studies. The outputs of XCMS and CAMERA contain peak matrices for each feature detected by XCMS and annotated by CAMERA. These can contain spurious features and annotations or real features that do not pass basic QC checks, which can negatively affect downstream statistical analyses, particularly the clustering of QC samples. Therefore, curation of these matrices must be performed to ensure quality of the resulting dataset. Often these steps are performed manually and can be very time-consuming. LUMA provides a set of functions that allow for rapid, automated workflows to perform the necessary QC and feature reduction steps with minimal user input. In addition, data visualization is consolidated to a single graphic per metabolite group (containing all features attributed to a single metabolite) with EIC plots and psSpectra from CAMERA, as well as new correlation matrices and dendrograms to minimize the user's time spent validating the dataset, particularly when summing features into a single value per metabolite (an important QC check!). This vignette describes an example LUMA workflow with code available from Github [here](https://github.com/jmosl01/LUMA-Workflow/releases/tag/v1.0.1). The example workflow is designed to work with the `msfishdata` dataset, but can be readily adapted to your untargeted metabolomics dataset with changes to a few .txt and .csv files.
+    
+vignette: >
+  %\VignetteIndexEntry{Running LUMA in R}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
