@@ -15,5 +15,6 @@ addons:
 
 bioc_packages:
  - BiocParallel
+ - BiocStyle
  - CAMERA
  - xcms
