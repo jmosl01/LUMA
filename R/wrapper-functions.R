@@ -21,7 +21,7 @@ wrap_xcms = function(mzdatafiles, XCMS.par) {
 
     xset4 <- fillPeaks(xset3, BPPARAM = SnowParam(workers = snowWorkers(), type = "SOCK", stop.on.error = TRUE,
         progressbar = TRUE))
-    return(xset, xset4)
+    return(list(xset, xset4))
 }
 
 #' @title Wraps CAMERA
@@ -56,6 +56,49 @@ wrap_camera = function(xset4, CAMERA.par, ion.mode) {
     peakGa <- getPeaklist(object = anposGa)
     EIC_ID <- row.names(peakGa)
     peak_data <- cbind(EIC_ID, peakGa)
-    return(mz1setpos, anposGa)
+    return(list(mz1setpos, anposGa))
 }
 
+LUMA_getPeaklist = function(object,convert.rt) {
+  if(missing(convert.rt))
+    convert.rt = TRUE
+  peakGa <- getPeaklist(object)
+  EIC_ID<-row.names(peakGa)
+  peak_data <- cbind(EIC_ID, peakGa)
+  ## Converts retention times to min from sec in Peaklist -----
+  rt.list<-peak_data["rt"]
+  rt.min<-apply((as.matrix(rt.list)),1, function(x) x/60)
+  peak_data["rt"] <- rt.min
+  return(peak_data)
+}
+
+#' @title Writes xlsx table
+#'
+#' @export
+#' @description Write xlsx table output from validate_metgroup.  Essentially a wrapper for xlsx::saveWorkbook
+#' @param file.base character return from gen_filebase function
+#' @param validate.sheets list of sheets to write to xlsx file.  Currently must be of length 2
+#' @param myname name to append to file.base to create file name for xlsx
+#' @param mysheets character vector to name sheets in xlsx file. Currently must be of length 2
+#' @return class jobjRef object
+#' @importFrom xlsx createWorkbook createSheet addDataFrame saveWorkbook
+write_xlsx <- function(validate.sheets,file.base,myname,mysheets) {
+  if(!is.list(validate.sheets) || length(validate.sheets) != 2)
+    stop("validate.sheets must be a list with exactly two objects.", call. = FALSE)
+  if(missing(mysheets))
+    mysheets <- c("Sheet 1","Sheet 2")
+  if(!is.vector(mysheets) || length(mysheets) != 2)
+    stop("mysheets must be a vector of length 2!", call. = FALSE)
+
+  wb = createWorkbook()
+  sheet = createSheet(wb, mysheets[1])
+  validate.sheets$clear %>% data.frame() %>% addDataFrame(sheet = sheet,
+                                                          startColumn = 1,
+                                                          row.names = FALSE)
+  sheet = createSheet(wb, mysheets[2])
+  validate.sheets$muddy %>% data.frame() %>% addDataFrame(sheet = sheet,
+                                                          startColumn = 1,
+                                                          row.names = FALSE)
+  saveWorkbook(wb, paste(file.base,paste(myname,".xlsx", sep = ""), sep = "_"))
+  return(wb)
+}

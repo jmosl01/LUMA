@@ -48,7 +48,8 @@ calc_corrstat = function(Sample.df, Peak.list, get.mg, BLANK, ion.mode) {
     corr.df
     total = length(get.mg)
     # i = 17 For debugging purposes
-    pb = txtProgressBar(title = "Generating Correlation Matrices.", min = 0, max = total, width = NA)
+    cat("Generating Correlation Matrices.\n\n\n")
+    pb = txtProgressBar(min = 0, max = total, style = 3)
     for (i in 1:length(corr.group)) {
         my.df <- Peak.list[which(Peak.list$metabolite_group %in% get.mg[i]), ]
         colnames(my.df)
@@ -101,8 +102,7 @@ calc_corrstat = function(Sample.df, Peak.list, get.mg, BLANK, ion.mode) {
 
             }
         }
-        setTxtProgressBar(pb, i, title = paste("Generating Correlation Matrices: ", round(i/total * 100, 0), "% done",
-            sep = ""))
+        setTxtProgressBar(pb, i)
     }
     Peak.list.pspec[, "Correlation.stat"] <- corr.df
     close(pb)
@@ -122,11 +122,11 @@ calc_corrstat = function(Sample.df, Peak.list, get.mg, BLANK, ion.mode) {
 #' @importFrom utils read.table write.table str head
 #' @importFrom stats variable.names
 calc_minfrac = function(Sample.df, xset4, BLANK, Peak.list) {
-    peakSN <- peakTable(xset4, filebase = "SN_Livers_All classes", value = "sn")  #writes the SN peak table to file
-    SN.list <- read.table(file = "SN_Livers_All classes.tsv", sep = "\t", header = TRUE)  #reads the SN peak table
-    file.remove("SN_Livers_All classes.tsv")
+    peakSN <- peakTable(xset4, filebase=NULL, value="sn") #writes the SN peak table to file
+    SN.list <- data.frame(X = rownames(peakSN),peakSN)
 
     if (BLANK == TRUE) {
+      MinFrac.table <- NA
     } else {
         sexes <- unique(paste(Sample.df$Sex, "_", sep = ""))
         samples <- vector(mode = "character", length = length(colnames(SN.list)))
@@ -135,10 +135,7 @@ calc_minfrac = function(Sample.df, xset4, BLANK, Peak.list) {
             samples[rows_loop] <- sexes[i]
         }
         sum.range.list <- SN.list[, samples %in% sexes]
-        t.list <- t(sum.range.list)  #transposes the SN list
-        write.table(t.list, file = "SN_transposed.csv", sep = ",", row.names = FALSE)
-        t.list <- read.table(file = "SN_transposed.csv", sep = ",", header = TRUE)  #reads the transposed SN peak table
-        file.remove("SN_transposed.csv")
+        t.list<-as.data.frame(t(sum.range.list)) #transposes the SN list
 
         ## Grabs the unique sample ID number for each sample, if present in the filename
         bin <- variable.names(t.list, full = TRUE)
@@ -147,12 +144,17 @@ calc_minfrac = function(Sample.df, xset4, BLANK, Peak.list) {
         colnames(sum.range.list)
 
         ## Creates a new column for grouping by class based on user input
-        groups <- paste(Sample.df$Sex, Sample.df$Class, sep = "_")
+        groups <- paste(Sample.df$Sex, Sample.df$Class, sep = ";")
+        groups <- strsplit(groups, split = ";")
+        names(groups) <- paste(Sample.df$Sex, Sample.df$Class, sep = "_")
         group <- vector(mode = "character", length = length(colnames(sum.range.list)))
         for (i in 1:length(groups)) {
-            rows_loop <- grep(groups[i], colnames(sum.range.list))
-            group[rows_loop] <- groups[i]
+            rows_loop <- intersect(grep(groups[[i]][1],colnames(sum.range.list)),
+                                   grep(groups[[i]][2],colnames(sum.range.list))
+                                   )
+            group[rows_loop] <- names(groups)[i]
         }
+        group <- unlist(group)
         class.n <- unique(Sample.df$n)
 
         if (length(class.n) > 1) {
@@ -162,14 +164,18 @@ calc_minfrac = function(Sample.df, xset4, BLANK, Peak.list) {
 
             # Create matrix to contain all of the minfrac values for each group from each list in sn.list
             min.frac.fulltable <- matrix(nrow = length(bin), ncol = sum(sapply(sn.list, function(x) length(x))))
-            # j = 1 This and following line used for debugging purposes k = 1
+            # j = 1 This and following line used for debugging purposes
+            k = 1
             for (j in 1:length(sn.list)) {
                 na_count <- sapply(as.data.frame(sn.list[j]), function(x, y) sum(length(which(is.na(x)))), y = group)  #counts the number of na values per feature across each group
                 na_count <- data.frame(na_count)  #puts the list in a data frame
                 for (i in 1:length(groups)) {
-                  rows_loop <- grep(groups[i], rownames(na_count))
-                  group[rows_loop] <- groups[i]
+                  rows_loop <- intersect(grep(groups[[i]][1], rownames(na_count)),
+                                         grep(groups[[i]][2], rownames(na_count))
+                                         )
+                  group[rows_loop] <- names(groups)[i]
                 }
+                group <- unlist(group)
                 na_count <- cbind(group, na_count)  #combines the grouping variable with the na count values
                 na.count.list <- split(na_count, as.factor(group))  #Splits the data frame into lists of data frames by the grouping variable
                 str(na.count.list)
@@ -178,9 +184,12 @@ calc_minfrac = function(Sample.df, xset4, BLANK, Peak.list) {
                 all_count <- data.frame(all_count)  #puts the list in a data frame
                 str(all_count)
                 for (i in 1:length(groups)) {
-                  rows_loop <- grep(groups[i], rownames(all_count))
-                  group[rows_loop] <- groups[i]
+                  rows_loop <- intersect(grep(groups[[i]][1], rownames(all_count)),
+                                         grep(groups[[i]][2], rownames(all_count))
+                                         )
+                  group[rows_loop] <- names(groups)[i]
                 }
+                group <- unlist(group)
                 all_count <- cbind(group, all_count)  #combines the grouping variable with the na count values
                 all.count.list <- split(all_count, as.factor(group))  #Splits the data frame into lists of data frames by the grouping variable
                 str(all.count.list)
@@ -235,17 +244,23 @@ calc_minfrac = function(Sample.df, xset4, BLANK, Peak.list) {
                 # group<-unlist(strsplit(gsub('(([MF])_([RN])S_T([0482]))|.', '\\1', rownames(na_count)), '\\s+'))
                 # #generates a character vector of grouping variables for each na count value
                 for (i in 1:length(groups)) {
-                  rows_loop <- grep(groups[i], rownames(na_count))
-                  group[rows_loop] <- groups[i]
+                  rows_loop <- intersect(grep(groups[[i]][1], rownames(na_count)),
+                                         grep(groups[[i]][2], rownames(na_count))
+                                         )
+                  group[rows_loop] <- names(groups)[i]
                 }
+                group <- unlist(group)
                 na_count <- cbind(group, na_count)  #combines the grouping variable with the na count values
                 na.count.list <- split(na_count, as.factor(group))  #Splits the data frame into lists of data frames by the grouping variable
                 all_count <- sapply(as.data.frame(sn.list), function(x, y) length(x), y = group)  #counts the number of na values per feature across each group
                 all_count <- data.frame(all_count)  #puts the list in a data frame
                 for (i in 1:length(groups)) {
-                  rows_loop <- grep(groups[i], rownames(all_count))
-                  group[rows_loop] <- groups[i]
+                  rows_loop <- intersect(grep(groups[[i]][1], rownames(all_count)),
+                                         grep(groups[[i]][2], rownames(all_count))
+                                         )
+                  group[rows_loop] <- names(groups)[i]
                 }
+                group <- unlist(group)
                 all_count <- cbind(group, all_count)  #combines the grouping variable with the na count values
                 all.count.list <- split(all_count, as.factor(group))  #Splits the data frame into lists of data frames by the grouping variable
 
@@ -308,7 +323,7 @@ calc_minfrac = function(Sample.df, xset4, BLANK, Peak.list) {
 #' @export
 #' @description Combine phenotype data for each metabolite group with summed intensity values
 #' @param Sample.df a data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns 'Sex','Class','n','Endogenous'.
-#' @param Peak.list data frame. Must have Correlation.stat column.  Should contain output columns from XCMS and CAMERA, and additional columns from IHL.search, Calc.MinFrac, CAMERA.parser and EIC.plotter functions.
+#' @param Peak.list data frame. Must have Correlation.stat, metabolite_group, and mono_mass columns.  Should contain output columns from XCMS and CAMERA, and additional columns from IHL.search, Calc.MinFrac, CAMERA.parser and EIC.plotter functions.
 #' @param Summed.list data frame containing metabolite group as first column and the rest summed intensities for each sample
 #' @param search.par a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.
 #' @param BLANK a logical indicating whether blanks are being evaluated
@@ -319,37 +334,22 @@ calc_minfrac = function(Sample.df, xset4, BLANK, Peak.list) {
 #' @importFrom utils str txtProgressBar setTxtProgressBar
 #' @importFrom stringr str_count
 combine_phenodata = function(Sample.df, Peak.list, Summed.list, search.par, BLANK, ion.mode) {
-    if (ion.mode == "Positive") {
-        cor.stat <- as.numeric(search.par[1, "Corr.stat.pos"])
-    } else {
-        if (ion.mode == "Negative") {
-            cor.stat <- as.numeric(search.par[1, "Corr.stat.neg"])
-        }
-    }
-    Peak.list.summed <- Peak.list[which(Peak.list$Correlation.stat >= cor.stat), ]
-    if (BLANK == FALSE) {
-        sexes <- unique(paste(Sample.df$Sex, "_", sep = ""))
-        paste(sexes, sep = "|")
-        res <- lapply(colnames(Peak.list.summed), function(ch) unique(grep(paste("Pooled_QC_", paste(strsplit(sexes,
-            "(?<=.[_])", perl = TRUE), collapse = "|"), sep = "|"), ch)))  #Flags all of the sample columns and the metabolite group data
-    } else {
-        if (ion.mode == "Positive" && BLANK == TRUE) {
-            res <- lapply(colnames(Peak.list.summed), function(ch) unique(grep("_Pos", ch, ignore.case = TRUE)))  #Flags all of the sample columns and the metabolite group data
-        } else {
-            if (ion.mode == "Negative" && BLANK == TRUE) {
-                res <- lapply(colnames(Peak.list.summed), function(ch) unique(grep("_Neg", ch, ignore.case = TRUE)))  #Flags all of the sample columns and the metabolite group data
-            }
-        }
-    }
+
+  mylist <- gen_res(ion.mode,search.par,Peak.list,Sample.df,BLANK)
+  Peaklist_corstat <- mylist[[1]]
+  res <- mylist[[2]]
+
     # Creates a data frame with only the pheno data columns combined for each metabolite group
-    pheno.list <- Peak.list.summed[sapply(res, function(x) length(x) < 1)]  #Extracts all of the sample columns for summing by metabolite group
+    pheno.list <- Peaklist_corstat[sapply(res, function(x) length(x) < 1)]  #Extracts all of the pheno columns for combining by metabolite group
+    pheno.list[,"metabolite_group"] <- Peaklist_corstat[,"metabolite_group"]
     pheno.list <- pheno.list %>% mutate_if(is.factor, as.character)
     attributes(pheno.list)
     str(pheno.list)
-    mylist <- sort(unique(Peak.list.summed$metabolite_group))
+    mylist <- sort(unique(Peaklist_corstat$metabolite_group))
     new.pheno.list <- as.data.frame(mylist)
     # i = 11 ##for debugging purposes
     total = length(colnames(pheno.list))
+    cat("Combining metadata for isotopes and adducts.\n\n\n")
     pb <- txtProgressBar(min = 0, max = total, style = 3)
     mypaste = function(pheno.list, i) {
         summarise(pheno.list, X = paste0(pheno.list[, i], collapse = ";"))
@@ -360,7 +360,7 @@ combine_phenodata = function(Sample.df, Peak.list, Summed.list, search.par, BLAN
             # X=paste0(MS.ID, collapse = ';'))[2]
             new.pheno.list[, colnames(pheno.list)[i]] <- ddply(pheno.list, ~metabolite_group, function(x) mypaste(x,
                 i))[2]
-        } else if (is_whole(pheno.list[, i])) {
+        } else if (!is.na(is.whole(pheno.list[, i]))) {
             new.pheno.list[, colnames(pheno.list)[i]] <- ddply(pheno.list, ~metabolite_group, function(x) mypaste(x,
                 i))[2]
         }
@@ -385,6 +385,8 @@ combine_phenodata = function(Sample.df, Peak.list, Summed.list, search.par, BLAN
     colnames(Peak.list.summed)
     temp <- as.character(Peak.list.summed$MS.ID)
     str(temp)
+
+    #Drop Singletons
     no.features <- str_count(temp, ";") + 1
     drop.singletons = !search.par[1, "keep.singletons"]
     if (drop.singletons & BLANK == FALSE) {
@@ -392,123 +394,24 @@ combine_phenodata = function(Sample.df, Peak.list, Summed.list, search.par, BLAN
         temp <- Peak.list.summed[drops, ]
         Peak.list.summed <- Peak.list.summed[-drops, ]
     }
+
+    #Combine monomolecular mass values into a single value
+    myMonoMass <- Peak.list.summed$mono_mass
+    allMonoMass <- strsplit(myMonoMass, split = ";")
+    allMonoMass <- lapply(allMonoMass, function(x) as.numeric(x))
+    meanMonoMass <- lapply(allMonoMass, function(x) mean(x))
+    Peak.list.summed$mono_mass <- unlist(meanMonoMass)
+
+    #Combine rt values into a single value
+    myRT <- Peak.list.summed$rt
+    allRT <- strsplit(myRT, split = ";")
+    allRT <- lapply(allRT, function(x) as.numeric(x))
+    meanRT <- lapply(allRT, function(x) mean(x))
+    Peak.list.summed$meanRT <- unlist(meanRT)
+
     return(Peak.list.summed)
 }
 
-#' @title IHL.search
-#'
-#' @export
-#' @description Compare CAMERA isotope annotation with user-defined annotation library
-#' @param Peak.list a table of class 'tbl_dbi', 'tbl_sql', 'tbl_lazy', or 'tbl' with samples as columns.  Should contain all output columns from XCMS and CAMERA, both metadata and sample data. Retention times must be in min.
-#' @param Annotated.library a data frame with annotated metabolite entries. Must contain columns called 'Name', 'Formula', Molecular.Weight' and 'RT..Min.'.  Can contain additional info as separate columns.
-#' @param rules a data frame containing the rule list used by CAMERA to annotate ion adducts and fragments.  Must contain the columns 'name','nmol','charge','massdiff','oidscore','quasi','ips'.
-#' @param search.par a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.
-#' @param ion.mode a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'
-#' @param lib_db RSQLite connection
-#' @return data frame containing the original table with added columns 'Name','MS.ID','Formula','Annotated.adduct' and any additional info columns from Annotated.library
-#' @importFrom dplyr '%>%' select copy_to tbl between
-#' @importFrom glue collapse
-#' @importFrom utils str txtProgressBar
-search_IHL = function(Peak.list, Annotated.library, rules, search.par, ion.mode, lib_db) {
-    search.list <- Peak.list %>% select(EIC_ID, mz, rt) %>% dplyr::collect()
-
-    ## Creates full adduct list for all compounds in the Annotated library
-    IHL <- Annotated.library[rep(seq_len(nrow(Annotated.library)), each = nrow(rules)), ]
-    x <- rules$nmol
-    IHL.temp <- sweep(IHL, 1, x, "*")
-    x <- rules$massdiff
-    if (ion.mode == "Positive") {
-        IHL.temp <- sweep(IHL.temp, 1, x, "+")
-        Ion.Mode <- "Pos"
-        bin <- paste(Ion.Mode, "_", search.list$EIC_ID, "_", sep = "")
-
-    } else {
-        if (ion.mode == "Negative") {
-            IHL.temp <- sweep(IHL.temp, 1, x, "+")
-            IHL.temp <- sweep(IHL.temp, 1, -1, "*")
-            Ion.Mode <- "Neg"
-            bin <- paste(Ion.Mode, "_", search.list$EIC_ID, "_", sep = "")
-
-        } else {
-            stop("You must include the ionization mode!")
-        }
-    }
-    x <- rules$charge
-    IHL.adduct.data <- sweep(IHL.temp, 1, x, "/")
-    IHL[, "mz"] <- IHL.adduct.data$Molecular.Weight
-    IHL[, "adduct"] <- rules$name
-    copy_to(lib_db, IHL, name = paste("Annotated Library", Ion.Mode, sep = "_"), temporary = FALSE, overwrite = TRUE)
-    rm(IHL, IHL.adduct.data, IHL.temp)
-    bin
-    IHL <- tbl(lib_db, paste("Annotated Library", Ion.Mode, sep = "_"))
-    d.mz <- search.list$mz * as.numeric(search.par[1, "ppm"])/10^6
-    d.rt <- as.numeric(search.par[1, "rt"])
-
-    # calculates the min and max range values for searching the in house library
-    search.list$mz.min <- search.list$mz - d.mz
-    search.list$mz.max <- search.list$mz + d.mz
-    search.list$rt.min <- search.list$rt - d.rt
-    search.list$rt.max <- search.list$rt + d.rt
-    search.list$MS.ID = NA
-    search.list$Formula = NA
-    search.list$Name = NA
-    search.list$Annotated.adduct = NA
-    search.list$Conf.Level = NA
-    search.list$FISh.Coverage = NA
-
-    ## attempts to match all peaks against the In House Library ! Try to build a query using *apply functions to
-    ## search all of the search list at once; should speed ! things up considerably i = 27 ##Used for debugging
-    ## purposes
-    total = nrow(search.list)
-    pb = txtProgressBar(title = "Annotating Features.", min = 0, max = total, width = NA)
-    counter = 1
-    for (i in 1:nrow(search.list)) {
-        mz.min = search.list$mz.min[i]
-        mz.max = search.list$mz.max[i]
-        rt.min = search.list$rt.min[i]
-        rt.max = search.list$rt.max[i]
-        test.list <- IHL %>% dplyr::filter(between(mz, mz.min, mz.max)) %>% dplyr::filter(between(RT..min., rt.min,
-            rt.max)) %>% dplyr::collect()
-        if (nrow(test.list) == 0) {
-            search.list$MS.ID[i] = paste(bin[i], "Unidentified", sep = "")
-        } else {
-            if (nrow(test.list) >= 1) {
-                cat("\n\n\nFeature annotated for match number ", counter, ".\nMatch results below.\n\n\n", sep = "")
-                str(test.list)
-                search.list$MS.ID[i] = paste(bin[i], "Annotated", sep = "")
-                search.list$Name[i] = glue::collapse(test.list$Name, sep = ";", width = Inf, last = " or ")
-                search.list$Formula[i] = glue::collapse(unique(gsub(" ", "", test.list$Formula)), sep = ";", width = Inf,
-                  last = " or ")
-                search.list$Annotated.adduct[i] = glue::collapse(test.list$adduct, sep = ";", width = Inf, last = " or ")
-                search.list$Conf.Level[i] = glue::collapse(test.list$Levels, sep = ";", width = Inf, last = " or ")
-                search.list$FISh.Coverage[i] = glue::collapse(test.list$Fish.Coverage, sep = ";", width = Inf,
-                  last = " or ")
-                counter = counter + 1
-            }
-        }
-
-        setTxtProgressBar(pb, i, title = paste("Annotating Features: ", round(i/total * 100, 0), "% done", sep = ""))
-    }
-    close(pb)
-    named.peak.list <- search.list[, 8:ncol(search.list)]
-    colnames(named.peak.list)
-    temp <- as.data.frame(Peak.list)
-    colnames(Peak.list)
-    if (nrow(temp) == nrow(named.peak.list)) {
-        temp <- cbind(Peak.list, named.peak.list)
-    }
-    colnames(temp)
-    return(temp)
-}
-
-#' @title Is whole number
-#'
-#' @description Tests if a vector or array contains only whole numbers
-#' @param a a vector or array to test
-#' @return logical
-is_whole <- function(a) {
-    (is.numeric(a) && floor(a) == a) || (is.complex(a) && floor(Re(a)) == Re(a) && floor(Im(a)) == Im(a))
-}
 
 #' @title Sum Features into Metabolites
 #'
@@ -522,31 +425,46 @@ is_whole <- function(a) {
 #' @return data table data frame sum.range.list with the first column containing metabolite group and the rest containing sample and QC columns
 #' @importFrom data.table as.data.table
 sum_features = function(Sample.df, Peak.list, search.par, BLANK, ion.mode) {
-    if (ion.mode == "Positive") {
-        cor.stat <- as.numeric(search.par[1, "Corr.stat.pos"])
-    } else {
-        if (ion.mode == "Negative") {
-            cor.stat <- as.numeric(search.par[1, "Corr.stat.neg"])
-        }
-    }
-    Peak.list.summed <- Peak.list[which(Peak.list$Correlation.stat >= cor.stat), ]
-    if (BLANK == FALSE) {
-        sexes <- unique(paste(Sample.df$Sex, "_", sep = ""))
-        paste(sexes, sep = "|")
-        res <- lapply(colnames(Peak.list.summed), function(ch) unique(grep(paste("Pooled_QC_", paste(strsplit(sexes,
-            "(?<=.[_])", perl = TRUE), collapse = "|"), "metabolite_group", sep = "|"), ch)))  #Flags all of the sample columns and the metabolite group data
-    } else {
-        if (ion.mode == "Positive" && BLANK == TRUE) {
-            res <- lapply(colnames(Peak.list.summed), function(ch) unique(grep("_Pos|metabolite_group", ch, ignore.case = TRUE)))  #Flags all of the sample columns and the metabolite group data
-        } else {
-            if (ion.mode == "Negative" && BLANK == TRUE) {
-                res <- lapply(colnames(Peak.list.summed), function(ch) unique(grep("_Neg|metabolite_group", ch,
-                  ignore.case = TRUE)))  #Flags all of the sample columns and the metabolite group data
-            }
-        }
-    }
-    sum.range.list <- Peak.list.summed[sapply(res, function(x) length(x) > 0)]  #Extracts all of the sample columns for summing by metabolite group
+    mylist <- gen_res(ion.mode,search.par,Peak.list,Sample.df,BLANK)
+    Peaklist_corstat <- mylist[[1]]
+    res <- mylist[[2]]
+    sum.range.list <- Peaklist_corstat[sapply(res, function(x) length(x) > 0)]  #Extracts all of the sample columns for summing by metabolite group
     DT <- as.data.table(sum.range.list)  #Puts the summing columns in data table format
     sum.range.list <- DT[, lapply(.SD, sum), by = metabolite_group]  #sums features within each sample by metabolite group
     return(sum.range.list)
+}
+
+is.whole <- function(a) {
+  (is.numeric(a) && floor(a) == a) || (is.complex(a) && floor(Re(a)) == Re(a) && floor(Im(a)) == Im(a))
+}
+
+gen_res <- function(ion.mode,search.par,Peak.list,Sample.df,BLANK) {
+  if (ion.mode == "Positive") {
+    cor.stat <- as.numeric(search.par[1, "Corr.stat.pos"])
+  } else {
+    if (ion.mode == "Negative") {
+      cor.stat <- as.numeric(search.par[1, "Corr.stat.neg"])
+    }
+  }
+  Peaklist_corstat <- Peak.list[which(Peak.list$Correlation.stat >= cor.stat), ]
+  if (BLANK == FALSE) {
+    sexes <- unique(paste(Sample.df$Sex, "_", sep = ""))
+    #Flags all of the sample columns and the metabolite group data
+    res <- lapply(colnames(Peaklist_corstat),
+                  function(ch) unique(grep(paste("Pooled_QC_", paste(strsplit(sexes,"(?<=.[_]$)", perl = TRUE), collapse = "|"),
+                                                 "metabolite_group", sep = "|"), ch)))
+  } else {
+    if (ion.mode == "Positive" && BLANK == TRUE) {
+      #Flags all of the sample columns and the metabolite group data
+      res <- lapply(colnames(Peaklist_corstat),
+                    function(ch) unique(grep("_Pos|metabolite_group", ch, ignore.case = TRUE)))
+    } else {
+      if (ion.mode == "Negative" && BLANK == TRUE) {
+        #Flags all of the sample columns and the metabolite group data
+        res <- lapply(colnames(Peaklist_corstat),
+                      function(ch) unique(grep("_Neg|metabolite_group", ch, ignore.case = TRUE)))
+      }
+    }
+  }
+  return(list(Peaklist_corstat,res))
 }

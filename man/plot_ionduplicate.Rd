@@ -4,17 +4,19 @@
 \alias{plot_ionduplicate}
 \title{Loop-based EIC Plotter for Ion Mode Duplicates}
 \usage{
-plot_ionduplicate(anposGa, xpos.cor, annegGa, xneg.cor, Peak.list,
-  gen.plots, file.base, QC.id, ...)
+plot_ionduplicate(anposGa, xpos, annegGa, xneg, rt.method, Peak.list,
+  gen.plots, file.base, QC.id, mytable, maxEIC, maxQC, ...)
 }
 \arguments{
 \item{anposGa}{xsannotate object with annotated isotopes and ion adducts and fragments for positive mode.}
 
-\item{xpos.cor}{xcmsSet object shoud have grouping, retention time correction and fillPeaks applied.  Default is to look for this in anposGa}
+\item{xpos}{xcmsSet object shoud have grouping, retention time correction and fillPeaks applied.  Default is to look for this in anposGa}
 
 \item{annegGa}{xsannotate object with annotated isotopes and ion adducts and fragments for negative mode.}
 
-\item{xneg.cor}{xcmsSet object shoud have grouping, retention time correction and fillPeaks applied.  Default is to look for this in annegGa}
+\item{xneg}{xcmsSet object shoud have grouping, retention time correction and fillPeaks applied.  Default is to look for this in annegGa}
+
+\item{rt.method}{Which method to use for EIC. Can be "corrected" or "raw"}
 
 \item{Peak.list}{a data frame containing combined ion mode peaklist with Duplicate IDs.  Alternatively can be retrieved from databases.  Default is NULL}
 
@@ -24,10 +26,16 @@ plot_ionduplicate(anposGa, xpos.cor, annegGa, xneg.cor, Peak.list,
 
 \item{QC.id}{character identifier for pooled QC samples. Default is 'Pooled_QC'}
 
+\item{mytable}{character name of table in database to return}
+
+\item{maxEIC}{numeric How many EICs to plot for each metabolite}
+
+\item{maxQC}{numeric How many QCs will be used to plot EICs}
+
 \item{...}{parameters to be passed to database functions}
 }
 \value{
-NULL testing
+list of length 2 EIC indices for the ion duplicate plots
 }
 \description{
 Plots EICs and Pseudospectra from (parsed) metabolite groups using plotEICs-methods and plotPsSpectrum-methods from CAMERA. Also plots correlation matrices and clustered dendrograms for each (parsed) metabolite group.

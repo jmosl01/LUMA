@@ -5,7 +5,7 @@
 \title{Exogenous and background peak algorithm}
 \usage{
 remove_background_peaks(Peak.list, Sample.df, search.par, ion.id, QC.id,
-  MB.id, tbl.id, db.id, ion.modes, ...)
+  MB.id, tbl.id, db.id, ion.modes, method, lib.db, ...)
 }
 \arguments{
 \item{Peak.list}{a named list of data frames (two per ionization mode) containing intensity matrices across all study samples and Pooled QCs and process blanks.  Names should be c('pos','neg','blanks_pos','blanks_neg').  Alternatively may use existing database connections by setting to NULL and specifying database parameters with ...}
@@ -25,6 +25,10 @@ remove_background_peaks(Peak.list, Sample.df, search.par, ion.id, QC.id,
 \item{db.id}{character vector specifying identifiers in database names designating sample \[1\] and blank \[2\] databases.  Default is c('Peaklist','Blanks')}
 
 \item{ion.modes}{a character vector defining the ionization mode.  Must be either 'Positive', 'Negative' or both.}
+
+\item{method}{which method to use.  Can be monoMass or mz}
+
+\item{lib.db}{character name of database to contain Solvent Library}
 
 \item{...}{Arguments to pass parameters to database functions}
 }
