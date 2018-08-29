@@ -52,9 +52,10 @@ gen_filebase = function(mzdatafiles, BLANK, ion.id, ion.mode) {
 connect_peakdb = function(file.base, db.dir) {
     if (missing(db.dir))
         db.dir = "db"
-    peak_db_file <- paste(file.base, db.dir, sep = "_")
+    ## Uncomment the following line if you dare
+    # peak_db_file <- paste(file.base, db.dir, sep = "_")
     dir.create(db.dir, recursive = FALSE, showWarnings = FALSE)
-    peak_db <- DBI::dbConnect(RSQLite::SQLite(), paste(db.dir, peak_db_file, sep = "/"))
+    peak_db <- DBI::dbConnect(RSQLite::SQLite(), paste(db.dir, file.base, sep = "/"))
     return(peak_db)
 }
 
