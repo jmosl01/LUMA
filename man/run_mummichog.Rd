@@ -2,9 +2,10 @@
 % Please edit documentation in R/mummichog-functions.R
 \name{run_mummichog}
 \alias{run_mummichog}
-\title{Runs _mummichog_}
+\title{Runs \emph{mummichog}}
 \usage{
-run_mummichog(Sample.df, Peak.list, ion.mode, stat.method, search.par)
+run_mummichog(Sample.df, Peak.list, ion.mode, stat.method, search.par,
+  instrumentOpt, msModeOpt, pvalCutoff, lib, enrichOpt, pvalOpt, permNum)
 }
 \arguments{
 \item{Sample.df}{a data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns 'Sex','Class','n','Endogenous'.}
@@ -17,11 +18,23 @@ run_mummichog(Sample.df, Peak.list, ion.mode, stat.method, search.par)
 
 \item{search.par}{a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.}
 
-\item{statistic}{what statistic should be used in _mummichog_. Can be "t-score" or "Fold change"}
+\item{instrumentOpt}{Define the mass-spec instrument used to perform untargeted metabolomics}
+
+\item{msModeOpt}{Define the mass-spec mode of the instrument used to perform untargeted metabolomics}
+
+\item{pvalCutoff}{Numeric, specify the p-value cutoff to define significant m/z features from reference m/z features}
+
+\item{lib}{Input the name of the organism library, default is hsa}
+
+\item{enrichOpt}{Input the method to perform enrichment analysis}
+
+\item{pvalOpt}{Input the method to calculate p-values}
+
+\item{permNum}{Numeric, the number of permutations to perform}
 }
 \value{
 NULL testing
 }
 \description{
-Runs _mummichog_ within the R environment.  Basically a wrapper script built from the "MS Peaks to Pathways" vignette from MetaboAnalystR.
+Runs \emph{mummichog} within the R environment.  Basically a wrapper script built from the \bold{"MS Peaks to Pathways"} vignette from MetaboAnalystR.
 }

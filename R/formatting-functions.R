@@ -126,3 +126,55 @@ format_simca = function(Peak.list = NULL, Sample.df, Sample.data, tbl.id = NULL,
 
 
 }
+
+#' @title Formats for statistical analysis
+#'
+#' @export
+#' @description Formats LUMA output for use with statistical functions
+#' @param Peak.list Data table from output of any LUMA function
+#' @param Sample.df data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination for statistical analysis. Must contain the columns 'Sex','Class','n','Endogenous'.
+#' @return list of length 2. 1st element is a dataframe of (mostly) numeric values from a metabolomics dataset with samples (rows) and metabolite intensities (cols).
+#' 1st column contains a factor vector describing the sample class.
+#' 2nd element in returned list is a character string of the endogenous (control) class
+format_stats = function(Peak.list,Sample.df) {
+  #Flags all of the sample columns and the metabolite group data
+  sexes <- unique(paste(Sample.df$Sex, "_", sep = ""))
+  res <- lapply(colnames(Peak.list),
+                function(ch) unique(grep(paste(paste(strsplit(sexes,"(?<=.[_]$)", perl = TRUE), collapse = "|"),
+                                               sep = "|"), ch)))
+  Sample.list <- Peak.list[sapply(res, function(x) length(x) > 0)] #Exctracts all of the sample  columns
+  t.sample.list <- t(Sample.list)
+  dim(t.sample.list)
+  colnames(t.sample.list) <- Peak.list$mz
+
+  ## Creates a new column for grouping by class based on user input
+  groups <- paste(Sample.df$Sex, Sample.df$Class, sep = ";")
+  groups <- strsplit(groups, split = ";")
+  names(groups) <- paste(Sample.df$Sex, Sample.df$Class, sep = "_")
+  group <- vector(mode = "character", length = length(colnames(Sample.list)))
+  for (i in 1:length(groups)) {
+    rows_loop <- intersect(grep(groups[[i]][1],colnames(Sample.list)),
+                           grep(groups[[i]][2],colnames(Sample.list))
+    )
+    group[rows_loop] <- names(groups)[i]
+  }
+  group <- as.factor(unlist(group))
+  Sample.data <- cbind.data.frame(group,t.sample.list)
+
+  ## Creates a character string for the control class; if multiple are present, returns the first
+  Control.df <- Sample.df[which(Sample.df$Endogenous == TRUE),]
+  groups <- paste(Control.df$Sex, Control.df$Class, sep = ";")
+  groups <- strsplit(groups, split = ";")
+  names(groups) <- paste(Control.df$Sex, Control.df$Class, sep = "_")
+  group <- vector(mode = "character", length = length(colnames(Sample.list)))
+  for (i in 1:length(groups)) {
+    rows_loop <- intersect(grep(groups[[i]][1],colnames(Sample.list)),
+                           grep(groups[[i]][2],colnames(Sample.list))
+    )
+    group[rows_loop] <- names(groups)[i]
+  }
+  group <- as.factor(unlist(group))
+  endo.group <- unique(group)[1]
+  mylist <- list(Sample.data,endo.group)
+  return(mylist)
+}

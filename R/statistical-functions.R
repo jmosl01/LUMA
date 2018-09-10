@@ -3,13 +3,14 @@
 #' @export
 #' @description  Calculates fold change relative to controls for an untargeted metabolomics dataset
 #' @param values a dataframe of numeric values from a metabolomics dataset with samples (rows) and metabolite intensities (cols)
-#' @param classes a vector of factor values describing the sample class, one of which must be Control
+#' @param classes a vector of factor values describing the sample class
+#' @param control string name of the relative class against which fold change will be calculated
 #' @importFrom utils head
 #' @return a dataframe with first column containing descriptors for mean fold change values and standard error of the means. Contains values for each sample class (rows)
 #'  and metabolite (cols).
 #' @examples
-#' run_Fold_Change(metabolites,grouping)
-run_Fold_Change <- function(values, classes) {
+#' run_Fold_Change(metabolites,grouping,"Control")
+run_Fold_Change <- function(values, classes, control) {
   bin <- names(values)
   samples <- row.names(values)
   means <- lapply(values, function(x) tapply(as.numeric(x), classes, mean))
@@ -34,17 +35,27 @@ run_Fold_Change <- function(values, classes) {
 
 #' @title get_pvalue
 #'
+#' @export
 #' @description  Get p-value and other statistical parameters from univariate statistical analysis of metabolomics dataset
 #' @param values a dataframe of numeric values from a metabolomics dataset with samples(rows) and metabolite intensity values (cols)
 #' @param classes a vector of factor values describing the sample class
-#' @param stat.method which statistical method to use. Can be ANOVA or Ttest
+#' @param stat.method which statistical method to use. Can be ANOVA, ANOVA_FDR, or Ttest
+#' @importFrom stats t.test aov
+#' @importFrom fdrtool fdrtool
 #' @return a matrix containing p-values, F-stats, degrees of freedom for class and
 #' degrees of freedom for residuals for each metabolite (row)
-#' @importFrom stats t.test
-#' @importFrom stats aov
+#' @examples
+#' get_pvalue(metabolites, grouping, "ANOVA")
+#' get_pvalue(metabolites, grouping, "Ttest")
+#'
+#' subset <- which(grouping == "100_Effluent"|grouping == "Control")
+#' mydata <- metabolites[subset,]
+#' myclass <- grouping[subset]
+#' get_pvalue(mydata,myclass,"Ttest")
 get_pvalue <- function(values, classes, stat.method) {
-  class(values) <- c(class(values),stat.method)
+  class(values) <- append(class(values),stat.method)
   mystats <- run_stats(values, classes)
+
   return(mystats)
 }
 
@@ -53,14 +64,17 @@ run_stats <- function(values, ...) {
 }
 
 run_stats.ANOVA <- function(values, classes) {
+  print(paste("Running ANOVA on ", ncol(values),
+        "m/z features."))
+
   test <- lapply(values, function(x) aov(x~classes))
   test.summary <- lapply(test, function(x) summary(x))
-  name <- names(test.summary)
-  p.value<-sapply(name, function(x) test.summary[[x]][[1]][["Pr(>F)"]][1])
-  DF_Class<-sapply(name, function(x) test.summary[[x]][[1]][["Df"]][1])
-  DF_Resid<-sapply(name, function(x) test.summary[[x]][[1]][["Df"]][2])
-  F_Stat<-sapply(name, function(x) test.summary[[x]][[1]][["F value"]][1])
-  mystats <- cbind(name,p.value,DF_Class,DF_Resid,F_Stat)
+  names <- names(test.summary)
+  p.value<-sapply(names, function(x) test.summary[[x]][[1]][["Pr(>F)"]][1])
+  DF_Class<-sapply(names, function(x) test.summary[[x]][[1]][["Df"]][1])
+  DF_Resid<-sapply(names, function(x) test.summary[[x]][[1]][["Df"]][2])
+  t.score<-sapply(names, function(x) test.summary[[x]][[1]][["F value"]][1])
+  mystats <- cbind.data.frame(m.z = as.double(names),p.value,DF_Class,DF_Resid,t.score)
   return(mystats)
 }
 
@@ -70,16 +84,36 @@ run_stats.Ttest <- function(values, classes) {
   }
   if(length(unique(classes)) > 2) {
     print("Student's t-test cannot be run on factors with more than two levels!")
+    return(NULL)
   } else {
-    # values <- values[,2:length(colnames(values))]
+    print(paste("Running T-test on ", ncol(values),
+          "m/z features."))
+
     test <- lapply(values, function(x) t.test(as.numeric(x)~classes, values = values))
-    name <- names(test)
-    p.value <- sapply(name, function(x) test[[x]]$p.value[1])
-    CI.low <- sapply(name, function(x) test[[x]]$conf.int[1])
-    CI.high <- sapply(name, function(x) test[[x]]$conf.int[2])
-    f.stat <- sapply(name, function(x) test[[x]]$statistic[1])
-    mystats <- cbind(name,p.value,CI.low,CI.high,f.stat)
+    names <- names(test)
+    p.value <- sapply(names, function(x) test[[x]]$p.value[1])
+    CI.low <- sapply(names, function(x) test[[x]]$conf.int[1])
+    CI.high <- sapply(names, function(x) test[[x]]$conf.int[2])
+    t.score <- sapply(names, function(x) test[[x]]$statistic[1])
+    mystats <- cbind.data.frame(m.z = as.double(names),p.value,CI.low,CI.high,t.score)
     return(mystats)
   }
 
+}
+
+run_stats.ANOVA_FDR <- function(values, classes) {
+  print(paste("Running ANOVA with FDR on ", ncol(values),
+              "m/z features."))
+  test <- lapply(values, function(x) aov(x~classes))
+  test.summary <- lapply(test, function(x) summary(x))
+  names <- names(test.summary)
+  pvalue<-sapply(names, function(x) test.summary[[x]][[1]][["Pr(>F)"]][1])
+  DF_Class<-sapply(names, function(x) test.summary[[x]][[1]][["Df"]][1])
+  DF_Resid<-sapply(names, function(x) test.summary[[x]][[1]][["Df"]][2])
+  t.score<-sapply(names, function(x) test.summary[[x]][[1]][["F value"]][1])
+  adj.Strimmer <- fdrtool(pvalue, statistic = "pvalue")
+  p.value<-adj.Strimmer$qval
+  Strimmer.locFDR<-adj.Strimmer$lfdr
+  mystats <- cbind.data.frame(m.z = as.double(names),pvalue,DF_Class,DF_Resid,t.score,p.value,Strimmer.locFDR)
+  return(mystats)
 }

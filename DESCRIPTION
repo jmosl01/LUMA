@@ -6,6 +6,7 @@ Authors@R: person("Jonathan","Mosley",comment = c(ORCID = "0000-0002-9300-6924")
                email = "mosley.jonathan@epa.gov", role = c("aut","cre"))
 Description: Performs quality control and feature reduction steps on the output of 'XCMS'
     and 'CAMERA' to generate data matrices for discovery-based studies.  
+Depends: R (>= 2.10)
 License: CC0
 Encoding: UTF-8
 LazyData: true
@@ -17,6 +18,7 @@ Imports:
     data.table,
     DBI,
     dplyr,
+    fdrtool,
     flashClust,
     glue,
     graphics,

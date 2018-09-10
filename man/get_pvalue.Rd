@@ -11,7 +11,7 @@ get_pvalue(values, classes, stat.method)
 
 \item{classes}{a vector of factor values describing the sample class}
 
-\item{stat.method}{which statistical method to use. Can be ANOVA or Ttest}
+\item{stat.method}{which statistical method to use. Can be ANOVA, ANOVA_FDR, or Ttest}
 }
 \value{
 a matrix containing p-values, F-stats, degrees of freedom for class and
@@ -19,4 +19,13 @@ degrees of freedom for residuals for each metabolite (row)
 }
 \description{
 Get p-value and other statistical parameters from univariate statistical analysis of metabolomics dataset
+}
+\examples{
+get_pvalue(metabolites, grouping, "ANOVA")
+get_pvalue(metabolites, grouping, "Ttest")
+
+subset <- which(grouping == "100_Effluent"|grouping == "Control")
+mydata <- metabolites[subset,]
+myclass <- grouping[subset]
+get_pvalue(mydata,myclass,"Ttest")
 }

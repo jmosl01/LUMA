@@ -4,12 +4,14 @@
 \alias{run_Fold_Change}
 \title{run_Fold_Change}
 \usage{
-run_Fold_Change(values, classes)
+run_Fold_Change(values, classes, control)
 }
 \arguments{
 \item{values}{a dataframe of numeric values from a metabolomics dataset with samples (rows) and metabolite intensities (cols)}
 
-\item{classes}{a vector of factor values describing the sample class, one of which must be Control}
+\item{classes}{a vector of factor values describing the sample class}
+
+\item{control}{string name of the relative class against which fold change will be calculated}
 }
 \value{
 a dataframe with first column containing descriptors for mean fold change values and standard error of the means. Contains values for each sample class (rows)
@@ -19,5 +21,5 @@ a dataframe with first column containing descriptors for mean fold change values
 Calculates fold change relative to controls for an untargeted metabolomics dataset
 }
 \examples{
-run_Fold_Change(metabolites,grouping)
+run_Fold_Change(metabolites,grouping,"Control")
 }
