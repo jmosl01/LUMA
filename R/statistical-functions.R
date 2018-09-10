@@ -41,6 +41,7 @@ run_Fold_Change <- function(values, classes) {
 #' @return a matrix containing p-values, F-stats, degrees of freedom for class and
 #' degrees of freedom for residuals for each metabolite (row)
 #' @importFrom stats t.test
+#' @importFrom stats aov
 get_pvalue <- function(values, classes, stat.method) {
   class(values) <- c(class(values),stat.method)
   mystats <- run_stats(values, classes)

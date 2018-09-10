@@ -9,7 +9,7 @@
 #' @param search.par a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.
 #' @importFrom MetaboAnalystR InitDataObjects
 #' @return NULL testing
-run_mummichog = function(Sample.df,Peak.list,ion.mode,stat.method,search.par) {
+run_mummichog = function(Sample.df,Peak.list,ion.mode,stat.method,statistic,search.par) {
   # Create objects for storing processed data from the MS peaks to pathways module
   mSet <- InitDataObjects("conc","stat", FALSE)
 

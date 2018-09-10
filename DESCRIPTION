@@ -24,6 +24,7 @@ Imports:
     gtools,
     Hmisc,
     igraph,
+    MetaboAnalystR,
     openxlsx,
     plyr,
     RSQLite,
