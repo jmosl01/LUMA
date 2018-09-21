@@ -106,3 +106,344 @@ search_IHL = function(Peak.list, Annotated.library, rules, search.par, ion.mode,
   return(temp)
 }
 
+#' @title Searches for Ion mode duplicates
+#'
+#' @export
+#' @description Searches data tables from both ionization modes for duplicate entries
+#' @param object used for method dispatch. Can be any object. Class must be "mz" or "monoMass"
+#' @param Peak.list.pos Positive ionization mode data table
+#' @param Peak.list.neg Negative ionization mode data table
+#' @param search.par a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.
+#' @return data frame containing the original table with added columns 'Name','MS.ID','Formula','Annotated.adduct' and any additional info columns from Annotated.library
+search_IonDup <- function(object, Peak.list.pos,Peak.list.neg,search.par) {
+  UseMethod("search_IonDup", object)
+}
+
+#' @method search_IonDup mz
+#' @export
+search_IonDup.mz  <- function(object,Peak.list.pos,Peak.list.neg,search.par) {
+  ## Trim the feature table down to just those columns necessary for duplicate matching
+  col.names <- c("Ion Mode", "EIC_ID", "mono_mass", "rt")
+  mono.pos <- subset(Peak.list.pos, select = paste(col.names))
+
+  mono.neg <- subset(Peak.list.neg, select = paste(col.names))
+
+  mono.comb <- rbind(mono.pos, mono.neg)
+
+  # get the distance matrices for mz and rt
+  system.time({
+    d.mz <- as.matrix(dist(mono.comb$mono_mass))
+    dim(d.mz)
+    v = as.numeric(as.character(mono.comb$mono_mass))
+    v2 <- rep(v, each = dim(d.mz)[1])
+    d.amu <- d.mz
+    d.ppm <- d.amu/v2
+    v = rep(10^6, length = ncol(d.ppm))
+    v2 <- rep(v, each = dim(d.ppm)[1])
+    d.mz <- d.ppm * v2
+  })
+  system.time(d.rt <- as.matrix(dist(mono.comb$rt)))
+
+  # build the adjacency matrix
+  m <- d.mz <= as.numeric(search.par[1, "ppm"]) & d.rt <= as.numeric(search.par[1, "rt"])
+
+  # obtain the connected features
+  g <- graph.adjacency(m)
+  z <- clusters(g)$membership
+  mono.comb$Duplicate_EIC <- ave(as.character(mono.comb$EIC_ID), z, FUN = function(s) paste(s, collapse = ","))
+  mono.comb$Duplicate_ID <- z
+  bin <- row.names(mono.comb)
+  bin
+
+  # Combine peaklists and add duplicate flag and ID
+  colnames(Peak.list.pos)
+  colnames(Peak.list.neg)
+  colnames(Peak.list.neg) <- colnames(Peak.list.pos)
+  Peak.list.combined <- as.data.frame(rbind(Peak.list.pos, Peak.list.neg))
+
+  Peak.list.combined[, "Duplicate_ID"] <- mono.comb$Duplicate_ID
+  Peak.list.combined[, "Duplicate_EIC"] <- mono.comb$Duplicate_EIC
+  return(Peak.list.combined)
+}
+
+#' @method search_IonDup monoMass
+#' @export
+search_IonDup.monoMass  <- function(object,Peak.list.pos,Peak.list.neg,search.par) {
+  ## Trim the feature table down to just those columns necessary for duplicate matching
+  col.names <- c("Ion Mode", "EIC_ID", "mono_mass", "meanRT")
+  mono.pos <- subset(Peak.list.pos, select = paste(col.names))
+
+  mono.neg <- subset(Peak.list.neg, select = paste(col.names))
+
+  mono.comb <- rbind(mono.pos, mono.neg)
+
+  # get the distance matrices for mz and rt
+  system.time({
+    d.mz <- as.matrix(dist(mono.comb$mono_mass))
+    dim(d.mz)
+    v = as.numeric(as.character(mono.comb$mono_mass))
+    v2 <- rep(v, each = dim(d.mz)[1])
+    d.amu <- d.mz
+    d.ppm <- d.amu/v2
+    v = rep(10^6, length = ncol(d.ppm))
+    v2 <- rep(v, each = dim(d.ppm)[1])
+    d.mz <- d.ppm * v2
+  })
+  system.time(d.rt <- as.matrix(dist(mono.comb$meanRT)))
+
+  # build the adjacency matrix
+  m <- d.mz <= as.numeric(search.par[1, "ppm"]) & d.rt <= as.numeric(search.par[1, "rt"])
+
+  # obtain the connected features
+  g <- graph.adjacency(m)
+  z <- clusters(g)$membership
+  mono.comb$Duplicate_EIC <- ave(as.character(mono.comb$EIC_ID), z, FUN = function(s) paste(s, collapse = ","))
+  mono.comb$Duplicate_ID <- z
+  bin <- row.names(mono.comb)
+  bin
+
+  # Combine peaklists and add duplicate flag and ID
+  colnames(Peak.list.pos)
+  colnames(Peak.list.neg)
+  colnames(Peak.list.neg) <- colnames(Peak.list.pos)
+  Peak.list.combined <- as.data.frame(rbind(Peak.list.pos, Peak.list.neg))
+
+  Peak.list.combined[, "Duplicate_ID"] <- mono.comb$Duplicate_ID
+  Peak.list.combined[, "Duplicate_EIC"] <- mono.comb$Duplicate_EIC
+  return(Peak.list.combined)
+}
+
+#' @title Searches for background components
+#'
+#' @export
+#' @description Searches data table from samples for components coming from background
+#' @param Peak.list data table containing sample data
+#' @param Solv.list data table containing blank data
+#' @param ... arguments to be passed to other functions
+#' @return data frame containing the original table with added columns 'Name','MS.ID','Formula','Annotated.adduct' and any additional info columns from Annotated.library
+search_solv <- function(Peak.list, Solv.list, search.par, ...) {
+  UseMethod("search_solv", Peak.list)
+}
+
+#' @method search_solv mz
+#' @export
+search_solv.mz <- function(Peak.list, Solv.list, Sample.df, search.par, ion.id, QC.id, MB.id, tbl.id, db.id,
+                           ion.modes,lib_db) {
+  endo.groups <- as.matrix(paste(Sample.df[which(Sample.df[, "Endogenous"] == TRUE), "Sex"], Sample.df[which(Sample.df[,
+                                                                                                                       "Endogenous"] == TRUE), "Class"], sep = "_"))
+  list.length = length(ion.modes)
+  mylist <- NULL
+  masterlist <- NULL
+  for (i in 1:list.length) {
+    ## Selects the filebase to use for data processing
+    cur.ion = ion.modes[i]
+    file.base = paste(db.id[1], ion.id[i], sep = "_")
+    blank.base = paste(db.id[2], ion.id[i], sep = "_")
+    cur.Peaklist <- Peak.list[[i]]
+    cur.Solvlist <- Solv.list[[i]]
+
+    res <- as.numeric(unlist(apply(endo.groups, 1, function(X) grep(X, colnames(cur.Peaklist)))))
+    Endo.list <- cur.Peaklist[, res]
+    search.list <- cur.Peaklist %>% select(EIC_ID, mz, rt) %>% dplyr::collect()
+
+    # Calculate the mean of QC values for each compound
+    res <- lapply(colnames(cur.Peaklist), function(ch) grep(QC.id, ch))
+    QC.list <- cur.Peaklist[sapply(res, function(x) length(x) > 0)]
+    QCmean <- rowMeans(QC.list)
+    cur.Peaklist[, "Endogenous_flag"] <- NULL
+    Endo.mean <- apply(Endo.list, 1, mean)
+    Endo.lim <- as.numeric(search.par[1, "Endogenous"])
+    Endo.flag <- Endo.mean > Endo.lim
+    cur.Peaklist[, "Endogenous_flag"] <- Endo.flag
+
+    # Calculate the mean of MB values for each compound
+    res <- lapply(colnames(cur.Solvlist), function(ch) unique(grep(MB.id, ch)))  #Flags the EIC_ID and Isotope cluster columns
+    Solvent.new.list <- cur.Solvlist[sapply(res, function(x) length(x) > 0)]  #Extracts the EIC_ID and Isotope cluster columns
+    MBmean <- rowMeans(Solvent.new.list)
+    cur.Solvlist$mean <- MBmean
+    if (cur.ion == "Positive") {
+      cat("Removing Background Compounds in Positive mode:")
+      copy_to(lib_db, cur.Solvlist, name = "Pos_list", temporary = FALSE, overwrite = TRUE)
+      IHL <- tbl(lib_db, "Pos_list")
+    } else {
+      if (cur.ion == "Negative") {
+        cat("Removing Background Compounds in Negative mode:")
+        copy_to(lib_db, cur.Solvlist, name = "Neg_list", temporary = FALSE, overwrite = TRUE)
+        IHL <- tbl(lib_db, "Neg_list")
+      } else {
+        stop("Ionization mode must be Positive or Negative. It is case sensitive!", call. = FALSE)
+      }
+    }
+    # calculates the min and max range values for searching against the solvent list
+    d.mz <- search.list$mz * as.numeric(search.par[1, "ppm"])/10^6
+    d.rt <- as.numeric(search.par[1, "rt"])
+
+    search.list$mz.min <- search.list$mz - d.mz
+    search.list$mz.max <- search.list$mz + d.mz
+    search.list$rt.min <- search.list$rt - d.rt
+    search.list$rt.max <- search.list$rt + d.rt
+    search.list$sample.mean = QCmean
+
+    bin = vector(mode = "logical", length = search.list %>% nrow)
+    Solvent.ratio <- as.numeric(search.par[1, "Solvent"])
+    ## attempts to match all peaks against the In House Library ! Try to build a query using *apply functions to
+    ## search all of the search list at once; should speed ! things up considerably
+    cnt = 1
+    total <- nrow(search.list)
+    pb <- txtProgressBar(min = 0, max = total, style = 3)
+    for (j in 1:total) {
+      mz.min = search.list$mz.min[j]
+      mz.max = search.list$mz.max[j]
+      rt.min = search.list$rt.min[j]
+      rt.max = search.list$rt.max[j]
+      test.list <- IHL %>% filter(between(mz, mz.min, mz.max)) %>% filter(between(rt, rt.min, rt.max)) %>%
+        dplyr::collect()
+      if (nrow(test.list) == 0) {
+      } else {
+        if (nrow(test.list) == 1) {
+          if (search.list$sample.mean[j]/test.list$mean <= Solvent.ratio) {
+            temp <- test.list[, c("MS.ID", "Formula", "Name", "Annotated.adduct", "Conf.Level", "FISh.Coverage",
+                                  "isotopes", "adduct")]
+            bin[j] = TRUE
+            cnt = cnt + 1
+          }
+
+        } else {
+          if (nrow(test.list) >= 1) {
+            if (search.list$sample.mean[j]/max(test.list$mean) <= Solvent.ratio) {
+              temp <- test.list[, c("MS.ID", "Formula", "Name", "Annotated.adduct", "Conf.Level", "FISh.Coverage",
+                                    "isotopes", "adduct")]
+              bin[j] = TRUE
+              cnt = cnt + 1
+            }
+          }
+        }
+      }
+      setTxtProgressBar(pb, j)
+    }
+    cur.Peaklist$Solv_flag <- bin
+
+    length(which(cur.Peaklist$Solv_flag %in% FALSE))  # The number of features matched between Peaklist and Endolist
+    cur.Peaklist.trimmed <- cur.Peaklist[which(cur.Peaklist$Solv_flag %in% FALSE), ]
+    Solv.list.trimmed <- cur.Peaklist[which(cur.Peaklist$Solv_flag %in% TRUE), ]
+    mylist <- list(cur.Peaklist.trimmed, Solv.list.trimmed)
+    names(mylist) <- c("Peaklist", "Solvent_Peaks")
+    masterlist[[i]] <- mylist
+  }
+  names(masterlist) <- ion.modes
+  return(masterlist)
+}
+
+#' @method search_solv monoMass
+#' @export
+search_solv.monoMass <- function(Peak.list, Solv.list, Sample.df, search.par, ion.id, QC.id, MB.id, tbl.id, db.id,
+                                 ion.modes,lib_db) {
+  endo.groups <- as.matrix(paste(Sample.df[which(Sample.df[, "Endogenous"] == TRUE), "Sex"], Sample.df[which(Sample.df[,
+                                                                                                                       "Endogenous"] == TRUE), "Class"], sep = "_"))
+  list.length = length(ion.modes)
+  mylist <- NULL
+  masterlist <- NULL
+  for (i in 1:list.length) {
+    ## Selects the filebase to use for data processing
+    cur.ion = ion.modes[i]
+    file.base = paste(db.id[1], ion.id[i], sep = "_")
+    blank.base = paste(db.id[2], ion.id[i], sep = "_")
+    cur.Peaklist <- Peak.list[[i]]
+    cur.Solvlist <- Solv.list[[i]]
+
+    res <- as.numeric(unlist(apply(endo.groups, 1, function(X) grep(X, colnames(cur.Peaklist)))))
+    Endo.list <- cur.Peaklist[, res]
+    search.list <- cur.Peaklist %>%
+      select(EIC_ID, mono_mass, meanRT) %>%
+      dplyr::collect()
+
+    # Calculate the mean of QC values for each compound
+    res <- lapply(colnames(cur.Peaklist), function(ch) grep(QC.id, ch))
+    QC.list <- cur.Peaklist[sapply(res, function(x) length(x) > 0)]
+    QCmean <- rowMeans(QC.list)
+    cur.Peaklist[, "Endogenous_flag"] <- NULL
+    Endo.mean <- apply(Endo.list, 1, mean)
+    Endo.lim <- as.numeric(search.par[1, "Endogenous"])
+    Endo.flag <- Endo.mean > Endo.lim
+    cur.Peaklist[, "Endogenous_flag"] <- Endo.flag
+
+    # Calculate the mean of MB values for each compound
+    res <- lapply(colnames(cur.Solvlist), function(ch) unique(grep(MB.id, ch)))  #Flags the EIC_ID and Isotope cluster columns
+    Solvent.new.list <- cur.Solvlist[sapply(res, function(x) length(x) > 0)]  #Extracts the EIC_ID and Isotope cluster columns
+    MBmean <- rowMeans(Solvent.new.list)
+    cur.Solvlist$mean <- MBmean
+    if (cur.ion == "Positive") {
+      cat("Removing Background Compounds in Positive mode:")
+      copy_to(lib_db, cur.Solvlist, name = "Pos_list", temporary = FALSE, overwrite = TRUE)
+      IHL <- tbl(lib_db, "Pos_list")
+    } else {
+      if (cur.ion == "Negative") {
+        cat("Removing Background Compounds in Negative mode:")
+        copy_to(lib_db, cur.Solvlist, name = "Neg_list", temporary = FALSE, overwrite = TRUE)
+        IHL <- tbl(lib_db, "Neg_list")
+      } else {
+        stop("Ionization mode must be Positive or Negative. It is case sensitive!", call. = FALSE)
+      }
+    }
+    # calculates the min and max range values for searching against the solvent list
+    d.mz <- search.list$mono_mass * as.numeric(search.par[1, "ppm"])/10^6
+    d.rt <- as.numeric(search.par[1, "rt"])
+
+    search.list$mz.min <- search.list$mono_mass - d.mz
+    search.list$mz.max <- search.list$mono_mass + d.mz
+    search.list$rt.min <- search.list$meanRT - d.rt
+    search.list$rt.max <- search.list$meanRT + d.rt
+    search.list$sample.mean = QCmean
+
+    bin = vector(mode = "logical", length = search.list %>% nrow)
+    Solvent.ratio <- as.numeric(search.par[1, "Solvent"])
+    ## attempts to match all peaks against the In House Library ! Try to build a query using *apply functions to
+    ## search all of the search list at once; should speed ! things up considerably
+    cnt <- 1
+    total <- nrow(search.list)
+    pb <- txtProgressBar(min = 0, max = total, style = 3)
+    for (j in 1:total) {
+      mz.min = search.list$mz.min[j]
+      mz.max = search.list$mz.max[j]
+      rt.min = search.list$rt.min[j]
+      rt.max = search.list$rt.max[j]
+      test.list <- IHL %>%
+        filter(between(mono_mass, mz.min, mz.max)) %>%
+        filter(between(meanRT, rt.min, rt.max)) %>%
+        dplyr::collect()
+      if (nrow(test.list) == 0) {
+      } else {
+        if (nrow(test.list) == 1) {
+          if (search.list$sample.mean[j]/test.list$mean <= Solvent.ratio) {
+            temp <- test.list[, c("MS.ID", "Formula", "Name", "Annotated.adduct", "Conf.Level", "FISh.Coverage",
+                                  "isotopes", "adduct")]
+            bin[j] = TRUE
+            cnt = cnt + 1
+          }
+
+        } else {
+          if (nrow(test.list) >= 1) {
+            if (search.list$sample.mean[j]/max(test.list$mean) <= Solvent.ratio) {
+              temp <- test.list[, c("MS.ID", "Formula", "Name", "Annotated.adduct", "Conf.Level", "FISh.Coverage",
+                                    "isotopes", "adduct")]
+              bin[j] = TRUE
+              cnt = cnt + 1
+            }
+          }
+        }
+      }
+      setTxtProgressBar(pb, j)
+    }
+    cur.Peaklist$Solv_flag <- bin
+
+    length(which(cur.Peaklist$Solv_flag %in% FALSE))  # The number of features matched between Peaklist and Endolist
+    cur.Peaklist.trimmed <- cur.Peaklist[which(cur.Peaklist$Solv_flag %in% FALSE), ]
+    Solv.list.trimmed <- cur.Peaklist[which(cur.Peaklist$Solv_flag %in% TRUE), ]
+    mylist <- list(cur.Peaklist.trimmed, Solv.list.trimmed)
+    names(mylist) <- c("Peaklist", "Solvent_Peaks")
+    masterlist[[i]] <- mylist
+  }
+  names(masterlist) <- ion.modes
+  return(masterlist)
+
+}

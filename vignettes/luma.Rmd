@@ -1,5 +1,5 @@
 ---
-title: "Making Workflows with LUMA"
+title: "LUMA: an R package"
 author: 
 - affiliation: U.S. Environmental Protection Agency
   email: mosley.jonathan@epa.gov
@@ -24,3 +24,54 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
+
+
+# Background
+    
+1. Many tools exist for pre-processing LC-MS-based untargeted metabolomics data and downstream analyses
+    i) Open source and commercially available
+    ii) Popular open source tools for pre-processing include XCMS (with CAMERA), mzMine, xsAnalyze ...
+    iii) Data analysis tools include MetaboAnalystR, ...
+2. Pre-processed results need further data processing before performing analyses to ensure data reproducibility and quality
+    i) quality control steps, feature reduction are a must for reproducible data
+    ii) validation of metabolite annotation results are critical to correct biological interpretation
+    iii) Other data processing steps are sometimes necessary
+        A. QC normalization (NOREVA)
+        B. Batch correction (batchcorr)
+    iv) Integrating all results together can be time consuming
+    v) Doing all of these in the same environment can be very difficult and often requires expertise in bioinformatics
+3. LC-MS untargeted metabolomics assistant (LUMA) provides functionalities within the R environment to integrate key quality control and feature reduction steps to bridge the gap between LC-MS untargeted metabolomics data pre-processing and statistical analysis and biological interpretation
+
+# Implementation
+
+```{r echo=FALSE}
+library(tools)
+library(xtable)
+functions <- unclass(lsf.str(envir = asNamespace("LUMA"), all = T))
+doc_functions <- functions[-grep("\\.", functions)]
+# getTitle <- function(x) {
+#   Rd <- parse_Rd(file = print(paste("../man/" , x[i] , ".Rd",sep = "")))
+#   Txt <- RdTextFilter(Rd)
+#   Title <- Txt[grep("[a:z]",Txt)[1]]
+#   return(Title)
+#   }
+titles <- vector(mode = "character", length = 0)
+for(i in seq_along(doc_functions)){
+  Rd <- parse_Rd(file = print(paste("../man/" , doc_functions[i] , ".Rd",sep = "")))
+  Txt <- RdTextFilter(Rd)
+  titles[i] <- Txt[grep("[a:z]",Txt)[1]]
+}
+
+# titles <- sapply(doc_functions, getTitle)
+mydf <- cbind.data.frame(Command = doc_functions, Description = titles)
+mytable <- xtable(mydf)
+print(mytable)
+
+```
+
+
+# Results
+This Section illustrates the main features of the `LUMA` package through an application example.  The example involves the creation of a database and its population with both positive and negative ionization mode data (samples, pooled QCs, and blanks), quality control and feature reduction steps, validation of the annotation results, and formatting the output.
+
+## Database creation and population
+

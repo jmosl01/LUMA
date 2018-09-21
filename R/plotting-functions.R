@@ -46,7 +46,7 @@ plot_metgroup = function(anposGa, Sample.df, Peak.list, center, BLANK, gen.plots
     names(get.mg) <- NULL
 
     Peak.list.pspec <- calc_corrstat(Sample.df, Peak.list, get.mg, BLANK, ion.mode)
-    validate.list <- validate_metgroup(Peak.list.pspec)
+    validate.list <- .validate_metgroup(Peak.list.pspec)
 
     Peak.list.new <- list(Peak.list.pspec, validate.list)
     # ! Very important!! Needs a sample index for each new psspectrum; without it, it will only find files ! for
@@ -260,8 +260,8 @@ plot_ionduplicate = function(anposGa, xpos, annegGa, xneg, rt.method, Peak.list,
             QC.list <- EIC.table[sapply(res, function(x) length(x) > 0)]
 
             EIC.list <- split(EIC.table, as.factor(EIC.table$`Ion Mode`))
-            EIC.pos <- convert_EIC(EIC.list$Pos$EIC_ID)
-            EIC.neg <- convert_EIC(EIC.list$Neg$EIC_ID)
+            EIC.pos <- .convert_EIC(EIC.list$Pos$EIC_ID)
+            EIC.neg <- .convert_EIC(EIC.list$Neg$EIC_ID)
 
             Name.pos <- as.character(EIC.list$Pos$Name)
             Name.neg <- as.character(EIC.list$Neg$Name)
@@ -401,11 +401,11 @@ plot_ionduplicate = function(anposGa, xpos, annegGa, xneg, rt.method, Peak.list,
 
 }
 
-LUMA_order = function(object){
+.LUMA_order = function(object){
 return(object)
 }
 
-convert_EIC = function(EIC) {
+.convert_EIC = function(EIC) {
   if(is.null(EIC))
     return(EIC) else {
       EIC_split <- strsplit(EIC, split = ";")
@@ -415,7 +415,7 @@ convert_EIC = function(EIC) {
     }
 }
 
-validate_metgroup <- function(Peak.list.pspec) {
+.validate_metgroup <- function(Peak.list.pspec) {
   validate.df <- Peak.list.pspec[order(Peak.list.pspec$metabolite_group), c("MS.ID", "mz", "rt", "Name",
                                                                             "Formula","Annotated.adduct",
                                                                             "isotopes", "adduct",

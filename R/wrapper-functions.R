@@ -59,19 +59,6 @@ wrap_camera = function(xset4, CAMERA.par, ion.mode) {
     return(list(mz1setpos, anposGa))
 }
 
-LUMA_getPeaklist = function(object,convert.rt) {
-  if(missing(convert.rt))
-    convert.rt = TRUE
-  peakGa <- getPeaklist(object)
-  EIC_ID<-row.names(peakGa)
-  peak_data <- cbind(EIC_ID, peakGa)
-  ## Converts retention times to min from sec in Peaklist -----
-  rt.list<-peak_data["rt"]
-  rt.min<-apply((as.matrix(rt.list)),1, function(x) x/60)
-  peak_data["rt"] <- rt.min
-  return(peak_data)
-}
-
 #' @title Writes xlsx table
 #'
 #' @export

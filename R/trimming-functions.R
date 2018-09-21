@@ -55,16 +55,27 @@ trim_minfrac = function(Peak.list, search.par) {
     return(Peak.list.trimmed)
 }
 
+#' @title Trims by retention time
+#'
+#' @export
+#' @description Removes features with retention times smaller than the user specified threshold.
+#' @param Peak.list data frame. Must have Correlation.stat column.  Should contain output columns from XCMS and CAMERA, and additional columns from IHL.search, Calc.MinFrac, Calc.corr.stat and EIC.plotter functions.
+#' @param ... arguments to pass to other functions
+#' @return NULL
 trim_rt <- function(Peak.list, ...) {
   UseMethod("trim_rt", Peak.list)
 }
 
+#' @method trim_rt mz
+#' @export
 trim_rt.mz <- function(Peak.list,rt.list,void.rt) {
   drops <- Peak.list[rt.list < void.rt, "EIC_ID"]
   Peak.list.trimmed <- Peak.list[which(!(Peak.list$EIC_ID) %in% drops),]
   return(Peak.list.trimmed)
 }
 
+#' @method trim_rt monoMass
+#' @export
 trim_rt.monoMass  <- function(Peak.list,rt.list,void.rt) {
   drops <- Peak.list[rt.list < void.rt, "metabolite_group"]  #Creates a vector of metabolite groups that contain at least one feature with rt in the void volume
   length(which(!unlist(Peak.list[, "metabolite_group"]) %in% unlist(drops)))
