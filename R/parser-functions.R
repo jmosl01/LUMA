@@ -320,9 +320,9 @@ parse_pos_results=function(raw,rule,ion.mode){
     if(sum(!is.na(iso_grp_mass))==1){
       mono_mass[iso_grp_idx]<-iso_grp_mass[!is.na(iso_grp_mass)]
     }else if(sum(!is.na(iso_grp_mass))>1) {
-      stop("more than one mono mass value for isotopes for isotope group ",iso_grp_no[k])
+      #stop("more than one mono mass value for isotopes for isotope group ",iso_grp_no[k])
     }else {
-      stop("there is no monoisotopic ion found for isotope group ", iso_grp_no[k])
+      #stop("there is no monoisotopic ion found for isotope group ", iso_grp_no[k])
     }
   }
 
@@ -394,7 +394,7 @@ parse_pos_results=function(raw,rule,ion.mode){
       mono_selector[idx[idx_mono]]<-1
     }
     else if(length(idx_mono)>=2){
-      stop("more than one monoisotopic peak")
+      #stop("more than one monoisotopic peak")
     }
     else{
       mono_selector[idx[1]]<-1;
@@ -794,7 +794,7 @@ parse_neg_results=function(raw,rule,ion.mode){
     }
     else if(length(idx_mono)>=2){
       print(raw_single_annotation[idx,(ncol(raw_single_annotation)-2):ncol(raw_single_annotation)])
-      stop("Error: more than one monoisotopic peak")
+      #stop("Error: more than one monoisotopic peak")
     }
     else{
       mono_selector[idx[1]]<-1;
