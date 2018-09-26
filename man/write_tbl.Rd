@@ -2,7 +2,7 @@
 % Please edit documentation in R/database-functions.R
 \name{write_tbl}
 \alias{write_tbl}
-\title{Writes table to database}
+\title{Writes Peak.list to database}
 \usage{
 write_tbl(mydf, peak.db, myname)
 }
@@ -17,5 +17,5 @@ write_tbl(mydf, peak.db, myname)
 a tbl object in the remote source
 }
 \description{
-Writes tbl or dataframe to an RSQLite database
+Writes Peak.list to an RSQLite database. Peak.list can be a tibble or data frame.
 }

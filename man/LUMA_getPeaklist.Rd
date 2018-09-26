@@ -2,7 +2,7 @@
 % Please edit documentation in R/general-data-functions.R
 \name{LUMA_getPeaklist}
 \alias{LUMA_getPeaklist}
-\title{Generates LUMA data table from XCMS or CAMERA object}
+\title{Generates Peak.list from CAMERA}
 \usage{
 LUMA_getPeaklist(object, convert.rt)
 }
@@ -15,5 +15,5 @@ LUMA_getPeaklist(object, convert.rt)
 data frame of peak intensities across all samples with metadata columns from XCMS and CAMERA
 }
 \description{
-Generates LUMA data table from xsAnnotate object generated from CAMERA, with the option to convert retention times to min
+Generates Peak.list from xsAnnotate object generated from CAMERA, with the option to convert retention times to min
 }

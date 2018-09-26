@@ -2,14 +2,24 @@
 % Please edit documentation in R/trimming-functions.R
 \name{trim_rt}
 \alias{trim_rt}
+\alias{trim_rt.mz}
+\alias{trim_rt.monoMass}
 \title{Trims by retention time}
 \usage{
-trim_rt(Peak.list, ...)
+trim_rt(object, Peak.list, rt.list, void.rt)
+
+\method{trim_rt}{mz}(object, Peak.list, rt.list, void.rt)
+
+\method{trim_rt}{monoMass}(object, Peak.list, rt.list, void.rt)
 }
 \arguments{
+\item{object}{used for method dispatch. Can be any object. See usage for details}
+
 \item{Peak.list}{data frame. Must have Correlation.stat column.  Should contain output columns from XCMS and CAMERA, and additional columns from IHL.search, Calc.MinFrac, Calc.corr.stat and EIC.plotter functions.}
 
-\item{...}{arguments to pass to other functions}
+\item{rt.list}{numeric vector containing retention times for all features or compounds}
+
+\item{void.rt}{numeric retention time cutoff value corresponding to the LC void volume}
 }
 \description{
 Removes features with retention times smaller than the user specified threshold.

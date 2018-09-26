@@ -2,7 +2,7 @@
 % Please edit documentation in R/database-functions.R
 \name{gen_filebase}
 \alias{gen_filebase}
-\title{Generate Filebase}
+\title{Generate Filebase for Peak.list}
 \usage{
 gen_filebase(mzdatafiles, BLANK, ion.id, ion.mode)
 }
@@ -19,5 +19,5 @@ gen_filebase(mzdatafiles, BLANK, ion.id, ion.mode)
 character
 }
 \description{
-Generates filebase for reading and writing to databases
+Generates filebase for reading and writing Peak.list to database
 }

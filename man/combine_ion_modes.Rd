@@ -2,7 +2,7 @@
 % Please edit documentation in R/Combine_Ion_Modes-Algorithm.R
 \name{combine_ion_modes}
 \alias{combine_ion_modes}
-\title{Combines Ion Modes}
+\title{Combines Peak.lists from two ion modes}
 \usage{
 combine_ion_modes(Peak.list, search.par, ion.id, QC.id, tbl.id, method,
   ...)

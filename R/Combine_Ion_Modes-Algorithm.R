@@ -1,4 +1,4 @@
-#' @title Combines Ion Modes
+#' @title Combines Peak.lists from two ion modes
 #'
 #' @export
 #' @description Combines the two single adduct ion mode feature tables into one for EIC plotting

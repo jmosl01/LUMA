@@ -2,12 +2,20 @@
 % Please edit documentation in R/annotation-functions.R
 \name{search_IonDup}
 \alias{search_IonDup}
-\title{Searches for Ion mode duplicates}
+\alias{search_IonDup.mz}
+\alias{search_IonDup.monoMass}
+\title{Searches Peak.list for ion mode duplicates}
 \usage{
 search_IonDup(object, Peak.list.pos, Peak.list.neg, search.par)
+
+\method{search_IonDup}{mz}(object, Peak.list.pos, Peak.list.neg,
+  search.par)
+
+\method{search_IonDup}{monoMass}(object, Peak.list.pos, Peak.list.neg,
+  search.par)
 }
 \arguments{
-\item{object}{used for method dispatch. Can be any object. Class must be "mz" or "monoMass"}
+\item{object}{used for method dispatch. Can be any object. See usage for details}
 
 \item{Peak.list.pos}{Positive ionization mode data table}
 
@@ -16,8 +24,8 @@ search_IonDup(object, Peak.list.pos, Peak.list.neg, search.par)
 \item{search.par}{a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.}
 }
 \value{
-data frame containing the original table with added columns 'Name','MS.ID','Formula','Annotated.adduct' and any additional info columns from Annotated.library
+data frame containing the original Peak.list with added columns "Duplicate_ID" and "Duplicate_EIC"
 }
 \description{
-Searches data tables from both ionization modes for duplicate entries
+Searches Peak.list with combined ionization mode data tables for duplicate entries
 }

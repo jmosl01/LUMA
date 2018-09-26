@@ -2,7 +2,7 @@
 % Please edit documentation in R/general-data-functions.R
 \name{combine_phenodata}
 \alias{combine_phenodata}
-\title{Combine phenotype data}
+\title{Combine phenotype data in Peak.list}
 \usage{
 combine_phenodata(Sample.df, Peak.list, Summed.list, search.par, BLANK,
   ion.mode)
@@ -21,8 +21,8 @@ combine_phenodata(Sample.df, Peak.list, Summed.list, search.par, BLANK,
 \item{ion.mode}{a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'}
 }
 \value{
-data frame Peak.list.summed with the munged phenotype columns up front followed by QC and sample columns
+Peak.list.summed with the munged phenotype columns up front followed by QC and sample columns
 }
 \description{
-Combine phenotype data for each metabolite group with summed intensity values
+Combine phenotype data for each metabolite group in Peak.list with summed intensity values
 }

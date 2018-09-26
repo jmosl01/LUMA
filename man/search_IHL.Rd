@@ -2,7 +2,7 @@
 % Please edit documentation in R/annotation-functions.R
 \name{search_IHL}
 \alias{search_IHL}
-\title{IHL.search}
+\title{Searches Peak.list against In House Library}
 \usage{
 search_IHL(Peak.list, Annotated.library, rules, search.par, ion.mode,
   lib_db)
@@ -24,5 +24,6 @@ search_IHL(Peak.list, Annotated.library, rules, search.par, ion.mode,
 data frame containing the original table with added columns 'Name','MS.ID','Formula','Annotated.adduct' and any additional info columns from Annotated.library
 }
 \description{
-Compare CAMERA isotope annotation with user-defined annotation library
+Compares CAMERA isotope annotation within Peak.list to user-defined annotation library and returns
+annotation results
 }

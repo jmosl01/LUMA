@@ -2,10 +2,10 @@
 % Please edit documentation in R/Exogenous_and_Solvent_Peak-Algorithm.R
 \name{remove_background_peaks}
 \alias{remove_background_peaks}
-\title{Exogenous and background peak algorithm}
+\title{Removes background components from Peak.list}
 \usage{
-remove_background_peaks(Peak.list, Sample.df, search.par, ion.id, QC.id,
-  MB.id, tbl.id, db.id, ion.modes, method, lib.db, ...)
+remove_background_peaks(Peak.list, Sample.df, search.par, tbl.id, method,
+  lib.db, ...)
 }
 \arguments{
 \item{Peak.list}{a named list of data frames (two per ionization mode) containing intensity matrices across all study samples and Pooled QCs and process blanks.  Names should be c('pos','neg','blanks_pos','blanks_neg').  Alternatively may use existing database connections by setting to NULL and specifying database parameters with ...}
@@ -14,27 +14,18 @@ remove_background_peaks(Peak.list, Sample.df, search.par, ion.id, QC.id,
 
 \item{search.par}{a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.}
 
-\item{ion.id}{character vector specifying identifier in filename designating positive or negative ionization mode or both.  Positive identifier must come first. Default is c('Pos','Neg')}
-
-\item{QC.id}{character vector specifying identifier in filename designating a Pooled QC sample.  Only the first value will be used.  Default is 'Pooled_QC_'}
-
-\item{MB.id}{character vector specifying identifier in filename designating a Method Blank.  Only the first value will be used. Default is '^MB'}
-
 \item{tbl.id}{character vector of table names to draw from databases.  First value should be table name from peak database, second second should be table name from solvent database. Default is NULL}
-
-\item{db.id}{character vector specifying identifiers in database names designating sample \[1\] and blank \[2\] databases.  Default is c('Peaklist','Blanks')}
-
-\item{ion.modes}{a character vector defining the ionization mode.  Must be either 'Positive', 'Negative' or both.}
 
 \item{method}{which method to use.  Can be monoMass or mz}
 
 \item{lib.db}{character name of database to contain Solvent Library}
 
-\item{...}{Arguments to pass parameters to database functions}
+\item{...}{Arguments to pass parameters to database and annotation functions}
 }
 \value{
 nested list a list for each ionization mode, each containing a list of two dataframes: the first contains the intensity matrix for the peaklist with solvent peaks removed, the second contains the intensity matrix for the solvent peaks
 }
 \description{
-Searches mz/rt features for exogenous features and removes background features.  Exogenous is defined as mean abundance in endogenous samples below user-defined threshold.  Background determined from process blanks.
+Searches features or compounds in Peak.list that are present in process blanks and removes them.
+Also flags compounds as exogenous, defined as mean abundance in endogenous samples below user-defined threshold.
 }

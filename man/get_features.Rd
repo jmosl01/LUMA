@@ -2,7 +2,7 @@
 % Please edit documentation in R/database-functions.R
 \name{get_features}
 \alias{get_features}
-\title{Retrieves features from database}
+\title{Retrieves features from Peak.list in a database}
 \usage{
 get_features(mytbl, peak.db, asdf)
 }
@@ -17,5 +17,5 @@ get_features(mytbl, peak.db, asdf)
 tbl alternatively a data frame
 }
 \description{
-Returns mz/rt features from a RSQLite database
+Returns mz/rt features from Peak.list stored in RSQLite database
 }

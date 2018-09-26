@@ -2,14 +2,14 @@
 % Please edit documentation in R/base-functions.R
 \name{sum_features}
 \alias{sum_features}
-\title{Sum Features into Metabolites}
+\title{Sums features into Metabolites}
 \usage{
-sum_features(Sample.df, Peak.list, search.par, BLANK, ion.mode)
+sum_features(Peak.list, Sample.df, search.par, BLANK, ion.mode)
 }
 \arguments{
-\item{Sample.df}{a data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns 'Sex','Class','n','Endogenous'.}
-
 \item{Peak.list}{data frame. Must have Correlation.stat column.  Should contain output columns from XCMS and CAMERA, and additional columns from IHL.search, Calc.MinFrac, CAMERA.parser and EIC.plotter functions.}
+
+\item{Sample.df}{a data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns 'Sex','Class','n','Endogenous'.}
 
 \item{search.par}{a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.}
 
@@ -18,7 +18,7 @@ sum_features(Sample.df, Peak.list, search.par, BLANK, ion.mode)
 \item{ion.mode}{a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'}
 }
 \value{
-data table data frame sum.range.list with the first column containing metabolite group and the rest containing sample and QC columns
+sum.range.list with the first column containing metabolite group and the rest containing sample and QC columns
 }
 \description{
 Sums all features belonging to the same metabolite into a single intensity value per metabolite group per sample

@@ -15,5 +15,5 @@ connect_peakdb(file.base, db.dir)
 Formal class SQLiteConnection
 }
 \description{
-Establishes a connection to an RSQLite database for storing data; if doesn't exist, creates new database
+Establishes a connection to an RSQLite database for storing Peak.list; if doesn't exist, creates new database
 }

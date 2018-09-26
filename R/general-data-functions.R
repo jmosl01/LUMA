@@ -1,14 +1,14 @@
-#' @title Combine phenotype data
+#' @title Combine phenotype data in Peak.list
 #'
 #' @export
-#' @description Combine phenotype data for each metabolite group with summed intensity values
+#' @description Combine phenotype data for each metabolite group in Peak.list with summed intensity values
 #' @param Sample.df a data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns 'Sex','Class','n','Endogenous'.
 #' @param Peak.list data frame. Must have Correlation.stat, metabolite_group, and mono_mass columns.  Should contain output columns from XCMS and CAMERA, and additional columns from IHL.search, Calc.MinFrac, CAMERA.parser and EIC.plotter functions.
 #' @param Summed.list data frame containing metabolite group as first column and the rest summed intensities for each sample
 #' @param search.par a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.
 #' @param BLANK a logical indicating whether blanks are being evaluated
 #' @param ion.mode a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'
-#' @return data frame Peak.list.summed with the munged phenotype columns up front followed by QC and sample columns
+#' @return Peak.list.summed with the munged phenotype columns up front followed by QC and sample columns
 #' @importFrom plyr ddply
 #' @importFrom dplyr '%>%' mutate_if summarise bind_cols
 #' @importFrom utils str txtProgressBar setTxtProgressBar
@@ -92,10 +92,10 @@ combine_phenodata = function(Sample.df, Peak.list, Summed.list, search.par, BLAN
   return(Peak.list.summed)
 }
 
-#' @title Generates LUMA data table from XCMS or CAMERA object
+#' @title Generates Peak.list from CAMERA
 #'
 #' @export
-#' @description Generates LUMA data table from xsAnnotate object generated from CAMERA, with the option to convert retention times to min
+#' @description Generates Peak.list from xsAnnotate object generated from CAMERA, with the option to convert retention times to min
 #' @param object an xcmsSet or xsAnnotate object
 #' @param convert.rt logical indicating whether to convert retention times to min
 #' @return data frame of peak intensities across all samples with metadata columns from XCMS and CAMERA

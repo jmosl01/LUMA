@@ -2,7 +2,7 @@
 % Please edit documentation in R/base-functions.R
 \name{calc_corrstat}
 \alias{calc_corrstat}
-\title{Calculate correlation matrices for metabolite groups}
+\title{Calculates correlation matrices for metabolite groups}
 \usage{
 calc_corrstat(Sample.df, Peak.list, get.mg, BLANK, ion.mode)
 }
@@ -18,8 +18,8 @@ calc_corrstat(Sample.df, Peak.list, get.mg, BLANK, ion.mode)
 \item{ion.mode}{a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'}
 }
 \value{
-a table of class 'tbl_df',tbl' or 'data.frame' with variables as columns.  Has all of the columns as the original data frame with one additional column 'Correlation.stat'
+Peak.list of class 'tbl_df',tbl' or 'data.frame' with variables as columns.  Has all of the columns as the original data frame with one additional column 'Correlation.stat'
 }
 \description{
-Calculates the correlation matrices for metabolite groups based on the best feature within the group that belongs to the primary metabolite
+Calculates the correlation matrices for metabolite groups based on the best feature within the group that belongs to the primary metabolite.
 }
