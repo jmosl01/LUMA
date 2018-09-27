@@ -2,23 +2,22 @@
 #'
 #' @export
 #' @description Combines the two single adduct ion mode feature tables into one for EIC plotting
-#' @param Peak.list a named list of data frames \(one per ionization mode\) containing intensity matrices across all study samples and Pooled QCs.  Names must be c('Positive','Negative').  Alternatively may use existing database connections by setting to NULL and specifying database parameters with ...
+#' @param Peak.list a named list of data frames (one per ionization mode) containing intensity matrices across all study samples and Pooled QCs.
+#' Names must be c('Positive','Negative').  Alternatively may use existing database connections by setting to NULL
 #' @param search.par a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.
-#' @param ion.id character vector specifying identifier in filename designating positive or negative ionization mode or both.  Positive identifier must come first. Default is c('Pos','Neg')
-#' @param QC.id character vector specifying identifier in filename designating a Pooled QC sample.  Only the first value will be used.  Default is 'Pooled_QC_'
+##' @param ion.id character vector specifying identifier in filename designating positive or negative ionization mode or both.  Positive identifier must come first. Default is c('Pos','Neg')
+##' @param QC.id character vector specifying identifier in filename designating a Pooled QC sample.  Only the first value will be used.  Default is 'Pooled_QC_'
 #' @param tbl.id character vector of table names to draw from databases.  First value should be table containing compounds from positive ionization, second should be table containing compounds from negative ionization. Default is NULL
-#' @param method which method to use.  Can be monoMass or mz
-#' @param ... Arguments to pass parameters to database functions
+#' @param method which method to apply to search for duplicate entries.  See search_IonDup for details.
+#' @param ... Arguments to pass parameters to search_IonDup
 #' @return data frame containing the intensity matrix for the peaklist with Duplicate IDs
 #' @importFrom igraph clusters graph.adjacency
 #' @importFrom stats ave
 combine_ion_modes = function(Peak.list, search.par, ion.id, QC.id, tbl.id, method, ...) {
+
+  #Set default values
     if (missing(Peak.list))
         Peak.list = NULL
-    if (missing(ion.id))
-        ion.id = c("Pos", "Neg")
-    if (missing(QC.id))
-        QC.id = "Pooled_QC"
     if (missing(tbl.id))
         tbl.id = NULL
     if (is.null(Peak.list) && is.null(tbl.id)) {
@@ -42,7 +41,7 @@ combine_ion_modes = function(Peak.list, search.par, ion.id, QC.id, tbl.id, metho
     Peak.list.neg[, "Ion Mode"] <- "Neg"
 
     class(method) <- method
-    Peak.list.combined <- search_IonDup(method,Peak.list.pos,Peak.list.neg,search.par)
+    Peak.list.combined <- search_IonDup(method,Peak.list.pos,Peak.list.neg,search.par,...)
     return(Peak.list.combined)
 }
 
@@ -50,9 +49,11 @@ combine_ion_modes = function(Peak.list, search.par, ion.id, QC.id, tbl.id, metho
 #'
 #' @export
 #' @description Removes the ion mode duplicates based on user-modified indices after visual inspection of EIC_plots
-#' @param Peak.list a data frame containing combined ion mode peaklist with Duplicate IDs.  Alternatively can be retrieved from databases.  Default is NULL
+#' @param Peak.list a data frame containing combined ion mode peaklist with Duplicate IDs.
+#' Alternatively can be retrieved from databases.  Default is NULL
 #' @param Key.list list containing two numeric vectors \(one per ionization mode\) of ion mode duplicates to keep. Key (vector) corresponding to positive mode duplicates should be first.
-#' @param tbl.id character string corresponding to table name to draw from database. Default is NULL
+#' @param tbl.id character string corresponding to table name to draw from database.
+#' Default is NULL
 #' @param ... Arguments to pass parameters to database functions
 #' @return NULL testing
 remove_ion_dup = function(Peak.list, Key.list, tbl.id, ...) {
