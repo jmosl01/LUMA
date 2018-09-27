@@ -6,13 +6,13 @@
 \alias{search_IonDup.monoMass}
 \title{Searches Peak.list for ion mode duplicates}
 \usage{
-search_IonDup(object, Peak.list.pos, Peak.list.neg, search.par)
+search_IonDup(object, Peak.list.pos, Peak.list.neg, search.par, col.names)
 
 \method{search_IonDup}{mz}(object, Peak.list.pos, Peak.list.neg,
-  search.par)
+  search.par, col.names)
 
 \method{search_IonDup}{monoMass}(object, Peak.list.pos, Peak.list.neg,
-  search.par)
+  search.par, col.names)
 }
 \arguments{
 \item{object}{used for method dispatch. Can be any object. See usage for details}
@@ -22,6 +22,9 @@ search_IonDup(object, Peak.list.pos, Peak.list.neg, search.par)
 \item{Peak.list.neg}{Negative ionization mode data table}
 
 \item{search.par}{a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.}
+
+\item{col.names}{character vector of column names to include when searching for duplicate entries.
+Default is to include the ion mode, unique EIC_ID, monomolecular mass and retention time}
 }
 \value{
 data frame containing the original Peak.list with added columns "Duplicate_ID" and "Duplicate_EIC"
