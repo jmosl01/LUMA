@@ -114,16 +114,21 @@ match_Annotation = function(Peak.list, Annotated.library, rules, search.par, ion
 #' @param Peak.list.pos Positive ionization mode data table
 #' @param Peak.list.neg Negative ionization mode data table
 #' @param search.par a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.
+#' @param col.names character vector of column names to include when searching for duplicate entries.
+#' Default is to include the ion mode, unique EIC_ID, monomolecular mass and retention time
 #' @return data frame containing the original Peak.list with added columns "Duplicate_ID" and "Duplicate_EIC"
-search_IonDup <- function(object, Peak.list.pos,Peak.list.neg,search.par) {
+search_IonDup <- function(object, Peak.list.pos,Peak.list.neg,search.par,col.names) {
   UseMethod("search_IonDup", object)
 }
 
 #' @rdname search_IonDup
 #' @export
-search_IonDup.mz  <- function(object,Peak.list.pos,Peak.list.neg,search.par) {
-  ## Trim the feature table down to just those columns necessary for duplicate matching
-  col.names <- c("Ion Mode", "EIC_ID", "mono_mass", "rt")
+search_IonDup.mz  <- function(object,Peak.list.pos,Peak.list.neg,search.par,col.names) {
+
+  # Set default values
+  if(missing(col.names))
+    col.names <- c("Ion Mode", "EIC_ID", "mono_mass", "rt")
+
   mono.pos <- subset(Peak.list.pos, select = paste(col.names))
 
   mono.neg <- subset(Peak.list.neg, select = paste(col.names))
@@ -168,9 +173,12 @@ search_IonDup.mz  <- function(object,Peak.list.pos,Peak.list.neg,search.par) {
 
 #' @rdname search_IonDup
 #' @export
-search_IonDup.monoMass  <- function(object,Peak.list.pos,Peak.list.neg,search.par) {
-  ## Trim the feature table down to just those columns necessary for duplicate matching
-  col.names <- c("Ion Mode", "EIC_ID", "mono_mass", "meanRT")
+search_IonDup.monoMass  <- function(object,Peak.list.pos,Peak.list.neg,search.par,col.names) {
+
+  # Set default values
+  if(missing(col.names))
+    col.names <- c("Ion Mode", "EIC_ID", "mono_mass", "meanRT")
+
   mono.pos <- subset(Peak.list.pos, select = paste(col.names))
 
   mono.neg <- subset(Peak.list.neg, select = paste(col.names))
