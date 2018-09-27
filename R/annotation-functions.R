@@ -1,8 +1,7 @@
-#' @title Searches Peak.list against In House Library
+#' @title Matches Peak.list annotations against Annotated Library
 #'
 #' @export
-#' @description Compares CAMERA isotope annotation within Peak.list to user-defined annotation library and returns
-#' annotation results
+#' @description Compares isotope and adduct annotations within Peak.list (inherited from CAMERA) to user-defined annotation library and returns annotation results
 #' @param Peak.list a table of class 'tbl_dbi', 'tbl_sql', 'tbl_lazy', or 'tbl' with samples as columns.  Should contain all output columns from XCMS and CAMERA, both metadata and sample data. Retention times must be in min.
 #' @param Annotated.library a data frame with annotated metabolite entries. Must contain columns called 'Name', 'Formula', Molecular.Weight' and 'RT..Min.'.  Can contain additional info as separate columns.
 #' @param rules a data frame containing the rule list used by CAMERA to annotate ion adducts and fragments.  Must contain the columns 'name','nmol','charge','massdiff','oidscore','quasi','ips'.
@@ -13,7 +12,7 @@
 #' @importFrom dplyr '%>%' select copy_to tbl between
 #' @importFrom glue glue_collapse
 #' @importFrom utils str txtProgressBar
-search_IHL = function(Peak.list, Annotated.library, rules, search.par, ion.mode, lib_db) {
+match_Annotation = function(Peak.list, Annotated.library, rules, search.par, ion.mode, lib_db) {
   search.list <- Peak.list %>% select(EIC_ID, mz, rt) %>% dplyr::collect()
 
   ## Creates full adduct list for all compounds in the Annotated library
@@ -214,41 +213,45 @@ search_IonDup.monoMass  <- function(object,Peak.list.pos,Peak.list.neg,search.pa
   return(Peak.list.combined)
 }
 
-#' @title Searches Peak.list for background components
+#' @title Finds background components in Peak.list
 #'
 #' @export
-#' @description Searches Peak.list containing all samples for components that are present in the process blanks
+#' @description Find components within Peak.list that are also present in the process blanks below a user-defined sample:blank ratio
 #' @param object used for method dispatch. Can be any object. See usage for details
 #' @param Peak.list data table containing sample data
 #' @param Solv.list data table containing blank data
 #' @param Sample.df a data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns 'Sex','Class','n','Endogenous'.
 #' @param search.par a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.
 #' @param ion.id character vector specifying identifier in filename designating positive or negative ionization mode or both.  Positive identifier must come first. Default is c('Pos','Neg')
-#' @param QC.id character vector specifying identifier in filename designating a Pooled QC sample.  Only the first value will be used.  Default is 'Pooled_QC_'
-#' @param MB.id character vector specifying identifier in filename designating a Method Blank.  Only the first value will be used. Default is '^MB'
-#' @param db.id character vector specifying identifiers in database names designating sample \[1\] and blank \[2\] databases.  Default is c('Peaklist','Blanks')
-#' @param ion.modes a character vector defining the ionization mode.  Must be either 'Positive', 'Negative' or both.
+#' @param QC.id character vector specifying identifier in filename designating a Pooled QC sample.  Only the first value will be used.
+#' Default is 'Pooled_QC_'
+#' @param MB.id character vector specifying identifier in filename designating a Method Blank.
+#' Only the first value will be used. Default is '^MB'
+#' @param db.id character vector specifying identifiers in database names designating sample \[1\] and blank \[2\] databases.
+#' Default is c('Peaklist','Blanks')
+#' @param ion.modes a character vector defining the ionization mode.
+#' Must be either 'Positive', 'Negative' or both. Default is c('Positive','Negative')
 #' @param lib_db RSQLite connection
 #' @return nested list a list for each ionization mode, each containing a list of two dataframes: the first contains the intensity matrix for the peaklist with solvent peaks removed, the second contains the intensity matrix for the solvent peaks
-search_solv <- function(object, Peak.list, Solv.list, Sample.df, search.par, ion.id, QC.id, MB.id, db.id, ion.modes, lib_db) {
-  if (missing(ion.id)) {
-    ion.id = c("Pos", "Neg")
-  }
-  if (missing(QC.id))
-    QC.id = "Pooled_QC_"
-  if (missing(MB.id))
-    MB.id = "^MB"
-  if (missing(db.id))
-    db.id = c("Peaklist", "Blanks")
-  if(missing(ion.modes))
-    ion.modes = c("Positive","Negative")
-  UseMethod("search_solv", object)
+find_Background <- function(object, Peak.list, Solv.list, Sample.df, search.par, lib_db,ion.id,QC.id,MB.id,db.id,ion.modes) {
+  UseMethod("find_Background", object)
 }
 
-#' @rdname  search_solv
+#' @rdname  find_Background
 #' @export
-search_solv.mz <- function(object, Peak.list, Solv.list, Sample.df, search.par, ion.id, QC.id, MB.id, db.id,
-                           ion.modes,lib_db) {
+find_Background.mz <- function(object, Peak.list, Solv.list, Sample.df, search.par, lib_db,ion.id,QC.id,MB.id,db.id,ion.modes) {
+  #Set default values
+  if(missing(ion.id))
+    ion.id <- c("Pos","Neg")
+  if(missing(QC.id))
+    QC.id <- "Pooled_QC_"
+  if(missing(MB.id))
+    MB.id <- "^MB"
+  if(missing(db.id))
+    db.id <- c("Peaklist","Blanks")
+  if(missing(ion.modes))
+    ion.modes <- c("Positive","Negative")
+
   endo.groups <- as.matrix(paste(Sample.df[which(Sample.df[, "Endogenous"] == TRUE), "Sex"], Sample.df[which(Sample.df[,
                                                                                                                        "Endogenous"] == TRUE), "Class"], sep = "_"))
   list.length = length(ion.modes)
@@ -354,10 +357,21 @@ search_solv.mz <- function(object, Peak.list, Solv.list, Sample.df, search.par, 
   return(masterlist)
 }
 
-#' @rdname search_solv
+#' @rdname find_Background
 #' @export
-search_solv.monoMass <- function(object, Peak.list, Solv.list, Sample.df, search.par, ion.id, QC.id, MB.id, db.id,
-                                 ion.modes,lib_db) {
+find_Background.monoMass <- function(object, Peak.list, Solv.list, Sample.df, search.par, lib_db,ion.id,QC.id,MB.id,db.id,ion.modes) {
+  #Set default values
+  if(missing(ion.id))
+    ion.id <- c("Pos","Neg")
+  if(missing(QC.id))
+    QC.id <- "Pooled_QC_"
+  if(missing(MB.id))
+    MB.id <- "^MB"
+  if(missing(db.id))
+    db.id <- c("Peaklist","Blanks")
+  if(missing(ion.modes))
+    ion.modes <- c("Positive","Negative")
+
   endo.groups <- as.matrix(paste(Sample.df[which(Sample.df[, "Endogenous"] == TRUE), "Sex"], Sample.df[which(Sample.df[,
                                                                                                                        "Endogenous"] == TRUE), "Class"], sep = "_"))
   list.length = length(ion.modes)

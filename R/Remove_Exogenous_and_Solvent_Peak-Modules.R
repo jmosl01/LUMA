@@ -49,7 +49,7 @@ remove_background_peaks = function(Peak.list = NULL, Sample.df, search.par, meth
     peak_db <- connect_lumadb(db.list = db.list, db.dir = db.dir, new.db = new.db)
 
     class(method) <- method
-    masterlist <- search_solv(method, Peak.list, Solv.list, Sample.df, search.par, lib_db, ...)
+    masterlist <- find_Background(method, Peak.list, Solv.list, Sample.df, search.par, lib_db, ...)
     return(masterlist)
 }
 
