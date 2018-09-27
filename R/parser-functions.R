@@ -344,7 +344,7 @@ parse_pos_results=function(raw,rule,ion.mode){
         metabolite_idx<-metabolite_idx+1
       }
       else{
-        stop("Error: ion group does not exist for ion group ", ion_info_copy[k, 1])
+        warning("Error: ion group does not exist for ion group ", ion_info_copy[k, 1])
       }
     }
   } else {
@@ -356,7 +356,7 @@ parse_pos_results=function(raw,rule,ion.mode){
         metabolite_idx<-metabolite_idx+1
       }
       else{
-        stop("Error: ion group does not exist for ion group ", ion_info[k, 1])
+        warning("Error: ion group does not exist for ion group ", ion_info[k, 1])
       }
     }}
 
@@ -742,7 +742,7 @@ parse_neg_results=function(raw,rule,ion.mode){
         metabolite_idx<-metabolite_idx+1
       }
       else{
-        stop("Error: ion group does not exist for ion group ", ion_info_copy[k, 1])
+        warning("Error: ion group does not exist for ion group ", ion_info_copy[k, 1])
       }
     }
   } else {
@@ -754,7 +754,7 @@ parse_neg_results=function(raw,rule,ion.mode){
         metabolite_idx<-metabolite_idx+1
       }
       else{
-        stop("Error: ion group does not exist for ion group ", ion_info[k, 1])
+        warning("Error: ion group does not exist for ion group ", ion_info[k, 1])
       }
     }}
 
