@@ -1,6 +1,5 @@
 #' @title Matches Peak.list annotations against Annotated Library
 #'
-#' @export
 #' @description Compares isotope and adduct annotations within Peak.list (inherited from CAMERA) to user-defined annotation library and returns annotation results
 #' @param Peak.list a table of class 'tbl_dbi', 'tbl_sql', 'tbl_lazy', or 'tbl' with samples as columns.  Should contain all output columns from XCMS and CAMERA, both metadata and sample data. Retention times must be in min.
 #' @param Annotated.library a data frame with annotated metabolite entries. Must contain columns called 'Name', 'Formula', Molecular.Weight' and 'RT..Min.'.  Can contain additional info as separate columns.
@@ -108,7 +107,6 @@ match_Annotation = function(Peak.list, Annotated.library, rules, search.par, ion
 
 #' @title Searches Peak.list for ion mode duplicates
 #'
-#' @export
 #' @description Searches Peak.list with combined ionization mode data tables for duplicate entries
 #' @param object used for method dispatch. Can be any object. See usage for details
 #' @param Peak.list.pos Positive ionization mode data table
@@ -223,7 +221,6 @@ search_IonDup.monoMass  <- function(object,Peak.list.pos,Peak.list.neg,search.pa
 
 #' @title Finds background components in Peak.list
 #'
-#' @export
 #' @description Find components within Peak.list that are also present in the process blanks below a user-defined sample:blank ratio
 #' @param object used for method dispatch. Can be any object. See usage for details
 #' @param Peak.list data table containing sample data
