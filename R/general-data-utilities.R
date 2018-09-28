@@ -1,3 +1,6 @@
+#Initialize global variables
+CAMERA.ion.mode <- NULL
+
 #Generates a parsing vector
 .gen_res = function(ion.mode,search.par,Peak.list,Sample.df,BLANK) {
   if (ion.mode == "Positive") {
@@ -50,10 +53,7 @@
           mzdatafiles <- subset(mzdatafiles, subset = grepl(ion.id[2], mzdatafiles, ignore.case = TRUE))
           mzdatafiles <- mzdatafiles[-c(grep(blanks.dir,mzdatafiles))]
         } else {
-          msg <- "Ion mode must be Positive or Negative.\nBe sure to specify whether to analyze blanks by setting BLANK to a logical. \nSee LUMA vignette for more details.\n\n"
-          .LUMAmsg <<- c(.LUMAmsg,msg)
-          cat(msg)
-          stop()
+          stop("Ion mode must be Positive or Negative.\nBe sure to specify whether to analyze blanks by setting BLANK to a logical. \nSee LUMA vignette for more details.\n\n")
         }
       }
 

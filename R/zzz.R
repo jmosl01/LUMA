@@ -1,8 +1,11 @@
 # CRAN Note avoidance
 if(getRversion() >= "2.15.1")
   utils::globalVariables(
+    #Constructor function global variables
+    c("blanks.dir",".LUMAmsg","rules","peak_db","CAMERA.ion.mode",
+
     #metadata column names from XCMS and CAMERA outputs
-    c("EIC_ID","mz","rt", ".SD", "metabolite_group",
+    "EIC_ID","mz","rt", ".SD", "metabolite_group",
 
     #column names from Annotated Library
       "RT..min.",
@@ -13,10 +16,10 @@ if(getRversion() >= "2.15.1")
     #xcms and CAMERA variables
     "graph_method","CAMERA.ion.mode","rules","file.base",
 
-    #database variables
+    #database variables and functions
     "db.list","db.dir","lib.db","new.db","peak.db",
 
-    #Possible Exogenous_and_Solvent_Peak-Algorithm variables
+    #Possible Exogenous_and_Solvent_Peak-Module variables
     "ion.modes","pos_db","neg_db","blanks_pos_db","blanks_neg_db","lib_db","peak_db","mono_mass","meanRT",
 
     #Plotting function variables
