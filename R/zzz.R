@@ -4,6 +4,9 @@ if(getRversion() >= "2.15.1")
     #Constructor function global variables
     c("blanks.dir",".LUMAmsg","rules","peak_db","CAMERA.ion.mode",
 
+    #general data utilities global variables
+    "ion.mode","opt.dir","BLANK","mzdatafiles","CAMERA.file","XCMS.file",
+
     #metadata column names from XCMS and CAMERA outputs
     "EIC_ID","mz","rt", ".SD", "metabolite_group",
 
