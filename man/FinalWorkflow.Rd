@@ -4,20 +4,12 @@
 \alias{FinalWorkflow}
 \title{Constructor function to finalize LUMA workflow}
 \usage{
-FinalWorkflow(my.log, peak_db, lib_db)
+FinalWorkflow(peak_db, lib_db)
 }
 \arguments{
-\item{my.log}{name of log file to write.
-Default is 'LUMA_log.txt'}
+\item{peak_db}{existing peak database connection}
 
-\item{peak_db}{existing peak database connection
-Default is to look for existing database connections.}
-
-\item{lib_db}{existing library database connection
-Default is to look for existing database connections.}
-}
-\value{
-disconnected SQLite connections and written log file
+\item{lib_db}{existing library database connection}
 }
 \description{
 All LUMA workflows must end with this function.  Records the names of existing data tables and writes out the LUMA log file for traceability.

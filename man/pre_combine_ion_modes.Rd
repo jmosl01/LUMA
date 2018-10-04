@@ -4,13 +4,15 @@
 \alias{pre_combine_ion_modes}
 \title{Combines Peak.lists simply}
 \usage{
-pre_combine_ion_modes(Peak.list = NULL, tbl.id)
+pre_combine_ion_modes(Peak.list = NULL, tbl.id, ...)
 }
 \arguments{
 \item{Peak.list}{a named list of data frames \(one per ionization mode\) containing intensity matrices across all study samples and Pooled QCs.
 Names must be c('Positive','Negative').  Alternatively may use existing database connections by setting to NULL and specifying database parameters with ...}
 
 \item{tbl.id}{character vector of table names to draw from database.  First value should be table name for positive mode, second should be table name for negative mode. Default is NULL}
+
+\item{...}{arguments to pass to database functions}
 }
 \value{
 NULL testing

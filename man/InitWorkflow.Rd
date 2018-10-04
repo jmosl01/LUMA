@@ -5,7 +5,8 @@
 \title{Constructor function to initiate LUMA Workflow}
 \usage{
 InitWorkflow(ion.id, blanks.dir, db.dir, adduct.files, use.CAMERA,
-  use.XCMS, CAMERA.obj, XCMS.obj, graph.method)
+  use.XCMS, CAMERA.obj, XCMS.obj, graph.method, ion.modes, mytable,
+  calc.minfrac)
 }
 \arguments{
 \item{ion.id}{character vector specifying identifier in mz data filenames designating positive or negative ionization or both.
@@ -38,9 +39,15 @@ Default is 'lpc'. See CAMERA documentation for details.}
 
 \item{ion.modes}{which ion modes will be processed in the workflow. Must be 'Positive', 'Negative', or both.
 Default is both; i.e. c('Positive','Negative').}
+
+\item{mytable}{character name of the first Peak.list table
+Default is 'From CAMERA'}
+
+\item{calc.minfrac}{logical should LUMA calculate the minimum fraction values for the initial Peak.list
+Default is TRUE}
 }
 \value{
-global variables are returned
+global variables and Peaklist in database are returned
 }
 \description{
 All LUMA workflows must start with this function. Creates the first Peaklist and sets up storing and passing Peaklists and ancillary data between modules.

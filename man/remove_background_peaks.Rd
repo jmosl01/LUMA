@@ -5,7 +5,7 @@
 \title{Removes background components from Peak.list}
 \usage{
 remove_background_peaks(Peak.list = NULL, Sample.df, search.par, method,
-  lib.db, tbl.id, ...)
+  lib.db, tbl.id, db.list, db.dir, new.db, ...)
 }
 \arguments{
 \item{Peak.list}{a named list of data frames (two per ionization mode) containing intensity matrices across all study samples and Pooled QCs and process blanks.
@@ -23,6 +23,15 @@ Must contain the columns 'Sex','Class','n','Endogenous'.}
 \item{tbl.id}{character vector of table names to draw from databases.
 First value should be table name from peak database, second should be table name from solvent database.
 Default is NULL}
+
+\item{db.list}{list chracter names of databases containing results from processing positive mode (1,3) and negative mode (2,4) data for samples (1,2) and blanks (3,4)
+Default is NULL}
+
+\item{db.dir}{character directory containing the databases
+Default is 'db'}
+
+\item{new.db}{character what should the new database be called
+Default is 'Peaklist_db'}
 
 \item{...}{Arguments to pass parameters to find_Background}
 }
