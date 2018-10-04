@@ -173,12 +173,4 @@ CullBackground <- function(from.tables,to.tables,method,db.list,db.dir,new.db,li
   write_tbl(mydf = Peak.list.trimmed$Negative$Solvent_Peaks,
             peak.db = peak_db,
             myname = to.tables[4])
-
-  Peak.list.combined <- pre_combine_ion_modes(Peak.list = NULL,
-                                              tbl.id = c(to.tables[1],
-                                                         to.tables[2]),
-                                              peak.db = peak_db)
-
-  write.table(Peak.list.combined, file = "Peaklist_Combined.csv", sep = ",", row.names = FALSE)
-
 }

@@ -8,11 +8,12 @@
 #' @param tbl.id character vector of table names to draw from databases.  First value should be table containing compounds from positive ionization, second should be table containing compounds from negative ionization. Default is NULL
 #' @param method which method to apply to search for duplicate entries.
 #' See search_IonDup for details.
+#' @param peak.db Formal class SQLiteConnection
 #' @param ... Arguments to pass parameters to search_IonDup
 #' @return data frame containing the intensity matrix for the peaklist with Duplicate IDs
 #' @importFrom igraph clusters graph.adjacency
 #' @importFrom stats ave
-combine_ion_modes = function(Peak.list, search.par, tbl.id, method, ...) {
+combine_ion_modes = function(Peak.list, search.par, tbl.id, method, peak.db, ...) {
 
   #Set default values
     if (missing(Peak.list))

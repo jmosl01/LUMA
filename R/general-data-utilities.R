@@ -2,7 +2,9 @@
 xset <- NULL
 xset4 <- NULL
 mz1setpos <- NULL
+mz1setneg <- NULL
 anposGa <- NULL
+annegGa <- NULL
 
 ## internal constructor utility functions ----
 .get_DataFiles = function(mzdatapath,ion.mode,BLANK,ion.id,blanks.dir) {
@@ -66,12 +68,26 @@ anposGa <- NULL
   }
 
 .CAMERASanityCheck = function(CAMERA.obj) {
-  if(length(CAMERA.obj@annoGrp) == 0) {
-    warning("LUMA works best on CAMERA data that has been annotated.\n\n")
-  } else {
-    anposGa <<- anposGa <- CAMERA.obj
-    save(anposGa, file = CAMERA.file)
+  #Check if CAMERA.obj is an xsAnnotate object
+  if(class(CAMERA.obj)[1] != "xsAnnotate") {
+    warning(paste(CAMERA.obj, " is not an xsAnnotate object"))
     return(CAMERA.obj)
+  } else {
+    if(length(CAMERA.obj@annoGrp) == 0) {
+      warning("LUMA works best on CAMERA data that has been annotated.\n\n")
+      return(CAMERA.obj)
+    } else {
+      if(ion.mode == "Positive") {
+        anposGa <<- anposGa <- CAMERA.obj
+        save(anposGa, file = CAMERA.file)
+      } else {
+        if(ion.mode == "Negative") {
+          annegGa <<- annegGa <- CAMERA.obj
+          save(annegGa, file = CAMERA.file)
+        }
+      }
+      return(CAMERA.obj)
+    }
   }
 }
 
@@ -115,7 +131,7 @@ anposGa <- NULL
       peak_data <- .get_Peaklist(anposGa)
       write_tbl(mydf = peak_data,
                 peak.db = peak_db,
-                myname = "From CAMERA")
+                myname = mytable)
     } else {
       cat("Running CAMERA Only!")
       # Runs CAMERA on datafiles --------------------

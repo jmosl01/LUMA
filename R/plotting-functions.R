@@ -180,7 +180,7 @@ plot_ionduplicate = function(anposGa, xpos, annegGa, xneg, rt.method, Peak.list,
             stop("Must specify database parameters `myname` and `peak.db` if not providing Peak.list!", call. = FALSE)
         } else {
           # Read Peak.list from database
-          Peak.list <- read_tbl(mytable, peak.db)
+          Peak.list <- read_tbl(mytable, ...)
         }
     }
 

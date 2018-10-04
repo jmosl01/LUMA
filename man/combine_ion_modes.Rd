@@ -4,7 +4,7 @@
 \alias{combine_ion_modes}
 \title{Combines Peak.lists from two ion modes}
 \usage{
-combine_ion_modes(Peak.list, search.par, tbl.id, method, ...)
+combine_ion_modes(Peak.list, search.par, tbl.id, method, peak.db, ...)
 }
 \arguments{
 \item{Peak.list}{a named list of data frames (one per ionization mode) containing intensity matrices across all study samples and Pooled QCs.
@@ -16,6 +16,8 @@ Names must be c('Positive','Negative').  Alternatively may use existing database
 
 \item{method}{which method to apply to search for duplicate entries.
 See search_IonDup for details.}
+
+\item{peak.db}{Formal class SQLiteConnection}
 
 \item{...}{Arguments to pass parameters to search_IonDup}
 }

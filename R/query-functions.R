@@ -127,7 +127,7 @@ search_IonDup.mz  <- function(object,Peak.list.pos,Peak.list.neg,search.par,col.
 
   # Set default values
   if(missing(col.names))
-    col.names <- c("Ion Mode", "EIC_ID", "mono_mass", "rt")
+    col.names <- c("Ion Mode", "EIC_ID", "mz", "rt")
 
   mono.pos <- subset(Peak.list.pos, select = paste(col.names))
 
@@ -135,7 +135,7 @@ search_IonDup.mz  <- function(object,Peak.list.pos,Peak.list.neg,search.par,col.
 
   mono.comb <- rbind(mono.pos, mono.neg)
 
-  # get the distance matrices for mz and rt
+  # get the distance matrices for exact mass and rt
   system.time({
     d.mz <- as.matrix(dist(mono.comb$mono_mass))
     dim(d.mz)
@@ -185,7 +185,7 @@ search_IonDup.monoMass  <- function(object,Peak.list.pos,Peak.list.neg,search.pa
 
   mono.comb <- rbind(mono.pos, mono.neg)
 
-  # get the distance matrices for mz and rt
+  # get the distance matrices for exact mass and rt
   system.time({
     d.mz <- as.matrix(dist(mono.comb$mono_mass))
     dim(d.mz)
