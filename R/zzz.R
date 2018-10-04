@@ -2,10 +2,16 @@
 if(getRversion() >= "2.15.1")
   utils::globalVariables(
     #Constructor function global variables
-    c("blanks.dir",".LUMAmsg","rules","peak_db","CAMERA.ion.mode",
+    c("peak_db",
 
     #general data utilities global variables
     "ion.mode","opt.dir","BLANK","mzdatafiles","CAMERA.file","XCMS.file",
+
+    #other module global variables
+    "Sexes","Classes","no.Samples","Endogenous","Sample.df","XCMS.par","search.par","DataFiles",
+    "Corr.stat.pos","Corr.stat.neg","Endogenous.thresh","Peak.list.trimmed", "Solvent.ratio","Voidrt",
+    "XCMS.par","cv.cutoff","gen.plots","keep.singletons","mf.cutoff","ppm.cutoff","rt.cutoff",
+
 
     #metadata column names from XCMS and CAMERA outputs
     "EIC_ID","mz","rt", ".SD", "metabolite_group",

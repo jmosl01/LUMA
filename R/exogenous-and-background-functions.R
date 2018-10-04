@@ -13,22 +13,32 @@
 #' @param tbl.id character vector of table names to draw from databases.
 #' First value should be table name from peak database, second should be table name from solvent database.
 #' Default is NULL
+#' @param db.list list chracter names of databases containing results from processing positive mode (1,3) and negative mode (2,4) data for samples (1,2) and blanks (3,4)
+#' Default is NULL
+#' @param db.dir character directory containing the databases
+#' Default is 'db'
+#' @param new.db character what should the new database be called
+#' Default is 'Peaklist_db'
 #' @param ... Arguments to pass parameters to find_Background
 #' @return nested list a list for each ionization mode, each containing a list of two dataframes: the first contains the intensity matrix for the peaklist with solvent peaks removed, the second contains the intensity matrix for the solvent peaks
 #' @importFrom plyr llply
 #' @importFrom dplyr filter
-remove_background_peaks = function(Peak.list = NULL, Sample.df, search.par, method, lib.db, tbl.id, ...) {
+remove_background_peaks = function(Peak.list = NULL, Sample.df, search.par, method, lib.db, tbl.id, db.list, db.dir, new.db, ...) {
 
     # Set default values
     if (missing(tbl.id))
         tbl.id = NULL
+    if (missing(db.list))
+      db.list = NULL
+    if (missing(db.dir))
+      db.dir = "db"
     if (missing(method))
       stop("Need to specify a method!", call. = FALSE)
     if (is.null(Peak.list) && is.null(tbl.id))
       stop("Need to specify tbl.id if using databases to retrieve Peak.list!", call. = FALSE)
 
     if (is.null(Peak.list)) {
-        mydbs <- connect_lumadb(db.list, db.dir)
+        mydbs <- connect_lumadb(db.list,db.dir,new.db)
         nm = names(mydbs)[-1]
         nm1 = nm[-grep("blanks", nm)]  # Return all sample databases
         nm2 = nm[grep("blanks", nm)]  #Return all blank databases

@@ -1,21 +1,11 @@
-#Initialize global variables
-.LUMAmsg <- ""
-CAMERA.ion.mode <- NULL
+##Initialize global variables
+xset <- NULL
+xset4 <- NULL
+mz1setpos <- NULL
+anposGa <- NULL
 
-##Messaging functions ----
-.set_LUMAmsg = function(msg) {
-  .LUMAmsg <<- c(.LUMAmsg,msg)
-  cat(msg)
-}
-
-.set_LUMAerror = function(msg) {
-  msg <- c(msg," \nSee the LUMA vignette for details.\n\n")
-  .LUMAmsg <<- c(.LUMAmsg,msg)
-  stop("Check LUMA log for error messages.")
-}
-## END
 ## internal constructor utility functions ----
-.get_DataFiles = function(mzdatapath,ion.mode,BLANK,ion.id,blanks,dir) {
+.get_DataFiles = function(mzdatapath,ion.mode,BLANK,ion.id,blanks.dir) {
   ## Selects the datafiles to use for data processing
   mzdatafiles <- list.files(mzdatapath, recursive = TRUE, full.names = TRUE)
   if(ion.mode == "Positive" && BLANK == TRUE){
@@ -67,9 +57,9 @@ CAMERA.ion.mode <- NULL
 
 .xcmsSanityCheck = function(XCMS.obj) {
   if(length(XCMS.obj@filled) == 0) {
-    .set_LUMAerror("LUMA works best on xcms data that has been filled.\n\n")
+    warning("LUMA works best on xcms data that has been filled.\n\n")
     } else {
-      xset4 <- XCMS.obj
+      xset4 <<- xset4 <- XCMS.obj
       save(xset4, file = XCMS.file)
       return(XCMS.obj)
     }
@@ -77,9 +67,9 @@ CAMERA.ion.mode <- NULL
 
 .CAMERASanityCheck = function(CAMERA.obj) {
   if(length(CAMERA.obj@annoGrp) == 0) {
-    .set_LUMAerror("LUMA works best on CAMERA data that has been annotated.\n\n")
+    warning("LUMA works best on CAMERA data that has been annotated.\n\n")
   } else {
-    anposGa <- CAMERA.obj
+    anposGa <<- anposGa <- CAMERA.obj
     save(anposGa, file = CAMERA.file)
     return(CAMERA.obj)
   }
@@ -89,11 +79,11 @@ CAMERA.ion.mode <- NULL
   ## Reads in the adduct rules list for CAMERA
   if(ion.mode == "Positive"){
     rules <- read.csv(file = files[1])
-    CAMERA.ion.mode <<- "positive"
+    CAMERA.ion.mode <- "positive"
   } else {
     if(ion.mode == "Negative"){
       rules <- read.csv(file = files[2])
-      CAMERA.ion.mode <<- "negative"
+      CAMERA.ion.mode <- "negative"
     }
   }
   return(rules)
@@ -114,12 +104,12 @@ CAMERA.ion.mode <- NULL
   return(peak_data)
 }
 
-.PreProcess_Files = function(XCMS.file,CAMERA.file) {
+.PreProcess_Files = function(XCMS.file,CAMERA.file,mytable) {
   if(file.exists(XCMS.file)) {
-    .set_LUMAmsg("Reading in XCMS files.")
+    cat("Reading in XCMS files.\n\n")
     load(file = XCMS.file)
     if(file.exists(CAMERA.file)){
-      .set_LUMAmsg("Reading in CAMERA files.")
+      cat("Reading in CAMERA files.\n\n")
       load(file = CAMERA.file)
       ## Converts retention times to min from sec in Peaklist -----
       peak_data <- .get_Peaklist(anposGa)
@@ -127,28 +117,18 @@ CAMERA.ion.mode <- NULL
                 peak.db = peak_db,
                 myname = "From CAMERA")
     } else {
-      .set_LUMAmsg("Running CAMERA Only!")
+      cat("Running CAMERA Only!")
       # Runs CAMERA on datafiles --------------------
-      ## Using the optimized parameters from CPO
-      if(ion.mode == "Positive"){
-        CAMERA.par <- read.table(file = paste(opt.dir,"/Best CAMERA parameters_positive.csv", sep = ""), sep = "," , header = TRUE)
-      } else {
-        if(ion.mode == "Negative"){
-          CAMERA.par <- read.table(file = paste(opt.dir,"/Best CAMERA parameters_negative.csv",sep = ""), sep = "," , header = TRUE)
-        }
-      }
-
-
       ## Code to run CAMERA on XCMS object that has been rt corrected, grouped, and peaks filled
       time.CAMERA <- system.time({
         myresults <- wrap_camera(xset4 = xset4,
                                  CAMERA.par = CAMERA.par,
-                                 ion.mode = ion.mode)
-        mz1setpos <- myresults[[1]]
-        anposGa <- myresults[[2]]
+                                 ion.mode = CAMERA.ion.mode)
+        mz1setpos <<- mz1setpos <- myresults[[1]]
+        anposGa <<- anposGa <- myresults[[2]]
         peak_data <- .get_Peaklist(anposGa)
       })
-      .set_LUMAmsg(msg = paste("PreProcessing with CAMERA took ",round(print(time.CAMERA[3]))," seconds of elapsed time.\n\n",sep = ""))
+      cat(paste("PreProcessing with CAMERA took ",round(print(time.CAMERA[3]))," seconds of elapsed time.\n\n",sep = ""))
       # Section END
 
       # Saves XCMS and CAMERA objects for re-analysis and peaklist for data processing ----
@@ -164,45 +144,28 @@ CAMERA.ion.mode <- NULL
 
   } else {
     if(!file.exists(XCMS.file) & !file.exists(CAMERA.file)) {
-      .set_LUMAmsg("Running XCMS and CAMERA: Be Patient!")
+      cat("Running XCMS and CAMERA: Be Patient!")
 
       # Runs XCMS on datafiles --------------------------------------
-      ## Using the optimized parameters from IPO
-      if(ion.mode == "Positive"){
-        XCMS.par <- read.table(file = "Best XCMS parameters_positive.csv", sep = "," , header = TRUE)
-      } else {
-        if(ion.mode == "Negative"){
-          XCMS.par <- read.table(file = "Best XCMS parameters_negative.csv", sep = "," , header = TRUE)
-        }
-      }
       time.XCMS <- system.time({
         myresults <- wrap_xcms(mzdatafiles = mzdatafiles,
                                XCMS.par = XCMS.par)
-        xset <- myresults[[1]]
-        xset4 <- myresults[[2]]
+        xset <<- xset <- myresults[[1]]
+        xset4 <<- xset4 <- myresults[[2]]
       })
-      .set_LUMAmsg(msg = paste("PreProcessing with XCMS took ",round(print(time.XCMS[3]))," seconds of elapsed time.\n\n",sep = ""))
+      cat(paste("PreProcessing with XCMS took ",round(print(time.XCMS[3]))," seconds of elapsed time.\n\n",sep = ""))
       ## Section End
       # Runs CAMERA on datafiles --------------------
-      ## Using the optimized parameters from CPO
-      if(ion.mode == "Positive"){
-        CAMERA.par <- read.table(file = paste(opt.dir,"/Best CAMERA parameters_positive.csv", sep = ""), sep = "," , header = TRUE)
-      } else {
-        if(ion.mode == "Negative"){
-          CAMERA.par <- read.table(file = paste(opt.dir,"/Best CAMERA parameters_negative.csv",sep = ""), sep = "," , header = TRUE)
-        }
-      }
-
       ## Code to run CAMERA on XCMS object that has been rt corrected, grouped, and peaks filled
       time.CAMERA <- system.time({
         myresults <- wrap_camera(xset4 = xset4,
                                  CAMERA.par = CAMERA.par,
-                                 ion.mode = ion.mode)
-        mz1setpos <- myresults[[1]]
-        anposGa <- myresults[[2]]
+                                 ion.mode = CAMERA.ion.mode)
+        mz1setpos <<- mz1setpos <- myresults[[1]]
+        anposGa <<- anposGa <- myresults[[2]]
         peak_data <- .get_Peaklist(anposGa)
       })
-      .set_LUMAmsg(msg = paste("PreProcessing with CAMERA took ",round(print(time.CAMERA[3]))," seconds of elapsed time.\n\n",sep = ""))
+      cat(paste("PreProcessing with CAMERA took ",round(print(time.CAMERA[3]))," seconds of elapsed time.\n\n",sep = ""))
       # Section END
 
       # Saves XCMS and CAMERA objects for re-analysis and peaklist for data processing ----
@@ -214,12 +177,13 @@ CAMERA.ion.mode <- NULL
 
       write_tbl(mydf = peak_data,
                 peak.db = peak_db,
-                myname = "From CAMERA")
+                myname = mytable)
     } else {
-      .set_LUMAerror("You must run XCMS before CAMERA! \nPlease remove CAMERA objects from your script directory.\n\n")
+      stop("You must run XCMS before CAMERA! \nPlease remove CAMERA objects from your script directory.\n\n")
     }
     # Section END
   }
+  return(xset4)
 }
 
 ## END

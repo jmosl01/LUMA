@@ -23,14 +23,16 @@
 #' Default is 'lpc'. See CAMERA documentation for details.
 #' @param ion.modes which ion modes will be processed in the workflow. Must be 'Positive', 'Negative', or both.
 #' Default is both; i.e. c('Positive','Negative').
-#' @return global variables are returned
+#' @param mytable character name of the first Peak.list table
+#' Default is 'From CAMERA'
+#' @param calc.minfrac logical should LUMA calculate the minimum fraction values for the initial Peak.list
+#' Default is TRUE
+#' @return global variables and Peaklist in database are returned
 #' @importFrom utils read.csv
-InitWorkflow <- function(ion.id,blanks.dir,db.dir,adduct.files,use.CAMERA,use.XCMS,CAMERA.obj,XCMS.obj,graph.method) {
+InitWorkflow <- function(ion.id,blanks.dir,db.dir,adduct.files,use.CAMERA,use.XCMS,CAMERA.obj,XCMS.obj,
+                         graph.method,ion.modes,mytable,calc.minfrac) {
 
-  #Initialize hidden global variables for tracking
-  .LUMAmsg <- ""
-
-  #Initialize all other global variables
+  #Initialize all global variables
   BLANK <- NULL
   opt.dir <- NULL
   mzdatapath <- NULL
@@ -53,8 +55,12 @@ InitWorkflow <- function(ion.id,blanks.dir,db.dir,adduct.files,use.CAMERA,use.XC
   Endogenous <- NULL
   rules <- NULL
   peak_db <- NULL
-  ion.modes <- NULL
-
+  Name <- NULL
+  Formula <- NULL
+  Molecular.Weight <- NULL
+  RT..Min. <- NULL
+  XCMS.par <- NULL
+  CAMERA.par <- NULL
 
 
   #Set default values for constructor function arguments
@@ -64,41 +70,45 @@ InitWorkflow <- function(ion.id,blanks.dir,db.dir,adduct.files,use.CAMERA,use.XC
     adduct.files <- c("primary_adducts_pos.csv","primary_adducts_neg.csv")
   if(missing(blanks.dir))
     blanks.dir <- "Blanks"
-  if(missing(graph_method))
+  if(missing(graph.method))
     graph.method <- "lpc"
   if(missing(db.dir))
     db.dir <- "db"
   if(missing(use.CAMERA))
-    use.CAMERA = FALSE
+    use.CAMERA <- FALSE
   if(missing(use.XCMS))
-    use.XCMS = FALSE
+    use.XCMS <- FALSE
   if(missing(ion.modes))
-    ion.modes = c("Positive","Negative")
+    ion.modes <- c("Positive","Negative")
+  if(missing(mytable))
+    mytable <- "From CAMERA"
+  if(missing(calc.minfrac))
+    calc.minfrac <- TRUE
 
   #Set Script Info globally
   if(file.exists("Script Info.txt")) {
-    .LUMAmsg <<- "Initiating LUMA Workflow!\n\n"
-    cat(.LUMAmsg)
+    cat("Initiating LUMA Workflow!\n\n")
     mydir <- read.table(file = "Script Info.txt", sep = "\t", header = TRUE, stringsAsFactors = FALSE)
-    opt.dir <<- mydir[1,1]
-    mzdatapath <<- mydir[1,2]
-    ion.mode <<- mydir[1,3]
-    BLANK <<- as.logical(mydir[1,4])
+    opt.dir <<- opt.dir <- mydir[1,1]
+    mzdatapath <<- mzdatapath <- mydir[1,2]
+    ion.mode <<- ion.mode <- mydir[1,3]
+    BLANK <<- BLANK <- as.logical(mydir[1,4])
 
   } else {
     if(is.null(opt.dir) || is.null(mzdatapath) || is.null(ion.mode) || is.null(BLANK)) {
-      .set_LUMAerror("Please place \"Script Info.txt\" into your working directory. \nAlternatively, you should set the opt.dir, mzdatapath, ion.mode and BLANK arguments.\n\n")
+      stop("Please place \"Script Info.txt\" into your working directory. \nAlternatively, you should set the opt.dir, mzdatapath, ion.mode and BLANK arguments.\n\n")
     }
   }
 
-  #Set mzdatafiles, adduct rules, and ion.modes globally
-  DataFiles <<- .get_DataFiles(mzdatapath,ion.mode,BLANK,ion.id)
-  rules <<- .get_rules(ion.mode,adduct.files)
+  #Set metadata globally
+  DataFiles <<- DataFiles <- .get_DataFiles(mzdatapath,ion.mode,BLANK,ion.id,blanks.dir)
+  rules <<- rules <- .get_rules(ion.mode,adduct.files)
   ion.modes <<- ion.modes
+  ion.id <<- ion.id
 
   #Set search parameters globally
   if(file.exists("Search Parameters.txt")) {
-  .set_LUMAmsg("Setting search parameters globally.\n\n")
+  cat("Setting search parameters globally.\n\n")
     search.par <- read.table(file = "Search Parameters.txt", sep = "\t", stringsAsFactors = FALSE, header = TRUE)
     ppm.cutoff <<- search.par[,1]
     rt.cutoff <<- search.par[,2]
@@ -112,24 +122,40 @@ InitWorkflow <- function(ion.id,blanks.dir,db.dir,adduct.files,use.CAMERA,use.XC
     gen.plots <<- search.par[,10]
     keep.singletons <<- search.par[,11]
 
-  } else .set_LUMAmsg("Search parameters not set globally for LUMA. \nYou must set search parameters manually for all modules in this workflow.\n\n")
+  } else cat("Search parameters not set globally for LUMA. \nYou must set search parameters manually for all modules in this workflow.\n\n")
 
   #Set sample class info globally
   if(file.exists("Sample Class.txt"))  {
-  .set_LUMAmsg("Setting sample class info globally.\n\n")
+  cat("Setting sample class info globally.\n\n")
     Sample.df <- read.table(file = "Sample Class.txt", sep = "\t", header = TRUE)
-    Sexes <<- Sample.df[,1]
-    Classes <<- Sample.df[,2]
-    no.Samples <<- Sample.df[,3]
-    Endogenous <<- Sample.df[,4]
+    Sexes <<- Sexes <- Sample.df[,1]
+    Classes <<- Classes <- Sample.df[,2]
+    no.Samples <<- no.Samples <- Sample.df[,3]
+    Endogenous <<- Endogenous <- Sample.df[,4]
       } else {
         if(is.null(Sexes) || is.null(Classes) || is.null(no.Samples) || is.null(Endogenous)) {
-          .set_LUMAerror("Please place \"Sample Class.txt\" into your working directory. \nAlternatively, you should set the Sex, Class, no.Samples and Endogenous arguments.\n\n")
+          stop("Please place \"Sample Class.txt\" into your working directory. \nAlternatively, you should set the Sex, Class, no.Samples and Endogenous arguments.\n\n")
       }
     }
 
-  #Initialize SQLite database connection
-  peak_db <<- connect_peakdb(DataFiles,db.dir)
+  #Set Annotated Library info globally
+  if(file.exists("Annotated Library.csv"))  {
+    cat("Setting Annotated Library info globally.\n\n")
+    Annotated.Library <- read.csv(file = "Annotated Library.csv", sep = ",", fill = TRUE, header = TRUE)
+    Name <<- Name <- Annotated.Library[,1]
+    Formula <<- Formula <- Annotated.Library[,2]
+    Molecular.Weight <<- Molecular.Weight <- Annotated.Library[,3]
+    RT..Min. <<- RT..Min. <- Annotated.Library[,4]
+  } else {
+    if(is.null(Sexes) || is.null(Classes) || is.null(no.Samples) || is.null(Endogenous)) {
+      stop("Please place \"Sample Class.txt\" into your working directory. \nAlternatively, you should set the Sex, Class, no.Samples and Endogenous arguments.\n\n")
+    }
+  }
+
+
+  #Initialize SQLite database connections globally
+  file.base <- gen_filebase(DataFiles,BLANK,ion.id,ion.mode)
+  peak_db <<- peak_db <- connect_peakdb(file.base,db.dir)
 
   ##Check for existing XCMS and CAMERA objects. If not specified, check for saved XCMS and CAMERA objects.
   ##If none exist, runs XCMS and CAMERA.
@@ -137,99 +163,125 @@ InitWorkflow <- function(ion.id,blanks.dir,db.dir,adduct.files,use.CAMERA,use.XC
   XCMS.file <- PreProcesslist[[1]]
   CAMERA.file <- PreProcesslist[[2]]
 
+  ##Set XCMS parameters globally
+  if(ion.mode == "Positive"){
+    XCMS.par <<- XCMS.par <- read.table(file = "Best XCMS parameters_positive.csv", sep = "," , header = TRUE)
+  } else {
+    if(ion.mode == "Negative"){
+      XCMS.par <<- XCMS.par <- read.table(file = "Best XCMS parameters_negative.csv", sep = "," , header = TRUE)
+    }
+  }
+
   #XCMS sanity check
   if(use.XCMS) {
     if(missing(XCMS.obj)) {
-      .set_LUMAerror("You must set XCMS.obj if use.XCMS is true.\n\n")
+      stop("You must set XCMS.obj if use.XCMS is true.\n\n")
     } else {
       XCMS.obj <- .xcmsSanityCheck(XCMS.obj)
+    }
+  }
+
+  ## Set CAMERA parameters globally
+  if(ion.mode == "Positive"){
+    CAMERA.par <<- CAMERA.par <- read.table(file = paste(opt.dir,"/Best CAMERA parameters_positive.csv", sep = ""), sep = "," , header = TRUE)
+  } else {
+    if(ion.mode == "Negative"){
+      CAMERA.par <<- CAMERA.par <- read.table(file = paste(opt.dir,"/Best CAMERA parameters_negative.csv",sep = ""), sep = "," , header = TRUE)
     }
   }
 
   #CAMERA sanity check
   if(use.CAMERA) {
     if(missing(CAMERA.obj)) {
-      .LUMAmsg <<- "You must set CAMERA.obj if use.CAMERA is true. \nSee the LUMA vignette for details.\n\n"
-      cat(.LUMAmsg)
+      cat("You must set CAMERA.obj if use.CAMERA is true. \nSee the LUMA vignette for details.\n\n")
     } else {
       CAMERA.obj <- .CAMERASanityCheck(CAMERA.obj)
     }
   }
 
   #Pre-process DataFiles
-  .PreProcess_Files(XCMS.file,CAMERA.file)
-}
+  xset4 <- .PreProcess_Files(XCMS.file,CAMERA.file,mytable)
 
-#' @title Constructor function to calculate minimum fractions across samples
-#'
-#' @export
-#' @description Modifies the Peak.list by calculating the minimum number of samples within a treatment class to contain a given feature.
-#' See calc_minfrac for more details
-#' @param from.table from which table should LUMA pull the Peak.list
-#' @param to.table to which should LUMA save the modified Peak.list
-AddMinFrac <- function(from.table,to.table) {
-  .set_LUMAmsg("Adding Mininum Fraction values to Peaklist.\n\n")
+  if(calc.minfrac) {
+    ##Add minimum fraction to Peak.list
+    cat("Adding Mininum Fraction values to Peaklist.\n\n")
 
-  Peak.list <- read_tbl(mytable = from.table,
-                        peak.db = peak_db)
+    Peak.list <- read_tbl(mytable = mytable,
+                          peak.db = peak_db)
 
-  #Calculate Minfrac for sample classes
-  new.Peak.list <- calc_minfrac(Sample.df = data.frame(Sex = Sex,
-                                                       Class = Class,
-                                                       n = no.Samples,
-                                                       Endogenous = Endogenous),
-                                xset4 = xset4,
-                                BLANK = BLANK,
-                                Peak.list = Peak.list)
-  write_tbl(mydf = new.Peak.list,
-            peak.db = peak_db,
-            myname = to.table)
+    #Calculate Minfrac for sample classes
+    new.Peak.list <- calc_minfrac(Sample.df = data.frame(Sex = Sexes,
+                                                         Class = Classes,
+                                                         n = no.Samples,
+                                                         Endogenous = Endogenous),
+                                  xset4 = xset4,
+                                  BLANK = BLANK,
+                                  Peak.list = Peak.list)
+
+    write_tbl(mydf = new.Peak.list,
+              peak.db = peak_db,
+              myname = paste(mytable,"with Minfrac", sep = "_"))
+
+  }
 }
 
 #' @title Constructor function to finalize LUMA workflow
 #'
 #' @export
 #' @description All LUMA workflows must end with this function.  Records the names of existing data tables and writes out the LUMA log file for traceability.
-#' @param my.log name of log file to write.
-#' Default is 'LUMA_log.txt'
 #' @param peak_db existing peak database connection
-#' Default is to look for existing database connections.
 #' @param lib_db existing library database connection
-#' Default is to look for existing database connections.
-#' @return disconnected SQLite connections and written log file
+#' @return NULL
 #' @importFrom DBI dbListTables dbDisconnect
-FinalWorkflow <- function(my.log,peak_db,lib_db) {
+FinalWorkflow <- function(peak_db,lib_db) {
 
   #Set default values
-  if(missing(my.log))
-    my.log <- "LUMA_log.txt"
-
   if(missing(peak_db)) {
-    if(is.null(peak_db))
-      .set_LUMAmsg("No peak database connection exists. Therefore did not close database connection.\n\n")
-  } else {
-    peak.tbls <- dbListTables(peak_db)
-    .set_LUMAmsg("Peak database contains the following tables:")
-    msg <- paste(peak.tbls, collapse = '\n')
-    .set_LUMAmsg(msg)
-    .set_LUMAmsg("\n\nClosing the Peak database connection.")
-    dbDisconnect(peak_db)
+    peak_db <- NULL
   }
-
   if(missing(lib_db)) {
-    if(is.null(lib_db))
-      .set_LUMAmsg("No library database connection exists. Therefore did not close database connection.\n\n")
-  } else {
-    lib.tbls <- dbListTables(lib_db)
-    .set_LUMAmsg("Library database contains the following tables:")
-    msg <- paste(lib.tbls, collapse = '\n')
-    .set_LUMAmsg(msg)
-    .set_LUMAmsg("\n\nClosing the Library database connection.")
+    lib_db <- NULL
   }
 
 
-sink(file = my.log)
-writeLines(.LUMAmsg, sep = "\n")
-sink()
+  #Database connection sanity check
+  if(is.null(peak_db)) {
+      cat("No peak database connection provided. Therefore did not close database connection.\n\n")
+  } else {
+    test <- dbConnect(peak_db)
+    if(class(test)[1] != "SQLiteConnection") {
+      stop(paste("peak_db is of class ",class(test)[1],", but needs to be of class \"SQLiteConnection\".",sep = ""))
+    } else {
+      peak.tbls <- dbListTables(test)
+      cat("Peak database contains the following tables:\n")
+      msg <- paste(peak.tbls, collapse = '\n')
+      cat(msg)
+      cat("\n\nClosing the Peak database connection.\n\n")
+      dbDisconnect(test)
+      dbDisconnect(peak_db)
+      mylist <- deparse(substitute(peak_db))
+    }
+  }
 
+  #Library connection sanity check
+  if(is.null(lib_db)) {
+      cat("No library database connection provided. Therefore did not close database connection.\n\n")
+  } else {
+    test <- dbConnect(lib_db)
+    if(class(test)[1] != "SQLiteConnection") {
+      stop(paste("peak_db is of class ",class(test)[1],", but needs to be of class \"SQLiteConnection\".",sep = ""))
+    } else {
+      lib.tbls <- dbListTables(test)
+      cat("Library database contains the following tables:\n")
+      msg <- paste(lib.tbls, collapse = '\n')
+      cat(msg)
+      cat("\n\nClosing the Library database connection.\n\n")
+      dbDisconnect(test)
+      dbDisconnect(lib_db)
+      mylist <- c(mylist,deparse(substitute(lib_db)))
+    }
+  }
+
+  #Clean up the database connections in the global environment
+  rm(list=mylist,envir = .GlobalEnv)
 }
