@@ -71,8 +71,10 @@ match_Annotation = function(Peak.list, Annotated.library, rules, search.par, ion
     mz.max = search.list$mz.max[i]
     rt.min = search.list$rt.min[i]
     rt.max = search.list$rt.max[i]
-    test.list <- IHL %>% dplyr::filter(between(mz, mz.min, mz.max)) %>% dplyr::filter(between(RT..min., rt.min,
-                                                                                              rt.max)) %>% dplyr::collect()
+    test.list <- IHL %>%
+      dplyr::filter(between(mz, mz.min, mz.max)) %>%
+      dplyr::filter(between(RT..Min., rt.min,rt.max)) %>%
+      dplyr::collect()
     if (nrow(test.list) == 0) {
       search.list$MS.ID[i] = paste(bin[i], "Unidentified", sep = "")
     } else {
