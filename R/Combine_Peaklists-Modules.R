@@ -134,8 +134,8 @@ CombinePeaklists <- function(from.tables,to.table,method,peak.db,db.dir,gen.plot
                                          peak.db = peak_db)
 
     write_tbl(Peak.list.combined,
-              peak.db = to.table,
-              myname = "Peaklist_Combined_FINAL")
+              peak.db = peak_db,
+              myname = to.table)
 
 
   }

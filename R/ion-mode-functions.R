@@ -65,7 +65,7 @@ remove_ion_dup = function(Peak.list, Key.list, tbl.id, ...) {
         stop("Need to specify tbl.id if using databases to retrieve Peak.list!", call. = FALSE)
     }
     if (is.null(Peak.list)) {
-        Peak.list <- read_tbl(tbl.id, peak.db)
+        Peak.list <- read_tbl(tbl.id, ...)
     }
 
     # Get the unique list of Duplicate IDs
