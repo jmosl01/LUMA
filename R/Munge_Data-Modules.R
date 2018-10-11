@@ -22,8 +22,7 @@ ParseCAMERA <- function(from.table,to.table,CAMERA.obj) {
 
     #CAMERA sanity check
     if(file.exists(CAMERA.file)){
-        cat("Reading in CAMERA files.\n\n")
-        load(file = CAMERA.file)
+        CAMERA.obj <- .CAMERASanityCheck(CAMERA.obj,CAMERA.file)
       } else {
         stop("No saved CAMERA files exist. \nBe sure to call InitWorkflow module first!\n\n")
       }
@@ -31,7 +30,7 @@ ParseCAMERA <- function(from.table,to.table,CAMERA.obj) {
   if(!exists(CAMERA.obj)) {
     stop("Did not find the specified CAMERA object in the global environment!\n\n")
   } else {
-    CAMERA.obj <- .CAMERASanityCheck(CAMERA.obj)
+    CAMERA.obj <- .CAMERASanityCheck(CAMERA.obj,CAMERA.file)
   }
 }
 
@@ -67,7 +66,7 @@ ParseCAMERA <- function(from.table,to.table,CAMERA.obj) {
                         asdf = TRUE)
   file.base <- gen_filebase(DataFiles,BLANK,ion.id,ion.mode)
 
-  myresults <- plot_metgroup(anposGa = anposGa,
+  myresults <- plot_metgroup(CAMERA.obj = CAMERA.obj,
                              Sample.df = data.frame(Sex = Sexes,
                                                     Class = Classes,
                                                     n = no.Samples,

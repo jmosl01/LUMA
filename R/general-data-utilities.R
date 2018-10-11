@@ -60,32 +60,49 @@ annegGa <- NULL
 .xcmsSanityCheck = function(XCMS.obj) {
   if(length(XCMS.obj@filled) == 0) {
     warning("LUMA works best on xcms data that has been filled.\n\n")
+    xset <<- xset <- XCMS.obj
+    return(XCMS.obj)
     } else {
       xset4 <<- xset4 <- XCMS.obj
-      save(xset4, file = XCMS.file)
       return(XCMS.obj)
     }
   }
 
-.CAMERASanityCheck = function(CAMERA.obj) {
+.CAMERASanityCheck = function(CAMERA.obj,CAMERA.file) {
   #Check if CAMERA.obj is an xsAnnotate object
   if(class(CAMERA.obj)[1] != "xsAnnotate") {
-    warning(paste(CAMERA.obj, " is not an xsAnnotate object"))
-    return(CAMERA.obj)
+    if(is.null(CAMERA.obj)) {
+      if(file.exists(CAMERA.file)) {
+        cat("Reading in CAMERA objects.\n\n")
+        load(file = CAMERA.file)
+        if(length(grep("Pos",CAMERA.file)) == 1)
+          CAMERA.obj <- anposGa
+        if(length(grep("Neg",CAMERA.file)) == 1)
+          CAMERA.obj <- annegGa
+      }
+
+   return(CAMERA.obj)
+
+    } else {
+      warning(paste(CAMERA.obj, " is not an xsAnnotate object"))
+      return(CAMERA.obj)
+    }
+
   } else {
     if(length(CAMERA.obj@annoGrp) == 0) {
       warning("LUMA works best on CAMERA data that has been annotated.\n\n")
+      if(length(grep("Pos",CAMERA.file)) == 1)
+        mz1setpos <<- mz1setpos <- CAMERA.obj
+      if(length(grep("Neg",CAMERA.file)) == 1)
+        mz1setneg <<- mz1setneg <- CAMERA.obj
+
       return(CAMERA.obj)
     } else {
-      if(ion.mode == "Positive") {
+      if(length(grep("Pos",CAMERA.file)) == 1)
         anposGa <<- anposGa <- CAMERA.obj
-        save(anposGa, file = CAMERA.file)
-      } else {
-        if(ion.mode == "Negative") {
-          annegGa <<- annegGa <- CAMERA.obj
-          save(annegGa, file = CAMERA.file)
-        }
-      }
+      if(length(grep("Neg",CAMERA.file)) == 1)
+        annegGa <<- annegGa <- CAMERA.obj
+
       return(CAMERA.obj)
     }
   }
@@ -120,15 +137,26 @@ annegGa <- NULL
   return(peak_data)
 }
 
-.PreProcess_Files = function(XCMS.file,CAMERA.file,mytable) {
+.PreProcess_Files = function(XCMS.file,CAMERA.file,mytable,CAMERA.obj) {
+
+  #set Default values
+  if(missing(CAMERA.obj))
+    CAMERA.obj <- NULL
+
   if(file.exists(XCMS.file)) {
-    cat("Reading in XCMS files.\n\n")
+    cat("Reading in XCMS objects.\n\n")
     load(file = XCMS.file)
     if(file.exists(CAMERA.file)){
-      cat("Reading in CAMERA files.\n\n")
+      cat("Reading in CAMERA objects.\n\n")
       load(file = CAMERA.file)
+      if(length(grep("Pos",CAMERA.file)) == 1)
+        CAMERA.obj <- anposGa
+      if(length(grep("Neg",CAMERA.file)) == 1)
+        CAMERA.obj <- annegGa
+
       ## Converts retention times to min from sec in Peaklist -----
-      peak_data <- .get_Peaklist(anposGa)
+
+      peak_data <- .get_Peaklist(CAMERA.obj)
       write_tbl(mydf = peak_data,
                 peak.db = peak_db,
                 myname = mytable)
@@ -137,22 +165,24 @@ annegGa <- NULL
       # Runs CAMERA on datafiles --------------------
       ## Code to run CAMERA on XCMS object that has been rt corrected, grouped, and peaks filled
       time.CAMERA <- system.time({
-        myresults <- wrap_camera(xset4 = xset4,
+        myresults <- wrap_camera(xcms.obj = xset4,
                                  CAMERA.par = CAMERA.par,
                                  ion.mode = CAMERA.ion.mode)
-        mz1setpos <<- mz1setpos <- myresults[[1]]
-        anposGa <<- anposGa <- myresults[[2]]
-        peak_data <- .get_Peaklist(anposGa)
+        CAMERA.obj <- .CAMERASanityCheck(myresults[[1]])
+        CAMERA.obj <- .CAMERASanityCheck(myresults[[2]])
       })
       cat(paste("PreProcessing with CAMERA took ",round(print(time.CAMERA[3]))," seconds of elapsed time.\n\n",sep = ""))
       # Section END
 
       # Saves XCMS and CAMERA objects for re-analysis and peaklist for data processing ----
-        save(xset,xset4,file=XCMS.file)
+      save(xset,xset4,file=XCMS.file)
+      if(length(grep("Pos",CAMERA.file)) == 1)
         save(mz1setpos,anposGa,file=CAMERA.file)
+      if(length(grep("Neg",CAMERA.file)) == 1)
+        save(mz1setneg,annegGa,file=CAMERA.file)
 
       ## Converts retention times to min from sec in Peaklist -----
-      peak_data <- .get_Peaklist(anposGa)
+      peak_data <- .get_Peaklist(CAMERA.obj)
       write_tbl(mydf = peak_data,
                 peak.db = peak_db,
                 myname = "From CAMERA")
@@ -166,30 +196,32 @@ annegGa <- NULL
       time.XCMS <- system.time({
         myresults <- wrap_xcms(mzdatafiles = mzdatafiles,
                                XCMS.par = XCMS.par)
-        xset <<- xset <- myresults[[1]]
-        xset4 <<- xset4 <- myresults[[2]]
+        XCMS.obj <- .xcmsSanityCheck(myresults[[1]])
+        XCMS.obj <- .xcmsSanityCheck(myresults[[2]])
       })
       cat(paste("PreProcessing with XCMS took ",round(print(time.XCMS[3]))," seconds of elapsed time.\n\n",sep = ""))
       ## Section End
       # Runs CAMERA on datafiles --------------------
       ## Code to run CAMERA on XCMS object that has been rt corrected, grouped, and peaks filled
       time.CAMERA <- system.time({
-        myresults <- wrap_camera(xset4 = xset4,
+        myresults <- wrap_camera(xcms.obj = xset4,
                                  CAMERA.par = CAMERA.par,
                                  ion.mode = CAMERA.ion.mode)
-        mz1setpos <<- mz1setpos <- myresults[[1]]
-        anposGa <<- anposGa <- myresults[[2]]
-        peak_data <- .get_Peaklist(anposGa)
+        CAMERA.obj <- .CAMERASanityCheck(myresults[[1]])
+        CAMERA.obj <- .CAMERASanityCheck(myresults[[2]])
       })
       cat(paste("PreProcessing with CAMERA took ",round(print(time.CAMERA[3]))," seconds of elapsed time.\n\n",sep = ""))
       # Section END
 
       # Saves XCMS and CAMERA objects for re-analysis and peaklist for data processing ----
-        save(xset,xset4,file=XCMS.file)
+      save(xset,xset4,file=XCMS.file)
+      if(length(grep("Pos",CAMERA.file)) == 1)
         save(mz1setpos,anposGa,file=CAMERA.file)
+      if(length(grep("Neg",CAMERA.file)) == 1)
+        save(mz1setneg,annegGa,file=CAMERA.file)
 
       ## Converts retention times to min from sec in Peaklist -----
-      peak_data <- .get_Peaklist(anposGa)
+      peak_data <- .get_Peaklist(CAMERA.obj)
 
       write_tbl(mydf = peak_data,
                 peak.db = peak_db,

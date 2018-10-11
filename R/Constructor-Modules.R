@@ -199,7 +199,7 @@ InitWorkflow <- function(ion.id,blanks.dir,db.dir,adduct.files,use.CAMERA,use.XC
     if(missing(CAMERA.obj)) {
       cat("You must set CAMERA.obj if use.CAMERA is true. \nSee the LUMA vignette for details.\n\n")
     } else {
-      CAMERA.obj <- .CAMERASanityCheck(CAMERA.obj)
+      CAMERA.obj <- .CAMERASanityCheck(CAMERA.obj,CAMERA.file)
     }
   }
 
