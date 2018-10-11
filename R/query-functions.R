@@ -3,7 +3,7 @@
 #' @export
 #' @description Compares isotope and adduct annotations within Peak.list (inherited from CAMERA) to user-defined annotation library and returns annotation results
 #' @param Peak.list a table of class 'tbl_dbi', 'tbl_sql', 'tbl_lazy', or 'tbl' with samples as columns.  Should contain all output columns from XCMS and CAMERA, both metadata and sample data. Retention times must be in min.
-#' @param Annotated.library a data frame with annotated metabolite entries. Must contain columns called 'Name', 'Formula', Molecular.Weight' and 'RT..Min.'.  Can contain additional info as separate columns.
+#' @param Annotated.library a data frame with annotated metabolite entries. Must contain the first four columns called 'Name', 'Formula', Molecular.Weight' and 'RT..Min.', respectively.  Can contain additional columns.
 #' @param rules a data frame containing the rule list used by CAMERA to annotate ion adducts and fragments.  Must contain the columns 'name','nmol','charge','massdiff','oidscore','quasi','ips'.
 #' @param search.par a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.
 #' @param ion.mode a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'
@@ -13,51 +13,31 @@
 #' @importFrom glue glue_collapse
 #' @importFrom utils str txtProgressBar
 match_Annotation = function(Peak.list, Annotated.library, rules, search.par, ion.mode, lib_db) {
-  search.list <- Peak.list %>% select(EIC_ID, mz, rt) %>% dplyr::collect()
 
-  ## Creates full adduct list for all compounds in the Annotated library
-  IHL <- Annotated.library[rep(seq_len(nrow(Annotated.library)), each = nrow(rules)), ]
-  x <- rules$nmol
-  IHL.temp <- sweep(IHL, 1, x, "*")
-  x <- rules$massdiff
-  if (ion.mode == "Positive") {
-    IHL.temp <- sweep(IHL.temp, 1, x, "+")
-    Ion.Mode <- "Pos"
-    bin <- paste(Ion.Mode, "_", search.list$EIC_ID, "_", sep = "")
+  myresults <- .gen_IHL(Peak.list, Annotated.library, rules, ion.mode, lib_db)
+  search.list <- myresults[[1]]
+  bin <- myresults[[2]]
+  myion.mode <- myresults[[3]]
 
-  } else {
-    if (ion.mode == "Negative") {
-      IHL.temp <- sweep(IHL.temp, 1, x, "+")
-      IHL.temp <- sweep(IHL.temp, 1, -1, "*")
-      Ion.Mode <- "Neg"
-      bin <- paste(Ion.Mode, "_", search.list$EIC_ID, "_", sep = "")
-
-    } else {
-      stop("You must include the ionization mode!")
-    }
-  }
-  x <- rules$charge
-  IHL.adduct.data <- sweep(IHL.temp, 1, x, "/")
-  IHL[, "mz"] <- IHL.adduct.data$Molecular.Weight
-  IHL[, "adduct"] <- rules$name
-  copy_to(lib_db, IHL, name = paste("Annotated Library", Ion.Mode, sep = "_"), temporary = FALSE, overwrite = TRUE)
-  rm(IHL, IHL.adduct.data, IHL.temp)
-  bin
-  IHL <- tbl(lib_db, paste("Annotated Library", Ion.Mode, sep = "_"))
-  d.mz <- search.list$mz * as.numeric(search.par[1, "ppm"])/10^6
-  d.rt <- as.numeric(search.par[1, "rt"])
+  ## Creates delta mz and rt for all compounds in the Search.list
+  d.mz <- search.list[["mz"]] * search.par[["ppm"]][1]/10^6
+  d.rt <- search.par[["rt"]][1]
 
   # calculates the min and max range values for searching the in house library
-  search.list$mz.min <- search.list$mz - d.mz
-  search.list$mz.max <- search.list$mz + d.mz
-  search.list$rt.min <- search.list$rt - d.rt
-  search.list$rt.max <- search.list$rt + d.rt
-  search.list$MS.ID = NA
-  search.list$Formula = NA
-  search.list$Name = NA
-  search.list$Annotated.adduct = NA
-  search.list$Conf.Level = NA
-  search.list$FISh.Coverage = NA
+  mz.min <- search.list[["mz"]] - d.mz
+  mz.max <- search.list[["mz"]] + d.mz
+  rt.min <- search.list[["rt"]] - d.rt
+  rt.max <- search.list[["rt"]] + d.rt
+
+  # Sets up the match results columns including all phenodata
+  search.list[,"MS.ID"] = NA_character_
+  search.list[,"Name"] = NA_character_
+  search.list[,"Formula"] = NA_character_
+  search.list[,"Molecular.Weight"] = NA_character_
+  search.list[,"RT..Min."] = NA_character_
+  search.list[,"Annotated.adduct"] = NA_character_
+  search.list[,seq(from = 10, to = 10 - 1 + length(colnames(Library.phenodata)), by = 1)] = NA_character_
+  colnames(search.list) <- c(colnames(search.list)[1:9],colnames(Library.phenodata))
 
   ## attempts to match all peaks against the In House Library ! Try to build a query using *apply functions to
   ## search all of the search list at once; should speed ! things up considerably
@@ -67,29 +47,33 @@ match_Annotation = function(Peak.list, Annotated.library, rules, search.par, ion
   pb = txtProgressBar(min = 0, max = total, style = 3)
   cnt = 1
   for (i in 1:nrow(search.list)) {
-    mz.min = search.list$mz.min[i]
-    mz.max = search.list$mz.max[i]
-    rt.min = search.list$rt.min[i]
-    rt.max = search.list$rt.max[i]
-    test.list <- IHL %>%
-      dplyr::filter(between(mz, mz.min, mz.max)) %>%
-      dplyr::filter(between(RT..Min., rt.min,rt.max)) %>%
-      dplyr::collect()
+    m.min = mz.min[[i]]
+    m.max = mz.max[[i]]
+    r.min = rt.min[[i]]
+    r.max = rt.max[[i]]
+
+    test.list <- tbl(lib_db, paste("Annotated Library", myion.mode, sep = "_")) %>%
+                    dplyr::filter(between(mz, m.min, m.max)) %>%
+                        dplyr::filter(between(RT..Min., r.min, r.max)) %>%
+                            dplyr::collect()
+
     if (nrow(test.list) == 0) {
-      search.list$MS.ID[i] = paste(bin[i], "Unidentified", sep = "")
+      search.list[i,"MS.ID"] = paste(bin[[i]], "Unidentified", sep = "_")
     } else {
       if (nrow(test.list) >= 1) { ##Matches all features against the In House Library
         #Prints the results of the match to console
         # cat("\n\n\nFeature annotated for match number ", cnt, ".\nMatch results below.\n\n\n", sep = "")
         # str(test.list)
-        search.list$MS.ID[i] = paste(bin[i], "Annotated", sep = "")
-        search.list$Name[i] = glue_collapse(test.list$Name, sep = ";", width = Inf, last = " or ")
-        search.list$Formula[i] = glue_collapse(unique(gsub(" ", "", test.list$Formula)), sep = ";", width = Inf,
-                                                last = " or ")
-        search.list$Annotated.adduct[i] = glue_collapse(test.list$adduct, sep = ";", width = Inf, last = " or ")
-        search.list$Conf.Level[i] = glue_collapse(test.list$Levels, sep = ";", width = Inf, last = " or ")
-        search.list$FISh.Coverage[i] = glue_collapse(test.list$Fish.Coverage, sep = ";", width = Inf,
-                                                      last = " or ")
+        search.list[i,"MS.ID"] = paste(bin[[i]], "Annotated", sep = "_")
+        search.list[i,"Name"] = glue_collapse(test.list[,"Name"], sep = ";", width = Inf)
+        search.list[i,"Formula"] = glue_collapse(unique(gsub(" ", "", test.list[,"Formula"])), sep = ";", width = Inf)
+        search.list[i,"Molecular.Weight"] = glue_collapse(unique(test.list[,"Molecular.Weight"]), sep = ";", width = Inf)
+        search.list[i,"RT..Min."] = glue_collapse(unique(test.list[,"RT..Min."]), sep = ";", width = Inf)
+        search.list[i,"Annotated.adduct"] = glue_collapse(test.list[,"adduct"], sep = ";", width = Inf)
+        for(j in seq(from = 10, to = length(colnames(search.list)), by = 1)) {
+          k = j - 5
+          search.list[i,j] = glue_collapse(test.list[,k], sep = ";", width = Inf)
+        }
         cnt = cnt + 1
       }
     }
@@ -97,7 +81,7 @@ match_Annotation = function(Peak.list, Annotated.library, rules, search.par, ion
     setTxtProgressBar(pb, i)
   }
   close(pb)
-  named.peak.list <- search.list[, 8:ncol(search.list)]
+  named.peak.list <- search.list[, 4:ncol(search.list)]
   colnames(named.peak.list)
   temp <- as.data.frame(Peak.list)
   colnames(Peak.list)

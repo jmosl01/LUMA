@@ -6,11 +6,13 @@
 #' @param Peak.list a data frame from CAMERA that has been parsed.  Should contain all output columns from XCMS and CAMERA, and additional columns from IHL.search, Calc.MinFrac and CAMERA.parser.
 #' @param center numeric value indicating which sample to pick for plotting purposes
 #' @param BLANK a logical indicating whether blanks are being evaluated. Default is FALSE
-#' @param gen.plots a logical indicating whether to create plots for metabolite groups.  Default is FALSE
+#' @param gen.plots a logical indicating whether to create plots for metabolite groups.
+#' Default is FALSE
 #' @param ion.mode a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'
 #' @param anposGa xsannotate object with annotated isotopes and ion adducts and fragments
 #' @param file.base character string used to name graphical output.  Will be appended with '_CorrPlots.pdf'
-#' @param QC.id character identifier for pooled QC samples. Default is 'Pooled_QC'
+#' @param QC.id character identifier for pooled QC samples.
+#' Default is 'Pooled_QC'
 #' @param maxlabel numeric How many m/z labels to print
 #' @return List of length 2.  1st element is a data frame with all columns as the original data frame with one additional column 'Correlation.stat'.  2nd element is a data frame specifically used to validate CAMERA results.
 #' @importFrom  CAMERA plotEICs
