@@ -70,15 +70,15 @@ remove_ion_dup = function(Peak.list, Key.list, tbl.id, ...) {
 
     # Get the unique list of Duplicate IDs
     x <- sapply(Peak.list$Duplicate_ID, function(x) sum(as.numeric(Peak.list$Duplicate_ID == x)))
-    x
-    drops <- Peak.list$Duplicate_ID[x == 1]
-    drops  #Duplicate IDs which only appear once
 
-    List.ID <- Peak.list$Duplicate_ID
-    List.ID  #List of all duplicate IDs
+    drops <- Peak.list$Duplicate_ID[x == 1] # Duplicate IDs which only appear once
+
+
+    List.ID <- Peak.list$Duplicate_ID # List of all duplicate IDs
+
     res <- !List.ID %in% drops
-    Un.ID <- unique(Peak.list$Duplicate_ID[sapply(res, function(x) x == TRUE)])
-    Un.ID  #List of unique duplicate IDs to get EICs for
+    Un.ID <- unique(Peak.list$Duplicate_ID[sapply(res, function(x) x == TRUE)]) # List of unique duplicate IDs to get EICs
+
 
     # List of duplicate IDs for both positive and negative modes
     Dup.ID.Pos <- Peak.list$Duplicate_ID[sapply(res, function(x) x == TRUE) & sapply(Peak.list$`Ion Mode`, function(x) x ==
@@ -108,7 +108,7 @@ remove_ion_dup = function(Peak.list, Key.list, tbl.id, ...) {
     drops <- c(drop.pos, drop.neg)
     drops <- sapply(drops, function(x) x > 0)
     EICs <- EICs[drops, ]
-    length(EICs)
+
     ## The number of spectra to keep is equal to what you told the code
     Peak.list.trimmed <- Peak.list[!Peak.list$EIC_ID %in% EICs, ]
     return(Peak.list.trimmed)

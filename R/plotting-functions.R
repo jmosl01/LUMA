@@ -235,15 +235,15 @@ plot_ionduplicate = function(anposGa, xpos, annegGa, xneg, rt.method, Peak.list,
 
     # Get the unique list of Duplicate IDs
     x <- sapply(Peak.list$Duplicate_ID, function(x) sum(as.numeric(Peak.list$Duplicate_ID == x)))
-    x
+
     drops <- Peak.list$Duplicate_ID[x == 1]
-    drops  #Duplicate IDs which only appear once
+
 
     List.ID <- Peak.list$Duplicate_ID
-    List.ID  #List of all duplicate IDs
+
     res <- !List.ID %in% drops
     Un.ID <- unique(Peak.list$Duplicate_ID[sapply(res, function(x) x == TRUE)])
-    Un.ID  #List of unique duplicate IDs to get EICs for
+
 
     # List of duplicate IDs for both positive and negative modes
     Dup.ID.Pos <- Peak.list$Duplicate_ID[sapply(res, function(x) x == TRUE) &

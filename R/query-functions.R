@@ -144,7 +144,7 @@ search_IonDup.mz  <- function(object,Peak.list.pos,Peak.list.neg,search.par,col.
   mono.comb$Duplicate_EIC <- ave(as.character(mono.comb$EIC_ID), z, FUN = function(s) paste(s, collapse = ","))
   mono.comb$Duplicate_ID <- z
   bin <- row.names(mono.comb)
-  bin
+
 
   # Combine peaklists and add duplicate flag and ID
   colnames(Peak.list.pos)
@@ -194,7 +194,7 @@ search_IonDup.monoMass  <- function(object,Peak.list.pos,Peak.list.neg,search.pa
   mono.comb$Duplicate_EIC <- ave(as.character(mono.comb$EIC_ID), z, FUN = function(s) paste(s, collapse = ","))
   mono.comb$Duplicate_ID <- z
   bin <- row.names(mono.comb)
-  bin
+
 
   # Combine peaklists and add duplicate flag and ID
   colnames(Peak.list.pos)

@@ -235,4 +235,37 @@ annegGa <- NULL
   return(list(Peaklist_corstat,res))
 }
 
+.gen_IHL = function(Peak.list, Annotated.library, rules, ion.mode, lib_db) {
+  ## Creates search list
+  search.list <- Peak.list %>% select(EIC_ID, mz, rt) %>% dplyr::collect()
+
+  ## Creates full adduct list for all compounds in the Annotated library
+  IHL <- Annotated.library[rep(seq_len(nrow(Annotated.library)), each = nrow(rules)), ]
+  x <- rules[,"nmol"]
+  IHL.temp <- sweep(IHL, 1, x, "*")
+  x <- rules[,"massdiff"]
+  if (ion.mode == "Positive") {
+    IHL.temp <- sweep(IHL.temp, 1, x, "+")
+    myion.mode <- "Pos"
+    bin <- paste(myion.mode, search.list[["EIC_ID"]], sep = "_")
+
+  } else {
+    if (ion.mode == "Negative") {
+      IHL.temp <- sweep(IHL.temp, 1, x, "+")
+      IHL.temp <- sweep(IHL.temp, 1, -1, "*")
+      myion.mode <- "Neg"
+      bin <- paste(myion.mode, search.list[["EIC_ID"]], sep = "_")
+
+    } else {
+      stop("You must include the ionization mode!")
+    }
+  }
+  x <- rules$charge
+  IHL.adduct.data <- sweep(IHL.temp, 1, x, "/")
+  IHL[, "mz"] <- IHL.adduct.data$Molecular.Weight
+  IHL[, "adduct"] <- rules[,"name"]
+  copy_to(lib_db, IHL, name = paste("Annotated Library", myion.mode, sep = "_"), temporary = FALSE, overwrite = TRUE)
+  return(list(search.list,bin,myion.mode))
+}
+
 ##END
