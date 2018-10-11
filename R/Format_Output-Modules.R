@@ -23,10 +23,16 @@ FormatForSIMCA <- function(from.table,to.csv,peak.db,db.dir) {
   peak_db <<- peak_db <- connect_peakdb(file.base = peak.db,db.dir = db.dir)
 
   SIMCA.data <- format_simca(Peak.list = NULL,
-                             Sample.df = Sample.df,
-                             Sample.data = Sample.data,
+                             Sample.df = data.frame(Sex = Sexes,
+                                                    Class = Classes,
+                                                    n = no.Samples,
+                                                    Endogenous = Endogenous),
+                             Sample.data = cbind.data.frame(CT.ID,
+                                                            Plate.Number,
+                                                            Plate.Position,
+                                                            Sample.phenodata),
                              tbl.id = from.table,
-                             peak.db = peak.db)
+                             peak.db = peak_db)
 
   write.table(SIMCA.data, file = paste(to.csv,".csv",sep = ""), sep = ",", row.names = FALSE)
 

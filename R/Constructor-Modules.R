@@ -61,7 +61,11 @@ InitWorkflow <- function(ion.id,blanks.dir,db.dir,adduct.files,use.CAMERA,use.XC
   RT..Min. <- NULL
   XCMS.par <- NULL
   CAMERA.par <- NULL
-
+  CT.ID <- NULL
+  Plate.Number <- NULL
+  Plate.Position <- NULL
+  Sample.phenodata <- NULL
+  Library.phenodata <- NULL
 
   #Set default values for constructor function arguments
   if(missing(ion.id))
