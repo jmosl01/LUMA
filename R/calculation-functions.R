@@ -36,7 +36,7 @@ calc_corrstat = function(Sample.df, Peak.list, get.mg, BLANK, ion.mode) {
 
     corr.group <- as.matrix(unique(Peak.list.pspec[, "metabolite_group"]))
     corr.group <- sort(corr.group)
-    length(corr.group)
+
     ## Error Check
     if (sum(ifelse(corr.group != get.mg, 1, 0)) != 0) {
         stop("Something is wrong with your metabolite groups. Check out from Matlab script!")
@@ -45,7 +45,7 @@ calc_corrstat = function(Sample.df, Peak.list, get.mg, BLANK, ion.mode) {
     corr.df <- data.frame(corr.stat = corr.stat, row.names = as.character(Peak.list.pspec$EIC_ID))
     rownames(corr.df)
     colnames(corr.df)
-    corr.df
+
     total = length(get.mg)
     # i = 17 For debugging purposes
     cat("Generating Correlation Matrices.\n\n\n")
@@ -74,8 +74,8 @@ calc_corrstat = function(Sample.df, Peak.list, get.mg, BLANK, ion.mode) {
                 new.df <- as.data.frame(corr.stat, row.names = names(corr.stat))
                 j <- rownames(new.df)
                 corr.df[j, ] <- new.df
-                corr.df[j, ]
-                corr.df
+
+
             } else {
                 my.mat <- as.matrix(my.df[, sample.cols])
                 test.mat <- as.matrix(t(my.mat))
@@ -95,8 +95,8 @@ calc_corrstat = function(Sample.df, Peak.list, get.mg, BLANK, ion.mode) {
                 new.df <- as.data.frame(corr.stat, row.names = names(corr.stat))
                 j <- rownames(new.df)
                 corr.df[j, ] <- new.df
-                corr.df[j, ]
-                corr.df
+
+
                 # ordered.hclust <- reorder(sim.by.hclust, wts = my.df$monoisotopic_flg, agglo.FUN = 'mean')
                 # ordered.hclust$value ordered.hclust$labels
 

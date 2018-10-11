@@ -42,7 +42,7 @@ match_Annotation = function(Peak.list, Annotated.library, rules, search.par, ion
   IHL[, "adduct"] <- rules$name
   copy_to(lib_db, IHL, name = paste("Annotated Library", Ion.Mode, sep = "_"), temporary = FALSE, overwrite = TRUE)
   rm(IHL, IHL.adduct.data, IHL.temp)
-  bin
+
   IHL <- tbl(lib_db, paste("Annotated Library", Ion.Mode, sep = "_"))
   d.mz <- search.list$mz * as.numeric(search.par[1, "ppm"])/10^6
   d.rt <- as.numeric(search.par[1, "rt"])
@@ -158,7 +158,7 @@ search_IonDup.mz  <- function(object,Peak.list.pos,Peak.list.neg,search.par,col.
   mono.comb$Duplicate_EIC <- ave(as.character(mono.comb$EIC_ID), z, FUN = function(s) paste(s, collapse = ","))
   mono.comb$Duplicate_ID <- z
   bin <- row.names(mono.comb)
-  bin
+
 
   # Combine peaklists and add duplicate flag and ID
   colnames(Peak.list.pos)
@@ -208,7 +208,7 @@ search_IonDup.monoMass  <- function(object,Peak.list.pos,Peak.list.neg,search.pa
   mono.comb$Duplicate_EIC <- ave(as.character(mono.comb$EIC_ID), z, FUN = function(s) paste(s, collapse = ","))
   mono.comb$Duplicate_ID <- z
   bin <- row.names(mono.comb)
-  bin
+
 
   # Combine peaklists and add duplicate flag and ID
   colnames(Peak.list.pos)

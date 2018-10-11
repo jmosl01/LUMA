@@ -12,7 +12,7 @@ CullVoidVolume <- function(from.table,to.table,method) {
   Peak.list <- read_tbl(mytable = from.table,
                         peak.db = peak_db,
                         asdf = TRUE)
-  Peak.list
+
   attributes(Peak.list)
   Peak.list.trimmed <- remove_void_volume(Peak.list = Peak.list,
                                           search.par = data.frame(ppm = ppm.cutoff,
