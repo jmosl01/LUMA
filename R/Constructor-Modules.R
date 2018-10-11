@@ -132,27 +132,43 @@ InitWorkflow <- function(ion.id,blanks.dir,db.dir,adduct.files,use.CAMERA,use.XC
   if(file.exists("Sample Class.txt"))  {
   cat("Setting sample class info globally.\n\n")
     Sample.df <- read.table(file = "Sample Class.txt", sep = "\t", header = TRUE)
-    Sexes <<- Sexes <- Sample.df[,1]
-    Classes <<- Classes <- Sample.df[,2]
-    no.Samples <<- no.Samples <- Sample.df[,3]
-    Endogenous <<- Endogenous <- Sample.df[,4]
+    Sexes <<- Sexes <- Sample.df[,"Sex"]
+    Classes <<- Classes <- Sample.df[,"Class"]
+    no.Samples <<- no.Samples <- Sample.df[,"n"]
+    Endogenous <<- Endogenous <- Sample.df[,"Endogenous"]
       } else {
         if(is.null(Sexes) || is.null(Classes) || is.null(no.Samples) || is.null(Endogenous)) {
           stop("Please place \"Sample Class.txt\" into your working directory. \nAlternatively, you should set the Sex, Class, no.Samples and Endogenous arguments.\n\n")
       }
     }
 
+  #Set sample phenotype data globally
+  if(file.exists("Sample Data.csv"))  {
+    cat("Setting sample phenotype data globally.\n\n")
+    Sample.data <- read.table(file = "Sample Data.csv", sep = "," , header = TRUE, stringsAsFactors = FALSE)
+    Sample.data <- Sample.data[order(Sample.data[,"CT.ID"]),]
+    CT.ID <<- CT.ID <- Sample.data[,"CT.ID"]
+    Plate.Number <<- Plate.Number <- Sample.data[,"Plate.Number"]
+    Plate.Position <<- Plate.Position <- Sample.data[,"Plate.Position"]
+    Sample.phenodata <<- Sample.phenodata <- Sample.data[,-which(colnames(Sample.data) %in% c("CT.ID","Plate.Number","Plate.Position"))]
+  } else {
+    if(is.null(CT.ID) || is.null(Plate.Number) || is.null(Plate.Position)) {
+      stop("Please place \"Sample Data.csv\" into your working directory. \nAlternatively, you should set the CT-ID, Plate.Number, and Plate.Position arguments.\n\n")
+    }
+  }
+
   #Set Annotated Library info globally
   if(file.exists("Annotated Library.csv"))  {
     cat("Setting Annotated Library info globally.\n\n")
     Annotated.Library <- read.csv(file = "Annotated Library.csv", sep = ",", fill = TRUE, header = TRUE)
-    Name <<- Name <- Annotated.Library[,1]
-    Formula <<- Formula <- Annotated.Library[,2]
-    Molecular.Weight <<- Molecular.Weight <- Annotated.Library[,3]
-    RT..Min. <<- RT..Min. <- Annotated.Library[,4]
+    Name <<- Name <- Annotated.Library[,"Name"]
+    Formula <<- Formula <- Annotated.Library[,"Formula"]
+    Molecular.Weight <<- Molecular.Weight <- Annotated.Library[,"Molecular.Weight"]
+    RT..Min. <<- RT..Min. <- Annotated.Library[,"RT..Min."]
+    Library.phenodata <<- Library.phenodata <- Annotated.Library[,-which(colnames(Annotated.Library) %in% c("Name","Formula","Molecular.Weight","RT..Min."))]
   } else {
-    if(is.null(Sexes) || is.null(Classes) || is.null(no.Samples) || is.null(Endogenous)) {
-      stop("Please place \"Sample Class.txt\" into your working directory. \nAlternatively, you should set the Sex, Class, no.Samples and Endogenous arguments.\n\n")
+    if(is.null(Name) || is.null(Formula) || is.null(Molecular.Weight) || is.null(RT..Min.)) {
+      stop("Please place \"Sample Class.txt\" into your working directory. \nAlternatively, you should set the Name, Formula, Molecular.Weight and RT..Min. arguments.\n\n")
     }
   }
 

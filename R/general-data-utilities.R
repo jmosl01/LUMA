@@ -1,11 +1,3 @@
-##Initialize global variables
-xset <- NULL
-xset4 <- NULL
-mz1setpos <- NULL
-mz1setneg <- NULL
-anposGa <- NULL
-annegGa <- NULL
-
 ## internal constructor utility functions ----
 .get_DataFiles = function(mzdatapath,ion.mode,BLANK,ion.id,blanks.dir) {
   ## Selects the datafiles to use for data processing

@@ -25,10 +25,11 @@ AnnotatePeaklist <- function(from.table,to.table,lib.db) {
 
   #Match Peak.list annotations against In House Library
   Peak.list.Annotated <- match_Annotation(Peak.list = Peak.list,
-                                Annotated.library = data.frame(Name = Name,
-                                                               Formula = Formula,
-                                                               Molecular.Weight = Molecular.Weight,
-                                                               RT..Min. = RT..Min.),
+                                Annotated.library = cbind.data.frame(Name,
+                                                                     Formula,
+                                                                     Molecular.Weight,
+                                                                     RT..Min.,
+                                                                     Library.phenodata),
                                 rules = rules,
                                 search.par = data.frame(ppm = ppm.cutoff,
                                                         rt = rt.cutoff,
