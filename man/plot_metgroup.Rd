@@ -4,11 +4,11 @@
 \alias{plot_metgroup}
 \title{Loop-based EIC Plotter}
 \usage{
-plot_metgroup(anposGa, Sample.df, Peak.list, center, BLANK, gen.plots,
+plot_metgroup(CAMERA.obj, Sample.df, Peak.list, center, BLANK, gen.plots,
   ion.mode, file.base, QC.id, maxlabel)
 }
 \arguments{
-\item{anposGa}{xsannotate object with annotated isotopes and ion adducts and fragments}
+\item{CAMERA.obj}{xsannotate object with annotated isotopes and ion adducts and fragments}
 
 \item{Sample.df}{a data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns 'Sex','Class','n','Endogenous'.}
 
@@ -18,13 +18,15 @@ plot_metgroup(anposGa, Sample.df, Peak.list, center, BLANK, gen.plots,
 
 \item{BLANK}{a logical indicating whether blanks are being evaluated. Default is FALSE}
 
-\item{gen.plots}{a logical indicating whether to create plots for metabolite groups.  Default is FALSE}
+\item{gen.plots}{a logical indicating whether to create plots for metabolite groups.
+Default is FALSE}
 
 \item{ion.mode}{a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'}
 
 \item{file.base}{character string used to name graphical output.  Will be appended with '_CorrPlots.pdf'}
 
-\item{QC.id}{character identifier for pooled QC samples. Default is 'Pooled_QC'}
+\item{QC.id}{character identifier for pooled QC samples.
+Default is 'Pooled_QC'}
 
 \item{maxlabel}{numeric How many m/z labels to print}
 }

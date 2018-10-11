@@ -837,8 +837,6 @@ combine_phenodata <- function(Sample.df, Peak.list, Summed.list, search.par, BLA
   pheno.list <- Peaklist_corstat[sapply(res, function(x) length(x) < 1)]  #Extracts all of the pheno columns for combining by metabolite group
   pheno.list[,"metabolite_group"] <- Peaklist_corstat[,"metabolite_group"]
   pheno.list <- pheno.list %>% mutate_if(is.factor, as.character)
-  attributes(pheno.list)
-  str(pheno.list)
   mylist <- sort(unique(Peaklist_corstat$metabolite_group))
   new.pheno.list <- as.data.frame(mylist)
   # i = 11 ##for debugging purposes
@@ -876,9 +874,7 @@ combine_phenodata <- function(Sample.df, Peak.list, Summed.list, search.par, BLA
   df1 <- Iso.only.list[order(Iso.only.list$metabolite_group), ]
   df2 <- Summed.list[order(Summed.list$metabolite_group), ]
   Peak.list.summed <- bind_cols(df1, df2)
-  colnames(Peak.list.summed)
   temp <- as.character(Peak.list.summed$MS.ID)
-  str(temp)
 
   #Drop Singletons
   no.features <- str_count(temp, ";") + 1

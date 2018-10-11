@@ -4,10 +4,10 @@
 \alias{wrap_camera}
 \title{Wraps CAMERA}
 \usage{
-wrap_camera(xset4, CAMERA.par, ion.mode)
+wrap_camera(xcms.obj, CAMERA.par, ion.mode)
 }
 \arguments{
-\item{xset4}{an xcms object that has had peak picking, retention time alignment, peak grouping, and imputing missing values performed}
+\item{xcms.obj}{an xcms object that has had peak picking, retention time alignment, peak grouping, and imputing missing values performed}
 
 \item{CAMERA.par}{a single-row data frame with 9 variables containing CAMERA parameters. The column names must be c('perfwhm','sigma','minfrac','mzabs','maxiso','corval_eic','corval_exp','pval','mzabs.1')}
 

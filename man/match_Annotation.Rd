@@ -10,7 +10,7 @@ match_Annotation(Peak.list, Annotated.library, rules, search.par, ion.mode,
 \arguments{
 \item{Peak.list}{a table of class 'tbl_dbi', 'tbl_sql', 'tbl_lazy', or 'tbl' with samples as columns.  Should contain all output columns from XCMS and CAMERA, both metadata and sample data. Retention times must be in min.}
 
-\item{Annotated.library}{a data frame with annotated metabolite entries. Must contain columns called 'Name', 'Formula', Molecular.Weight' and 'RT..Min.'.  Can contain additional info as separate columns.}
+\item{Annotated.library}{a data frame with annotated metabolite entries. Must contain the first four columns called 'Name', 'Formula', Molecular.Weight' and 'RT..Min.', respectively.  Can contain additional columns.}
 
 \item{rules}{a data frame containing the rule list used by CAMERA to annotate ion adducts and fragments.  Must contain the columns 'name','nmol','charge','massdiff','oidscore','quasi','ips'.}
 
