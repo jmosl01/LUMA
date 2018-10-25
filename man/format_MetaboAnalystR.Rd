@@ -13,6 +13,12 @@ format_MetaboAnalystR(Peak.list, Sample.df, Sample.data,
 \item{Sample.df}{data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns 'Sex','Class','n','Endogenous'.}
 
 \item{Sample.data}{ata frame with phenotype data as columns and a row for each study sample.  First column must be a unique sample identifier with the header 'CT-ID'.  Phenotype columns may vary, but must include two columns called 'Plate Number' and 'Plate Position' for determining run order.}
+
+\item{data.type}{NULL}
+
+\item{anal.type}{NULL}
+
+\item{paired}{NULL}
 }
 \value{
 mSetObj

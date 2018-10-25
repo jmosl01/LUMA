@@ -19,6 +19,8 @@ format_MetabolomicData(mSetObj, Peak.list, Sample.df, Sample.data)
   Sample.data)
 }
 \arguments{
+\item{mSetObj}{NULL}
+
 \item{Peak.list}{data frame containing combined ion mode peaklist with ion mode duplicates removed.}
 
 \item{Sample.df}{data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns 'Sex','Class','n','Endogenous'.}
