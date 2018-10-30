@@ -67,10 +67,23 @@
       if(file.exists(CAMERA.file)) {
         cat("Reading in CAMERA objects.\n\n")
         load(file = CAMERA.file)
+        myvar <- mget(ls())
+        myclasses <- lapply(myvar, class)
+        myind <- grep("xsAnnotate",myclasses)
+        CAMERA.list <- myvar[myind]
+        CAMERA.list <- lapply(CAMERA.list, function(x) {
+          j = length(x@annoGrp)
+          if(j!=0) {
+              return(x)
+          }
+        })
+        myclasses <- lapply(CAMERA.list, class)
+        myind <- grep("xsAnnotate",myclasses)
+        CAMERA.obj <- CAMERA.list[[myind[1]]]
         if(length(grep("Pos",CAMERA.file)) == 1)
-          CAMERA.obj <- anposGa
+          anposGa <<- anposGa <- CAMERA.obj
         if(length(grep("Neg",CAMERA.file)) == 1)
-          CAMERA.obj <- annegGa
+          annegGa <<- annegGa <- CAMERA.obj
       }
 
    return(CAMERA.obj)
@@ -140,13 +153,13 @@
     load(file = XCMS.file)
     if(file.exists(CAMERA.file)){
       cat("Reading in CAMERA objects.\n\n")
-      load(file = CAMERA.file)
+      CAMERA.obj <- .CAMERASanityCheck(CAMERA.obj,CAMERA.file)
+
+      ## Converts retention times to min from sec in Peaklist -----
       if(length(grep("Pos",CAMERA.file)) == 1)
         CAMERA.obj <- anposGa
       if(length(grep("Neg",CAMERA.file)) == 1)
         CAMERA.obj <- annegGa
-
-      ## Converts retention times to min from sec in Peaklist -----
 
       peak_data <- .get_Peaklist(CAMERA.obj)
       write_tbl(mydf = peak_data,
@@ -213,6 +226,11 @@
         save(mz1setneg,annegGa,file=CAMERA.file)
 
       ## Converts retention times to min from sec in Peaklist -----
+      if(length(grep("Pos",CAMERA.file)) == 1)
+        CAMERA.obj <- anposGa
+      if(length(grep("Neg",CAMERA.file)) == 1)
+        CAMERA.obj <- annegGa
+
       peak_data <- .get_Peaklist(CAMERA.obj)
 
       write_tbl(mydf = peak_data,
