@@ -11,10 +11,15 @@
 #' @return data frame containing normalized intensity matrix for all samples plus Pooled QCs
 replace_zeros_normalize = function(Peak.list = NULL, Sample.df, tbl.id = NULL, QC.id = "Pooled_QC_", mult = 1000,
                                    ...) {
+  #Set default values
   if (missing(Peak.list))
     Peak.list = NULL
   if (missing(tbl.id))
     tbl.id = NULL
+  if (missing(QC.id))
+    QC.id = "Pooled_QC"
+  if (missing(mult))
+    mult = 1000
   if (is.null(tbl.id) && is.null(Peak.list)) {
     stop("Need to specify tbl.id if using databases to retrieve Peak.list!", call. = FALSE)
   }
@@ -31,14 +36,13 @@ replace_zeros_normalize = function(Peak.list = NULL, Sample.df, tbl.id = NULL, Q
   res <- samples %in% sexes
   sum.range.list <- Peak.list[, res]
   # return(sum.range.list) Checks out
-  Peak.list.pos <- split(Peak.list, as.factor(Peak.list$Ion.Mode))$Pos
-  Peak.list.neg <- split(Peak.list, as.factor(Peak.list$Ion.Mode))$Neg
+
   # Get all study samples for each ion mode separately Positive mode
-  sum.range.pos <- split(sum.range.list, as.factor(Peak.list$Ion.Mode))$Pos
+  sum.range.pos <- split(sum.range.list, as.factor(Peak.list$Ion.Mode.1))$Pos
   sum.range.pos[sum.range.pos == 0] <- NA
   min.pos <- min(sum.range.pos, na.rm = TRUE)
   # Negative mode
-  sum.range.neg <- split(sum.range.list, as.factor(Peak.list$Ion.Mode))$Neg
+  sum.range.neg <- split(sum.range.list, as.factor(Peak.list$Ion.Mode.1))$Neg
   sum.range.neg[sum.range.neg == 0] <- NA
   min.neg <- min(sum.range.neg, na.rm = TRUE)
 
@@ -67,10 +71,10 @@ replace_zeros_normalize = function(Peak.list = NULL, Sample.df, tbl.id = NULL, Q
 
   res <- samples %in% sexes
   QC.range.list <- Peak.list[, res]
-  QC.range.pos <- split(QC.range.list, as.factor(Peak.list$Ion.Mode))$Pos
+  QC.range.pos <- split(QC.range.list, as.factor(Peak.list$Ion.Mode.1))$Pos
   QC.range.pos[QC.range.pos == 0] <- NA
 
-  QC.range.neg <- split(QC.range.list, as.factor(Peak.list$Ion.Mode))$Neg
+  QC.range.neg <- split(QC.range.list, as.factor(Peak.list$Ion.Mode.1))$Neg
   QC.range.neg[QC.range.neg == 0] <- NA
 
   min.pos <- min(QC.range.pos, na.rm = TRUE)
