@@ -288,6 +288,8 @@
   IHL.adduct.data <- sweep(IHL.temp, 1, x, "/")
   IHL[, "mz"] <- IHL.adduct.data$Molecular.Weight
   IHL[, "adduct"] <- rules[,"name"]
+  IHL <- IHL[which(IHL$Ion.Mode %in% myion.mode),]
+
   copy_to(lib_db, IHL, name = paste("Annotated Library", myion.mode, sep = "_"), temporary = FALSE, overwrite = TRUE)
   return(list(search.list,bin,myion.mode))
 }
