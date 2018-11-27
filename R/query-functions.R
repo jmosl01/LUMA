@@ -319,8 +319,8 @@ find_Background.mz <- function(object, Peak.list, Solv.list, Sample.df, search.p
       } else {
         if (nrow(test.list) == 1) {
           if (search.list$sample.mean[j]/test.list$mean <= Solvent.ratio) {
-            temp <- test.list[, c("MS.ID", "Formula", "Name", "Annotated.adduct", "Conf.Level", "FISh.Coverage",
-                                  "isotopes", "adduct")]
+            # temp <- test.list[, c("MS.ID", "Formula", "Name", "Annotated.adduct", "Conf.Level", "FISh.Coverage",
+            #                       "isotopes", "adduct")]
             bin[j] = TRUE
             cnt = cnt + 1
           }
@@ -328,8 +328,8 @@ find_Background.mz <- function(object, Peak.list, Solv.list, Sample.df, search.p
         } else {
           if (nrow(test.list) >= 1) {
             if (search.list$sample.mean[j]/max(test.list$mean) <= Solvent.ratio) {
-              temp <- test.list[, c("MS.ID", "Formula", "Name", "Annotated.adduct", "Conf.Level", "FISh.Coverage",
-                                    "isotopes", "adduct")]
+              # temp <- test.list[, c("MS.ID", "Formula", "Name", "Annotated.adduct", "Conf.Level", "FISh.Coverage",
+              #                       "isotopes", "adduct")]
               bin[j] = TRUE
               cnt = cnt + 1
             }
@@ -385,7 +385,7 @@ find_Background.monoMass <- function(object, Peak.list, Solv.list, Sample.df, se
       select(EIC_ID, mono_mass, meanRT) %>%
       dplyr::collect()
 
-    # Calculate the mean of QC values for each compound
+    # Calculate the mean of endo values for each compound
     res <- lapply(colnames(cur.Peaklist), function(ch) grep(QC.id, ch))
     QC.list <- cur.Peaklist[sapply(res, function(x) length(x) > 0)]
     QCmean <- rowMeans(QC.list)
@@ -401,16 +401,16 @@ find_Background.monoMass <- function(object, Peak.list, Solv.list, Sample.df, se
     MBmean <- rowMeans(Solvent.new.list)
     cur.Solvlist$mean <- MBmean
     if (cur.ion == "Positive") {
-      cat("Removing Background Compounds in Positive mode:")
+      cat("\n\nRemoving Background Compounds in Positive mode:\n\n")
       copy_to(lib_db, cur.Solvlist, name = "Pos_list", temporary = FALSE, overwrite = TRUE)
       IHL <- tbl(lib_db, "Pos_list")
     } else {
       if (cur.ion == "Negative") {
-        cat("Removing Background Compounds in Negative mode:")
+        cat("\n\nRemoving Background Compounds in Negative mode:\n\n")
         copy_to(lib_db, cur.Solvlist, name = "Neg_list", temporary = FALSE, overwrite = TRUE)
         IHL <- tbl(lib_db, "Neg_list")
       } else {
-        stop("Ionization mode must be Positive or Negative. It is case sensitive!", call. = FALSE)
+        stop("Ionization mode must be Positive or Negative. It is case sensitive!\n\n", call. = FALSE)
       }
     }
     # calculates the min and max range values for searching against the solvent list
@@ -443,8 +443,8 @@ find_Background.monoMass <- function(object, Peak.list, Solv.list, Sample.df, se
       } else {
         if (nrow(test.list) == 1) {
           if (search.list$sample.mean[j]/test.list$mean <= Solvent.ratio) {
-            temp <- test.list[, c("MS.ID", "Formula", "Name", "Annotated.adduct", "Conf.Level", "FISh.Coverage",
-                                  "isotopes", "adduct")]
+            # temp <- test.list[, c("MS.ID", "Formula", "Name", "Annotated.adduct", "Conf.Level", "FISh.Coverage",
+            #                       "isotopes", "adduct")]
             bin[j] = TRUE
             cnt = cnt + 1
           }
@@ -452,8 +452,8 @@ find_Background.monoMass <- function(object, Peak.list, Solv.list, Sample.df, se
         } else {
           if (nrow(test.list) >= 1) {
             if (search.list$sample.mean[j]/max(test.list$mean) <= Solvent.ratio) {
-              temp <- test.list[, c("MS.ID", "Formula", "Name", "Annotated.adduct", "Conf.Level", "FISh.Coverage",
-                                    "isotopes", "adduct")]
+              # temp <- test.list[, c("MS.ID", "Formula", "Name", "Annotated.adduct", "Conf.Level", "FISh.Coverage",
+              #                       "isotopes", "adduct")]
               bin[j] = TRUE
               cnt = cnt + 1
             }
