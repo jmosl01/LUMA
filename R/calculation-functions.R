@@ -1,12 +1,12 @@
-#' @title Calculate correlation matrices for metabolite groups
+#' @title Calculates correlation matrices for metabolite groups
 #'
-#' @description Calculates the correlation matrices for metabolite groups based on the best feature within the group that belongs to the primary metabolite
+#' @description Calculates the correlation matrices for metabolite groups based on the best feature within the group that belongs to the primary metabolite.
 #' @param Sample.df a data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns 'Sex','Class','n','Endogenous'.
 #' @param Peak.list a data frame from CAMERA that has been parsed.  Should contain all output columns from XCMS and CAMERA, and additional columns from IHL.search, Calc.MinFrac and CAMERA.parser.
 #' @param get.mg numerical vector of metabolite groups that have more than one feature
 #' @param BLANK a logical indicating whether blanks are being evaluated
 #' @param ion.mode a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'
-#' @return a table of class 'tbl_df',tbl' or 'data.frame' with variables as columns.  Has all of the columns as the original data frame with one additional column 'Correlation.stat'
+#' @return Peak.list of class 'tbl_df',tbl' or 'data.frame' with variables as columns.  Has all of the columns as the original data frame with one additional column 'Correlation.stat'
 #' @importFrom stats cor dist
 #' @importFrom utils setTxtProgressBar
 #' @importFrom flashClust flashClust
@@ -36,7 +36,7 @@ calc_corrstat = function(Sample.df, Peak.list, get.mg, BLANK, ion.mode) {
 
     corr.group <- as.matrix(unique(Peak.list.pspec[, "metabolite_group"]))
     corr.group <- sort(corr.group)
-    length(corr.group)
+
     ## Error Check
     if (sum(ifelse(corr.group != get.mg, 1, 0)) != 0) {
         stop("Something is wrong with your metabolite groups. Check out from Matlab script!")
@@ -45,7 +45,7 @@ calc_corrstat = function(Sample.df, Peak.list, get.mg, BLANK, ion.mode) {
     corr.df <- data.frame(corr.stat = corr.stat, row.names = as.character(Peak.list.pspec$EIC_ID))
     rownames(corr.df)
     colnames(corr.df)
-    corr.df
+
     total = length(get.mg)
     # i = 17 For debugging purposes
     cat("Generating Correlation Matrices.\n\n\n")
@@ -74,8 +74,8 @@ calc_corrstat = function(Sample.df, Peak.list, get.mg, BLANK, ion.mode) {
                 new.df <- as.data.frame(corr.stat, row.names = names(corr.stat))
                 j <- rownames(new.df)
                 corr.df[j, ] <- new.df
-                corr.df[j, ]
-                corr.df
+
+
             } else {
                 my.mat <- as.matrix(my.df[, sample.cols])
                 test.mat <- as.matrix(t(my.mat))
@@ -95,8 +95,8 @@ calc_corrstat = function(Sample.df, Peak.list, get.mg, BLANK, ion.mode) {
                 new.df <- as.data.frame(corr.stat, row.names = names(corr.stat))
                 j <- rownames(new.df)
                 corr.df[j, ] <- new.df
-                corr.df[j, ]
-                corr.df
+
+
                 # ordered.hclust <- reorder(sim.by.hclust, wts = my.df$monoisotopic_flg, agglo.FUN = 'mean')
                 # ordered.hclust$value ordered.hclust$labels
 
@@ -109,10 +109,11 @@ calc_corrstat = function(Sample.df, Peak.list, get.mg, BLANK, ion.mode) {
     return(Peak.list.pspec)
 }
 
-#' @title Calculate Minfrac for sample classes
+#' @title Calculate minimum fraction of features across sample classes
 #'
 #' @export
-#' @description Calculates the fraction of samples within each class that contains a given feature.  Only the minimum fraction across all sample classes is returned.
+#' @description Calculates the fraction of samples within each class that contains a given feature.
+#' Only the minimum fraction across all sample classes is returned.
 #' @param Sample.df a data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns 'Sex','Class','n','Endogenous'.
 #' @param xset4 an xcms object that has had peak picking, retention time alignment, peak grouping, and imputing missing values performed
 #' @param BLANK a logical indicating whether blanks are being evaluated
@@ -318,18 +319,18 @@ calc_minfrac = function(Sample.df, xset4, BLANK, Peak.list) {
     return(raw)
 }
 
-#' @title Sum Features into Metabolites
+#' @title Sums features into Metabolites
 #'
 #' @export
 #' @description Sums all features belonging to the same metabolite into a single intensity value per metabolite group per sample
-#' @param Sample.df a data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns 'Sex','Class','n','Endogenous'.
 #' @param Peak.list data frame. Must have Correlation.stat column.  Should contain output columns from XCMS and CAMERA, and additional columns from IHL.search, Calc.MinFrac, CAMERA.parser and EIC.plotter functions.
+#' @param Sample.df a data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns 'Sex','Class','n','Endogenous'.
 #' @param search.par a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.
 #' @param BLANK a logical indicating whether blanks are being evaluated
 #' @param ion.mode a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'
-#' @return data table data frame sum.range.list with the first column containing metabolite group and the rest containing sample and QC columns
+#' @return sum.range.list with the first column containing metabolite group and the rest containing sample and QC columns
 #' @importFrom data.table as.data.table
-sum_features = function(Sample.df, Peak.list, search.par, BLANK, ion.mode) {
+sum_features = function(Peak.list, Sample.df, search.par, BLANK, ion.mode) {
     mylist <- .gen_res(ion.mode,search.par,Peak.list,Sample.df,BLANK)
     Peaklist_corstat <- mylist[[1]]
     res <- mylist[[2]]

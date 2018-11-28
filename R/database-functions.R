@@ -8,42 +8,39 @@
 #' @param ion.id character vector of length 2 specifying identifier in filename designating positive or negative ionization mode.  Positive identifier must come first.
 #' @return character
 gen_filebase = function(mzdatafiles, BLANK, ion.id, ion.mode) {
-    if (ion.mode == "Positive" && BLANK == TRUE) {
-        mzdatafiles <- subset(mzdatafiles, subset = grepl(paste(ion.id[1]), mzdatafiles, ignore.case = TRUE))
-        file.base = "Blanks_Pos"
-        mzdatafiles <- mzdatafiles[c(grep("Blanks", mzdatafiles, ignore.case = TRUE))]
+  if (ion.mode == "Positive" && BLANK == TRUE) {
+    mzdatafiles <- subset(mzdatafiles, subset = grepl(paste(ion.id[1]), mzdatafiles, ignore.case = TRUE))
+    file.base = "Blanks_Pos"
+    mzdatafiles <- mzdatafiles[c(grep("Blanks", mzdatafiles, ignore.case = TRUE))]
+  } else {
+    if (ion.mode == "Negative" && BLANK == TRUE) {
+      mzdatafiles <- subset(mzdatafiles, subset = grepl(paste(ion.id[1]), mzdatafiles, ignore.case = TRUE))
+      file.base = "Blanks_Neg"
+      mzdatafiles <- mzdatafiles[c(grep("Blanks", mzdatafiles))]
     } else {
-        if (ion.mode == "Negative" && BLANK == TRUE) {
-            mzdatafiles <- subset(mzdatafiles, subset = grepl(paste(ion.id[1]), mzdatafiles, ignore.case = TRUE))
-            file.base = "Blanks_Neg"
-            mzdatafiles <- mzdatafiles[c(grep("Blanks", mzdatafiles))]
+      if (ion.mode == "Positive" && BLANK == FALSE) {
+        mzdatafiles <- subset(mzdatafiles, subset = grepl(paste(ion.id[1]), mzdatafiles, ignore.case = TRUE))
+        file.base = "Peaklist_Pos"
+        mzdatafiles <- mzdatafiles[-c(grep("Blanks", mzdatafiles))]
+      } else {
+        if (ion.mode == "Negative" && BLANK == FALSE) {
+          mzdatafiles <- subset(mzdatafiles, subset = grepl(paste(ion.id[1]), mzdatafiles, ignore.case = TRUE))
+          file.base = "Peaklist_Neg"
+          mzdatafiles <- mzdatafiles[-c(grep("Blanks", mzdatafiles))]
         } else {
-            if (ion.mode == "Positive" && BLANK == FALSE) {
-                mzdatafiles <- subset(mzdatafiles, subset = grepl(paste(ion.id[1]), mzdatafiles, ignore.case = TRUE))
-                file.base = "Peaklist_Pos"
-                mzdatafiles <- mzdatafiles[-c(grep("Blanks", mzdatafiles))]
-            } else {
-                if (ion.mode == "Negative" && BLANK == FALSE) {
-                  mzdatafiles <- subset(mzdatafiles, subset = grepl(paste(ion.id[1]), mzdatafiles, ignore.case = TRUE))
-                  file.base = "Peaklist_Neg"
-                  mzdatafiles <- mzdatafiles[-c(grep("Blanks", mzdatafiles))]
-                } else {
-                  cat("Ion mode must be Positive or Negative.\nBe sure to specify whether to analyze blanks with logical indicator")
-                  stop()
-                }
-            }
-
+          cat("Ion mode must be Positive or Negative.\nBe sure to specify whether to analyze blanks with logical indicator")
+          stop()
         }
-
+      }
     }
-    return(file.base)
+  }
+  return(file.base)
 }
-
 
 #' @title Connects to peak database
 #'
 #' @export
-#' @description Establishes a connection to an RSQLite database for storing data; if doesn't exist, creates new database
+#' @description Establishes a connection to an RSQLite database for storing Peak.list; if doesn't exist, creates new database
 #' @param file.base character return from gen_filebase function
 #' @param db.dir character what should the database directory be called.  Default is 'db'
 #' @return Formal class SQLiteConnection
@@ -62,7 +59,7 @@ connect_peakdb = function(file.base, db.dir) {
 #' @title Connects to library database
 #'
 #' @export
-#' @description Establishes a connection to an RSQLite database for library searching; if doesn't exist, creates new database
+#' @description Establishes a connection to an RSQLite database for searching Peak.list against library; if doesn't exist, creates new database
 #' @param lib.db character name of database
 #' @param db.dir character directory containing the database
 #' @return Formal class SQLiteConnection
@@ -76,7 +73,7 @@ connect_libdb = function(lib.db, db.dir) {
 #' @title Connects to LUMA database
 #'
 #' @export
-#' @description Establishes a connection to an RSQLite database for combining two datasets together from two different ionization modes
+#' @description Establishes a connection to an RSQLite database for combining Peak.lists together from two different ionization modes
 #' @param db.list list chracter names of databases containing results from processing positive mode (1,3) and negative mode (2,4) data for samples (1,2) and blanks (3,4)
 #' @param db.dir character directory containing the databases
 #' @param new.db character what should the new database be called
@@ -94,10 +91,11 @@ connect_lumadb = function(db.list, db.dir, new.db) {
     return(list(peak_db = peak_db, pos_db = pos_db, neg_db = neg_db, blanks_pos_db = blanks_pos_db, blanks_neg_db = blanks_neg_db))
 }
 
-#' @title Reads table from database
+#' @title Reads Peak.list from database
 #'
 #' @export
-#' @description Extract table from an RSQLite database as a tibble.  Alternatively load into memory as a data frame
+#' @description Extracts Peak.list from an RSQLite database as a tibble.
+#' Alternatively, load the Peak.list into memory as a data frame
 #' @param mytable character name of table in database to return
 #' @param peak.db Formal class SQLiteConnection
 #' @param asdf logical indicating whether to return a data frame instead of a tibble. Default is FALSE
@@ -114,10 +112,10 @@ read_tbl = function(mytable, peak.db, asdf) {
     }
 }
 
-#' @title Writes table to database
+#' @title Writes Peak.list to database
 #'
 #' @export
-#' @description Writes tbl or dataframe to an RSQLite database
+#' @description Writes Peak.list to an RSQLite database. Peak.list can be a tibble or data frame.
 #' @param mydf tbl or dataframe to write
 #' @param peak.db Formal class SQLiteConnection
 #' @param myname character what should the table be called
@@ -126,9 +124,9 @@ write_tbl = function(mydf, peak.db, myname) {
     copy_to(peak.db, mydf, name = myname, temporary = FALSE, overwrite = TRUE)
 }
 
-#' @title Retrieves features from database
+#' @title Retrieves features from Peak.list in a database
 #'
-#' @description Returns mz/rt features from a RSQLite database
+#' @description Returns mz/rt features from Peak.list stored in RSQLite database
 #' @param mytbl character name of table in database to return
 #' @param peak.db Formal class SQLiteConnection
 #' @param asdf logical indicating whether to return a data frame instead of a tibble. Default is FALSE

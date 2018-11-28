@@ -2,7 +2,7 @@
 % Please edit documentation in R/database-functions.R
 \name{read_tbl}
 \alias{read_tbl}
-\title{Reads table from database}
+\title{Reads Peak.list from database}
 \usage{
 read_tbl(mytable, peak.db, asdf)
 }
@@ -17,5 +17,6 @@ read_tbl(mytable, peak.db, asdf)
 tbl alternatively a data frame
 }
 \description{
-Extract table from an RSQLite database as a tibble.  Alternatively load into memory as a data frame
+Extracts Peak.list from an RSQLite database as a tibble.
+Alternatively, load the Peak.list into memory as a data frame
 }

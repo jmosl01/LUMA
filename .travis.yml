@@ -12,6 +12,7 @@ addons:
   apt:
     packages:
       - libnetcdf-dev # for mzR, a dependency of xcms
+      - netcdf-bin # for ncdf4, a dependency of mzR
 
 bioc_packages:
  - BiocParallel

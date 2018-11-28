@@ -2,20 +2,22 @@
 % Please edit documentation in R/trimming-functions.R
 \name{remove_void_volume}
 \alias{remove_void_volume}
-\title{Removes void volume}
+\title{Removes void volume from Peak.list}
 \usage{
-remove_void_volume(Peak.list, search.par, method)
+remove_void_volume(Peak.list, search.par, method, ...)
 }
 \arguments{
 \item{Peak.list}{data frame. Must have Correlation.stat column.  Should contain output columns from XCMS and CAMERA, and additional columns from IHL.search, Calc.MinFrac, Calc.corr.stat and EIC.plotter functions.}
 
 \item{search.par}{a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.}
 
-\item{method}{which method to use.  Can be monoMass or mz}
+\item{method}{which method to apply to trim by retention time.  See trim_rt for details}
+
+\item{...}{Arguments to pass to trim_rt}
 }
 \value{
 data frame Peak.list.trimmed original Peak.list without all metabolite groups containing at least one feature in the void volume
 }
 \description{
-Removes features found in the void volume of the chromatographic run
+Removes features or compounds found in the void volume of the chromatographic run from the Peak.list
 }

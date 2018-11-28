@@ -1,16 +1,16 @@
-#' @title Removes void volume
+#' @title Removes void volume from Peak.list
 #'
 #' @export
-#' @description Removes features found in the void volume of the chromatographic run
+#' @description Removes features or compounds found in the void volume of the chromatographic run from the Peak.list
 #' @param Peak.list data frame. Must have Correlation.stat column.  Should contain output columns from XCMS and CAMERA, and additional columns from IHL.search, Calc.MinFrac, Calc.corr.stat and EIC.plotter functions.
 #' @param search.par a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.
-#' @param method which method to use.  Can be monoMass or mz
+#' @param method which method to apply to trim by retention time.  See trim_rt for details
+#' @param ... Arguments to pass to trim_rt
 #' @return data frame Peak.list.trimmed original Peak.list without all metabolite groups containing at least one feature in the void volume
-remove_void_volume = function(Peak.list, search.par,method) {
-    rt.list <- Peak.list["rt"]
+remove_void_volume = function(Peak.list, search.par, method,...) {
     void.rt <- as.numeric(search.par[1, "Voidrt"])
-    class(Peak.list) <- c(class(Peak.list),method)
-    Peak.list.trimmed <- trim_rt(Peak.list,rt.list,void.rt)
+    class(method) <- method
+    Peak.list.trimmed <- trim_rt(method,Peak.list,void.rt,...)
     return(Peak.list.trimmed)
 }
 
@@ -58,29 +58,30 @@ trim_minfrac = function(Peak.list, search.par) {
 #' @title Trims by retention time
 #'
 #' @export
-#' @description Removes features with retention times smaller than the user specified threshold.
+#' @description Removes components with retention times smaller than the user specified threshold.
+#' @param object used for method dispatch. Can be any object. See usage for details
 #' @param Peak.list data frame. Must have Correlation.stat column.  Should contain output columns from XCMS and CAMERA, and additional columns from IHL.search, Calc.MinFrac, Calc.corr.stat and EIC.plotter functions.
-#' @param ... arguments to pass to other functions
+#' @param void.rt numeric retention time cutoff value corresponding to the LC void volume
+#' @param rt.list numeric vector containing retention times for all features or compounds
 #' @return NULL
-trim_rt <- function(Peak.list, ...) {
-  UseMethod("trim_rt", Peak.list)
+trim_rt <- function(object, Peak.list, void.rt, rt.list) {
+  UseMethod("trim_rt", object)
 }
 
-#' @method trim_rt mz
+#' @rdname trim_rt
 #' @export
-trim_rt.mz <- function(Peak.list,rt.list,void.rt) {
-  drops <- Peak.list[rt.list < void.rt, "EIC_ID"]
+trim_rt.mz <- function(object, Peak.list, void.rt, rt.list = Peak.list["rt"]) {
+  drops <- Peak.list[rt.list < void.rt, "EIC_ID"]  #Creates a vector of features with rt in the void volume
   Peak.list.trimmed <- Peak.list[which(!(Peak.list$EIC_ID) %in% drops),]
   return(Peak.list.trimmed)
 }
 
-#' @method trim_rt monoMass
+#' @rdname trim_rt
 #' @export
-trim_rt.monoMass  <- function(Peak.list,rt.list,void.rt) {
+trim_rt.monoMass  <- function(object, Peak.list, void.rt, rt.list = Peak.list["rt"]) {
   drops <- Peak.list[rt.list < void.rt, "metabolite_group"]  #Creates a vector of metabolite groups that contain at least one feature with rt in the void volume
   length(which(!unlist(Peak.list[, "metabolite_group"]) %in% unlist(drops)))
   met.list <- Peak.list["metabolite_group"]
-  str(met.list)
   Peak.list.trimmed <- Peak.list[which(!unlist(met.list) %in% unlist(drops)), ]
   return(Peak.list.trimmed)
 }

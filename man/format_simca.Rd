@@ -2,7 +2,7 @@
 % Please edit documentation in R/formatting-functions.R
 \name{format_simca}
 \alias{format_simca}
-\title{Formats for SIMCA}
+\title{Formats Peak.list for SIMCA}
 \usage{
 format_simca(Peak.list = NULL, Sample.df, Sample.data, tbl.id = NULL,
   QC.id = "Pooled_QC_", ...)
@@ -25,5 +25,5 @@ format_simca(Peak.list = NULL, Sample.df, Sample.data, tbl.id = NULL,
 NULL testing
 }
 \description{
-Formats LUMA output for import into SIMCA
+Formats Peak.list for import into SIMCA
 }

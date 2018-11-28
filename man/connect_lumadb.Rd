@@ -17,5 +17,5 @@ connect_lumadb(db.list, db.dir, new.db)
 list of Formal class SQLiteConnections, starting with new.db entry followed by one for each db.list entry and
 }
 \description{
-Establishes a connection to an RSQLite database for combining two datasets together from two different ionization modes
+Establishes a connection to an RSQLite database for combining Peak.lists together from two different ionization modes
 }

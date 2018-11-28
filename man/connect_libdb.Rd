@@ -15,5 +15,5 @@ connect_libdb(lib.db, db.dir)
 Formal class SQLiteConnection
 }
 \description{
-Establishes a connection to an RSQLite database for library searching; if doesn't exist, creates new database
+Establishes a connection to an RSQLite database for searching Peak.list against library; if doesn't exist, creates new database
 }

@@ -6,11 +6,13 @@
 #' @param Peak.list a data frame from CAMERA that has been parsed.  Should contain all output columns from XCMS and CAMERA, and additional columns from IHL.search, Calc.MinFrac and CAMERA.parser.
 #' @param center numeric value indicating which sample to pick for plotting purposes
 #' @param BLANK a logical indicating whether blanks are being evaluated. Default is FALSE
-#' @param gen.plots a logical indicating whether to create plots for metabolite groups.  Default is FALSE
+#' @param gen.plots a logical indicating whether to create plots for metabolite groups.
+#' Default is FALSE
 #' @param ion.mode a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'
-#' @param anposGa xsannotate object with annotated isotopes and ion adducts and fragments
+#' @param CAMERA.obj xsannotate object with annotated isotopes and ion adducts and fragments
 #' @param file.base character string used to name graphical output.  Will be appended with '_CorrPlots.pdf'
-#' @param QC.id character identifier for pooled QC samples. Default is 'Pooled_QC'
+#' @param QC.id character identifier for pooled QC samples.
+#' Default is 'Pooled_QC'
 #' @param maxlabel numeric How many m/z labels to print
 #' @return List of length 2.  1st element is a data frame with all columns as the original data frame with one additional column 'Correlation.stat'.  2nd element is a data frame specifically used to validate CAMERA results.
 #' @importFrom  CAMERA plotEICs
@@ -20,7 +22,7 @@
 #' @importFrom Hmisc rcorr
 #' @importFrom corrplot corrplot corrMatOrder
 #' @importFrom dplyr group_by
-plot_metgroup = function(anposGa, Sample.df, Peak.list, center, BLANK, gen.plots, ion.mode, file.base, QC.id, maxlabel) {
+plot_metgroup = function(CAMERA.obj, Sample.df, Peak.list, center, BLANK, gen.plots, ion.mode, file.base, QC.id, maxlabel) {
     if (missing(BLANK))
         BLANK = FALSE
     if (missing(gen.plots))
@@ -34,14 +36,14 @@ plot_metgroup = function(anposGa, Sample.df, Peak.list, center, BLANK, gen.plots
     # Change the psspectra list in the xsAnnotate object to be the unique list of metabolite_groups
     X <- split(Peak.list$EIC_ID, as.numeric(Peak.list$metabolite_group))
     names(X) <- sort(unique(Peak.list$metabolite_group))
-    new_anposGa <- anposGa
-    new_anposGa@pspectra <- X
+    new_CAMERA.obj <- CAMERA.obj
+    new_CAMERA.obj@pspectra <- X
 
     ## Need to set a numeric value in this slot, else plotEICs will give error
-    new_anposGa@sample <- c(1:nrow(new_anposGa@xcmsSet@phenoData))
+    new_CAMERA.obj@sample <- c(1:nrow(new_CAMERA.obj@xcmsSet@phenoData))
 
     # Gets the EICs and Psspectra for each metabolite group that has more than one feature
-    pspec.length <- sapply(new_anposGa@pspectra, function(x) length(x))
+    pspec.length <- sapply(new_CAMERA.obj@pspectra, function(x) length(x))
     get.mg <- which(pspec.length > 1)
     names(get.mg) <- NULL
 
@@ -53,7 +55,7 @@ plot_metgroup = function(anposGa, Sample.df, Peak.list, center, BLANK, gen.plots
     # the first n spectra, where n is the original number of psspectra. ! Find out how CAMERA performs automatic
     # selection, then replicate here for the new psspectra ! For now, I am using the center sample for every
     # psspectra
-    new_anposGa@psSamples <- rep(center, length(X))  #Tells CAMERA to select all psspectra from the center file
+    new_CAMERA.obj@psSamples <- rep(center, length(X))  #Tells CAMERA to select all psspectra from the center file
     # new_anposGa@psSamples <- rep(-1, length(X)) #Experimental new_anposGa@sample <- as.numeric(NA) #doesn't work
     # for some reason
 
@@ -93,9 +95,9 @@ plot_metgroup = function(anposGa, Sample.df, Peak.list, center, BLANK, gen.plots
                     tl.col = col.new)
 
                   # Plots the EICs and Pseudo-spectra for each metabolite group containing more than one feature in a for loop
-                  EIC.plots <- plotEICs(new_anposGa, pspec = get.mg[i], maxlabel = maxlabel, sleep = 0)  ## Plot the EICs
+                  EIC.plots <- plotEICs(new_CAMERA.obj, pspec = get.mg[i], maxlabel = maxlabel, sleep = 0)  ## Plot the EICs
 
-                  plotPsSpectrum(new_anposGa, pspec = get.mg[i], maxlabel = maxlabel, sleep = 0)  #Plot the Mass Spectra
+                  plotPsSpectrum(new_CAMERA.obj, pspec = get.mg[i], maxlabel = maxlabel, sleep = 0)  #Plot the Mass Spectra
 
                 } else {
                   my.mat <- as.matrix(my.df[, grep(paste(QC.id, paste(strsplit(sexes, "(?<=.[_])", perl = TRUE),
@@ -119,9 +121,9 @@ plot_metgroup = function(anposGa, Sample.df, Peak.list, center, BLANK, gen.plots
                   corrplot(M, type = "upper", order = "hclust", hclust.method = "complete", p.mat = P, sig.level = 0.01, insig = "blank",
                     tl.col = col.new)
                   # Plots the EICs and Pseudo-spectra for each metabolite group containing more than one feature in a for loop
-                  EIC.plots <- plotEICs(new_anposGa, pspec = get.mg[i], maxlabel = maxlabel, sleep = 0)  ## Plot the EICs
+                  EIC.plots <- plotEICs(new_CAMERA.obj, pspec = get.mg[i], maxlabel = maxlabel, sleep = 0)  ## Plot the EICs
 
-                  plotPsSpectrum(new_anposGa, pspec = get.mg[i], maxlabel = maxlabel, sleep = 0)  #Plot the Mass Spectra
+                  plotPsSpectrum(new_CAMERA.obj, pspec = get.mg[i], maxlabel = maxlabel, sleep = 0)  #Plot the Mass Spectra
                 }
             }
         }
@@ -180,7 +182,7 @@ plot_ionduplicate = function(anposGa, xpos, annegGa, xneg, rt.method, Peak.list,
             stop("Must specify database parameters `myname` and `peak.db` if not providing Peak.list!", call. = FALSE)
         } else {
           # Read Peak.list from database
-          Peak.list <- read_tbl(mytable, peak.db)
+          Peak.list <- read_tbl(mytable, ...)
         }
     }
 
@@ -233,15 +235,15 @@ plot_ionduplicate = function(anposGa, xpos, annegGa, xneg, rt.method, Peak.list,
 
     # Get the unique list of Duplicate IDs
     x <- sapply(Peak.list$Duplicate_ID, function(x) sum(as.numeric(Peak.list$Duplicate_ID == x)))
-    x
+
     drops <- Peak.list$Duplicate_ID[x == 1]
-    drops  #Duplicate IDs which only appear once
+
 
     List.ID <- Peak.list$Duplicate_ID
-    List.ID  #List of all duplicate IDs
+
     res <- !List.ID %in% drops
     Un.ID <- unique(Peak.list$Duplicate_ID[sapply(res, function(x) x == TRUE)])
-    Un.ID  #List of unique duplicate IDs to get EICs for
+
 
     # List of duplicate IDs for both positive and negative modes
     Dup.ID.Pos <- Peak.list$Duplicate_ID[sapply(res, function(x) x == TRUE) &

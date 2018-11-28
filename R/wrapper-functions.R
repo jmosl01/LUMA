@@ -28,12 +28,12 @@ wrap_xcms = function(mzdatafiles, XCMS.par) {
 #'
 #' @export
 #' @description Run CAMERA with user defined input parameters and return xsAnnotate objects
-#' @param xset4 an xcms object that has had peak picking, retention time alignment, peak grouping, and imputing missing values performed
+#' @param xcms.obj an xcms object that has had peak picking, retention time alignment, peak grouping, and imputing missing values performed
 #' @param CAMERA.par a single-row data frame with 9 variables containing CAMERA parameters. The column names must be c('perfwhm','sigma','minfrac','mzabs','maxiso','corval_eic','corval_exp','pval','mzabs.1')
 #' @param ion.mode a character string defining the ionization mode.  Must be either 'positive' or 'negative'
 #' @return two grouped xsannotate objects mz1setpos and anposGa without and with annotated isotopes and ion adducts and fragments
 #' @import CAMERA
-wrap_camera = function(xset4, CAMERA.par, ion.mode) {
+wrap_camera = function(xcms.obj, CAMERA.par, ion.mode) {
     best.perfwhm <- CAMERA.par$perfwhm
     best.sigma <- CAMERA.par$sigma
     best.mzabs.iso <- CAMERA.par$mzabs
@@ -44,7 +44,7 @@ wrap_camera = function(xset4, CAMERA.par, ion.mode) {
     best.pval <- CAMERA.par$pval
     best.mzabs.add <- CAMERA.par$mzabs.1
 
-    mz1setpos <- xsAnnotate(xs = xset4, sample = NA)
+    mz1setpos <- xsAnnotate(xs = xcms.obj, sample = NA)
     mz1setpos <- groupFWHM(object = mz1setpos, perfwhm = best.perfwhm, sigma = best.sigma, intval = "into")
     mz1setposIso <- findIsotopes(mz1setpos, maxcharge = 2, maxiso = best.maxiso, ppm = 3, mzabs = best.mzabs.iso,
         intval = "into", minfrac = best.minfrac, filter = TRUE)
