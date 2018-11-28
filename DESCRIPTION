@@ -30,8 +30,7 @@ Imports:
     stats,
     stringr,
     utils,
-    xcms,
-    xlsx
+    xcms
 Suggests: 
     BiocStyle,
     knitr,

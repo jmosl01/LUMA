@@ -68,24 +68,25 @@ wrap_camera = function(xcms.obj, CAMERA.par, ion.mode) {
 #' @param myname name to append to file.base to create file name for xlsx
 #' @param mysheets character vector to name sheets in xlsx file. Currently must be of length 2
 #' @return class jobjRef object
-#' @importFrom xlsx createWorkbook createSheet addDataFrame saveWorkbook
+#' @importFrom openxlsx createWorkbook addWorksheet writeDataTable saveWorkbook
 write_xlsx <- function(validate.sheets,file.base,myname,mysheets) {
   if(!is.list(validate.sheets) || length(validate.sheets) != 2)
     stop("validate.sheets must be a list with exactly two objects.", call. = FALSE)
   if(missing(mysheets))
-    mysheets <- c("Sheet 1","Sheet 2")
+    mysheets <- c("clear","muddy")
   if(!is.vector(mysheets) || length(mysheets) != 2)
     stop("mysheets must be a vector of length 2!", call. = FALSE)
 
   wb = createWorkbook()
-  sheet = createSheet(wb, mysheets[1])
-  validate.sheets$clear %>% data.frame() %>% addDataFrame(sheet = sheet,
-                                                          startColumn = 1,
-                                                          row.names = FALSE)
-  sheet = createSheet(wb, mysheets[2])
-  validate.sheets$muddy %>% data.frame() %>% addDataFrame(sheet = sheet,
-                                                          startColumn = 1,
-                                                          row.names = FALSE)
-  saveWorkbook(wb, paste(file.base,paste(myname,".xlsx", sep = ""), sep = "_"))
+  S1 = addWorksheet(wb, mysheets[1])
+  S2 = addWorksheet(wb, mysheets[2])
+  df1 <- data.frame(validate.sheets$clear)
+  df2 <- data.frame(validate.sheets$muddy)
+  writeDataTable(wb, sheet = S1,x = df1)
+  writeDataTable(wb, sheet = S2,x = df2)
+  saveWorkbook(wb,
+               file = paste(file.base,
+                                paste(myname,".xlsx", sep = ""), sep = "_"),
+               overwrite = TRUE)
   return(wb)
 }

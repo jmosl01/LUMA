@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotting-functions.R
 \name{plot_metgroup}
 \alias{plot_metgroup}
-\title{Loop-based EIC Plotter}
+\title{Loop-based EIC Plotter for metabolite groups}
 \usage{
 plot_metgroup(CAMERA.obj, Sample.df, Peak.list, center, BLANK, gen.plots,
   ion.mode, file.base, QC.id, maxlabel)
@@ -31,7 +31,8 @@ Default is 'Pooled_QC'}
 \item{maxlabel}{numeric How many m/z labels to print}
 }
 \value{
-List of length 2.  1st element is a data frame with all columns as the original data frame with one additional column 'Correlation.stat'.  2nd element is a data frame specifically used to validate CAMERA results.
+List of length 2.  1st element is a data frame with all columns as the original data frame with one additional column 'Correlation.stat'.
+2nd element is a list of objects used to validate CAMERA results.
 }
 \description{
 Plots EICs and Pseudospectra from (parsed) metabolite groups using plotEICs-methods and plotPsSpectrum-methods from CAMERA. Also plots correlation matrices and clustered dendrograms for each (parsed) metabolite group.
