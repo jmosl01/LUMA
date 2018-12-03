@@ -43,15 +43,36 @@ FormatForSIMCA <- function(from.table,to.csv,peak.db,db.dir) {
 #'
 #' @export
 #' @description This function initializes objects that will hold the metabolite data, formats peak intensity data into one of the formats acceptable by MetaboAnalystR, and sets the metabolite data object.
-#' @param Peak.list data frame containing combined ion mode peaklist with ion mode duplicates removed.
-#' @param Sample.df data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns 'Sex','Class','n','Endogenous'.
-#' @param Sample.data ata frame with phenotype data as columns and a row for each study sample.  First column must be a unique sample identifier with the header 'CT-ID'.  Phenotype columns may vary, but must include two columns called 'Plate Number' and 'Plate Position' for determining run order.
-#' @param data.type NULL
-#' @param anal.type NULL
-#' @param paired NULL
+#' @param from.table from which table should LUMA read the Peaklist
+#' @param to.csv to what filename (excluding .csv extension) should LUMA save the formatted Peaklist
+#' @param data.type What type of data will be generated. See usage and format_MetabolomicData for options.
+#' @param anal.type character Indicates the analysis module the data will be used for. See usage and documentation for MetaboAnalystR::InitDataObjects() for options.
+#' @param paired logical Indicate if the data is paired or not.
+#' Default is FALSE
+#' @param peak.db what database contains the Peaklists to be combined.
+#' Default is 'Peaklist_db'
+#' @param db.dir directory containing the database.
+#' Default is 'db'
 #' @return mSetObj
-FormatForMetaboAnalystR <- function(Peak.list, Sample.df, Sample.data, data.type = "pktable", anal.type = "stat", paired = FALSE)
+FormatForMetaboAnalystR <- function(from.table, to.csv, data.type = "pktable",
+                                    anal.type = "stat", paired = FALSE, peak.db, db.dir)
 {
+
+  #Set default values
+  if(missing(paired))
+    paired = FALSE
+  if(missing(peak.db))
+    peak.db = "Peaklist_db"
+  if(missing(db.dir))
+    db.dir = "db"
+
+  cat("Formatting for MetaboAnalystR.")
+
+  #Update Peaklist database connection globally
+  peak_db <<- peak_db <- connect_peakdb(file.base = peak.db,db.dir = db.dir)
+
+
+
   ##-----------------------------------------------------------------------------------------
   ## Initialize the metabolite object.
   ##-----------------------------------------------------------------------------------------
@@ -75,7 +96,25 @@ FormatForMetaboAnalystR <- function(Peak.list, Sample.df, Sample.data, data.type
   # Set the class type for the mSetObj.
   class(mSetObj) <- data.type
 
-  mSetObj <- format_MetabolomicData(mSetObj, Peak.list, Sample.df, Sample.data)
+  mSetObj <- format_MetabolomicData(mSetObj, Peak.list = NULL,
+
+                                    Sample.df = data.frame(Sex = Sexes,
+                                    Class = Classes,
+                                    n = no.Samples,
+                                    Endogenous = Endogenous),
+
+                                    Sample.data = cbind.data.frame(CT.ID,
+                                                                   Plate.Number,
+                                                                   Plate.Position,
+                                                                   Sample.phenodata),
+                                    tbl.id = from.table,
+                                    peak.db = peak_db)
+
+
+  conc <- mSetObj$dataSet$orig
+  MT.data <- cbind(Sample = rownames(conc),Class = mSetObj$dataSet$orig.cls,conc)
+
+  write.table(MT.data, file = paste(to.csv,".csv",sep = ""), sep = ",", row.names = FALSE)
 
   return(mSetObj)
 }

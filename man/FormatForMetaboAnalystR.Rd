@@ -4,21 +4,26 @@
 \alias{FormatForMetaboAnalystR}
 \title{Formatting of metabolite data for MetaboAnalystR.}
 \usage{
-FormatForMetaboAnalystR(Peak.list, Sample.df, Sample.data,
-  data.type = "pktable", anal.type = "stat", paired = FALSE)
+FormatForMetaboAnalystR(from.table, to.csv, data.type = "pktable",
+  anal.type = "stat", paired = FALSE, peak.db, db.dir)
 }
 \arguments{
-\item{Peak.list}{data frame containing combined ion mode peaklist with ion mode duplicates removed.}
+\item{from.table}{from which table should LUMA read the Peaklist}
 
-\item{Sample.df}{data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns 'Sex','Class','n','Endogenous'.}
+\item{to.csv}{to what filename (excluding .csv extension) should LUMA save the formatted Peaklist}
 
-\item{Sample.data}{ata frame with phenotype data as columns and a row for each study sample.  First column must be a unique sample identifier with the header 'CT-ID'.  Phenotype columns may vary, but must include two columns called 'Plate Number' and 'Plate Position' for determining run order.}
+\item{data.type}{What type of data will be generated. See usage and format_MetabolomicData for options.}
 
-\item{data.type}{NULL}
+\item{anal.type}{character Indicates the analysis module the data will be used for. See usage and documentation for MetaboAnalystR::InitDataObjects() for options.}
 
-\item{anal.type}{NULL}
+\item{paired}{logical Indicate if the data is paired or not.
+Default is FALSE}
 
-\item{paired}{NULL}
+\item{peak.db}{what database contains the Peaklists to be combined.
+Default is 'Peaklist_db'}
+
+\item{db.dir}{directory containing the database.
+Default is 'db'}
 }
 \value{
 mSetObj

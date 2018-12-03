@@ -6,7 +6,7 @@
 #' @param Sample.df data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns 'Sex','Class','n','Endogenous'.
 #' @param Sample.data data frame with phenotype data as columns and a row for each study sample.  First column must be a unique sample identifier with the header 'CT-ID'.  Phenotype columns may vary, but must include two columns called 'Plate Number' and 'Plate Position' for determining run order.
 #'    'Plate Number' must be numeric and is equivalent to batch number.  'Plate Position' must be alphanumeric and corresponds to row(alpha) and column(numeric) positions on, e.g. a 96-well plate
-#' @param tbl.id character vector of table names to draw from databases.  First value should be table name from positive ionization peak database, second should be table name from negative ionization peak database. Default is NULL
+#' @param tbl.id character Table name to draw from database. Default is NULL
 #' @param QC.id character vector specifying identifier in filename designating a Pooled QC sample.  Only the first value will be used.  Default is 'Pooled_QC_'
 #' @param ... Arguments to pass parameters to database functions
 #' @return NULL testing
@@ -14,6 +14,12 @@
 #' @importFrom gtools mixedorder
 #' @importFrom plyr rbind.fill
 format_simca = function(Peak.list = NULL, Sample.df, Sample.data, tbl.id = NULL, QC.id = "Pooled_QC_", ...) {
+
+
+
+  ##-----------------------------------------------------------------------------------------
+  ## Initialize Peaklist from database
+  ##-----------------------------------------------------------------------------------------
   if (missing(Peak.list))
     Peak.list = NULL
   if (missing(tbl.id))
@@ -24,7 +30,13 @@ format_simca = function(Peak.list = NULL, Sample.df, Sample.data, tbl.id = NULL,
   if (is.null(Peak.list)) {
     Peak.list <- read_tbl(tbl.id, ...)
   }
-  sexes <- unique(paste(Sample.df$Sex, "_", sep = ""))  ## Generate search string for all sexes
+
+  ##-----------------------------------------------------------------------------------------
+  ## Format metabolite data.
+  ##-----------------------------------------------------------------------------------------
+
+  # Extract peak intensity data from Peak.list using the sexes as a search string.
+  sexes <- unique(paste(Sample.df$Sex, "_", sep = ""))
   samples <- vector(mode = "character", length = length(colnames(Peak.list)))
   for (i in 1:length(sexes)) {
     rows_loop <- grep(sexes[i], colnames(Peak.list))
@@ -125,4 +137,138 @@ format_simca = function(Peak.list = NULL, Sample.df, Sample.data, tbl.id = NULL,
 
 
 
+}
+
+#' @title Formatting of metabolomic data for MetaboAnalystR.
+#'
+#' @export
+#' @description This function initializes objects that will hold the metabolite data, formats peak intensity data into one of the formats acceptable by MetaboAnalystR, and sets the metabolite data object.
+#' @param mSetObj NULL
+#' @param Peak.list data frame containing combined ion mode peaklist with ion mode duplicates removed.
+#' @param Sample.df data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns 'Sex','Class','n','Endogenous'.
+#' @param Sample.data data frame with phenotype data as columns and a row for each study sample.  First column must be a unique sample identifier with the header 'CT-ID'.  Phenotype columns may vary, but must include two columns called 'Plate Number' and 'Plate Position' for determining run order.
+#' @param tbl.id character Table name to draw from database. Default is NULL
+#' @param ... Arguments to pass parameters to database functions
+#' @return mSetObj
+format_MetabolomicData <- function(mSetObj, Peak.list, Sample.df, Sample.data, tbl.id, ...)
+{
+  UseMethod("format_MetabolomicData", mSetObj)
+}
+
+#' @rdname format_MetabolomicData
+#' @export
+format_MetabolomicData.pktable <- function(mSetObj, Peak.list, Sample.df, Sample.data, tbl.id, ...)
+{
+
+  ##-----------------------------------------------------------------------------------------
+  ## Initialize Peaklist from database
+  ##-----------------------------------------------------------------------------------------
+  if (missing(Peak.list))
+    Peak.list = NULL
+  if (missing(tbl.id))
+    tbl.id = NULL
+  if (is.null(tbl.id) && is.null(Peak.list)) {
+    stop("Need to specify tbl.id if using databases to retrieve Peak.list!", call. = FALSE)
+  }
+  if (is.null(Peak.list)) {
+    Peak.list <- read_tbl(tbl.id, ...)
+  }
+
+
+
+
+  ##-----------------------------------------------------------------------------------------
+  ## Format metabolite data.
+  ##-----------------------------------------------------------------------------------------
+
+  # Extract peak intensity data from Peak.list using the sexes as a search string.
+  sexes  <-  unique(paste(Sample.df$Sex, "_",  sep = ""))    ## Generate search string for all sexes
+  samples  <-  vector(mode = "character", length = length(colnames(Peak.list)))
+  for (i  in  1:length(sexes))
+  {
+    rows_loop  <-  grep(sexes[i], colnames(Peak.list))
+    samples[rows_loop]  <-  sexes[i]
+  }
+  res  <-  samples %in% sexes
+  sample.peaks  <- Peak.list[, res]
+
+  # Generate sample IDs
+  sample.ID  <-  as.numeric(sub("\\D*(\\d{6}).*", "\\1", colnames(sample.peaks)))
+  if (all(is.na(sample.ID)))
+  {
+    ## Alternatively uses a unique alphanumeric ID provided by user
+    sample.ID <- sub("\\D*(\\d{6}).*", "\\1", colnames(sample.peaks))
+  }
+
+  ## Code to generate treatment levels (sometimes confusingly called sample classes)
+  # Creates a new column for grouping by class based on user input
+  groups <- paste(Sample.df$Sex, Sample.df$Class, sep = ";")  ## Generate search string for all classes
+  groups <- strsplit(groups, split = ";")
+  names(groups) <- paste(Sample.df$Sex, Sample.df$Class, sep = "_")
+  group <- vector(mode = "character", length = length(colnames(sample.peaks)))
+  for (i in 1:length(groups)) {
+    rows_loop <- intersect(grep(groups[[i]][1], colnames(sample.peaks)), grep(groups[[i]][2], colnames(sample.peaks)))
+    group[rows_loop] <- names(groups)[i]
+  }
+  group <- unlist(group)
+
+  # Modify sample data to include the user defined exposure class
+  Sample.data <- Sample.data[order(Sample.data[,1]), ]
+  Sample.data <- setNames(cbind.data.frame(Sample.data[, 1], group, Sample.data[-1]), c(colnames(Sample.data[1]),
+                                                                                        "Exposure Class", colnames(Sample.data[-1])))
+
+  # Extract only the treatment level column.
+  treatment.Level <- Sample.data[, 2]
+
+  # Transpose the peak intensity data frame.
+  tsample.peaks <- t(sample.peaks)
+
+  # Build the peak intensity table for the MetaboAnalystR package.
+  tsample.peaks <- cbind.data.frame(sample.ID, treatment.Level, tsample.peaks)
+
+  ##-----------------------------------------------------------------------------------------
+  ## Set the metabolomic data object.
+  ##-----------------------------------------------------------------------------------------
+  mSetObj$dataSet$cls.type <-  "disc"
+  mSetObj$dataSet$format <-  "rowu"
+  dat  <-  tsample.peaks
+
+  #From MetaboAnalyst::Read.TextData code
+  smpl.nms <-dat[,1];
+
+  all.nms <- colnames(dat);
+
+  facA.lbl <- all.nms[2];
+
+  cls.lbl <- facA <- dat[,2]; # default assign facA to cls.lbl in order for one-factor analysis
+  conc <- dat[,-c(1,2)];
+  var.nms <- colnames(conc);
+
+  #assign the dimension names
+  rownames(conc) <- smpl.nms
+  colnames(conc) <- var.nms
+
+  mSetObj$dataSet$type.cls.lbl <- class(cls.lbl);
+
+  mSetObj$dataSet$orig.cls  <-  mSetObj$dataSet$cls  <-  cls.lbl;
+  mSetObj$dataSet$orig  <-  conc;
+
+  return(mSetObj)
+}
+
+
+#' @rdname format_MetabolomicData
+#' @export
+format_MetabolomicData.mass_all <- function(mSetObj, Peak.list, Sample.df, Sample.data, tbl.id, ...)
+{
+
+}
+
+#' @rdname format_MetabolomicData
+#' @export
+format_MetabolomicData.default <- function(mSetObj, Peak.list, Sample.df, Sample.data, tbl.id, ...)
+{
+  warning(paste("format_MetabolomicData does not know how to handle object of class ",
+                class(mSetObj),
+                "and can only be used on classes pktable and mass_all"))
 }
