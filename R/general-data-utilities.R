@@ -166,6 +166,15 @@
     } else {
       cat("Running CAMERA Only!")
       # Runs CAMERA on datafiles --------------------
+      ## Sets the ion mode for CAMERA
+      if(ion.mode == "Positive"){
+        CAMERA.ion.mode <- "positive"
+      } else {
+        if(ion.mode == "Negative"){
+          CAMERA.ion.mode <- "negative"
+        }
+      }
+
       ## Code to run CAMERA on XCMS object that has been rt corrected, grouped, and peaks filled
       time.CAMERA <- system.time({
         myresults <- wrap_camera(xcms.obj = xset4,
@@ -205,6 +214,15 @@
       cat(paste("PreProcessing with XCMS took ",round(print(time.XCMS[3]))," seconds of elapsed time.\n\n",sep = ""))
       ## Section End
       # Runs CAMERA on datafiles --------------------
+      ## Sets the ion mode for CAMERA
+      if(ion.mode == "Positive"){
+        CAMERA.ion.mode <- "positive"
+      } else {
+        if(ion.mode == "Negative"){
+          CAMERA.ion.mode <- "negative"
+        }
+      }
+
       ## Code to run CAMERA on XCMS object that has been rt corrected, grouped, and peaks filled
       time.CAMERA <- system.time({
         myresults <- wrap_camera(xcms.obj = xset4,
