@@ -8,6 +8,10 @@
 #' @import xcms
 #' @importFrom BiocParallel SnowParam snowWorkers
 wrap_xcms = function(mzdatafiles, XCMS.par) {
+  #added me >
+  mzdatafiles <- list.files(mzdatapath, recursive = TRUE, full.names = TRUE)
+  file.base <- gen_filebase(mzdatafiles, BLANK, ion.id, ion.mode)
+  #added me <
     xset <- xcmsSet(files = mzdatafiles, method = "centWave", peakwidth = c(XCMS.par$Peakwidth1, XCMS.par$Peakwidth2),
         ppm = XCMS.par$ppm, noise = XCMS.par$noise, snthresh = XCMS.par$snthresh, mzdiff = XCMS.par$mzdiff, prefilter = c(XCMS.par$prefilter1,
             XCMS.par$prefilter2), mzCenterFun = "wMean", integrate = 1, fitgauss = FALSE, verbose.columns = FALSE,
@@ -43,7 +47,9 @@ wrap_camera = function(xcms.obj, CAMERA.par, ion.mode) {
     best.corval_eic <- CAMERA.par$corval_eic
     best.pval <- CAMERA.par$pval
     best.mzabs.add <- CAMERA.par$mzabs.1
-
+    #me >
+    graph_method <- "lpc"
+    #me <
     mz1setpos <- xsAnnotate(xs = xcms.obj, sample = NA)
     mz1setpos <- groupFWHM(object = mz1setpos, perfwhm = best.perfwhm, sigma = best.sigma, intval = "into")
     mz1setposIso <- findIsotopes(mz1setpos, maxcharge = 2, maxiso = best.maxiso, ppm = 3, mzabs = best.mzabs.iso,

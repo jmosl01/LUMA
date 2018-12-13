@@ -117,11 +117,9 @@
   ## Reads in the adduct rules list for CAMERA
   if(ion.mode == "Positive"){
     rules <- read.csv(file = files[1])
-    CAMERA.ion.mode <- "positive"
   } else {
     if(ion.mode == "Negative"){
       rules <- read.csv(file = files[2])
-      CAMERA.ion.mode <- "negative"
     }
   }
   return(rules)
