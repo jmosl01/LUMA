@@ -48,7 +48,7 @@ InitWorkflow <- function(ion.id,blanks.dir,db.dir,adduct.files,use.CAMERA,use.XC
   Solvent.ratio <- NULL
   gen.plots <- NULL
   keep.singletons <- NULL
-  DataFiles <- NULL
+  mzdatafiles <- NULL
   Sexes <- NULL
   Classes <- NULL
   no.Samples <- NULL
@@ -105,7 +105,7 @@ InitWorkflow <- function(ion.id,blanks.dir,db.dir,adduct.files,use.CAMERA,use.XC
   }
 
   #Set metadata globally
-  DataFiles <<- DataFiles <- .get_DataFiles(mzdatapath,ion.mode,BLANK,ion.id,blanks.dir)
+  mzdatafiles <<- mzdatafiles <- .get_DataFiles(mzdatapath,ion.mode,BLANK,ion.id,blanks.dir)
   rules <<- rules <- .get_rules(ion.mode,adduct.files)
   ion.modes <<- ion.modes
   ion.id <<- ion.id
@@ -174,7 +174,7 @@ InitWorkflow <- function(ion.id,blanks.dir,db.dir,adduct.files,use.CAMERA,use.XC
 
 
   #Initialize SQLite database connections globally
-  file.base <- gen_filebase(DataFiles,BLANK,ion.id,ion.mode)
+  file.base <- gen_filebase(mzdatafiles,BLANK,ion.id,ion.mode)
   peak_db <<- peak_db <- connect_peakdb(file.base,db.dir)
 
   ##Check for existing XCMS and CAMERA objects. If not specified, check for saved XCMS and CAMERA objects.
@@ -219,7 +219,7 @@ InitWorkflow <- function(ion.id,blanks.dir,db.dir,adduct.files,use.CAMERA,use.XC
     }
   }
 
-  #Pre-process DataFiles
+  #Pre-process mzdatafiles
   xset4 <- .PreProcess_Files(XCMS.file,CAMERA.file,mytable)
 
   if(calc.minfrac) {
