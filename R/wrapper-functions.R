@@ -49,6 +49,7 @@ wrap_camera = function(xcms.obj, CAMERA.par, ion.mode) {
     best.mzabs.add <- CAMERA.par$mzabs.1
     #me >
     graph_method <- "lpc"
+    CAMERA.ion.mode <- tolower(ion.mode)
     #me <
     mz1setpos <- xsAnnotate(xs = xcms.obj, sample = NA)
     mz1setpos <- groupFWHM(object = mz1setpos, perfwhm = best.perfwhm, sigma = best.sigma, intval = "into")
