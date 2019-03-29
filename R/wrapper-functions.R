@@ -16,7 +16,7 @@ wrap_xcms = function(mzdatafiles, XCMS.par, file.base) {
     xset <- xcmsSet(files = mzdatafiles, method = "centWave", peakwidth = c(XCMS.par$Peakwidth1, XCMS.par$Peakwidth2),
         ppm = XCMS.par$ppm, noise = XCMS.par$noise, snthresh = XCMS.par$snthresh, mzdiff = XCMS.par$mzdiff, prefilter = c(XCMS.par$prefilter1,
             XCMS.par$prefilter2), mzCenterFun = "wMean", integrate = 1, fitgauss = FALSE, verbose.columns = FALSE,
-        BPPARAM = SnowParam(workers = snowWorkers(), type = "SOCK", stop.on.error = TRUE, progressbar = TRUE))
+        BPPARAM = SnowParam(workers = snowWorkers(), type = "SOCK", stop.on.error = TRUE, progressbar = FALSE))
     pdf(file = paste(file.base, "RTDev Plot.pdf", sep = "_"))
     xset2 <- retcor(xset, method = "obiwarp", plottype = "deviation", distFunc = "cor_opt", profStep = 1, center = XCMS.par$center,
         response = 1, gapInit = XCMS.par$gapInit, gapExtend = 2.7, factorDiag = 2, factorGap = 1, localAlignment = 0)
@@ -25,7 +25,7 @@ wrap_xcms = function(mzdatafiles, XCMS.par, file.base) {
         minsamp = 1, max = 50)
 
     xset4 <- fillPeaks(xset3, BPPARAM = SnowParam(workers = snowWorkers(), type = "SOCK", stop.on.error = TRUE,
-        progressbar = TRUE))
+        progressbar = FALSE))
     return(list(xset, xset4))
 }
 
