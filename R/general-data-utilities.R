@@ -5,18 +5,22 @@
   if(ion.mode == "Positive" && BLANK == TRUE){
     mzdatafiles <- subset(mzdatafiles, subset = grepl(ion.id[1], mzdatafiles, ignore.case = TRUE))
     mzdatafiles <- mzdatafiles[c(grep(blanks.dir,mzdatafiles, ignore.case = TRUE))]
+    return(mzdatafiles)
   } else {
     if(ion.mode == "Negative" && BLANK == TRUE){
       mzdatafiles <- subset(mzdatafiles, subset = grepl(ion.id[2], mzdatafiles, ignore.case = TRUE))
       mzdatafiles <- mzdatafiles[c(grep(blanks.dir,mzdatafiles))]
+      return(mzdatafiles)
     } else {
       if(ion.mode == "Positive" && BLANK == FALSE){
         mzdatafiles <- subset(mzdatafiles, subset = grepl(ion.id[1], mzdatafiles, ignore.case = TRUE))
         mzdatafiles <- mzdatafiles[-c(grep(blanks.dir,mzdatafiles))]
+        return(mzdatafiles)
       } else {
         if(ion.mode == "Negative" && BLANK == FALSE){
           mzdatafiles <- subset(mzdatafiles, subset = grepl(ion.id[2], mzdatafiles, ignore.case = TRUE))
           mzdatafiles <- mzdatafiles[-c(grep(blanks.dir,mzdatafiles))]
+          return(mzdatafiles)
         } else {
           stop("Ion mode must be Positive or Negative.\nBe sure to specify whether to analyze blanks by setting BLANK to a logical. \nSee LUMA vignette for more details.\n\n")
         }
@@ -25,7 +29,6 @@
     }
 
   }
-  return(mzdatafiles)
 }
 
 .set_PreProcessFileNames = function(ion.mode,BLANK) {

@@ -10,7 +10,7 @@
 #' @importFrom BiocParallel SnowParam snowWorkers
 wrap_xcms = function(mzdatafiles, XCMS.par, file.base) {
   #added me >
-  mzdatafiles <- list.files(mzdatapath, recursive = TRUE, full.names = TRUE)
+  #mzdatafiles <- list.files(mzdatapath, recursive = TRUE, full.names = TRUE) #This will cause xcms to run on EVERY file in mzML directory
   # file.base <- gen_filebase(mzdatafiles, BLANK, ion.id, ion.mode) #Dont do this
   #added me <
     xset <- xcmsSet(files = mzdatafiles, method = "centWave", peakwidth = c(XCMS.par$Peakwidth1, XCMS.par$Peakwidth2),
