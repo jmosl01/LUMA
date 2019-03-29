@@ -221,7 +221,7 @@ InitWorkflow <- function(ion.id,blanks.dir,db.dir,adduct.files,use.CAMERA,use.XC
   }
 
   #Pre-process DataFiles
-  xset4 <- .PreProcess_Files(XCMS.file,CAMERA.file,mytable)
+  xset4 <- .PreProcess_Files(XCMS.file,CAMERA.file,mytable,file.base)
 
   if(calc.minfrac) {
     ##Add minimum fraction to Peak.list

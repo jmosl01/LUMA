@@ -4,13 +4,14 @@
 #' @description Run XCMS with user defined input parameters and return xcms objects
 #' @param mzdatafiles a character vector of data files with full path names
 #' @param XCMS.par a single-row data frame with 13 variables containing XCMS parameters. The column names must be c('Peakwidth1','Peakwidth2','ppm','noise','snthresh','mzdiff','prefilter1','prefilter2','center','gapInit','bw','mzwid','minfrac')
+#' @param file.base a single-row data frame with 13 variables containing XCMS parameters. The column names must be c('Peakwidth1','Peakwidth2','ppm','noise','snthresh','mzdiff','prefilter1','prefilter2','center','gapInit','bw','mzwid','minfrac')
 #' @return two XCMS objects xset and xset4 without and with retention time alignment, peak grouping, and imputing missing values
 #' @import xcms
 #' @importFrom BiocParallel SnowParam snowWorkers
-wrap_xcms = function(mzdatafiles, XCMS.par) {
+wrap_xcms = function(mzdatafiles, XCMS.par, file.base) {
   #added me >
   mzdatafiles <- list.files(mzdatapath, recursive = TRUE, full.names = TRUE)
-  file.base <- gen_filebase(mzdatafiles, BLANK, ion.id, ion.mode)
+  # file.base <- gen_filebase(mzdatafiles, BLANK, ion.id, ion.mode) #Dont do this
   #added me <
     xset <- xcmsSet(files = mzdatafiles, method = "centWave", peakwidth = c(XCMS.par$Peakwidth1, XCMS.par$Peakwidth2),
         ppm = XCMS.par$ppm, noise = XCMS.par$noise, snthresh = XCMS.par$snthresh, mzdiff = XCMS.par$mzdiff, prefilter = c(XCMS.par$prefilter1,

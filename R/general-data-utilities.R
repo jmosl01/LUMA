@@ -66,7 +66,7 @@
     if(is.null(CAMERA.obj)) {
       if(file.exists(CAMERA.file)) {
         cat("Reading in CAMERA objects.\n\n")
-        load(file = CAMERA.file)
+        load(file = CAMERA.file, verbose = TRUE)
         myvar <- mget(ls())
         myclasses <- lapply(myvar, class)
         myind <- grep("xsAnnotate",myclasses)
@@ -140,7 +140,7 @@
   return(peak_data)
 }
 
-.PreProcess_Files = function(XCMS.file,CAMERA.file,mytable,CAMERA.obj) {
+.PreProcess_Files = function(XCMS.file,CAMERA.file,mytable,file.base,CAMERA.obj) {
 
   #set Default values
   if(missing(CAMERA.obj))
@@ -148,7 +148,7 @@
 
   if(file.exists(XCMS.file)) {
     cat("Reading in XCMS objects.\n\n")
-    load(file = XCMS.file)
+    load(file = XCMS.file, verbose = TRUE)
     if(file.exists(CAMERA.file)){
       cat("Reading in CAMERA objects.\n\n")
       CAMERA.obj <- .CAMERASanityCheck(CAMERA.obj,CAMERA.file)
@@ -180,8 +180,8 @@
         myresults <- wrap_camera(xcms.obj = xset4,
                                  CAMERA.par = CAMERA.par,
                                  ion.mode = CAMERA.ion.mode)
-        CAMERA.obj <- .CAMERASanityCheck(myresults[[1]])
-        CAMERA.obj <- .CAMERASanityCheck(myresults[[2]])
+        CAMERA.obj <- .CAMERASanityCheck(myresults[[1]],CAMERA.file)
+        CAMERA.obj <- .CAMERASanityCheck(myresults[[2]],CAMERA.file)
       })
       cat(paste("PreProcessing with CAMERA took ",round(print(time.CAMERA[3]))," seconds of elapsed time.\n\n",sep = ""))
       # Section END
@@ -206,10 +206,13 @@
 
       # Runs XCMS on datafiles --------------------------------------
       time.XCMS <- system.time({
-        myresults <- wrap_xcms(mzdatafiles = mzdatafiles,
-                               XCMS.par = XCMS.par)
-        XCMS.obj <- .xcmsSanityCheck(myresults[[1]])
-        XCMS.obj <- .xcmsSanityCheck(myresults[[2]])
+        myresults <- wrap_xcms(mzdatafiles = DataFiles,
+                               XCMS.par = XCMS.par,
+                               file.base = file.base)
+        # XCMS.obj <- .xcmsSanityCheck(myresults[[1]])
+        # XCMS.obj <- .xcmsSanityCheck(myresults[[2]])
+        xset <<- xset <- myresults[[1]]
+        xset4 <<- xset4 <- myresults[[2]]
       })
       cat(paste("PreProcessing with XCMS took ",round(print(time.XCMS[3]))," seconds of elapsed time.\n\n",sep = ""))
       ## Section End
@@ -228,8 +231,8 @@
         myresults <- wrap_camera(xcms.obj = xset4,
                                  CAMERA.par = CAMERA.par,
                                  ion.mode = CAMERA.ion.mode)
-        CAMERA.obj <- .CAMERASanityCheck(myresults[[1]])
-        CAMERA.obj <- .CAMERASanityCheck(myresults[[2]])
+        CAMERA.obj <- .CAMERASanityCheck(myresults[[1]],CAMERA.file)
+        CAMERA.obj <- .CAMERASanityCheck(myresults[[2]],CAMERA.file)
       })
       cat(paste("PreProcessing with CAMERA took ",round(print(time.CAMERA[3]))," seconds of elapsed time.\n\n",sep = ""))
       # Section END
