@@ -38,3 +38,83 @@ FormatForSIMCA <- function(from.table,to.csv,peak.db,db.dir) {
 
 
 }
+
+#' @title Formatting of metabolite data for MetaboAnalystR.
+#'
+#' @export
+#' @description This function initializes objects that will hold the metabolite data, formats peak intensity data into one of the formats acceptable by MetaboAnalystR, and sets the metabolite data object.
+#' @param from.table from which table should LUMA read the Peaklist
+#' @param to.csv to what filename (excluding .csv extension) should LUMA save the formatted Peaklist
+#' @param data.type What type of data will be generated. See usage and format_MetabolomicData for options.
+#' @param anal.type character Indicates the analysis module the data will be used for. See usage and documentation for MetaboAnalystR::InitDataObjects() for options.
+#' @param paired logical Indicate if the data is paired or not.
+#' Default is FALSE
+#' @param peak.db what database contains the Peaklists to be combined.
+#' Default is 'Peaklist_db'
+#' @param db.dir directory containing the database.
+#' Default is 'db'
+#' @return mSetObj
+FormatForMetaboAnalystR <- function(from.table, to.csv, data.type = "pktable",
+                                    anal.type = "stat", paired = FALSE, peak.db, db.dir)
+{
+
+  #Set default values
+  if(missing(paired))
+    paired = FALSE
+  if(missing(peak.db))
+    peak.db = "Peaklist_db"
+  if(missing(db.dir))
+    db.dir = "db"
+
+  cat("Formatting for MetaboAnalystR.")
+
+  #Update Peaklist database connection globally
+  peak_db <<- peak_db <- connect_peakdb(file.base = peak.db,db.dir = db.dir)
+
+
+
+  ##-----------------------------------------------------------------------------------------
+  ## Initialize the metabolite object.
+  ##-----------------------------------------------------------------------------------------
+  dataSet <- list();
+  dataSet$type <- data.type;
+  dataSet$design.type <- "regular";    # one factor to two factor
+  dataSet$cls.type <- "disc";
+  dataSet$format <- "rowu";
+  dataSet$paired <- paired;
+  analSet <- list();
+  analSet$type <- anal.type;
+
+  mSetObj <- list();
+  mSetObj$dataSet <- dataSet;
+  mSetObj$analSet <- analSet;
+  mSetObj$imgSet <- list();
+  mSetObj$msgSet <- list();                                 # store various message during data processing
+  mSetObj$msgSet$msg.vec <- vector(mode = "character");     # store error messages
+  mSetObj$cmdSet <- vector(mode = "character");             # store R command
+
+  # Set the class type for the mSetObj.
+  class(mSetObj) <- data.type
+
+  mSetObj <- format_MetabolomicData(mSetObj, Peak.list = NULL,
+
+                                    Sample.df = data.frame(Sex = Sexes,
+                                    Class = Classes,
+                                    n = no.Samples,
+                                    Endogenous = Endogenous),
+
+                                    Sample.data = cbind.data.frame(CT.ID,
+                                                                   Plate.Number,
+                                                                   Plate.Position,
+                                                                   Sample.phenodata),
+                                    tbl.id = from.table,
+                                    peak.db = peak_db)
+
+
+  conc <- mSetObj$dataSet$orig
+  MT.data <- cbind(Sample = rownames(conc),Class = mSetObj$dataSet$orig.cls,conc)
+
+  write.table(MT.data, file = paste(to.csv,".csv",sep = ""), sep = ",", row.names = FALSE)
+
+  return(mSetObj)
+}

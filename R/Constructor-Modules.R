@@ -130,17 +130,18 @@ InitWorkflow <- function(ion.id,blanks.dir,db.dir,adduct.files,use.CAMERA,use.XC
 
   #Set sample class info globally
   if(file.exists("Sample Class.txt"))  {
-  cat("Setting sample class info globally.\n\n")
-    Sample.df <- read.table(file = "Sample Class.txt", sep = "\t", header = TRUE)
+    cat("Setting sample class info globally.\n\n")
+    Sample.df <- read.table(file = "Sample Class.txt", sep = "\t", header = TRUE,
+                            colClasses = c("character","character","numeric","logical"))
     Sexes <<- Sexes <- Sample.df[,"Sex"]
     Classes <<- Classes <- Sample.df[,"Class"]
     no.Samples <<- no.Samples <- Sample.df[,"n"]
     Endogenous <<- Endogenous <- Sample.df[,"Endogenous"]
-      } else {
-        if(is.null(Sexes) || is.null(Classes) || is.null(no.Samples) || is.null(Endogenous)) {
-          stop("Please place \"Sample Class.txt\" into your working directory. \nAlternatively, you should set the Sex, Class, no.Samples and Endogenous arguments.\n\n")
-      }
+  } else {
+    if(is.null(Sexes) || is.null(Classes) || is.null(no.Samples) || is.null(Endogenous)) {
+      stop("Please place \"Sample Class.txt\" into your working directory. \nAlternatively, you should set the Sex, Class, no.Samples and Endogenous arguments.\n\n")
     }
+  }
 
   #Set sample phenotype data globally
   if(file.exists("Sample Data.csv"))  {
@@ -220,7 +221,7 @@ InitWorkflow <- function(ion.id,blanks.dir,db.dir,adduct.files,use.CAMERA,use.XC
   }
 
   #Pre-process DataFiles
-  xset4 <- .PreProcess_Files(XCMS.file,CAMERA.file,mytable)
+  xset4 <- .PreProcess_Files(XCMS.file,CAMERA.file,mytable,file.base)
 
   if(calc.minfrac) {
     ##Add minimum fraction to Peak.list

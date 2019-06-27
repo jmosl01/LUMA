@@ -1,4 +1,4 @@
-#' @title Loop-based EIC Plotter
+#' @title Loop-based EIC Plotter for metabolite groups
 #'
 #' @export
 #' @description Plots EICs and Pseudospectra from (parsed) metabolite groups using plotEICs-methods and plotPsSpectrum-methods from CAMERA. Also plots correlation matrices and clustered dendrograms for each (parsed) metabolite group.
@@ -14,7 +14,8 @@
 #' @param QC.id character identifier for pooled QC samples.
 #' Default is 'Pooled_QC'
 #' @param maxlabel numeric How many m/z labels to print
-#' @return List of length 2.  1st element is a data frame with all columns as the original data frame with one additional column 'Correlation.stat'.  2nd element is a data frame specifically used to validate CAMERA results.
+#' @return List of length 2.  1st element is a data frame with all columns as the original data frame with one additional column 'Correlation.stat'.
+#' 2nd element is a list of objects used to validate CAMERA results.
 #' @importFrom  CAMERA plotEICs
 #' @importFrom CAMERA plotPsSpectrum
 #' @importFrom grDevices dev.off pdf rainbow

@@ -9,7 +9,7 @@ Description: Performs quality control and feature reduction steps on the output 
 License: CC0
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
 Imports:
     BiocParallel,
     CAMERA,
@@ -30,8 +30,7 @@ Imports:
     stats,
     stringr,
     utils,
-    xcms,
-    xlsx
+    xcms
 Suggests: 
     BiocStyle,
     knitr,

@@ -4,12 +4,14 @@
 \alias{wrap_xcms}
 \title{Wraps xcms}
 \usage{
-wrap_xcms(mzdatafiles, XCMS.par)
+wrap_xcms(mzdatafiles, XCMS.par, file.base)
 }
 \arguments{
 \item{mzdatafiles}{a character vector of data files with full path names}
 
 \item{XCMS.par}{a single-row data frame with 13 variables containing XCMS parameters. The column names must be c('Peakwidth1','Peakwidth2','ppm','noise','snthresh','mzdiff','prefilter1','prefilter2','center','gapInit','bw','mzwid','minfrac')}
+
+\item{file.base}{a single-row data frame with 13 variables containing XCMS parameters. The column names must be c('Peakwidth1','Peakwidth2','ppm','noise','snthresh','mzdiff','prefilter1','prefilter2','center','gapInit','bw','mzwid','minfrac')}
 }
 \value{
 two XCMS objects xset and xset4 without and with retention time alignment, peak grouping, and imputing missing values
