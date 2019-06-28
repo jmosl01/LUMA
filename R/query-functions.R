@@ -10,7 +10,6 @@
 #' @param lib_db RSQLite connection
 #' @return data frame containing the original table with added columns 'Name','MS.ID','Formula','Annotated.adduct' and any additional info columns from Annotated.library
 #' @importFrom dplyr '%>%' select copy_to tbl between
-#' @importFrom glue glue_collapse
 #' @importFrom utils str txtProgressBar
 match_Annotation = function(Peak.list, Annotated.library, rules, search.par, ion.mode, lib_db) {
 
@@ -30,18 +29,20 @@ match_Annotation = function(Peak.list, Annotated.library, rules, search.par, ion
   rt.max <- search.list[["rt"]] + d.rt
 
   # Sets up the match results columns including all phenodata
-  search.list[,"MS.ID"] = NA_character_
-  search.list[,"Name"] = NA_character_
-  search.list[,"Formula"] = NA_character_
-  search.list[,"Molecular.Weight"] = NA_character_
-  search.list[,"RT..Min."] = NA_character_
-  search.list[,"Annotated.adduct"] = NA_character_
-  search.list[,seq(from = 10, to = 10 - 1 + length(colnames(Library.phenodata)), by = 1)] = NA_character_
-  colnames(search.list) <- c(colnames(search.list)[1:9],colnames(Library.phenodata))
+  search.list["MS.ID"] = NA_character_
+  search.list["Name"] = NA_character_
+  search.list["Formula"] = NA_character_
+  search.list["Molecular.Weight"] = NA_character_
+  search.list["RT..Min."] = NA_character_
+  search.list["Annotated.adduct"] = NA_character_
+  search.list["match.mz"] = NA_character_
+  search.list["match.adduct"] = NA_character_
+  search.list[,seq(from = 12, to = 12 - 1 + length(colnames(Library.phenodata)), by = 1)] = NA_character_
+  colnames(search.list) <- c(colnames(search.list)[1:11],colnames(Library.phenodata))
 
   ## attempts to match all peaks against the In House Library ! Try to build a query using *apply functions to
   ## search all of the search list at once; should speed ! things up considerably
-  ## i = 27 Used for debugging purposes
+  # i = 13 # Used for debugging purposes
   total = nrow(search.list)
   cat("Annotating features against the In House Library.\n\n\n")
   pb = txtProgressBar(min = 0, max = total, style = 3)
@@ -53,34 +54,50 @@ match_Annotation = function(Peak.list, Annotated.library, rules, search.par, ion
     r.max = rt.max[[i]]
 
     test.list <- tbl(lib_db, paste("Annotated Library", myion.mode, sep = "_")) %>%
-                    dplyr::filter(between(mz, m.min, m.max)) %>%
-                        dplyr::filter(between(RT..Min., r.min, r.max)) %>%
-                            dplyr::collect()
+      dplyr::filter(between(mz, m.min, m.max)) %>%
+      dplyr::filter(between(RT..Min., r.min, r.max)) %>%
+      dplyr::collect()
+
+    colnames(test.list)[colnames(test.list)=="mz"] <- "match.mz"
+    colnames(test.list)[colnames(test.list)=="adduct"] <- "match.adduct"
 
     if (nrow(test.list) == 0) {
       search.list[i,"MS.ID"] = paste(bin[[i]], "Unidentified", sep = "_")
     } else {
+      # if(nrow(test.list) == 1) {
+      #   search.list[i,"MS.ID"] = paste(bin[[i]], "Annotated", sep = "_")
+      #   search.list[i,colnames(test.list)] <- test.list[[1]]
+      # } else {
       if (nrow(test.list) >= 1) { ##Matches all features against the In House Library
-        #Prints the results of the match to console
-        # cat("\n\n\nFeature annotated for match number ", cnt, ".\nMatch results below.\n\n\n", sep = "")
-        # str(test.list)
         search.list[i,"MS.ID"] = paste(bin[[i]], "Annotated", sep = "_")
-        search.list[i,"Name"] = glue_collapse(test.list[,"Name"], sep = ";", width = Inf)
-        search.list[i,"Formula"] = glue_collapse(unique(gsub(" ", "", test.list[,"Formula"])), sep = ";", width = Inf)
-        search.list[i,"Molecular.Weight"] = glue_collapse(unique(test.list[,"Molecular.Weight"]), sep = ";", width = Inf)
-        search.list[i,"RT..Min."] = glue_collapse(unique(test.list[,"RT..Min."]), sep = ";", width = Inf)
-        search.list[i,"Annotated.adduct"] = glue_collapse(test.list[,"adduct"], sep = ";", width = Inf)
-        for(j in seq(from = 10, to = length(colnames(search.list)), by = 1)) {
-          k = j - 5
-          search.list[i,j] = glue_collapse(test.list[,k], sep = ";", width = Inf)
+        # search.list[i,"Name"] = glue_collapse(test.list[,"Name"], sep = ";", width = Inf)
+        # search.list[i,"Formula"] = glue_collapse(unique(gsub(" ", "", test.list[,"Formula"])), sep = ";", width = Inf)
+        # search.list[i,"Molecular.Weight"] = glue_collapse(unique(test.list[,"Molecular.Weight"]), sep = ";", width = Inf)
+        # search.list[i,"RT..Min."] = glue_collapse(unique(test.list[,"RT..Min."]), sep = ";", width = Inf)
+        # search.list[i,"Annotated.adduct"] = glue_collapse(test.list[,"adduct"], sep = ";", width = Inf)
+
+        total_loop = length(colnames(test.list))
+
+        for (j in 1:total_loop) {
+          search.list[i,colnames(test.list)[j]] <- ddply(test.list, ~Ion.Mode, function(x) .mypaste(x,j))[2]
         }
+
+
+        # for(j in seq(from = 10, to = length(colnames(search.list)), by = 1)) {
+        #   k = j - 5
+        # search.list[i,j] = glue_collapse(test.list[,k], sep = ";", width = Inf)
+        # }
         cnt = cnt + 1
+        # }
+
       }
+
     }
 
     setTxtProgressBar(pb, i)
   }
   close(pb)
+
   named.peak.list <- search.list[, 4:ncol(search.list)]
   colnames(named.peak.list)
   temp <- as.data.frame(Peak.list)

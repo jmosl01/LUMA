@@ -334,4 +334,7 @@
   return(list(search.list,bin,myion.mode))
 }
 
+.mypaste = function(pheno.list, i) {
+  summarise(pheno.list, X = paste0(pheno.list[, i], collapse = ";"))
+}
 ##END

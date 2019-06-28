@@ -843,17 +843,15 @@ combine_phenodata <- function(Sample.df, Peak.list, Summed.list, search.par, BLA
   total = length(colnames(pheno.list))
   cat("Combining metadata for isotopes and adducts.\n\n\n")
   pb <- txtProgressBar(min = 0, max = total, style = 3)
-  mypaste = function(pheno.list, i) {
-    summarise(pheno.list, X = paste0(pheno.list[, i], collapse = ";"))
-  }
+
   for (i in 1:total) {
     if (is.character(pheno.list[, i])) {
       # works new.pheno.list[,colnames(pheno.list)[i]] <- ddply(pheno.list, .(metabolite_group), summarise,
       # X=paste0(MS.ID, collapse = ';'))[2]
-      new.pheno.list[, colnames(pheno.list)[i]] <- ddply(pheno.list, ~metabolite_group, function(x) mypaste(x,
+      new.pheno.list[, colnames(pheno.list)[i]] <- ddply(pheno.list, ~metabolite_group, function(x) .mypaste(x,
                                                                                                             i))[2]
     } else if (!is.na(.isWhole(pheno.list[, i]))) {
-      new.pheno.list[, colnames(pheno.list)[i]] <- ddply(pheno.list, ~metabolite_group, function(x) mypaste(x,
+      new.pheno.list[, colnames(pheno.list)[i]] <- ddply(pheno.list, ~metabolite_group, function(x) .mypaste(x,
                                                                                                             i))[2]
     }
     setTxtProgressBar(pb, i)
