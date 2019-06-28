@@ -20,7 +20,7 @@ remove_void_volume = function(Peak.list, search.par, method,...) {
 #' @description Removes metabolites with %CV greater than the user specified threshold, calculated from the QC samples
 #' @param Peak.list data frame. Must have QC sample columns that contain the string 'Pooled_QC_'.  Should contain output columns from XCMS and CAMERA, and additional columns from IHL.search, Calc.MinFrac, CAMERA.parser, Calc.corr.stat and Combine.phenodata base functions.
 #' @param search.par a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.
-#' @return data frame Peak.list.trimmed original Peak.list without all metabolite groups with %CV greater than user specified threshold
+#' @return data frame Peak.list.trimmed original Peak.list without all metabolite groups with %CV greater than user specified threshold; if dataset contains blanks, data.frame with all NA values is returned
 #' @importFrom stats sd
 trim_cv = function(Peak.list, search.par) {
     res <- lapply(colnames(Peak.list), function(ch) grep("Pooled_QC_", ch))
@@ -40,19 +40,22 @@ trim_cv = function(Peak.list, search.par) {
 #' @description Removes metabolites with MinFrac smaller than the user specified threshold. The maximum MinFrac value is chosen from all features within a metabolite group.
 #' @param Peak.list data frame. Must have MinFrac column.  Should contain output columns from XCMS and CAMERA, and additional columns from IHL.search, Calc.MinFrac, CAMERA.parser, Calc.corr.stat and Combine.phenodata base functions.
 #' @param search.par a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.
-#' @return data frame Peak.list.trimmed original Peak.list containing all metabolite groups containing at least one feature that has MinFrac value greater than user specified threshold
+#' @return data frame Peak.list.trimmed original Peak.list containing all metabolite groups containing at least one feature that has MinFrac value greater than user specified threshold; if all MinFrac values are NA (i.e. dataset contains blanks), NULL is returned
 trim_minfrac = function(Peak.list, search.par) {
     MF <- Peak.list[, "MinFrac"]
-    AllMF <- strsplit(MF, split = ";")
-    AllMF <- lapply(AllMF, function(x) as.numeric(x))  #Convert character values to numeric values
-    MaxMF <- lapply(AllMF, function(x) max(x))
-    # MeanMF <- lapply(AllMF, function(x) mean(x)) #calculates mean values for minfrac trimming; not used
-    MF.cutoff <- as.numeric(search.par[1, "Minfrac"])
-    # temp <- data.frame(MinFrac = MF, Max.cutoff = MaxMF>=MF.cutoff, Mean.cutoff = MeanMF>=MF.cutoff, CV =
-    # Peak.list[,'%CV'], Corr.stat = Peak.list[,'Correlation.stat'])
-    # temp[which(temp$Max.cutoff!=temp$Mean.cutoff),] #compares mean thresholding to max thresholding
-    Peak.list.trimmed <- Peak.list[MaxMF >= MF.cutoff, ]
-    return(Peak.list.trimmed)
+    if(all(!is.na(MF))) {   # Safeguard in case this function is called on blanks; if BLANK = TRUE in Script info, then MF will contain all NA values
+      AllMF <- strsplit(MF, split = ";")
+      AllMF <- lapply(AllMF, function(x) as.numeric(x))  #Convert character values to numeric values
+      MaxMF <- lapply(AllMF, function(x) max(x))
+      # MeanMF <- lapply(AllMF, function(x) mean(x)) #calculates mean values for minfrac trimming; not used
+      MF.cutoff <- as.numeric(search.par[1, "Minfrac"])
+      # temp <- data.frame(MinFrac = MF, Max.cutoff = MaxMF>=MF.cutoff, Mean.cutoff = MeanMF>=MF.cutoff, CV =
+      # Peak.list[,'%CV'], Corr.stat = Peak.list[,'Correlation.stat'])
+      # temp[which(temp$Max.cutoff!=temp$Mean.cutoff),] #compares mean thresholding to max thresholding
+      Peak.list.trimmed <- Peak.list[MaxMF >= MF.cutoff, ]
+      return(Peak.list.trimmed)
+    }
+
 }
 
 #' @title Trims by retention time

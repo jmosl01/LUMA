@@ -60,9 +60,13 @@ CullCV <- function(from.table,to.table) {
                                                        keep.singletons = keep.singletons))
 
 
-  write_tbl(mydf = Peak.list.trimmed,
-            peak.db = peak_db,
-            myname = to.table)
+  if(!all(is.na(Peak.list.trimmed))) { #Only writes table to database if Peak.list.trimmed contains actual values
+
+    write_tbl(mydf = Peak.list.trimmed,
+              peak.db = peak_db,
+              myname = to.table)
+
+  }
 }
 
 #' @title Culls the Peak.list by Minimum Fraction
@@ -93,9 +97,13 @@ CullMF <- function(from.table,to.table) {
                                                             keep.singletons = keep.singletons))
 
 
-  write_tbl(mydf = Peak.list.trimmed,
-            peak.db = peak_db,
-            myname = to.table)
+  if(!is.null(Peak.list.trimmed)) {
+
+    write_tbl(mydf = Peak.list.trimmed,
+              peak.db = peak_db,
+              myname = to.table)
+
+  }
 }
 
 #' @title Culls the Peak.list by Background

@@ -12,7 +12,7 @@ trim_cv(Peak.list, search.par)
 \item{search.par}{a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.}
 }
 \value{
-data frame Peak.list.trimmed original Peak.list without all metabolite groups with %CV greater than user specified threshold
+data frame Peak.list.trimmed original Peak.list without all metabolite groups with %CV greater than user specified threshold; if dataset contains blanks, data.frame with all NA values is returned
 }
 \description{
 Removes metabolites with %CV greater than the user specified threshold, calculated from the QC samples

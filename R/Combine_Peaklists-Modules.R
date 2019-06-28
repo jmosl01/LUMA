@@ -38,6 +38,10 @@ CombinePeaklists <- function(from.tables,to.table,method,peak.db,db.dir,gen.plot
   } else {
     mygen.plots = gen.plots
   }
+  if(exists("BLANK",where = .GlobalEnv)) {
+    #Update BLANK to FALSE globally, because it doesn't make sense to plot duplicates for blanks!
+    BLANK <<- BLANK <- FALSE
+  }
 
 
   #Update Peaklist database connection globally
@@ -61,7 +65,7 @@ CombinePeaklists <- function(from.tables,to.table,method,peak.db,db.dir,gen.plot
         cat("Reading in positive mode CAMERA files.\n\n")
         load(file = CAMERA.pos)
       } else {
-        stop("No saved positve mode CAMERA files exist. \nBe sure to call InitWorkflow module for positive mode first!\n\n")
+        stop("No saved positive mode CAMERA files exist. \nBe sure to call InitWorkflow module for positive mode first!\n\n")
       }
     } else {
       if(!exists(CAMERA.pos)) {
