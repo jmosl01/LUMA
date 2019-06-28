@@ -2,7 +2,7 @@
 #'
 #' @export
 #' @description Compares isotope and adduct annotations within Peak.list (inherited from CAMERA) to user-defined annotation library.
-#' See search_IHL and match_Annotation for more details.
+#' See match_Annotation for more details.
 #' @param from.table from which table should LUMA pull the Peak.list
 #' @param to.table to which should LUMA save the modified Peak.list
 #' @param lib.db character name of In House Library database.
