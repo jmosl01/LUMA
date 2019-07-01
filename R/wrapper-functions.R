@@ -4,18 +4,19 @@
 #' @description Run XCMS with user defined input parameters and return xcms objects
 #' @param mzdatafiles a character vector of data files with full path names
 #' @param XCMS.par a single-row data frame with 13 variables containing XCMS parameters. The column names must be c('Peakwidth1','Peakwidth2','ppm','noise','snthresh','mzdiff','prefilter1','prefilter2','center','gapInit','bw','mzwid','minfrac')
+#' @param file.base a single-row data frame with 13 variables containing XCMS parameters. The column names must be c('Peakwidth1','Peakwidth2','ppm','noise','snthresh','mzdiff','prefilter1','prefilter2','center','gapInit','bw','mzwid','minfrac')
 #' @return two XCMS objects xset and xset4 without and with retention time alignment, peak grouping, and imputing missing values
 #' @import xcms
 #' @importFrom BiocParallel SnowParam snowWorkers
-wrap_xcms = function(mzdatafiles, XCMS.par) {
+wrap_xcms = function(mzdatafiles, XCMS.par, file.base) {
   #added me >
-  mzdatafiles <- list.files(mzdatapath, recursive = TRUE, full.names = TRUE)
-  file.base <- gen_filebase(mzdatafiles, BLANK, ion.id, ion.mode)
+  #mzdatafiles <- list.files(mzdatapath, recursive = TRUE, full.names = TRUE) #This will cause xcms to run on EVERY file in mzML directory
+  # file.base <- gen_filebase(mzdatafiles, BLANK, ion.id, ion.mode) #Dont do this
   #added me <
     xset <- xcmsSet(files = mzdatafiles, method = "centWave", peakwidth = c(XCMS.par$Peakwidth1, XCMS.par$Peakwidth2),
         ppm = XCMS.par$ppm, noise = XCMS.par$noise, snthresh = XCMS.par$snthresh, mzdiff = XCMS.par$mzdiff, prefilter = c(XCMS.par$prefilter1,
             XCMS.par$prefilter2), mzCenterFun = "wMean", integrate = 1, fitgauss = FALSE, verbose.columns = FALSE,
-        BPPARAM = SnowParam(workers = snowWorkers(), type = "SOCK", stop.on.error = TRUE, progressbar = TRUE))
+        BPPARAM = SnowParam(workers = snowWorkers(), type = "SOCK", stop.on.error = TRUE, progressbar = FALSE))
     pdf(file = paste(file.base, "RTDev Plot.pdf", sep = "_"))
     xset2 <- retcor(xset, method = "obiwarp", plottype = "deviation", distFunc = "cor_opt", profStep = 1, center = XCMS.par$center,
         response = 1, gapInit = XCMS.par$gapInit, gapExtend = 2.7, factorDiag = 2, factorGap = 1, localAlignment = 0)
@@ -24,7 +25,7 @@ wrap_xcms = function(mzdatafiles, XCMS.par) {
         minsamp = 1, max = 50)
 
     xset4 <- fillPeaks(xset3, BPPARAM = SnowParam(workers = snowWorkers(), type = "SOCK", stop.on.error = TRUE,
-        progressbar = TRUE))
+        progressbar = FALSE))
     return(list(xset, xset4))
 }
 
@@ -49,6 +50,7 @@ wrap_camera = function(xcms.obj, CAMERA.par, ion.mode) {
     best.mzabs.add <- CAMERA.par$mzabs.1
     #me >
     graph_method <- "lpc"
+    CAMERA.ion.mode <- tolower(ion.mode)
     #me <
     mz1setpos <- xsAnnotate(xs = xcms.obj, sample = NA)
     mz1setpos <- groupFWHM(object = mz1setpos, perfwhm = best.perfwhm, sigma = best.sigma, intval = "into")
