@@ -278,9 +278,11 @@ format_MetabolomicData.default <- function(mSetObj, Peak.list, Sample.df, Sample
 #'
 #' @export
 #' @description This function prints the metabolite and sample metadata to CSV files.
+#' @param mSetObj NULL
 #' @param Peak.list data frame containing combined ion mode peaklist with ion mode duplicates removed.
 #' @param Sample.df data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns 'Sex','Class','n','Endogenous'.
 #' @param Sample.data data frame with phenotype data as columns and a row for each study sample.  First column must be a unique sample identifier with the header 'CT-ID'.  Phenotype columns may vary, but must include two columns called 'Plate Number' and 'Plate Position' for determining run order.
+#' @importFrom utils write.csv
 #' @return mSetObj
 output_MetaData <- function(mSetObj, Peak.list, Sample.df, Sample.data)
 {
@@ -305,6 +307,7 @@ output_MetaData.pktable <- function(mSetObj, Peak.list, Sample.df, Sample.data)
     samples[rows_loop]  <-  sexes[i]
   }
   res  <-  samples %in% sexes
+  sample.peaks <- Peak.list[, res]
 
   # Apply the logical NOT operator "!" to "res" to identify the columns with the metadata.
   meta_res <- !res
