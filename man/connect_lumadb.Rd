@@ -11,11 +11,12 @@ connect_lumadb(db.list, db.dir, new.db)
 
 \item{db.dir}{character directory containing the databases}
 
-\item{new.db}{character what should the new database be called}
+\item{new.db}{character what should the new database be called.}
 }
 \value{
-list of Formal class SQLiteConnections, starting with new.db entry followed by one for each db.list entry and
+list of Formal class SQLiteConnections, starting with new.db entry followed by one for each db.list entry
 }
 \description{
-Establishes a connection to an RSQLite database for combining Peak.lists together from two different ionization modes
+Establishes a connection to an RSQLite database for combining Peak.lists together from two different ionization modes.
+Must have previously saved SQLite databases to hard disk.
 }

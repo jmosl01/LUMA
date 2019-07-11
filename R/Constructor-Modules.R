@@ -288,20 +288,34 @@ FinalWorkflow <- function(peak_db,lib_db) {
   if(is.null(lib_db)) {
       cat("No library database connection provided. Therefore did not close database connection.\n\n")
   } else {
-    test <- dbConnect(lib_db)
-    if(class(test)[1] != "SQLiteConnection") {
-      stop(paste("peak_db is of class ",class(test)[1],", but needs to be of class \"SQLiteConnection\".",sep = ""))
-    } else {
-      lib.tbls <- dbListTables(test)
+    if(slot(lib_db, "dbname") != ":memory:") {
+
+      test <- dbConnect(lib_db)
+      if(class(test)[1] != "SQLiteConnection") {
+        stop(paste("peak_db is of class ",class(test)[1],", but needs to be of class \"SQLiteConnection\".",sep = ""))
+      } else {
+
+        lib.tbls <- dbListTables(test)
+        cat("Library database contains the following tables:\n")
+        msg <- paste(lib.tbls, collapse = '\n')
+        cat(msg)
+        cat("\n\nClosing the Library database connection.\n\n")
+        dbDisconnect(test)
+        dbDisconnect(lib_db)
+        mylist <- c(mylist,deparse(substitute(lib_db)))
+
+        }
+
+      } else {
+      lib.tbls <- dbListTables(lib_db)
       cat("Library database contains the following tables:\n")
       msg <- paste(lib.tbls, collapse = '\n')
       cat(msg)
       cat("\n\nClosing the Library database connection.\n\n")
-      dbDisconnect(test)
       dbDisconnect(lib_db)
       mylist <- c(mylist,deparse(substitute(lib_db)))
+        }
     }
-  }
 
   #Clean up the database connections in the global environment
   rm(list=mylist,envir = .GlobalEnv)

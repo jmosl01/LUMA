@@ -40,61 +40,103 @@ gen_filebase = function(mzdatafiles, BLANK, ion.id, ion.mode) {
 #' @title Connects to peak database
 #'
 #' @export
-#' @description Establishes a connection to an RSQLite database for storing Peak.list; if doesn't exist, creates new database
+#' @description Establishes a connection to an SQLite database for storing Peak.list; if doesn't exist, creates new database
 #' @param file.base character return from gen_filebase function
 #' @param db.dir character what should the database directory be called.  Default is 'db'
+#' @param mem logical should database be in-memory. Default is FALSE
 #' @return Formal class SQLiteConnection
 #' @importFrom DBI dbConnect
 #' @importFrom RSQLite SQLite
-connect_peakdb = function(file.base, db.dir) {
+connect_peakdb = function(file.base, db.dir, mem) {
+
+    #Set default variables
     if (missing(db.dir))
         db.dir = "db"
+    if (missing(mem))
+        mem = F
+
     ## Uncomment the following line if you dare
     # peak_db_file <- paste(file.base, db.dir, sep = "_")
-    dir.create(db.dir, recursive = FALSE, showWarnings = FALSE)
-    peak_db <- DBI::dbConnect(RSQLite::SQLite(), paste(db.dir, file.base, sep = "/"))
+    if(mem) {
+
+      peak_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+
+    } else {
+
+      dir.create(db.dir, recursive = FALSE, showWarnings = FALSE)
+
+      peak_db <- DBI::dbConnect(RSQLite::SQLite(), paste(db.dir, file.base, sep = "/"))
+
+    }
+
     return(peak_db)
 }
 
 #' @title Connects to library database
 #'
 #' @export
-#' @description Establishes a connection to an RSQLite database for searching Peak.list against library; if doesn't exist, creates new database
+#' @description Establishes a connection to an SQLite database for searching Peak.list against library; if doesn't exist, creates new database
 #' @param lib.db character name of database
-#' @param db.dir character directory containing the database
+#' @param db.dir character directory containing the database. Default is 'db'
+#' @param mem logical should database be in-memory. Default is TRUE
 #' @return Formal class SQLiteConnection
 #' @importFrom DBI dbConnect
 #' @importFrom RSQLite SQLite
-connect_libdb = function(lib.db, db.dir) {
+connect_libdb = function(lib.db, db.dir, mem) {
+
+  #Set default variables
+  if (missing(db.dir))
+    db.dir = "db"
+  if (missing(mem))
+    mem = T
+
+
+  if(mem) {
+
+    lib_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+
+  } else {
+
+    dir.create(db.dir, recursive = FALSE, showWarnings = FALSE)
+
     lib_db <- DBI::dbConnect(RSQLite::SQLite(), paste(db.dir, lib.db, sep = "/"))
-    return(lib_db)
+
+  }
+
+  return(lib_db)
 }
 
 #' @title Connects to LUMA database
 #'
 #' @export
-#' @description Establishes a connection to an RSQLite database for combining Peak.lists together from two different ionization modes
+#' @description Establishes a connection to an RSQLite database for combining Peak.lists together from two different ionization modes.
+#' Must have previously saved SQLite databases to hard disk.
 #' @param db.list list chracter names of databases containing results from processing positive mode (1,3) and negative mode (2,4) data for samples (1,2) and blanks (3,4)
 #' @param db.dir character directory containing the databases
-#' @param new.db character what should the new database be called
-#' @return list of Formal class SQLiteConnections, starting with new.db entry followed by one for each db.list entry and
+#' @param new.db character what should the new database be called.
+#' @return list of Formal class SQLiteConnections, starting with new.db entry followed by one for each db.list entry
 #' @importFrom DBI dbConnect
 #' @importFrom RSQLite SQLite
 connect_lumadb = function(db.list, db.dir, new.db) {
+
+    #Set default variables
     if (missing(new.db))
-        new.db = "Peaklist_db"
+      new.db = "Peaklist_db"
+
     peak_db <- DBI::dbConnect(RSQLite::SQLite(), paste(db.dir, new.db, sep = "/"))
     pos_db <- DBI::dbConnect(RSQLite::SQLite(), paste(db.dir, db.list[[1]], sep = "/"))
     blanks_pos_db <- DBI::dbConnect(RSQLite::SQLite(), paste(db.dir, db.list[[3]], sep = "/"))
     neg_db <- DBI::dbConnect(RSQLite::SQLite(), paste(db.dir, db.list[[2]], sep = "/"))
     blanks_neg_db <- DBI::dbConnect(RSQLite::SQLite(), paste(db.dir, db.list[[4]], sep = "/"))
+
     return(list(peak_db = peak_db, pos_db = pos_db, neg_db = neg_db, blanks_pos_db = blanks_pos_db, blanks_neg_db = blanks_neg_db))
+
 }
 
 #' @title Reads Peak.list from database
 #'
 #' @export
-#' @description Extracts Peak.list from an RSQLite database as a tibble.
+#' @description Extracts Peak.list from an SQLite database as a tibble.
 #' Alternatively, load the Peak.list into memory as a data frame
 #' @param mytable character name of table in database to return
 #' @param peak.db Formal class SQLiteConnection
@@ -126,7 +168,7 @@ write_tbl = function(mydf, peak.db, myname) {
 
 #' @title Retrieves features from Peak.list in a database
 #'
-#' @description Returns mz/rt features from Peak.list stored in RSQLite database
+#' @description Returns mz/rt features from Peak.list stored in SQLite database
 #' @param mytbl character name of table in database to return
 #' @param peak.db Formal class SQLiteConnection
 #' @param asdf logical indicating whether to return a data frame instead of a tibble. Default is FALSE

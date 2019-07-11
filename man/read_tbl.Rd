@@ -17,6 +17,6 @@ read_tbl(mytable, peak.db, asdf)
 tbl alternatively a data frame
 }
 \description{
-Extracts Peak.list from an RSQLite database as a tibble.
+Extracts Peak.list from an SQLite database as a tibble.
 Alternatively, load the Peak.list into memory as a data frame
 }

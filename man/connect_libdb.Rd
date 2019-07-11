@@ -4,16 +4,18 @@
 \alias{connect_libdb}
 \title{Connects to library database}
 \usage{
-connect_libdb(lib.db, db.dir)
+connect_libdb(lib.db, db.dir, mem)
 }
 \arguments{
 \item{lib.db}{character name of database}
 
-\item{db.dir}{character directory containing the database}
+\item{db.dir}{character directory containing the database. Default is 'db'}
+
+\item{mem}{logical should database be in-memory. Default is TRUE}
 }
 \value{
 Formal class SQLiteConnection
 }
 \description{
-Establishes a connection to an RSQLite database for searching Peak.list against library; if doesn't exist, creates new database
+Establishes a connection to an SQLite database for searching Peak.list against library; if doesn't exist, creates new database
 }

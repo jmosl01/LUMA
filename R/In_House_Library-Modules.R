@@ -18,7 +18,7 @@ AnnotatePeaklist <- function(from.table,to.table,lib.db) {
     lib.db <- "Annotated Library"
 
   #Initialize the library database
-  lib_db <<- lib_db <- connect_peakdb(lib.db)
+  lib_db <<- lib_db <- connect_libdb(lib.db)
 
   Peak.list <- read_tbl(mytable = from.table,
                         peak.db = peak_db)
