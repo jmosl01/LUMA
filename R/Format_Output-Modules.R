@@ -116,5 +116,20 @@ FormatForMetaboAnalystR <- function(from.table, to.csv, data.type = "pktable",
 
   write.table(MT.data, file = paste(to.csv,".csv",sep = ""), sep = ",", row.names = FALSE)
 
+  #Generate Metadata files for mSetObj
+  peak.list <- read_tbl(from.table, peak_db)
+
+  output_MetaData(mSetObj, peak.list,
+                  Sample.df = data.frame(Sex = Sexes,
+                                         Class = Classes,
+                                         n = no.Samples,
+                                         Endogenous = Endogenous),
+
+                  Sample.data = cbind.data.frame(CT.ID,
+                                                 Plate.Number,
+                                                 Plate.Position,
+                                                 Sample.phenodata))
+
+
   return(mSetObj)
 }
