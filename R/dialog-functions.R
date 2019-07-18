@@ -4,6 +4,7 @@
 #' @description Creates dialog box for user to select input files when initiating LUMA workflow
 #' @param WorkingDir What is the working directory for the LUMA workflow
 #' @param multiple should dialog box with multiple fields be used; caution this is buggy and doesn't always work on all platforms; default if FALSE
+#' @importFrom svDialogs ok_cancel_box dlg_form dlg_open dlg_dir dlg_list
 #' @return named list
 InputFiles_dlg <- function(WorkingDir,multiple = FALSE) {
 

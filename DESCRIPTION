@@ -29,6 +29,7 @@ Imports:
     RSQLite,
     stats,
     stringr,
+    svDialogs,
     utils,
     xcms
 Suggests: 
