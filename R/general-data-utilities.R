@@ -54,28 +54,6 @@ SameElements <- function(a, b) return(identical(sort(a), sort(b)))
 }
 
 
-.set_PreProcessFileNames = function(IonMode,BLANK) {
-  if(IonMode == "Positive" && BLANK == TRUE){
-    XCMS.file <- "XCMS_objects_Blanks_Pos"
-    CAMERA.file <- "CAMERA_objects_Blanks_Pos"
-  } else {
-    if(IonMode == "Negative" && BLANK == TRUE){
-      XCMS.file <- "XCMS_objects_Blanks_Neg"
-      CAMERA.file <- "CAMERA_objects_Blanks_Neg"
-    } else {
-      if (IonMode == "Positive") {
-        XCMS.file <- "XCMS_objects_Pos"
-        CAMERA.file <- "CAMERA_objects_Pos"
-      } else {
-        XCMS.file <- "XCMS_objects_Neg"
-        CAMERA.file <- "CAMERA_objects_Neg"
-      }
-    }
-  }
-  return(list(XCMS.file,CAMERA.file))
-}
-
-
 .xcmsSanityCheck = function(XCMS.obj) {
   if(length(XCMS.obj@filled) == 0) {
     warning("LUMA works best on xcms data that has been filled.\n\n")
@@ -91,27 +69,45 @@ SameElements <- function(a, b) return(identical(sort(a), sort(b)))
 .CAMERASanityCheck = function(CAMERA.obj,CAMERA.file) {
   #Check if CAMERA.obj is an xsAnnotate object
   if(class(CAMERA.obj)[1] != "xsAnnotate") {
+
     if(is.null(CAMERA.obj)) {
+
       if(file.exists(CAMERA.file)) {
+
+        #Read in saved CAMERA objects file
         cat("Reading in CAMERA objects.\n\n")
+
         load(file = CAMERA.file, verbose = TRUE)
         myvar <- mget(ls())
         myclasses <- lapply(myvar, class)
         myind <- grep("xsAnnotate",myclasses)
         CAMERA.list <- myvar[myind]
+
         CAMERA.list <- lapply(CAMERA.list, function(x) {
           j = length(x@annoGrp)
           if(j!=0) {
               return(x)
           }
         })
+
         myclasses <- lapply(CAMERA.list, class)
         myind <- grep("xsAnnotate",myclasses)
         CAMERA.obj <- CAMERA.list[[myind[1]]]
-        if(length(grep("Pos",CAMERA.file)) == 1)
+
+        if(length(grep("Pos",CAMERA.file)) == 1) {
+
           anposGa <<- anposGa <- CAMERA.obj
-        if(length(grep("Neg",CAMERA.file)) == 1)
-          annegGa <<- annegGa <- CAMERA.obj
+
+        } else {
+
+          if(length(grep("Neg",CAMERA.file)) == 1) {
+
+            annegGa <<- annegGa <- CAMERA.obj
+
+          } else {
+            stop("Error: Saved CAMERA objects file must have either Pos or Neg in the filename")
+          }
+        }
       }
 
    return(CAMERA.obj)
@@ -122,14 +118,29 @@ SameElements <- function(a, b) return(identical(sort(a), sort(b)))
     }
 
   } else {
+
     if(length(CAMERA.obj@annoGrp) == 0) {
+
       warning("LUMA works best on CAMERA data that has been annotated.\n\n")
-      if(length(grep("Pos",CAMERA.file)) == 1)
+
+      if(length(grep("Pos",CAMERA.file)) == 1) {
+
         mz1setpos <<- mz1setpos <- CAMERA.obj
-      if(length(grep("Neg",CAMERA.file)) == 1)
-        mz1setneg <<- mz1setneg <- CAMERA.obj
+
+      } else {
+
+        if(length(grep("Neg",CAMERA.file)) == 1) {
+
+          mz1setneg <<- mz1setneg <- CAMERA.obj
+
+        } else {
+          stop("Error: Saved CAMERA objects file must have either Pos or Neg in the filename")
+          }
+
+      }
 
       return(CAMERA.obj)
+
     } else {
       if(length(grep("Pos",CAMERA.file)) == 1)
         anposGa <<- anposGa <- CAMERA.obj
@@ -142,16 +153,12 @@ SameElements <- function(a, b) return(identical(sort(a), sort(b)))
 }
 
 
-.get_rules = function(IonMode, files) {
+.get_rules = function(adduct.file) {
+
   ## Reads in the adduct rules list for CAMERA
-  if(IonMode == "Positive"){
-    rules <- read.csv(file = files[1])
-  } else {
-    if(IonMode == "Negative"){
-      rules <- read.csv(file = files[2])
-    }
-  }
-  return(rules)
+    rules <- read.csv(file = adduct.file)
+
+    return(rules)
 }
 
 

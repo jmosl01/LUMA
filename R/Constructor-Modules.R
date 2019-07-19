@@ -7,8 +7,6 @@
 #' @param db.dir character name of subdirectory to store databases
 #' Default is 'db'
 #' Positive identifier must come first. Default is c('Pos','Neg')
-#' @param adduct.files character vector specifying file names of csv files containing adduct rules, whose file structure is inherited from CAMERA.
-#' Positive mode adducts must come first. Default is c("primary_adducts_pos.csv","primary_adducts_neg.csv")
 #' @param use.CAMERA logical indicating whether to use existing CAMERA object in global environment.
 #' Default is to look for CAMERA objects saved by previous calls to this function and run CAMERA if missing.
 #' @param use.XCMS logical indicating whether to use existing XCMS object in global environment.
@@ -29,7 +27,7 @@
 #' Default is FALSE
 #' @return global variables and Peaklist in database are returned
 #' @importFrom utils read.csv
-InitWorkflow <- function(ion.id,db.dir,adduct.files,use.CAMERA,use.XCMS,CAMERA.obj,XCMS.obj,
+InitWorkflow <- function(ion.id,db.dir,use.CAMERA,use.XCMS,CAMERA.obj,XCMS.obj,
                          graph.method,ion.mode,mytable,calc.minfrac,multiple) {
 
   #Initialize all global variables
@@ -69,8 +67,6 @@ InitWorkflow <- function(ion.id,db.dir,adduct.files,use.CAMERA,use.XCMS,CAMERA.o
   #Set default values for constructor function arguments
   if(missing(ion.id))
     ion.id <- c("Pos","Neg")
-  if(missing(adduct.files))
-    adduct.files <- c("primary_adducts_pos.csv","primary_adducts_neg.csv")
   if(missing(graph.method))
     graph.method <- "lpc"
   if(missing(db.dir))
@@ -91,24 +87,31 @@ InitWorkflow <- function(ion.id,db.dir,adduct.files,use.CAMERA,use.XCMS,CAMERA.o
   #Set Script Info globally
 
   #Initiate Dialog Boxes
-  mydlg <- ScriptInfo_dlg(multiple = multiple)
-  BLANK = mydlg$BLANK
-  IonMode = mydlg$IonMode
+  script_dlg <- ScriptInfo_dlg(multiple = multiple)
+  BLANK = script_dlg$BLANK
+  IonMode = script_dlg$IonMode
 
-  #Set metadata globally
-  DataFiles <<- DataFiles <- .get_DataFiles(mzdatapath = mydlg$DataDir,
+  DataFiles <- .get_DataFiles(mzdatapath = script_dlg$DataDir,
                                             BLANK = BLANK,
                                             IonMode = IonMode,
                                             ion.id = ion.id,
                                             ion.mode = ion.mode)
-  rules <<- rules <- .get_rules(IonMode,adduct.files)
+
+  input_dlg <- InputFiles_dlg(WorkingDir = script_dlg$WorkingDir, multiple = multiple)
+
+  rules <- .get_rules(adduct.file = input_dlg$Adducts)
+
+
+  #Set metadata parameters globally
+  DataFiles <<- DataFiles
+  rules <<- rules
   ion.mode <<- ion.mode
   ion.id <<- ion.id
 
   #Set search parameters globally
-  if(file.exists("Search Parameters.txt")) {
+  if(file.exists(input_dlg$SearchPar)) {
   cat("Setting search parameters globally.\n\n")
-    search.par <- read.table(file = "Search Parameters.txt", sep = "\t", stringsAsFactors = FALSE, header = TRUE)
+    search.par <- read.table(file = input_dlg$SearchPar, sep = "\t", stringsAsFactors = FALSE, header = TRUE)
     ppm.cutoff <<- search.par[,1]
     rt.cutoff <<- search.par[,2]
     Voidrt <<- search.par[,3]
@@ -124,9 +127,9 @@ InitWorkflow <- function(ion.id,db.dir,adduct.files,use.CAMERA,use.XCMS,CAMERA.o
   } else cat("Search parameters not set globally for LUMA. \nYou must set search parameters manually for all modules in this workflow.\n\n")
 
   #Set sample class info globally
-  if(file.exists("Sample Class.txt"))  {
+  if(file.exists(input_dlg$SampleClass))  {
     cat("Setting sample class info globally.\n\n")
-    Sample.df <- read.table(file = "Sample Class.txt", sep = "\t", header = TRUE,
+    Sample.df <- read.table(file = input_dlg$SampleClass, sep = "\t", header = TRUE,
                             colClasses = c("character","character","numeric","logical"))
     Sexes <<- Sexes <- Sample.df[,"Sex"]
     Classes <<- Classes <- Sample.df[,"Class"]
@@ -134,14 +137,14 @@ InitWorkflow <- function(ion.id,db.dir,adduct.files,use.CAMERA,use.XCMS,CAMERA.o
     Endogenous <<- Endogenous <- Sample.df[,"Endogenous"]
   } else {
     if(is.null(Sexes) || is.null(Classes) || is.null(no.Samples) || is.null(Endogenous)) {
-      stop("Please place \"Sample Class.txt\" into your working directory. \nAlternatively, you should set the Sex, Class, no.Samples and Endogenous arguments.\n\n")
+      stop("Please place \"Sample_Class.txt\" into your working directory. \nAlternatively, you should set the Sex, Class, no.Samples and Endogenous arguments.\n\n")
     }
   }
 
   #Set sample phenotype data globally
-  if(file.exists("Sample Data.csv"))  {
+  if(file.exists(input_dlg$SampleData))  {
     cat("Setting sample phenotype data globally.\n\n")
-    Sample.data <- read.table(file = "Sample Data.csv", sep = "," , header = TRUE, stringsAsFactors = FALSE)
+    Sample.data <- read.table(file = input_dlg$SampleData, sep = "," , header = TRUE, stringsAsFactors = FALSE)
     Sample.data <- Sample.data[order(Sample.data[,"CT.ID"]),]
     CT.ID <<- CT.ID <- Sample.data[,"CT.ID"]
     Plate.Number <<- Plate.Number <- Sample.data[,"Plate.Number"]
@@ -149,14 +152,14 @@ InitWorkflow <- function(ion.id,db.dir,adduct.files,use.CAMERA,use.XCMS,CAMERA.o
     Sample.phenodata <<- Sample.phenodata <- Sample.data[,-which(colnames(Sample.data) %in% c("CT.ID","Plate.Number","Plate.Position"))]
   } else {
     if(is.null(CT.ID) || is.null(Plate.Number) || is.null(Plate.Position)) {
-      stop("Please place \"Sample Data.csv\" into your working directory. \nAlternatively, you should set the CT-ID, Plate.Number, and Plate.Position arguments.\n\n")
+      stop("Please place \"Sample_Data.csv\" into your working directory. \nAlternatively, you should set the CT-ID, Plate.Number, and Plate.Position arguments.\n\n")
     }
   }
 
   #Set Annotated Library info globally
-  if(file.exists("Annotated Library.csv"))  {
+  if(file.exists(input_dlg$AnnotatedLibrary))  {
     cat("Setting Annotated Library info globally.\n\n")
-    Annotated.Library <- read.csv(file = "Annotated Library.csv", sep = ",", fill = TRUE, header = TRUE)
+    Annotated.Library <- read.csv(file = input_dlg$AnnotatedLibrary, sep = ",", fill = TRUE, header = TRUE)
     Name <<- Name <- Annotated.Library[,"Name"]
     Formula <<- Formula <- Annotated.Library[,"Formula"]
     Molecular.Weight <<- Molecular.Weight <- Annotated.Library[,"Molecular.Weight"]
@@ -164,7 +167,7 @@ InitWorkflow <- function(ion.id,db.dir,adduct.files,use.CAMERA,use.XCMS,CAMERA.o
     Library.phenodata <<- Library.phenodata <- Annotated.Library[,-which(colnames(Annotated.Library) %in% c("Name","Formula","Molecular.Weight","RT..Min."))]
   } else {
     if(is.null(Name) || is.null(Formula) || is.null(Molecular.Weight) || is.null(RT..Min.)) {
-      stop("Please place \"Sample Class.txt\" into your working directory. \nAlternatively, you should set the Name, Formula, Molecular.Weight and RT..Min. arguments.\n\n")
+      stop("Please place \"Sample_Class.txt\" into your working directory. \nAlternatively, you should set the Name, Formula, Molecular.Weight and RT..Min. arguments.\n\n")
     }
   }
 
@@ -175,48 +178,49 @@ InitWorkflow <- function(ion.id,db.dir,adduct.files,use.CAMERA,use.XCMS,CAMERA.o
 
   ##Check for existing XCMS and CAMERA objects. If not specified, check for saved XCMS and CAMERA objects.
   ##If none exist, runs XCMS and CAMERA.
-  PreProcesslist <- .set_PreProcessFileNames(IonMode,BLANK)
-  XCMS.file <- PreProcesslist[[1]]
-  CAMERA.file <- PreProcesslist[[2]]
+  XCMS.file <- input_dlg$XCMSObj
+  CAMERA.file <- input_dlg$CAMERAObj
 
   ##Set XCMS parameters globally
-  if(IonMode == "Positive"){
-    XCMS.par <<- XCMS.par <- read.table(file = "Best XCMS parameters_positive.csv", sep = "," , header = TRUE)
-  } else {
-    if(IonMode == "Negative"){
-      XCMS.par <<- XCMS.par <- read.table(file = "Best XCMS parameters_negative.csv", sep = "," , header = TRUE)
+  temp_xcms <- grep(".csv",XCMS.file)
+
+  if(length(temp_xcms) == 0){} else {
+    if(length(temp_xcms) == 1){
+      if(file.exists(XCMS.file)) {
+        XCMS.par <- read.table(XCMS.file, sep = ",", header = TRUE)
+      }
+
+    } else {
+      if(length(temp_xcms) > 1) {
+        stop("Error: Does your XCMS parameters file have too many file extensions?")
+      }
     }
   }
 
   #XCMS sanity check
   if(use.XCMS) {
     if(missing(XCMS.obj)) {
-      stop("You must set XCMS.obj if use.XCMS is true.\n\n")
+      stop("You must set XCMS.obj if use.XCMS is true. \nSee the LUMA vignette for details.\n\n")
     } else {
       XCMS.obj <- .xcmsSanityCheck(XCMS.obj)
-    }
-  }
-
-  ## Set CAMERA parameters globally
-  if(IonMode == "Positive"){
-    CAMERA.par <<- CAMERA.par <- read.table(file = paste(opt.dir,"/Best CAMERA parameters_positive.csv", sep = ""), sep = "," , header = TRUE)
-  } else {
-    if(IonMode == "Negative"){
-      CAMERA.par <<- CAMERA.par <- read.table(file = paste(opt.dir,"/Best CAMERA parameters_negative.csv",sep = ""), sep = "," , header = TRUE)
     }
   }
 
   #CAMERA sanity check
   if(use.CAMERA) {
     if(missing(CAMERA.obj)) {
-      cat("You must set CAMERA.obj if use.CAMERA is true. \nSee the LUMA vignette for details.\n\n")
+      stop("Error: You must set CAMERA.obj if use.CAMERA is true. \nSee the LUMA vignette for details.\n\n")
     } else {
       CAMERA.obj <- .CAMERASanityCheck(CAMERA.obj,CAMERA.file)
     }
   }
 
   #Pre-process DataFiles
-  xset4 <- .PreProcess_Files(XCMS.file,CAMERA.file,mytable,file.base,IonMode)
+  xset4 <- .PreProcess_Files(XCMS.file = XCMS.file,
+                             CAMERA.file = CAMERA.file,
+                             mytable = mytable,
+                             file.base = file.base,
+                             IonMode = IonMode)
 
   if(calc.minfrac) {
     ##Add minimum fraction to Peak.list
