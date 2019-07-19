@@ -163,9 +163,9 @@ ScriptInfo_dlg <- function(multiple = FALSE) {
   }  else {
 
     form <- list(
-      "SampleDir:DIR" = "Select your working directory (or copy and paste into console)",
-      "BlanksDir:DIR" = "Select your working directory (or copy and paste into console)",
-      "PooledQCsDir:DIR" = "Select your working directory (or copy and paste into console)"
+      "SampleDir:DIR" = "Select your Samples directory (or copy and paste into console)",
+      "BlanksDir:DIR" = "Select your Blanks directory (or copy and paste into console)",
+      "PooledQCsDir:DIR" = "Select your Pooled QCs directory (or copy and paste into console)"
     )
     mydir <- dlg_form(form, title = "Data Directories")$res
 
