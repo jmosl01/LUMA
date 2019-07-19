@@ -4,16 +4,13 @@
 \alias{InitWorkflow}
 \title{Constructor function to initiate LUMA Workflow}
 \usage{
-InitWorkflow(ion.id, blanks.dir, db.dir, adduct.files, use.CAMERA,
-  use.XCMS, CAMERA.obj, XCMS.obj, graph.method, ion.modes, mytable,
-  calc.minfrac)
+InitWorkflow(ion.id, db.dir, adduct.files, use.CAMERA, use.XCMS,
+  CAMERA.obj, XCMS.obj, graph.method, ion.mode, mytable, calc.minfrac,
+  multiple)
 }
 \arguments{
-\item{ion.id}{character vector specifying identifier in mz data filenames designating positive or negative ionization or both.
+\item{ion.id}{character vector specifying identifier in mz data filenames designating positive or negative ionization or both. Must be a (case-insensitive) abbreviation of the ionization mode name.
 Default is c('Pos','Neg')}
-
-\item{blanks.dir}{character name of subdirectory containing process blank data files.
-Default is 'Blanks'}
 
 \item{db.dir}{character name of subdirectory to store databases
 Default is 'db'
@@ -37,7 +34,7 @@ Only relevant if use.XCMS is TRUE}
 \item{graph.method}{graphing method to use for CAMERA.
 Default is 'lpc'. See CAMERA documentation for details.}
 
-\item{ion.modes}{which ion modes will be processed in the workflow. Must be 'Positive', 'Negative', or both.
+\item{ion.mode}{which ion mode(s) will be processed for this data. Must be 'Positive', 'Negative', or both.
 Default is both; i.e. c('Positive','Negative').}
 
 \item{mytable}{character name of the first Peak.list table
@@ -45,6 +42,9 @@ Default is 'From CAMERA'}
 
 \item{calc.minfrac}{logical should LUMA calculate the minimum fraction values for the initial Peak.list
 Default is TRUE}
+
+\item{multiple}{logical should multiple fields be allowed in dialog boxes
+Default is FALSE}
 }
 \value{
 global variables and Peaklist in database are returned

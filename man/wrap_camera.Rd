@@ -4,14 +4,14 @@
 \alias{wrap_camera}
 \title{Wraps CAMERA}
 \usage{
-wrap_camera(xcms.obj, CAMERA.par, ion.mode)
+wrap_camera(xcms.obj, CAMERA.par, IonMode)
 }
 \arguments{
 \item{xcms.obj}{an xcms object that has had peak picking, retention time alignment, peak grouping, and imputing missing values performed}
 
 \item{CAMERA.par}{a single-row data frame with 9 variables containing CAMERA parameters. The column names must be c('perfwhm','sigma','minfrac','mzabs','maxiso','corval_eic','corval_exp','pval','mzabs.1')}
 
-\item{ion.mode}{a character string defining the ionization mode.  Must be either 'positive' or 'negative'}
+\item{IonMode}{a character string defining the ionization mode.  Must be either 'positive' or 'negative'}
 }
 \value{
 two grouped xsannotate objects mz1setpos and anposGa without and with annotated isotopes and ion adducts and fragments

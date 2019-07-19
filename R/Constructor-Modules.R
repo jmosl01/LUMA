@@ -2,10 +2,8 @@
 #'
 #' @export
 #' @description All LUMA workflows must start with this function. Creates the first Peaklist and sets up storing and passing Peaklists and ancillary data between modules.
-#' @param ion.id character vector specifying identifier in mz data filenames designating positive or negative ionization or both.
+#' @param ion.id character vector specifying identifier in mz data filenames designating positive or negative ionization or both. Must be a (case-insensitive) abbreviation of the ionization mode name.
 #' Default is c('Pos','Neg')
-#' @param blanks.dir character name of subdirectory containing process blank data files.
-#' Default is 'Blanks'
 #' @param db.dir character name of subdirectory to store databases
 #' Default is 'db'
 #' Positive identifier must come first. Default is c('Pos','Neg')
@@ -21,22 +19,23 @@
 #' Only relevant if use.XCMS is TRUE
 #' @param graph.method graphing method to use for CAMERA.
 #' Default is 'lpc'. See CAMERA documentation for details.
-#' @param ion.modes which ion modes will be processed in the workflow. Must be 'Positive', 'Negative', or both.
+#' @param ion.mode which ion mode(s) will be processed for this data. Must be 'Positive', 'Negative', or both.
 #' Default is both; i.e. c('Positive','Negative').
 #' @param mytable character name of the first Peak.list table
 #' Default is 'From CAMERA'
 #' @param calc.minfrac logical should LUMA calculate the minimum fraction values for the initial Peak.list
 #' Default is TRUE
+#' @param multiple logical should multiple fields be allowed in dialog boxes
+#' Default is FALSE
 #' @return global variables and Peaklist in database are returned
 #' @importFrom utils read.csv
-InitWorkflow <- function(ion.id,blanks.dir,db.dir,adduct.files,use.CAMERA,use.XCMS,CAMERA.obj,XCMS.obj,
-                         graph.method,ion.modes,mytable,calc.minfrac) {
+InitWorkflow <- function(ion.id,db.dir,adduct.files,use.CAMERA,use.XCMS,CAMERA.obj,XCMS.obj,
+                         graph.method,ion.mode,mytable,calc.minfrac,multiple) {
 
   #Initialize all global variables
   BLANK <- NULL
   opt.dir <- NULL
-  mzdatapath <- NULL
-  ion.mode <- NULL
+  IonMode <- NULL
   ppm.cutoff <- NULL
   rt.cutoff <- NULL
   Voidrt <- NULL
@@ -72,8 +71,6 @@ InitWorkflow <- function(ion.id,blanks.dir,db.dir,adduct.files,use.CAMERA,use.XC
     ion.id <- c("Pos","Neg")
   if(missing(adduct.files))
     adduct.files <- c("primary_adducts_pos.csv","primary_adducts_neg.csv")
-  if(missing(blanks.dir))
-    blanks.dir <- "Blanks"
   if(missing(graph.method))
     graph.method <- "lpc"
   if(missing(db.dir))
@@ -82,32 +79,30 @@ InitWorkflow <- function(ion.id,blanks.dir,db.dir,adduct.files,use.CAMERA,use.XC
     use.CAMERA <- FALSE
   if(missing(use.XCMS))
     use.XCMS <- FALSE
-  if(missing(ion.modes))
-    ion.modes <- c("Positive","Negative")
+  if(missing(ion.mode))
+    ion.mode <- c("Positive","Negative")
   if(missing(mytable))
     mytable <- "From CAMERA"
   if(missing(calc.minfrac))
     calc.minfrac <- TRUE
+  if(missing(multiple))
+    multiple <- FALSE
 
   #Set Script Info globally
-  if(file.exists("Script Info.txt")) {
-    cat("Initiating LUMA Workflow!\n\n")
-    mydir <- read.table(file = "Script Info.txt", sep = "\t", header = TRUE, stringsAsFactors = FALSE)
-    opt.dir <<- opt.dir <- mydir[1,1]
-    mzdatapath <<- mzdatapath <- mydir[1,2]
-    ion.mode <<- ion.mode <- mydir[1,3]
-    BLANK <<- BLANK <- as.logical(mydir[1,4])
 
-  } else {
-    if(is.null(opt.dir) || is.null(mzdatapath) || is.null(ion.mode) || is.null(BLANK)) {
-      stop("Please place \"Script Info.txt\" into your working directory. \nAlternatively, you should set the opt.dir, mzdatapath, ion.mode and BLANK arguments.\n\n")
-    }
-  }
+  #Initiate Dialog Boxes
+  mydlg <- ScriptInfo_dlg(multiple = multiple)
+  BLANK = mydlg$BLANK
+  IonMode = mydlg$IonMode
 
   #Set metadata globally
-  DataFiles <<- DataFiles <- .get_DataFiles(mzdatapath,ion.mode,BLANK,ion.id,blanks.dir)
-  rules <<- rules <- .get_rules(ion.mode,adduct.files)
-  ion.modes <<- ion.modes
+  DataFiles <<- DataFiles <- .get_DataFiles(mzdatapath = mydlg$DataDir,
+                                            BLANK = BLANK,
+                                            IonMode = IonMode,
+                                            ion.id = ion.id,
+                                            ion.mode = ion.mode)
+  rules <<- rules <- .get_rules(IonMode,adduct.files)
+  ion.mode <<- ion.mode
   ion.id <<- ion.id
 
   #Set search parameters globally

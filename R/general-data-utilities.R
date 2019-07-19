@@ -1,35 +1,58 @@
 ## internal constructor utility functions ----
-.get_DataFiles = function(mzdatapath,ion.mode,BLANK,ion.id,blanks.dir) {
-  ## Selects the datafiles to use for data processing
-  mzdatafiles <- list.files(mzdatapath, recursive = TRUE, full.names = TRUE)
-  if(ion.mode == "Positive" && BLANK == TRUE){
-    mzdatafiles <- subset(mzdatafiles, subset = grepl(ion.id[1], mzdatafiles, ignore.case = TRUE))
-    mzdatafiles <- mzdatafiles[c(grep(blanks.dir,mzdatafiles, ignore.case = TRUE))]
-    return(mzdatafiles)
-  } else {
-    if(ion.mode == "Negative" && BLANK == TRUE){
-      mzdatafiles <- subset(mzdatafiles, subset = grepl(ion.id[2], mzdatafiles, ignore.case = TRUE))
-      mzdatafiles <- mzdatafiles[c(grep(blanks.dir,mzdatafiles))]
-      return(mzdatafiles)
-    } else {
-      if(ion.mode == "Positive" && BLANK == FALSE){
-        mzdatafiles <- subset(mzdatafiles, subset = grepl(ion.id[1], mzdatafiles, ignore.case = TRUE))
-        mzdatafiles <- mzdatafiles[-c(grep(blanks.dir,mzdatafiles))]
-        return(mzdatafiles)
-      } else {
-        if(ion.mode == "Negative" && BLANK == FALSE){
-          mzdatafiles <- subset(mzdatafiles, subset = grepl(ion.id[2], mzdatafiles, ignore.case = TRUE))
-          mzdatafiles <- mzdatafiles[-c(grep(blanks.dir,mzdatafiles))]
-          return(mzdatafiles)
-        } else {
-          stop("Ion mode must be Positive or Negative.\nBe sure to specify whether to analyze blanks by setting BLANK to a logical. \nSee LUMA vignette for more details.\n\n")
-        }
-      }
+
+
+.get_DataFiles = function(mzdatapath,IonMode,BLANK,ion.id,ion.mode) {
+
+  ##Sanity check
+  dirnames <- c("SamplesDir","BlanksDir","PooledQCsDir")
+
+  if(is.list(mzdatapath)) {#mzdatapath must be a list
+
+    if(names(mzdatapath) != dirnames) { #list names must be correct
+
+      stop("Error: Check the names of your DataDir list")
 
     }
 
   }
+
+  ## Selects all datafiles to eventually use for data processing
+  mzdatafiles.samples <- list.files(mzdatapath$SamplesDir, recursive = TRUE, full.names = TRUE)
+  mzdatafiles.blanks <- list.files(mzdatapath$BlanksDir, recursive = TRUE, full.names = TRUE)
+  mzdatafiles.pooledqcs <- list.files(mzdatapath$PooledQCsDir, recursive = TRUE, full.names = TRUE)
+
+  ## Sanity Check on Ion Modes to use for data processing
+  if(length(ion.mode) == 0) {
+    stop("Error: Not processing any Ion Modes")
+  } else {
+    if(length(ion.mode) == 1) {
+      temp_ion <- match.arg(ion.id,ion.mode, several.ok = FALSE)
+      if(IonMode != temp_ion) stop("Error: Ion mode must be either Positive or Negative; check your spelling and capitalization")
+    } else {
+      if(length(ion.mode) > 1) {
+        temp_ion <- match.arg(IonMode,ion.mode, several.ok = FALSE)
+        ion.id <- ion.id[which(ion.mode %in% temp_ion)]
+
+      }
+    }
+  }
+
+
+  if(BLANK == TRUE){
+    mzdatafiles <- subset(mzdatafiles.blanks, subset = grepl(ion.id, mzdatafiles.blanks, ignore.case = TRUE))
+    return(mzdatafiles)
+  } else {
+    if(BLANK == FALSE){
+      mzdatafiles <- c(subset(mzdatafiles.samples, subset = grepl(ion.id, mzdatafiles.samples, ignore.case = TRUE)),
+                       subset(mzdatafiles.pooledqcs, subset = grepl(ion.id, mzdatafiles.pooledqcs, ignore.case = TRUE))
+                       )
+    return(mzdatafiles)
+    } else {
+          stop("Ion mode must be Positive or Negative.\nBe sure to specify whether to analyze blanks by setting BLANK to a logical. \nSee LUMA vignette for more details.\n\n")
+      }
+    }
 }
+
 
 .set_PreProcessFileNames = function(IonMode,BLANK) {
   if(IonMode == "Positive" && BLANK == TRUE){
@@ -52,6 +75,7 @@
   return(list(XCMS.file,CAMERA.file))
 }
 
+
 .xcmsSanityCheck = function(XCMS.obj) {
   if(length(XCMS.obj@filled) == 0) {
     warning("LUMA works best on xcms data that has been filled.\n\n")
@@ -62,6 +86,7 @@
       return(XCMS.obj)
     }
   }
+
 
 .CAMERASanityCheck = function(CAMERA.obj,CAMERA.file) {
   #Check if CAMERA.obj is an xsAnnotate object
@@ -116,6 +141,7 @@
   }
 }
 
+
 .get_rules = function(IonMode, files) {
   ## Reads in the adduct rules list for CAMERA
   if(IonMode == "Positive"){
@@ -127,6 +153,7 @@
   }
   return(rules)
 }
+
 
 .get_Peaklist = function(object,convert.rt) {
   if(missing(convert.rt))
@@ -142,6 +169,7 @@
   }
   return(peak_data)
 }
+
 
 .PreProcess_Files = function(XCMS.file,CAMERA.file,mytable,file.base,CAMERA.obj,IonMode) {
 
@@ -265,6 +293,7 @@
   }
   return(xset4)
 }
+
 
 ## END
 
