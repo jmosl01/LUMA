@@ -31,16 +31,16 @@
   }
 }
 
-.set_PreProcessFileNames = function(ion.mode,BLANK) {
-  if(ion.mode == "Positive" && BLANK == TRUE){
+.set_PreProcessFileNames = function(IonMode,BLANK) {
+  if(IonMode == "Positive" && BLANK == TRUE){
     XCMS.file <- "XCMS_objects_Blanks_Pos"
     CAMERA.file <- "CAMERA_objects_Blanks_Pos"
   } else {
-    if(ion.mode == "Negative" && BLANK == TRUE){
+    if(IonMode == "Negative" && BLANK == TRUE){
       XCMS.file <- "XCMS_objects_Blanks_Neg"
       CAMERA.file <- "CAMERA_objects_Blanks_Neg"
     } else {
-      if (ion.mode == "Positive") {
+      if (IonMode == "Positive") {
         XCMS.file <- "XCMS_objects_Pos"
         CAMERA.file <- "CAMERA_objects_Pos"
       } else {
@@ -116,12 +116,12 @@
   }
 }
 
-.get_rules = function(ion.mode, files) {
+.get_rules = function(IonMode, files) {
   ## Reads in the adduct rules list for CAMERA
-  if(ion.mode == "Positive"){
+  if(IonMode == "Positive"){
     rules <- read.csv(file = files[1])
   } else {
-    if(ion.mode == "Negative"){
+    if(IonMode == "Negative"){
       rules <- read.csv(file = files[2])
     }
   }
@@ -143,7 +143,7 @@
   return(peak_data)
 }
 
-.PreProcess_Files = function(XCMS.file,CAMERA.file,mytable,file.base,CAMERA.obj) {
+.PreProcess_Files = function(XCMS.file,CAMERA.file,mytable,file.base,CAMERA.obj,IonMode) {
 
   #set Default values
   if(missing(CAMERA.obj))
@@ -170,11 +170,11 @@
       cat("Running CAMERA Only!")
       # Runs CAMERA on datafiles --------------------
       ## Sets the ion mode for CAMERA
-      if(ion.mode == "Positive"){
-        CAMERA.ion.mode <- "positive"
+      if(IonMode == "Positive"){
+        CAMERA_IonMode <- "positive"
       } else {
-        if(ion.mode == "Negative"){
-          CAMERA.ion.mode <- "negative"
+        if(IonMode == "Negative"){
+          CAMERA_IonMode <- "negative"
         }
       }
 
@@ -182,7 +182,7 @@
       time.CAMERA <- system.time({
         myresults <- wrap_camera(xcms.obj = xset4,
                                  CAMERA.par = CAMERA.par,
-                                 ion.mode = CAMERA.ion.mode)
+                                 IonMode = CAMERA_IonMode)
         CAMERA.obj <- .CAMERASanityCheck(myresults[[1]],CAMERA.file)
         CAMERA.obj <- .CAMERASanityCheck(myresults[[2]],CAMERA.file)
       })
@@ -221,11 +221,11 @@
       ## Section End
       # Runs CAMERA on datafiles --------------------
       ## Sets the ion mode for CAMERA
-      if(ion.mode == "Positive"){
-        CAMERA.ion.mode <- "positive"
+      if(IonMode == "Positive"){
+        CAMERA_IonMode <- "positive"
       } else {
-        if(ion.mode == "Negative"){
-          CAMERA.ion.mode <- "negative"
+        if(IonMode == "Negative"){
+          CAMERA_IonMode <- "negative"
         }
       }
 
@@ -233,7 +233,7 @@
       time.CAMERA <- system.time({
         myresults <- wrap_camera(xcms.obj = xset4,
                                  CAMERA.par = CAMERA.par,
-                                 ion.mode = CAMERA.ion.mode)
+                                 IonMode = CAMERA_IonMode)
         CAMERA.obj <- .CAMERASanityCheck(myresults[[1]],CAMERA.file)
         CAMERA.obj <- .CAMERASanityCheck(myresults[[2]],CAMERA.file)
       })
@@ -328,11 +328,11 @@
 ##END
 
 ## Other module utility functions ----
-.gen_res = function(ion.mode,search.par,Peak.list,Sample.df,BLANK) {
-  if (ion.mode == "Positive") {
+.gen_res = function(IonMode,search.par,Peak.list,Sample.df,BLANK) {
+  if (IonMode == "Positive") {
     cor.stat <- as.numeric(search.par[1, "Corr.stat.pos"])
   } else {
-    if (ion.mode == "Negative") {
+    if (IonMode == "Negative") {
       cor.stat <- as.numeric(search.par[1, "Corr.stat.neg"])
     }
   }
@@ -344,12 +344,12 @@
                   function(ch) unique(grep(paste("Pooled_QC_", paste(strsplit(sexes,"(?<=.[_]$)", perl = TRUE), collapse = "|"),
                                                  "metabolite_group", sep = "|"), ch)))
   } else {
-    if (ion.mode == "Positive" && BLANK == TRUE) {
+    if (IonMode == "Positive" && BLANK == TRUE) {
       #Flags all of the sample columns and the metabolite group data
       res <- lapply(colnames(Peaklist_corstat),
                     function(ch) unique(grep("_Pos|metabolite_group", ch, ignore.case = TRUE)))
     } else {
-      if (ion.mode == "Negative" && BLANK == TRUE) {
+      if (IonMode == "Negative" && BLANK == TRUE) {
         #Flags all of the sample columns and the metabolite group data
         res <- lapply(colnames(Peaklist_corstat),
                       function(ch) unique(grep("_Neg|metabolite_group", ch, ignore.case = TRUE)))
@@ -359,7 +359,7 @@
   return(list(Peaklist_corstat,res))
 }
 
-.gen_IHL = function(Peak.list, Annotated.library, rules, ion.mode, lib_db) {
+.gen_IHL = function(Peak.list, Annotated.library, rules, IonMode, lib_db) {
   ## Creates search list
   search.list <- Peak.list %>% select(EIC_ID, mz, rt) %>% dplyr::collect()
 
@@ -368,13 +368,13 @@
   x <- rules[,"nmol"]
   IHL.temp <- sweep(IHL, 1, x, "*")
   x <- rules[,"massdiff"]
-  if (ion.mode == "Positive") {
+  if (IonMode == "Positive") {
     IHL.temp <- sweep(IHL.temp, 1, x, "+")
     myion.mode <- "Pos"
     bin <- paste(myion.mode, search.list[["EIC_ID"]], sep = "_")
 
   } else {
-    if (ion.mode == "Negative") {
+    if (IonMode == "Negative") {
       IHL.temp <- sweep(IHL.temp, 1, x, "+")
       IHL.temp <- sweep(IHL.temp, 1, -1, "*")
       myion.mode <- "Neg"

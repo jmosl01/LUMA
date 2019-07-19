@@ -116,7 +116,7 @@ ScriptInfo_dlg <- function(multiple = FALSE) {
       "WorkingDir:DIR" = "Select your working directory or copy and paste into console",
       "Are you using the LUMA recommended data directory:CHK" = FALSE,
       "BLANK:CHK" = FALSE,
-      "IonMode:CB" = c("Pos","Neg")
+      "IonMode:CB" = c("Positive","Negative")
     )
     myresults <- dlg_form(form, title = "Script Info")$res
 
@@ -136,7 +136,7 @@ ScriptInfo_dlg <- function(multiple = FALSE) {
     WorkingDir <- dlg_dir(default = getwd(), title = "Select your working directory or copy and paste into console")$res
     DataDir <- ok_cancel_box(message = "If you are using the LUMA recommended data directory, click OK. Otherwise click Cancel.")
     BLANK <- ok_cancel_box(message = "If blank samples are being processed, click OK. Otherwise click Cancel.")
-    IonMode <- dlg_list(choices = c("Pos","Neg"))$res
+    IonMode <- dlg_list(choices = c("Positive","Negative"))$res
 
     myresults <- list(WorkingDir = WorkingDir, DataDir = DataDir, BLANK = BLANK, IonMode = IonMode)
 

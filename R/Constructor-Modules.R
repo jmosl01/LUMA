@@ -175,20 +175,20 @@ InitWorkflow <- function(ion.id,blanks.dir,db.dir,adduct.files,use.CAMERA,use.XC
 
 
   #Initialize SQLite database connections globally
-  file.base <- gen_filebase(DataFiles,BLANK,ion.id,ion.mode)
+  file.base <- gen_filebase(DataFiles,BLANK,ion.id,IonMode)
   peak_db <<- peak_db <- connect_peakdb(file.base,db.dir)
 
   ##Check for existing XCMS and CAMERA objects. If not specified, check for saved XCMS and CAMERA objects.
   ##If none exist, runs XCMS and CAMERA.
-  PreProcesslist <- .set_PreProcessFileNames(ion.mode,BLANK)
+  PreProcesslist <- .set_PreProcessFileNames(IonMode,BLANK)
   XCMS.file <- PreProcesslist[[1]]
   CAMERA.file <- PreProcesslist[[2]]
 
   ##Set XCMS parameters globally
-  if(ion.mode == "Positive"){
+  if(IonMode == "Positive"){
     XCMS.par <<- XCMS.par <- read.table(file = "Best XCMS parameters_positive.csv", sep = "," , header = TRUE)
   } else {
-    if(ion.mode == "Negative"){
+    if(IonMode == "Negative"){
       XCMS.par <<- XCMS.par <- read.table(file = "Best XCMS parameters_negative.csv", sep = "," , header = TRUE)
     }
   }
@@ -203,10 +203,10 @@ InitWorkflow <- function(ion.id,blanks.dir,db.dir,adduct.files,use.CAMERA,use.XC
   }
 
   ## Set CAMERA parameters globally
-  if(ion.mode == "Positive"){
+  if(IonMode == "Positive"){
     CAMERA.par <<- CAMERA.par <- read.table(file = paste(opt.dir,"/Best CAMERA parameters_positive.csv", sep = ""), sep = "," , header = TRUE)
   } else {
-    if(ion.mode == "Negative"){
+    if(IonMode == "Negative"){
       CAMERA.par <<- CAMERA.par <- read.table(file = paste(opt.dir,"/Best CAMERA parameters_negative.csv",sep = ""), sep = "," , header = TRUE)
     }
   }
@@ -221,7 +221,7 @@ InitWorkflow <- function(ion.id,blanks.dir,db.dir,adduct.files,use.CAMERA,use.XC
   }
 
   #Pre-process DataFiles
-  xset4 <- .PreProcess_Files(XCMS.file,CAMERA.file,mytable,file.base)
+  xset4 <- .PreProcess_Files(XCMS.file,CAMERA.file,mytable,file.base,IonMode)
 
   if(calc.minfrac) {
     ##Add minimum fraction to Peak.list
