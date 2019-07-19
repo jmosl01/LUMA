@@ -4,9 +4,8 @@
 \alias{InitWorkflow}
 \title{Constructor function to initiate LUMA Workflow}
 \usage{
-InitWorkflow(ion.id, db.dir, adduct.files, use.CAMERA, use.XCMS,
-  CAMERA.obj, XCMS.obj, graph.method, ion.mode, mytable, calc.minfrac,
-  multiple)
+InitWorkflow(ion.id, db.dir, use.CAMERA, use.XCMS, CAMERA.obj, XCMS.obj,
+  graph.method, ion.mode, mytable, calc.minfrac, multiple)
 }
 \arguments{
 \item{ion.id}{character vector specifying identifier in mz data filenames designating positive or negative ionization or both. Must be a (case-insensitive) abbreviation of the ionization mode name.
@@ -15,9 +14,6 @@ Default is c('Pos','Neg')}
 \item{db.dir}{character name of subdirectory to store databases
 Default is 'db'
 Positive identifier must come first. Default is c('Pos','Neg')}
-
-\item{adduct.files}{character vector specifying file names of csv files containing adduct rules, whose file structure is inherited from CAMERA.
-Positive mode adducts must come first. Default is c("primary_adducts_pos.csv","primary_adducts_neg.csv")}
 
 \item{use.CAMERA}{logical indicating whether to use existing CAMERA object in global environment.
 Default is to look for CAMERA objects saved by previous calls to this function and run CAMERA if missing.}
