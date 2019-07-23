@@ -176,3 +176,84 @@ ScriptInfo_dlg <- function(multiple = FALSE) {
   return(myresults)
 
 }
+
+#' @title CAMERA Files Dialog Box
+#'
+#' @export
+#' @description Creates dialog box for user to select saved CAMERA objects when running LUMA workflow
+#' @param multiple should dialog box with multiple fields be used; caution this is buggy and doesn't always work on all platforms; default if FALSE
+#' @importFrom svDialogs ok_cancel_box dlg_form dlg_open dlg_dir dlg_list
+#' @return named list
+CAMERAFiles_dlg <- function(multiple = FALSE) {
+
+  #Set default values
+  if(missing(multiple)) multiple = FALSE
+
+
+  #Start Dialog Box; if multiple, then use dlg_form; otherwise, use individual dlg functions for each query
+  if(multiple) {
+
+
+    #using dlgForm
+    form <- list(
+      "WorkingDir:DIR" = "Select your working directory or copy and paste into console",
+      "CAMERA_Pos_Obj:CHK" = FALSE,
+      "CAMERA_Neg_Obj:CHK" = FALSE
+    )
+    myresults <- dlg_form(form, title = "Input Files")$res
+
+    WorkingDir <- myresults$WorkingDir
+    CAMERAPosObj <- myresults$CAMERA_Pos_Obj
+    CAMERANegObj <- myresults$CAMERA_Neg_Obj
+
+  } else {
+
+    #Using individual dlg functions for each query
+    WorkingDir <- dlg_dir(default = getwd(), title = "Select your working directory or copy and paste into console")$res
+    CAMERAPosObj <- ok_cancel_box(message = "If you are using existing saved CAMERA objects in positive mode, click OK. Otherwise click Cancel.")
+    CAMERANegObj <- ok_cancel_box(message = "If you are using existing saved CAMERA objects in negative mode, click OK. Otherwise click Cancel.")
+
+  }
+
+  if(CAMERAPosObj) {
+
+    CAMERAPosObj <- dlg_open(default = paste(WorkingDir, "*.*", sep = "/" ), title = "Select the saved CAMERA Objects file for positive mode or copy and paste into console")$res
+
+  } else {
+
+    stop("You cannot combine ion modes with plotting if you don't have saved CAMERA objects.")
+
+  }
+
+  if(CAMERANegObj) {
+
+    CAMERANegObj <- dlg_open(default = paste(WorkingDir, "*.*", sep = "/" ), title = "Select the saved CAMERA Objects file for negative mode or copy and paste into console")$res
+
+  } else {
+
+    stop("You cannot combine ion modes with plotting if you don't have saved CAMERA objects.")
+
+  }
+
+
+  if(multiple) {
+
+    myresults <- lapply(myresults, function(x) paste(WorkingDir, x, sep = "/"))
+
+    myresults$CAMERAPosObj <- CAMERAPosObj
+
+    myresults$CAMERANegObj <- CAMERANegObj
+
+
+  } else {
+
+    myresults <- list(CAMERAPosObj = CAMERAPosObj, CAMERANegObj = CAMERANegObj)
+
+  }
+
+
+  return(myresults)
+
+}
+
+
