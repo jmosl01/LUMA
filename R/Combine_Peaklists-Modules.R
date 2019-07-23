@@ -48,8 +48,8 @@ CombinePeaklists <- function(from.tables,to.table,method,peak.db,db.dir,gen.plot
   peak_db <<- peak_db <- connect_peakdb(file.base = peak.db,db.dir = db.dir)
 
   #Ion modes sanity check
-  if(length(ion.modes) != 2) {
-    stop(paste("ion.modes must be a vector of length 2. \nIt is currently of length ",length(ion.modes),sep = ""))
+  if(length(ion.mode) != 2) {
+    stop(paste("ion.mode must be a vector of length 2. \nIt is currently of length ",length(ion.mode),sep = ""))
   }
 
   if(mygen.plots) {
@@ -57,7 +57,7 @@ CombinePeaklists <- function(from.tables,to.table,method,peak.db,db.dir,gen.plot
     ##Check for existing positive mode CAMERA objects. If not specified, check for saved CAMERA objects.
     ##If none exist, return error.
     if(is.null(CAMERA.pos)) {
-      PreProcesslist <- .set_PreProcessFileNames(ion.modes[1],BLANK)
+      PreProcesslist <- .set_PreProcessFileNames(ion.mode[1],BLANK)
       CAMERA.pos <- PreProcesslist[[2]]
 
       #CAMERA sanity check
@@ -77,7 +77,7 @@ CombinePeaklists <- function(from.tables,to.table,method,peak.db,db.dir,gen.plot
     ##Check for existing negative mode CAMERA objects. If not specified, check for saved CAMERA objects.
     ##If none exist, return error.
     if(is.null(CAMERA.neg)) {
-      PreProcesslist <- .set_PreProcessFileNames(ion.modes[2],BLANK)
+      PreProcesslist <- .set_PreProcessFileNames(ion.mode[2],BLANK)
       CAMERA.neg <- PreProcesslist[[2]]
 
       #CAMERA sanity check

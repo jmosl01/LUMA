@@ -53,6 +53,42 @@ SameElements <- function(a, b) return(identical(sort(a), sort(b)))
     }
 }
 
+.set_PreProcessFileNames = function(IonMode,BLANK) {
+
+  if(IonMode == "Positive" && BLANK == TRUE){
+
+    XCMS.file <- "XCMS_objects_Blanks_Pos"
+    CAMERA.file <- "CAMERA_objects_Blanks_Pos"
+
+  } else {
+
+    if(IonMode == "Negative" && BLANK == TRUE){
+
+      XCMS.file <- "XCMS_objects_Blanks_Neg"
+      CAMERA.file <- "CAMERA_objects_Blanks_Neg"
+
+    } else {
+
+      if (IonMode == "Positive") {
+
+        XCMS.file <- "XCMS_objects_Pos"
+        CAMERA.file <- "CAMERA_objects_Pos"
+
+      } else {
+
+        XCMS.file <- "XCMS_objects_Neg"
+        CAMERA.file <- "CAMERA_objects_Neg"
+
+      }
+
+    }
+
+  }
+
+  return(list(XCMS.file,CAMERA.file))
+
+}
+
 
 .xcmsSanityCheck = function(XCMS.obj) {
   if(length(XCMS.obj@filled) == 0) {
