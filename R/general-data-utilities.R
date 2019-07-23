@@ -1,5 +1,5 @@
 ## internal constructor utility functions ----
-SameElements <- function(a, b) return(identical(sort(a), sort(b)))
+.SameElements <- function(a, b) return(identical(sort(a), sort(b)))
 
 .get_DataFiles = function(mzdatapath,IonMode,BLANK,ion.id,ion.mode) {
 
@@ -8,7 +8,7 @@ SameElements <- function(a, b) return(identical(sort(a), sort(b)))
 
   if(is.list(mzdatapath)) {#mzdatapath must be a list
 
-    if(!SameElements(dirnames,names(mzdatapath))) { #list names must be correct
+    if(!.SameElements(dirnames,names(mzdatapath))) { #list names must be correct
 
       stop("Error: Check the names of your DataDir list")
 
