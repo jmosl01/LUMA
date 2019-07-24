@@ -6,14 +6,14 @@
 #' @param Annotated.library a data frame with annotated metabolite entries. Must contain the first four columns called 'Name', 'Formula', Molecular.Weight' and 'RT..Min.', respectively.  Can contain additional columns.
 #' @param rules a data frame containing the rule list used by CAMERA to annotate ion adducts and fragments.  Must contain the columns 'name','nmol','charge','massdiff','oidscore','quasi','ips'.
 #' @param search.par a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.
-#' @param ion.mode a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'
+#' @param IonMode a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'
 #' @param lib_db RSQLite connection
 #' @return data frame containing the original table with added columns 'Name','MS.ID','Formula','Annotated.adduct' and any additional info columns from Annotated.library
 #' @importFrom dplyr '%>%' select copy_to tbl between
 #' @importFrom utils str txtProgressBar
-match_Annotation = function(Peak.list, Annotated.library, rules, search.par, ion.mode, lib_db) {
+match_Annotation = function(Peak.list, Annotated.library, rules, search.par, IonMode, lib_db) {
 
-  myresults <- .gen_IHL(Peak.list, Annotated.library, rules, ion.mode, lib_db)
+  myresults <- .gen_IHL(Peak.list, Annotated.library, rules, IonMode, lib_db)
   search.list <- myresults[[1]]
   bin <- myresults[[2]]
   myion.mode <- myresults[[3]]

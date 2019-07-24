@@ -42,7 +42,7 @@ AnnotatePeaklist <- function(from.table,to.table,lib.db) {
                                                         Solvent = Solvent.ratio,
                                                         gen.plots = gen.plots,
                                                         keep.singletons = keep.singletons),
-                                ion.mode = ion.mode,
+                                IonMode = IonMode,
                                 lib_db = lib_db)
 
   write_tbl(mydf = Peak.list.Annotated,

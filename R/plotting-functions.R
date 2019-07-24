@@ -8,7 +8,7 @@
 #' @param BLANK a logical indicating whether blanks are being evaluated. Default is FALSE
 #' @param gen.plots a logical indicating whether to create plots for metabolite groups.
 #' Default is FALSE
-#' @param ion.mode a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'
+#' @param IonMode a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'
 #' @param CAMERA.obj xsannotate object with annotated isotopes and ion adducts and fragments
 #' @param file.base character string used to name graphical output.  Will be appended with '_CorrPlots.pdf'
 #' @param QC.id character identifier for pooled QC samples.
@@ -23,7 +23,7 @@
 #' @importFrom Hmisc rcorr
 #' @importFrom corrplot corrplot corrMatOrder
 #' @importFrom dplyr group_by
-plot_metgroup = function(CAMERA.obj, Sample.df, Peak.list, center, BLANK, gen.plots, ion.mode, file.base, QC.id, maxlabel) {
+plot_metgroup = function(CAMERA.obj, Sample.df, Peak.list, center, BLANK, gen.plots, IonMode, file.base, QC.id, maxlabel) {
     if (missing(BLANK))
         BLANK = FALSE
     if (missing(gen.plots))
@@ -48,7 +48,7 @@ plot_metgroup = function(CAMERA.obj, Sample.df, Peak.list, center, BLANK, gen.pl
     get.mg <- which(pspec.length > 1)
     names(get.mg) <- NULL
 
-    Peak.list.pspec <- calc_corrstat(Sample.df, Peak.list, get.mg, BLANK, ion.mode)
+    Peak.list.pspec <- calc_corrstat(Sample.df, Peak.list, get.mg, BLANK, IonMode)
     validate.list <- .validate_metgroup(Peak.list.pspec)
 
     Peak.list.new <- list(Peak.list.pspec, validate.list)

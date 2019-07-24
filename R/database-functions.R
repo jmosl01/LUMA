@@ -4,26 +4,26 @@
 #' @description Generates filebase for reading and writing to databases
 #' @param mzdatafiles character vector containing data files to process and store results in databases
 #' @param BLANK a logical indicating whether blanks are being evaluated
-#' @param ion.mode a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'
+#' @param IonMode a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'
 #' @param ion.id character vector of length 2 specifying identifier in filename designating positive or negative ionization mode.  Positive identifier must come first.
 #' @return character
-gen_filebase = function(mzdatafiles, BLANK, ion.id, ion.mode) {
-  if (ion.mode == "Positive" && BLANK == TRUE) {
+gen_filebase = function(mzdatafiles, BLANK, ion.id, IonMode) {
+  if (IonMode == "Positive" && BLANK == TRUE) {
     mzdatafiles <- subset(mzdatafiles, subset = grepl(paste(ion.id[1]), mzdatafiles, ignore.case = TRUE))
     file.base = "Blanks_Pos"
     mzdatafiles <- mzdatafiles[c(grep("Blanks", mzdatafiles, ignore.case = TRUE))]
   } else {
-    if (ion.mode == "Negative" && BLANK == TRUE) {
+    if (IonMode == "Negative" && BLANK == TRUE) {
       mzdatafiles <- subset(mzdatafiles, subset = grepl(paste(ion.id[1]), mzdatafiles, ignore.case = TRUE))
       file.base = "Blanks_Neg"
       mzdatafiles <- mzdatafiles[c(grep("Blanks", mzdatafiles))]
     } else {
-      if (ion.mode == "Positive" && BLANK == FALSE) {
+      if (IonMode == "Positive" && BLANK == FALSE) {
         mzdatafiles <- subset(mzdatafiles, subset = grepl(paste(ion.id[1]), mzdatafiles, ignore.case = TRUE))
         file.base = "Peaklist_Pos"
         mzdatafiles <- mzdatafiles[-c(grep("Blanks", mzdatafiles))]
       } else {
-        if (ion.mode == "Negative" && BLANK == FALSE) {
+        if (IonMode == "Negative" && BLANK == FALSE) {
           mzdatafiles <- subset(mzdatafiles, subset = grepl(paste(ion.id[1]), mzdatafiles, ignore.case = TRUE))
           file.base = "Peaklist_Neg"
           mzdatafiles <- mzdatafiles[-c(grep("Blanks", mzdatafiles))]

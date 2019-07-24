@@ -8,6 +8,9 @@
 #' @return named list
 InputFiles_dlg <- function(WorkingDir,multiple = FALSE) {
 
+  #Set initial values
+  XCMS.par <- NULL
+
   #Set default values
   if(missing(multiple)) multiple = FALSE
 
@@ -50,6 +53,10 @@ InputFiles_dlg <- function(WorkingDir,multiple = FALSE) {
   if(XCMSObj) {
 
     XCMSObj <- dlg_open(default = paste(WorkingDir, "*.*", sep = "/" ), title = "Select the saved XCMS Objects file or copy and paste into console")$res
+    form <- list("XCMSCenter:NUM" = "Enter the value for the XCMS center parameter; must be a positive integer")
+
+    xcsmresult <- dlg_form(form, title = "XCMS Parameter Input")$res
+    XCMS.par <- data.frame(center = as.numeric(xcsmresult$XCMSCenter))
 
   } else {
 
@@ -76,6 +83,8 @@ InputFiles_dlg <- function(WorkingDir,multiple = FALSE) {
 
     myresults$CAMERAObj <- CAMERAObj
 
+    myresults$XCMS.par <- XCMS.par
+
     setwd(mydir)
 
   } else {
@@ -86,7 +95,8 @@ InputFiles_dlg <- function(WorkingDir,multiple = FALSE) {
                       SearchPar = SearchPar,
                       XCMSObj = XCMSObj,
                       CAMERAObj = CAMERAObj,
-                      Adducts = Adducts)
+                      Adducts = Adducts,
+                      XCMS.par = XCMS.par)
 
   }
 

@@ -107,6 +107,8 @@ InitWorkflow <- function(ion.id,db.dir,use.CAMERA,use.XCMS,CAMERA.obj,XCMS.obj,
   rules <<- rules
   ion.mode <<- ion.mode
   ion.id <<- ion.id
+  BLANK <<- BLANK
+  IonMode <<- IonMode
 
   #Set search parameters globally
   if(file.exists(input_dlg$SearchPar)) {
@@ -184,10 +186,14 @@ InitWorkflow <- function(ion.id,db.dir,use.CAMERA,use.XCMS,CAMERA.obj,XCMS.obj,
   ##Set XCMS parameters globally
   temp_xcms <- grep(".csv",XCMS.file)
 
-  if(length(temp_xcms) == 0){} else {
+  if(length(temp_xcms) == 0){
+
+    XCMS.par <<- XCMS.par <- input_dlg$XCMS.par
+
+  } else {
     if(length(temp_xcms) == 1){
       if(file.exists(XCMS.file)) {
-        XCMS.par <- read.table(XCMS.file, sep = ",", header = TRUE)
+        XCMS.par <<- XCMS.par <- read.table(XCMS.file, sep = ",", header = TRUE)
       }
 
     } else {

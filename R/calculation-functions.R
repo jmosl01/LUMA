@@ -5,12 +5,12 @@
 #' @param Peak.list a data frame from CAMERA that has been parsed.  Should contain all output columns from XCMS and CAMERA, and additional columns from IHL.search, Calc.MinFrac and CAMERA.parser.
 #' @param get.mg numerical vector of metabolite groups that have more than one feature
 #' @param BLANK a logical indicating whether blanks are being evaluated
-#' @param ion.mode a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'
+#' @param IonMode a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'
 #' @return Peak.list of class 'tbl_df',tbl' or 'data.frame' with variables as columns.  Has all of the columns as the original data frame with one additional column 'Correlation.stat'
 #' @importFrom stats cor dist
 #' @importFrom utils setTxtProgressBar
 #' @importFrom flashClust flashClust
-calc_corrstat = function(Sample.df, Peak.list, get.mg, BLANK, ion.mode) {
+calc_corrstat = function(Sample.df, Peak.list, get.mg, BLANK, IonMode) {
 
     ## Error check
     Peak.list.pspec <- Peak.list[which(Peak.list$metabolite_group %in% get.mg), ]
@@ -25,10 +25,10 @@ calc_corrstat = function(Sample.df, Peak.list, get.mg, BLANK, ion.mode) {
         sample.cols <- grep(paste("Pooled_QC_", paste(strsplit(sexes, "(?<=.[_])", perl = TRUE), collapse = "|"),
             sep = "|"), colnames(Peak.list))
     } else {
-        if (ion.mode == "Positive" && BLANK == TRUE) {
+        if (IonMode == "Positive" && BLANK == TRUE) {
             sample.cols <- grep("_Pos", colnames(Peak.list), ignore.case = TRUE)
         } else {
-            if (ion.mode == "Negative" && BLANK == TRUE) {
+            if (IonMode == "Negative" && BLANK == TRUE) {
                 sample.cols <- grep("_Neg", colnames(Peak.list), ignore.case = TRUE)
             }
         }
@@ -327,11 +327,11 @@ calc_minfrac = function(Sample.df, xset4, BLANK, Peak.list) {
 #' @param Sample.df a data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns 'Sex','Class','n','Endogenous'.
 #' @param search.par a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.
 #' @param BLANK a logical indicating whether blanks are being evaluated
-#' @param ion.mode a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'
+#' @param IonMode a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'
 #' @return sum.range.list with the first column containing metabolite group and the rest containing sample and QC columns
 #' @importFrom data.table as.data.table
-sum_features = function(Peak.list, Sample.df, search.par, BLANK, ion.mode) {
-    mylist <- .gen_res(ion.mode,search.par,Peak.list,Sample.df,BLANK)
+sum_features = function(Peak.list, Sample.df, search.par, BLANK, IonMode) {
+    mylist <- .gen_res(IonMode,search.par,Peak.list,Sample.df,BLANK)
     Peaklist_corstat <- mylist[[1]]
     res <- mylist[[2]]
     sum.range.list <- Peaklist_corstat[sapply(res, function(x) length(x) > 0)]  #Extracts all of the sample columns for summing by metabolite group

@@ -4,15 +4,15 @@
 #' @description Parses the CAMERA results using well-defined rules to eliminate conflicting annotations.
 #' @param raw a data frame with variables as columns.  Should contain all output columns from XCMS and CAMERA, additional columns from IHL.search and a Minfrac column.  The last columns must be the CAMERA columns "isotopes","adduct","pcgroup" in that order.
 #' @param rule a data frame containing the rule list used by CAMERA to annotate ion adducts and fragments.  Must contain the columns "name","nmol","charge","massdiff","oidscore","quasi","ips".
-#' @param ion.mode a character string defining the ionization mode.  Must be "Positive"
+#' @param IonMode a character string defining the ionization mode.  Must be "Positive"
 #' @return data frame parsed version of the original data frame with additional columns "mono_mass","metabolite_group","monoisotopic_flg","adduct_flg","isotope_flg","ambiguity_flg","Selection_flg"
-parse_pos_results=function(raw,rule,ion.mode){
+parse_pos_results=function(raw,rule,IonMode){
   ##This code is a modified version of CAMERA_parser.m from the Ressom Omics Lab at Georgetown University (http://omics.georgetown.edu/) adapted for the R environment
   ##*******************************************************
   ##*******************POSITIVE   MODE*********************
   ##*******************************************************
   ##Note: the monoisotpic mass means the mass of [M+H]/[M-H] type of ion with the mono isotopes.
-  if(ion.mode != "Positive") stop("Error: ion.mode must be \"Positive\".")
+  if(IonMode != "Positive") stop("Error: IonMode must be \"Positive\".")
   raw.header <- colnames(raw)
   rule[,"X"] <- as.numeric(row.names(rule))
   ##Move last column to first in rule dataframe
@@ -418,15 +418,15 @@ parse_pos_results=function(raw,rule,ion.mode){
 #' @description Parses the CAMERA results using well-defined rules to eliminate conflicting annotations.
 #' @param raw a data frame with variables as columns.  Should contain all output columns from XCMS and CAMERA, additional columns from IHL.search and a Minfrac column.  The last columns must be the CAMERA columns "isotopes","adduct","pcgroup" in that order.
 #' @param rule a data frame containing the rule list used by CAMERA to annotate ion adducts and fragments.  Must contain the columns "name","nmol","charge","massdiff","oidscore","quasi","ips".
-#' @param ion.mode a character string defining the ionization mode.  Must be "Negative"
+#' @param IonMode a character string defining the ionization mode.  Must be "Negative"
 #' @return data frame parsed version of the original data frame with additional columns "mono_mass","metabolite_group","monoisotopic_flg","adduct_flg","isotope_flg","ambiguity_flg","Selection_flg"
-parse_neg_results=function(raw,rule,ion.mode){
+parse_neg_results=function(raw,rule,IonMode){
   ##This code is a modified version of CAMERA_parser.m from the Ressom Omics Lab at Georgetown University (http://omics.georgetown.edu/) adapted for the R environment
   ##*******************************************************
   ##*******************NEGATIVE   MODE*********************
   ##*******************************************************
   ##Note: the monoisotpic mass means the mass of [M+H]/[M-H] type of ion with the mono isotopes.
-  if(ion.mode != "Negative") stop("Error: ion.mode must be \"Negative\".")
+  if(IonMode != "Negative") stop("Error: IonMode must be \"Negative\".")
 
   ## Input CAMERA output and Negitive Rule file
   raw.header <- colnames(raw)
@@ -821,15 +821,15 @@ parse_neg_results=function(raw,rule,ion.mode){
 #' @param Summed.list data frame containing metabolite group as first column and the rest summed intensities for each sample
 #' @param search.par a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.
 #' @param BLANK a logical indicating whether blanks are being evaluated
-#' @param ion.mode a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'
+#' @param IonMode a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'
 #' @return Peak.list.summed with the munged phenotype columns up front followed by QC and sample columns
 #' @importFrom plyr ddply
 #' @importFrom dplyr '%>%' mutate_if summarise bind_cols
 #' @importFrom utils str txtProgressBar setTxtProgressBar
 #' @importFrom stringr str_count
-combine_phenodata <- function(Sample.df, Peak.list, Summed.list, search.par, BLANK, ion.mode) {
+combine_phenodata <- function(Sample.df, Peak.list, Summed.list, search.par, BLANK, IonMode) {
 
-  mylist <- .gen_res(ion.mode,search.par,Peak.list,Sample.df,BLANK)
+  mylist <- .gen_res(IonMode,search.par,Peak.list,Sample.df,BLANK)
   Peaklist_corstat <- mylist[[1]]
   res <- mylist[[2]]
 
