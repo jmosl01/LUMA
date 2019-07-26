@@ -28,7 +28,7 @@ if(getRversion() >= "2.15.1")
     "Sexes","Classes","no.Samples","Endogenous","Sample.df","XCMS.par","search.par","DataFiles",
     "Corr.stat.pos","Corr.stat.neg","Endogenous.thresh","Peak.list.trimmed", "Solvent.ratio","Voidrt",
     "XCMS.par","cv.cutoff","gen.plots","keep.singletons","mf.cutoff","ppm.cutoff","rt.cutoff","ion.id",
-    "Library.phenodata","Sample.phenodata","CT.ID","Plate.Number","Plate.Position",
+    "Library.phenodata","Sample.phenodata","CT.ID","Plate.Number","Plate.Position","IonMode",
 
     #Plotting function global variables
     "Correlation.stat")

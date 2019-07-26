@@ -4,7 +4,7 @@
 \alias{gen_filebase}
 \title{Generate Filebase}
 \usage{
-gen_filebase(mzdatafiles, BLANK, ion.id, ion.mode)
+gen_filebase(mzdatafiles, BLANK, ion.id, IonMode)
 }
 \arguments{
 \item{mzdatafiles}{character vector containing data files to process and store results in databases}
@@ -13,7 +13,7 @@ gen_filebase(mzdatafiles, BLANK, ion.id, ion.mode)
 
 \item{ion.id}{character vector of length 2 specifying identifier in filename designating positive or negative ionization mode.  Positive identifier must come first.}
 
-\item{ion.mode}{a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'}
+\item{IonMode}{a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'}
 }
 \value{
 character

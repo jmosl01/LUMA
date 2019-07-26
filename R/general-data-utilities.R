@@ -39,14 +39,14 @@
 
 
   if(BLANK == TRUE){
-    mzdatafiles <- subset(mzdatafiles.blanks, subset = grepl(ion.id, mzdatafiles.blanks, ignore.case = TRUE))
-    return(mzdatafiles)
+    DataFiles <- subset(mzdatafiles.blanks, subset = grepl(ion.id, mzdatafiles.blanks, ignore.case = TRUE))
+    return(DataFiles)
   } else {
     if(BLANK == FALSE){
-      mzdatafiles <- c(subset(mzdatafiles.samples, subset = grepl(ion.id, mzdatafiles.samples, ignore.case = TRUE)),
+      DataFiles <- c(subset(mzdatafiles.samples, subset = grepl(ion.id, mzdatafiles.samples, ignore.case = TRUE)),
                        subset(mzdatafiles.pooledqcs, subset = grepl(ion.id, mzdatafiles.pooledqcs, ignore.case = TRUE))
                        )
-    return(mzdatafiles)
+    return(DataFiles)
     } else {
           stop("Ion mode must be Positive or Negative.\nBe sure to specify whether to analyze blanks by setting BLANK to a logical. \nSee LUMA vignette for more details.\n\n")
       }

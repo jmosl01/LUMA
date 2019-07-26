@@ -5,7 +5,7 @@
 \title{Loop-based EIC Plotter for metabolite groups}
 \usage{
 plot_metgroup(CAMERA.obj, Sample.df, Peak.list, center, BLANK, gen.plots,
-  ion.mode, file.base, QC.id, maxlabel)
+  IonMode, file.base, QC.id, maxlabel)
 }
 \arguments{
 \item{CAMERA.obj}{xsannotate object with annotated isotopes and ion adducts and fragments}
@@ -21,7 +21,7 @@ plot_metgroup(CAMERA.obj, Sample.df, Peak.list, center, BLANK, gen.plots,
 \item{gen.plots}{a logical indicating whether to create plots for metabolite groups.
 Default is FALSE}
 
-\item{ion.mode}{a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'}
+\item{IonMode}{a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'}
 
 \item{file.base}{character string used to name graphical output.  Will be appended with '_CorrPlots.pdf'}
 

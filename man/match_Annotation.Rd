@@ -4,7 +4,7 @@
 \alias{match_Annotation}
 \title{Matches Peak.list annotations against Annotated Library}
 \usage{
-match_Annotation(Peak.list, Annotated.library, rules, search.par, ion.mode,
+match_Annotation(Peak.list, Annotated.library, rules, search.par, IonMode,
   lib_db)
 }
 \arguments{
@@ -16,7 +16,7 @@ match_Annotation(Peak.list, Annotated.library, rules, search.par, ion.mode,
 
 \item{search.par}{a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.}
 
-\item{ion.mode}{a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'}
+\item{IonMode}{a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'}
 
 \item{lib_db}{RSQLite connection}
 }

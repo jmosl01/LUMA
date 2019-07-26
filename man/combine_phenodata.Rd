@@ -5,7 +5,7 @@
 \title{Combine phenotype data in Peak.list}
 \usage{
 combine_phenodata(Sample.df, Peak.list, Summed.list, search.par, BLANK,
-  ion.mode)
+  IonMode)
 }
 \arguments{
 \item{Sample.df}{a data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns 'Sex','Class','n','Endogenous'.}
@@ -18,7 +18,7 @@ combine_phenodata(Sample.df, Peak.list, Summed.list, search.par, BLANK,
 
 \item{BLANK}{a logical indicating whether blanks are being evaluated}
 
-\item{ion.mode}{a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'}
+\item{IonMode}{a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'}
 }
 \value{
 Peak.list.summed with the munged phenotype columns up front followed by QC and sample columns

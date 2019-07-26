@@ -4,7 +4,7 @@
 \alias{sum_features}
 \title{Sums features into Metabolites}
 \usage{
-sum_features(Peak.list, Sample.df, search.par, BLANK, ion.mode)
+sum_features(Peak.list, Sample.df, search.par, BLANK, IonMode)
 }
 \arguments{
 \item{Peak.list}{data frame. Must have Correlation.stat column.  Should contain output columns from XCMS and CAMERA, and additional columns from IHL.search, Calc.MinFrac, CAMERA.parser and EIC.plotter functions.}
@@ -15,7 +15,7 @@ sum_features(Peak.list, Sample.df, search.par, BLANK, ion.mode)
 
 \item{BLANK}{a logical indicating whether blanks are being evaluated}
 
-\item{ion.mode}{a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'}
+\item{IonMode}{a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'}
 }
 \value{
 sum.range.list with the first column containing metabolite group and the rest containing sample and QC columns

@@ -4,7 +4,7 @@
 \alias{calc_corrstat}
 \title{Calculates correlation matrices for metabolite groups}
 \usage{
-calc_corrstat(Sample.df, Peak.list, get.mg, BLANK, ion.mode)
+calc_corrstat(Sample.df, Peak.list, get.mg, BLANK, IonMode)
 }
 \arguments{
 \item{Sample.df}{a data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns 'Sex','Class','n','Endogenous'.}
@@ -15,7 +15,7 @@ calc_corrstat(Sample.df, Peak.list, get.mg, BLANK, ion.mode)
 
 \item{BLANK}{a logical indicating whether blanks are being evaluated}
 
-\item{ion.mode}{a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'}
+\item{IonMode}{a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'}
 }
 \value{
 Peak.list of class 'tbl_df',tbl' or 'data.frame' with variables as columns.  Has all of the columns as the original data frame with one additional column 'Correlation.stat'

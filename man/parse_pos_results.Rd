@@ -4,14 +4,14 @@
 \alias{parse_pos_results}
 \title{CAMERA Parser in positive mode}
 \usage{
-parse_pos_results(raw, rule, ion.mode)
+parse_pos_results(raw, rule, IonMode)
 }
 \arguments{
 \item{raw}{a data frame with variables as columns.  Should contain all output columns from XCMS and CAMERA, additional columns from IHL.search and a Minfrac column.  The last columns must be the CAMERA columns "isotopes","adduct","pcgroup" in that order.}
 
 \item{rule}{a data frame containing the rule list used by CAMERA to annotate ion adducts and fragments.  Must contain the columns "name","nmol","charge","massdiff","oidscore","quasi","ips".}
 
-\item{ion.mode}{a character string defining the ionization mode.  Must be "Positive"}
+\item{IonMode}{a character string defining the ionization mode.  Must be "Positive"}
 }
 \value{
 data frame parsed version of the original data frame with additional columns "mono_mass","metabolite_group","monoisotopic_flg","adduct_flg","isotope_flg","ambiguity_flg","Selection_flg"
