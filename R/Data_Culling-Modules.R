@@ -156,7 +156,7 @@ CullBackground <- function(from.tables,to.tables,method,db.list,db.dir,new.db,li
                                                                gen.plots = gen.plots,
                                                                keep.singletons = keep.singletons),
                                        tbl.id = from.tables,
-                                       ion.modes = ion.modes,
+                                       ion.mode = ion.mode,
                                        method = method,
                                        db.list = db.list,
                                        lib.db = lib.db,

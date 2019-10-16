@@ -153,12 +153,13 @@ CombinePeaklists <- function(from.tables,to.table,method,peak.db,db.dir,gen.plot
 #' @description Combines Peaklists from positive and negative ionization modes without removing ion mode duplicates.
 #' See
 #' @param from.tables character vector of table names to draw from databases to be combined simply.
+#' @param to.table to which table should LUMA save the modified Peak.list
 #' @param peak.db what database contains the Peaklists to be combined simply.
 #' Default is 'Peaklist_db'
 #' @param db.dir directory containing the database.
 #' Default is 'db'
 #' @return the file 'Peaklist_Combined.csv" is written to the working directory
-SimplyPeaklists <- function(from.tables,peak.db,db.dir){
+SimplyPeaklists <- function(from.tables,to.table,peak.db,db.dir){
 
   #Set default values
   if(missing(peak.db))
@@ -173,6 +174,11 @@ SimplyPeaklists <- function(from.tables,peak.db,db.dir){
                                               tbl.id = c(from.tables[1],
                                                          from.tables[2]),
                                               peak.db = peak_db)
+
+  write_tbl(Peak.list.combined,
+            peak.db = peak_db,
+            myname = to.table)
+
 
   write.table(Peak.list.combined, file = "Peaklist_Combined.csv", sep = ",", row.names = FALSE)
 
