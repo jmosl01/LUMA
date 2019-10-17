@@ -123,7 +123,7 @@ ScriptInfo_dlg <- function(multiple = FALSE) {
 
     #Using dlgForm
     form <- list(
-      "WorkingDir:DIR" = "Select your working directory or copy and paste into console",
+      "WorkingDir:DIR" = "Select your input directory or copy and paste into console",
       "Are you using the LUMA recommended data directory:CHK" = FALSE,
       "BLANK:CHK" = FALSE,
       "IonMode:CB" = c("Positive","Negative")

@@ -224,17 +224,17 @@ search_IonDup.monoMass  <- function(object,Peak.list.pos,Peak.list.neg,search.pa
 #' Only the first value will be used. Default is '^MB'
 #' @param db.id character vector specifying identifiers in database names designating sample \[1\] and blank \[2\] databases.
 #' Default is c('Peaklist','Blanks')
-#' @param ion.modes a character vector defining the ionization mode.
+#' @param ion.mode a character vector defining the ionization mode.
 #' Must be either 'Positive', 'Negative' or both. Default is c('Positive','Negative')
 #' @param lib_db RSQLite connection
 #' @return nested list a list for each ionization mode, each containing a list of two dataframes: the first contains the intensity matrix for the peaklist with solvent peaks removed, the second contains the intensity matrix for the solvent peaks
-find_Background <- function(object, Peak.list, Solv.list, Sample.df, search.par, lib_db,ion.id,QC.id,MB.id,db.id,ion.modes) {
+find_Background <- function(object, Peak.list, Solv.list, Sample.df, search.par, lib_db,ion.id,QC.id,MB.id,db.id,ion.mode) {
   UseMethod("find_Background", object)
 }
 
 #' @rdname  find_Background
 #' @export
-find_Background.mz <- function(object, Peak.list, Solv.list, Sample.df, search.par, lib_db,ion.id,QC.id,MB.id,db.id,ion.modes) {
+find_Background.mz <- function(object, Peak.list, Solv.list, Sample.df, search.par, lib_db,ion.id,QC.id,MB.id,db.id,ion.mode) {
   #Set default values
   if(missing(ion.id))
     ion.id <- c("Pos","Neg")
@@ -244,17 +244,17 @@ find_Background.mz <- function(object, Peak.list, Solv.list, Sample.df, search.p
     MB.id <- "^MB"
   if(missing(db.id))
     db.id <- c("Peaklist","Blanks")
-  if(missing(ion.modes))
-    ion.modes <- c("Positive","Negative")
+  if(missing(ion.mode))
+    ion.mode <- c("Positive","Negative")
 
   endo.groups <- as.matrix(paste(Sample.df[which(Sample.df[, "Endogenous"] == TRUE), "Sex"], Sample.df[which(Sample.df[,
                                                                                                                        "Endogenous"] == TRUE), "Class"], sep = "_"))
-  list.length = length(ion.modes)
+  list.length = length(ion.mode)
   mylist <- NULL
   masterlist <- NULL
   for (i in 1:list.length) {
     ## Selects the filebase to use for data processing
-    cur.ion = ion.modes[i]
+    cur.ion = ion.mode[i]
     file.base = paste(db.id[1], ion.id[i], sep = "_")
     blank.base = paste(db.id[2], ion.id[i], sep = "_")
     cur.Peaklist <- Peak.list[[i]]
@@ -348,13 +348,13 @@ find_Background.mz <- function(object, Peak.list, Solv.list, Sample.df, search.p
     names(mylist) <- c("Peaklist", "Solvent_Peaks")
     masterlist[[i]] <- mylist
   }
-  names(masterlist) <- ion.modes
+  names(masterlist) <- ion.mode
   return(masterlist)
 }
 
 #' @rdname find_Background
 #' @export
-find_Background.monoMass <- function(object, Peak.list, Solv.list, Sample.df, search.par, lib_db,ion.id,QC.id,MB.id,db.id,ion.modes) {
+find_Background.monoMass <- function(object, Peak.list, Solv.list, Sample.df, search.par, lib_db,ion.id,QC.id,MB.id,db.id,ion.mode) {
   #Set default values
   if(missing(ion.id))
     ion.id <- c("Pos","Neg")
@@ -364,17 +364,17 @@ find_Background.monoMass <- function(object, Peak.list, Solv.list, Sample.df, se
     MB.id <- "^MB"
   if(missing(db.id))
     db.id <- c("Peaklist","Blanks")
-  if(missing(ion.modes))
-    ion.modes <- c("Positive","Negative")
+  if(missing(ion.mode))
+    ion.mode <- c("Positive","Negative")
 
   endo.groups <- as.matrix(paste(Sample.df[which(Sample.df[, "Endogenous"] == TRUE), "Sex"], Sample.df[which(Sample.df[,
                                                                                                                        "Endogenous"] == TRUE), "Class"], sep = "_"))
-  list.length = length(ion.modes)
+  list.length = length(ion.mode)
   mylist <- NULL
   masterlist <- NULL
   for (i in 1:list.length) {
     ## Selects the filebase to use for data processing
-    cur.ion = ion.modes[i]
+    cur.ion = ion.mode[i]
     file.base = paste(db.id[1], ion.id[i], sep = "_")
     blank.base = paste(db.id[2], ion.id[i], sep = "_")
     cur.Peaklist <- Peak.list[[i]]
@@ -472,7 +472,7 @@ find_Background.monoMass <- function(object, Peak.list, Solv.list, Sample.df, se
     names(mylist) <- c("Peaklist", "Solvent_Peaks")
     masterlist[[i]] <- mylist
   }
-  names(masterlist) <- ion.modes
+  names(masterlist) <- ion.mode
   return(masterlist)
 
 }

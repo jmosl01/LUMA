@@ -337,8 +337,17 @@
   return(xset4)
 }
 
+.obj_check = function(x) {
+  if ("x" %in% ls(envir = .GlobalEnv)) {
+    x <- get("x", envir = .GlobalEnv)
+    return(x)
+  } else {
+      x
+    }
+}
 
 ## END
+
 
 ## Plotting utility functions ----
 .LUMA_order = function(object){

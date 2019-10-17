@@ -37,7 +37,13 @@ plot_metgroup = function(CAMERA.obj, Sample.df, Peak.list, center, BLANK, gen.pl
     # Change the psspectra list in the xsAnnotate object to be the unique list of metabolite_groups
     X <- split(Peak.list$EIC_ID, as.numeric(Peak.list$metabolite_group))
     names(X) <- sort(unique(Peak.list$metabolite_group))
-    new_CAMERA.obj <- CAMERA.obj
+
+    if (CAMERA.obj %in% ls(envir = .GlobalEnv)) {
+      new_CAMERA.obj <- get(CAMERA.obj, envir = .GlobalEnv)
+    } else {
+      new_CAMERA.obj <- CAMERA.obj
+    }
+
     new_CAMERA.obj@pspectra <- X
 
     ## Need to set a numeric value in this slot, else plotEICs will give error
