@@ -3,7 +3,11 @@ title: 'Processing data using LUMA: LCMS-Based Untargeted Metabolomics Assistant
 author: "Jonathan Mosley and Marina Evich"
 output:
   html_document: default
-  word_document: default
+vignette: >
+  %\VignetteIndexEntry{Processing data using LUMA: LCMS-Based Untargeted Metabolomics Assistant}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+
 ---
 
 ```{r setup, include=FALSE}
@@ -53,7 +57,6 @@ A.	Remove all objects from the environment by running the first line of the scri
 B.	Load the relevant libraries:
     ```{r warning=FALSE}
     library(LUMA)
-    library(lcmsfishdata)
     ```
 
 C.	Retrieve the location of the input file directory, described in III.B, for example, `C:/Program Files/R/R-3.6.1/library/lcmsfishdata/extdata`.
