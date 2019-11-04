@@ -3,6 +3,7 @@ title: 'Processing data using LUMA: LCMS-Based Untargeted Metabolomics Assistant
 author: "Jonathan Mosley and Marina Evich"
 output:
   html_document: default
+  word_document: default
 vignette: >
   %\VignetteIndexEntry{Processing data using LUMA: LCMS-Based Untargeted Metabolomics Assistant}
   %\VignetteEngine{knitr::rmarkdown}
