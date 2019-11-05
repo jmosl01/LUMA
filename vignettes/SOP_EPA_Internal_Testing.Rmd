@@ -44,7 +44,7 @@ B.	The location of the input directory will depend on your specific workstation 
     keep
     ```
 
-C.	The data directory containing the data files is located on the O drive. Do not delete or modify these files: O:\Public\jmosl01\LUMA Data
+C.	The data directory containing the data files is located on the O drive. Do not delete or modify these files: O:\\Public\\jmosl01\\LUMA-Data
 
 #### IV.	Testing modules
 
