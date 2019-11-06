@@ -2,9 +2,9 @@
 title: 'Processing data using LUMA: LCMS-Based Untargeted Metabolomics Assistant'
 author: "Jonathan Mosley and Marina Evich"
 output:
+  html_document: default
   word_document:
     reference_docx: Word_Styles_Reference.docx
-  html_document: default
 vignette: >
   \usepackage[utf8]{inputenc}
   %\VignetteIndexEntry{Processing data using LUMA: LCMS-Based Untargeted Metabolomics Assistant}
@@ -69,9 +69,9 @@ D.	Initialize the workflow by running the first module. This module will open a 
 
     1. In the first dialog box, select the input directory, described in III.B.
     
-    2. Select "OK"" to use the LUMA recommended data directory.
+    2. Select "OK" to use the LUMA recommended data directory.
 
-    3. Select "OK"" to process blanks first or `cancel` to process samples first.
+    3. Select "OK" to process blanks first or `cancel` to process samples first.
   
     4. Enter "1" or "Positive" in the console to process positive ionization mode first. Alternatively, select "2" or   "Negative" to process negative ionization mode.
   
