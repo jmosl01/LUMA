@@ -2,9 +2,13 @@
 title: 'Processing data using LUMA: LCMS-Based Untargeted Metabolomics Assistant'
 author: "Jonathan Mosley and Marina Evich"
 output:
-  html_document: default
+  html_document: 
+    toc: TRUE
   word_document:
     reference_docx: Word_Styles_Reference.docx
+  pdf_document: 
+    fig_crop: TRUE
+    number_sections: FALSE
 vignette: >
   \usepackage[utf8]{inputenc}
   %\VignetteIndexEntry{Processing data using LUMA: LCMS-Based Untargeted Metabolomics Assistant}
@@ -12,7 +16,7 @@ vignette: >
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, tidy.opts = list(width.cutoff=35),tidy = TRUE)
 ```
 
 ##### Version 1.1
@@ -124,7 +128,7 @@ H.	The following module, CombineFeatures, will sum the isotopic and adduct peaks
     CombineFeatures(from.table = "output_parsed", to.table = "Combined Isotopes and Adducts")
     ```
 
-I.	The next module, CullCV, will remove components with a coefficient of variation (CV) greater than the user-specified cutoff across the Pooled QC samples. Removing these variable components reduces overall instrument specific variation in the data. In this case, a CV cutoff of 30% is used.  Run this module only when processing data samples (if selected “Cancel” in step IV.D.3.).
+I.	The next module, CullCV, will remove components with a coefficient of variation (CV) greater than the user-specified cutoff across the Pooled QC samples. Removing these variable components reduces overall instrument specific variation in the data. In this case, a CV cutoff of 30% is used.  Run this module only when processing data samples (if selected "Cancel" in step IV.D.3.).
     ```{r eval=FALSE}
     CullCV(from.table = "Combined Isotopes and Adducts", to.table = "Trimmed by CV")
     ```
@@ -138,7 +142,8 @@ K.	Repeat steps D-J for the other samples until positive blanks, negative blanks
 
 L.	The CullBackground module then removes background components which have been identified from the positive and negative blank samples.
     ```{r eval=FALSE}
-    CullBackground(from.tables = c("Trimmed by MinFrac","Combined Isotopes and Adducts"),  to.tables  c("Peaklist_Pos_Solvent Peaks Removed", "Peaklist_Neg_Solvent Peaks Removed", "Peaklist_Pos_Solvent Peaks Only", "Peaklist_Neg_Solvent Peaks Only"), method = "monoMass")
+    CullBackground(from.tables = c("Trimmed by MinFrac","Combined Isotopes and Adducts"),  
+                   to.tables =   c("Peaklist_Pos_Solvent Peaks Removed", "Peaklist_Neg_Solvent Peaks Removed",    "Peaklist_Pos_Solvent Peaks Only", "Peaklist_Neg_Solvent Peaks Only"), method = "monoMass")
     ```
 
 M.	The next module, SimplyPeaklists, will combine the two peak lists from the positive sample data and negative sample data into a single list. This module will generate a Peaklist_combined.csv file which contains samples and intensities for each metabolite.
@@ -163,7 +168,7 @@ P.	The final module, FinalWorkflow, will finalize the LUMA workflow, closing the
     FinalWorkflow(peak_db = peak_db, lib_db = lib_db)
     ```
 
-Q.	After running the final module, save the R Workspace image. Run sessionInfo() and copy and paste the output in the console to a Word document saved in the working directory as “session_info.docx”.
+Q.	After running the final module, save the R Workspace image. Run sessionInfo() and copy and paste the output in the console to a Word document saved in the working directory as "session_info.docx".
     ```{r eval=FALSE}
     sessionInfo()
     ```
