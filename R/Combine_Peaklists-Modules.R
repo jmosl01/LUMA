@@ -151,7 +151,6 @@ CombinePeaklists <- function(from.tables,to.table,method,peak.db,db.dir,gen.plot
 #'
 #' @export
 #' @description Combines Peaklists from positive and negative ionization modes without removing ion mode duplicates.
-#' See
 #' @param from.tables character vector of table names to draw from databases to be combined simply.
 #' @param to.table to which table should LUMA save the modified Peak.list
 #' @param peak.db what database contains the Peaklists to be combined simply.

@@ -111,7 +111,7 @@ connect_libdb = function(lib.db, db.dir, mem) {
 #' @export
 #' @description Establishes a connection to an RSQLite database for combining Peak.lists together from two different ionization modes.
 #' Must have previously saved SQLite databases to hard disk.
-#' @param db.list list chracter names of databases containing results from processing positive mode (1,3) and negative mode (2,4) data for samples (1,2) and blanks (3,4)
+#' @param db.list list character names of databases containing results from processing positive mode and negative mode data for samples and blanks
 #' @param db.dir character directory containing the databases
 #' @param new.db character what should the new database be called.
 #' @return list of Formal class SQLiteConnections, starting with new.db entry followed by one for each db.list entry

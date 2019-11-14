@@ -17,10 +17,10 @@ remove_void_volume = function(Peak.list, search.par, method,...) {
 #' @title Trims by CV
 #'
 #' @export
-#' @description Removes metabolites with %CV greater than the user specified threshold, calculated from the QC samples
+#' @description Removes metabolites with coefficient of variation greater than the user specified threshold, calculated from the QC samples
 #' @param Peak.list data frame. Must have QC sample columns that contain the string 'Pooled_QC_'.  Should contain output columns from XCMS and CAMERA, and additional columns from IHL.search, Calc.MinFrac, CAMERA.parser, Calc.corr.stat and Combine.phenodata base functions.
 #' @param search.par a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.
-#' @return data frame Peak.list.trimmed original Peak.list without all metabolite groups with %CV greater than user specified threshold; if dataset contains blanks, data.frame with all NA values is returned
+#' @return data frame Peak.list.trimmed original Peak.list without all metabolite groups with coefficient of variation greater than user specified threshold; if dataset contains blanks, data.frame with all NA values is returned
 #' @importFrom stats sd
 trim_cv = function(Peak.list, search.par) {
     res <- lapply(colnames(Peak.list), function(ch) grep("Pooled_QC_", ch))

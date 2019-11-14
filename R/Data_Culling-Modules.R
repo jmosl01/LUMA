@@ -73,7 +73,7 @@ CullCV <- function(from.table,to.table) {
 #'
 #' @export
 #' @description Culls the Peak.list by removing all components with minimum fraction less than the user-specified cutoff.
-#' See trim_mf for more details.
+#' See trim_minfrac for more details.
 #' @param from.table from which table should LUMA pull the Peak.list
 #' @param to.table to which should LUMA save the modified Peak.list
 #' @return NULL
