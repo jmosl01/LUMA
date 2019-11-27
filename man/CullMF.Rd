@@ -13,5 +13,5 @@ CullMF(from.table, to.table)
 }
 \description{
 Culls the Peak.list by removing all components with minimum fraction less than the user-specified cutoff.
-See trim_mf for more details.
+See trim_minfrac for more details.
 }

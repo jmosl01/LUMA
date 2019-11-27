@@ -7,7 +7,7 @@
 connect_lumadb(db.list, db.dir, new.db)
 }
 \arguments{
-\item{db.list}{list chracter names of databases containing results from processing positive mode (1,3) and negative mode (2,4) data for samples (1,2) and blanks (3,4)}
+\item{db.list}{list character names of databases containing results from processing positive mode and negative mode data for samples and blanks}
 
 \item{db.dir}{character directory containing the databases}
 

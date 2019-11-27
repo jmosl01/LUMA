@@ -22,5 +22,4 @@ the file 'Peaklist_Combined.csv" is written to the working directory
 }
 \description{
 Combines Peaklists from positive and negative ionization modes without removing ion mode duplicates.
-See
 }
