@@ -6,7 +6,7 @@ output:
     reference_docx: Word_Styles_Reference.docx
   html_document: 
     toc: TRUE
-  pdf_document: 
+  pdf_document:
     fig_crop: TRUE
     number_sections: FALSE
 vignette: >
