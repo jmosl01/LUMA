@@ -2,10 +2,10 @@
 title: 'Processing data using LUMA: LCMS-Based Untargeted Metabolomics Assistant'
 author: "Jonathan Mosley and Marina Evich"
 output:
-  html_document: 
-    toc: TRUE
   word_document:
     reference_docx: Word_Styles_Reference.docx
+  html_document: 
+    toc: TRUE
   pdf_document: 
     fig_crop: TRUE
     number_sections: FALSE
@@ -24,13 +24,23 @@ knitr::opts_chunk$set(echo = TRUE, tidy.opts = list(width.cutoff=35),tidy = TRUE
 #### I.	Introduction
 
 
-The LCMS-Based Untargeted Metabolomics Assistant (LUMA) package is an automated data processing tool, bridging the outputs of XCMS and CAMERA to a comprehensive data matrix in the R environment for discovery-based studies. The LUMA package performs feature-reduction by minimizing single features which do not pass quality control which negatively impact downstream statistical analyses. LUMA contains functions that allow for rapid, automated workflows to perform these steps with minimal user input. Furthermore, to expedite manual data curation for potentially conflicting isotope and ion adduct annotations, data visualization is consolidated to a single graphic per metabolite group. This graphic contains all EIC plots and psSpectra from CAMERA and new correlation matrices and dendrograms for all features attributed to a single metabolite. Final processed metabolite data, containing normalized intensities and user-defined meta-data, can be exported to worksheets which are directly formatted to a number of analytical tools including MetaboAnalyst/Mummichog, while retaining traceability in the R environment.
+The LCMS-Based Untargeted Metabolomics Assistant (LUMA) package is an automated data processing tool, bridging the outputs of XCMS and CAMERA to a comprehensive data matrix in the R environment for discovery-based studies. The intended users of this R package are LC-MS-based untargeted metabolomics practitioners with minimal to advanced experience in the R environment who process raw LC-MS data files in preparation for downstream statistical analysis. The LUMA package performs feature-reduction by minimizing single features which do not pass quality control (QC) checks and can negatively impact downstream analyses. LUMA contains self-contained functions (herein referred to as called modules) that allow for rapid, automated workflows to perform these QC steps with minimal user input. Furthermore, to expedite manual data curation for potentially conflicting isotope and ion adduct annotations, data visualization is consolidated to a single graphic per metabolite group. This graphic contains all EIC plots and psSpectra from CAMERA and new correlation matrices and dendrograms for all features attributed to a single metabolite. Final processed metabolite data, containing normalized intensities and user-defined meta-data, can be exported to worksheets which are directly formatted to a number of analytical tools including MetaboAnalyst/Mummichog, while retaining traceability in the R environment.
 
-The following tutorial is a guide to testing the basic functionality of LUMA using an LC-MS fish liver dataset using RStudio. It requires R 3.5.1 or newer. Provided in this tutorial are two R scripts: install-LUMA-depend.R; test_workflow.R and one binary package for lcmsfishdata_0.1.0.zip, an accompanying R package containing LC-MS metabolomics data from fish livers (O:\\Public\\jmosl01).
+The following tutorial is a guide to testing the basic functionality of LUMA using an LC-MS fish liver dataset using RStudio. It requires R 3.5.1 or newer. Provided with this tutorial are the following: two R scripts, install-LUMA-depend.R and test_workflow.R; one binary package, lcmsfishdata_0.1.0.zip, an accompanying R package containing LC-MS metabolomics data from fish livers, the raw files of which are housed at O:\\Public\\jmosl01.  These comprise all the necessary code and files to complete this SOP. 
 
 #### II.	Installation guide
 
-A.	Install the R package LUMA and dependencies by sourcing the provided script "install-LUMA-depend.R" in the R environment. Note, the package dbplyr must be updated to at least version 1.3.0. Also, there is a known bug when the package Formula is also loaded; unload and restart the R session if the Formula package is installed.
+A.	Install the R package LUMA and dependencies by sourcing the provided script "install-LUMA-depend.R" in the R environment. Note, the package dbplyr must be updated to at least version 1.3.0. Also, there is a known bug when the package Formula is also loaded; 
+    ```{r echo=FALSE}
+    print("Error in Formula <<- Formula <- Annotated.Library[, \"Formula\"] :")
+    print("cannot change value of locked binding for 'Formula'")
+    ```
+To fix, unload the Formula package, or simply restart the R session before rerunning the "test_workflow.R" script.
+    ```{r eval=FALSE}
+    detach(package:Formula, unload=TRUE)
+    ```
+
+
 
 B.	Install the R package lcmsfishdata from Install Packages, install from: Package Archive File (.zip) using the provided "lcmsfishdata_0.1.0.zip". 
 
@@ -66,7 +76,7 @@ B.	Load the relevant libraries:
 
 C.	Retrieve the location of the input file directory, described in III.B, for example, C:/Program Files/R/R-3.6.1/library/lcmsfishdata/extdata.
 
-D.	Initialize the workflow by running the first module. This module will open a series of dialog boxes for the user to select input files to process the blanks and sample data in both positive and negative ionization mode. Note, that the order of the dialog boxes may change.
+D.	Initialize the workflow by running the first module. This module will open a series of dialog boxes for the user to select input files to process the blanks and sample data in both positive and negative ionization mode. Note, that the order of the dialog boxes may change.  If the Formula package is loaded in your R session, you will likely get an error here (see Section II.A for details to resolve the error.)
     ```{r eval=FALSE}
     InitWorkflow()
     ```
@@ -111,7 +121,7 @@ F.	The following module will annotate the culled peak list from annotations in t
     AnnotatePeaklist(from.table = "Trimmed by RT", to.table = "Annotated")
     ```
 
-G.	The following module, ParseCAMERA, will parse the annotations generated by CAMERA and remove redundant ion adduct annotations using predefined rules and will result in generating the first .csv output file used for further evaluation to eliminate conflicting annotations.
+G.	The following module, ParseCAMERA, will parse the annotations generated by CAMERA and remove redundant ion adduct annotations using predefined rules and will result in generating the first output files (one for each ionization mode and sample type processed) used for further evaluation to eliminate conflicting annotations.  The files will be named with a convention based on the ionization mode and sample type.  For instance, for blank samples processed in positive ionization mode, the resulting output file from this module will be called 'Blanks_Pos_Validate Metabolite Groups.xlsx'.
 
     * if running positive ionization mode data, use the ParseCAMERA module with the following arguments:
         ```{r eval= FALSE}
@@ -128,12 +138,12 @@ H.	The following module, CombineFeatures, will sum the isotopic and adduct peaks
     CombineFeatures(from.table = "output_parsed", to.table = "Combined Isotopes and Adducts")
     ```
 
-I.	The next module, CullCV, will remove components with a coefficient of variation (CV) greater than the user-specified cutoff across the Pooled QC samples. Removing these variable components reduces overall instrument specific variation in the data. In this case, a CV cutoff of 30% is used.  Run this module only when processing data samples (if selected "Cancel" in step IV.D.3.).
+I.	The next module, CullCV, will remove components with a coefficient of variation (CV) greater than the user-specified cutoff across the Pooled QC samples. Removing these variable components reduces overall instrument specific variation in the data. In this case, a CV cutoff of 30% is used.  Note: running this module only makes sense when processing data samples (if selected "Cancel" in step IV.D.3.).
     ```{r eval=FALSE}
     CullCV(from.table = "Combined Isotopes and Adducts", to.table = "Trimmed by CV")
     ```
 
-J.	The CullMF module then removes components with a minimum fraction of less than 80% within a specific class. Removing these components reduces overall biological variation per class in the data, as these are not considered reliable biomarkers for a given class. Run this module only when processing data samples (if selected "Cancel" in step IV.D.3.).
+J.	The CullMF module then removes components with a minimum fraction of less than 80% within a specific class. Removing these components reduces overall biological variation per class in the data, as these are not considered reliable biomarkers for a given class. Note: running this module only makes sense when processing data samples (if selected "Cancel" in step IV.D.3.).
     ```{r eval=FALSE}
     CullMF(from.table = "Trimmed by CV", to.table = "Trimmed by MinFrac")
     ```
@@ -146,7 +156,7 @@ L.	The CullBackground module then removes background components which have been 
                    to.tables =   c("Peaklist_Pos_Solvent Peaks Removed", "Peaklist_Neg_Solvent Peaks Removed",    "Peaklist_Pos_Solvent Peaks Only", "Peaklist_Neg_Solvent Peaks Only"), method = "monoMass")
     ```
 
-M.	The next module, SimplyPeaklists, will combine the two peak lists from the positive sample data and negative sample data into a single list. This module will generate a Peaklist_combined.csv file which contains samples and intensities for each metabolite.
+M.	The next module, SimplyPeaklists, will combine the two peak lists from the positive sample data and negative sample data into a single list. This module will generate a 'Peaklist_combined.csv' file which contains samples and intensities for each metabolite.
     ```{r eval=FALSE}
     file.copy(from = paste0(keep,"/EIC_index_pos.txt"), to = "./EIC_index_pos.txt", overwrite = TRUE)
     file.copy(from = paste0(keep,"/EIC_index_neg.txt"), to = "./EIC_index_neg.txt", overwrite = TRUE)
@@ -158,12 +168,12 @@ N.	The NormalizePeaklists module will next normalize the peaklist using the defa
     NormalizePeaklists(from.table = "Peaklist_Combined",  to.table = "Peaklist_Normalized")
     ```
 
-O.	The FormatForMetaboAnalystR module will format the peaklist and generate files for an acceptable format to be used with MetaboAnalystR for further analysis.
+O.	The FormatForMetaboAnalystR module will format the peaklist and generate the files necessary to be used with MetaboAnalyst for further analysis (see section VII).  The module should generate three files: 'Peaklist_for_MetaboAnalyst.csv', 'Metabolite_Metadata.csv', and 'Sample_Metadata.csv'.
     ```{r eval=FALSE}
     FormatForMetaboAnalystR(from.table = "Peaklist_Normalized", to.csv = "Peaklist_for_MetaboAnalyst", data.type = "pktable", anal.type = "stat")
     ```
 
-P.	The final module, FinalWorkflow, will finalize the LUMA workflow, closing the databases and generating a LUMA log for traceability.
+P.	The final module, FinalWorkflow, will finalize the LUMA workflow, closing the databases and generating a LUMA log for traceability (see section VI).
     ```{r eval=FALSE}
     FinalWorkflow(peak_db = peak_db, lib_db = lib_db)
     ```
@@ -173,5 +183,75 @@ Q.	After running the final module, save the R Workspace image. Run sessionInfo()
     sessionInfo()
     ```
 
-#### V.	Submitting results
+#### V.	Traceability in LUMA
+
+After running the FinalWorkflow module, the LUMA log will be printed to the console.  This log contains the names of all tables that exist in the SQLite databases that were saved during the LUMA workflow that was ran in this SOP. LUMA contains database querying functions that can pull these tables into the R environment.  An example of each function is shown below.  Check the R documentation for more details. 
+
+A.	Reconnect to LUMA database:
+    ```{r eval=FALSE}
+    
+    temp_db <- connect_peakdb(file.base = gen_filebase(mzdatafiles = DataFiles, BLANK, ion.id, IonMode))
+    ```
+
+B.	Read a table into the R environment:
+    ```{r eval=FALSE}
+    mydf <- read_tbl(peak.tbls[1], peak.db = temp_db, asdf = T)
+    mydf    
+    ```
+
+C.	Write a table to the LUMA database:
+    ```{r eval=FALSE}
+    write_tbl(mydf = mydf, peak.db = temp_db, myname = "Reproduced_tbl")
+    ```
+
+D.	Check that the reading and writing process is reproducible:
+    ```{r eval=FALSE}
+    mydf2 <- read_tbl("Reproduced_tbl", peak.db = temp_db, asdf = T)
+    identical(mydf,mydf2)
+    
+    ##Quick query of features in a table
+    LUMA:::get_features(mytbl = "Reproduced_tbl", peak.db = temp_db)
+    ```
+
+
+
+#### VI.	Submitting results to MetaboAnalyst
+
+After completing the final module, you will have generated all of the necessary files to submit this dataset to MetaboAnalyst for further analysis.  For the purposes of this SOP, we only ask that you verify the successful upload of the dataset into MetaboAnalyst (https://www.metaboanalyst.ca/).  
+
+A.	Go to the MetaboAnalyst website (https://www.metaboanalyst.ca/).
+
+B.  On the home page, select '>>click here to start<<'.
+
+C.  Select the "Statistical Analysis" module near the top of the module wheel.
+
+D.  In the "Upload Data" section, set the following parameters:
+
+    1. For Data Type, choose "Concentrations".
+    
+    2. For Format, choose "Samples in rows (unpaired)".
+
+    3. Use the "Choose File" buttom to upload the 'Peaklist_for_MetaboAnalyst.csv' file.
+    
+    4. Click "Submit"
+    
+E.	The next window is the 'Data Integrity' check.  After reading about the data processing information, click "Skip" (this data has already had missing value imputation performed).
+
+F.	On the 'Data Filtering' window, choose "None (less than 5000 features)" and click 'Proceed' (this data has already been filtered)
+
+G.	On the 'Normalization Overview' window, choose the following parameters:
+
+    1. For Sample normalization, choose "None".
+    
+    2. For Data Transformation, I recommend you choose "None", though you may change this if you want.
+
+    3. For Data scaling, I also recommend "None", though you may change this as well.
+    
+    4. Click "Normalize" (even if you selected all "None" options).
+    
+    5. You may choose to view the result.  Once you are satisfied, click "Proceed".
+    
+H.	At this point, the dataset has been successfully uploaded into MetaboAnalyst if you see the "Select an analysis path to explore" page.  Feel free to explore the various analysis options the MetaboAnalyst provides; however, these results are beyond the scope of this SOP.  
+
+#### VII.	Submitting beta-testing results to developers
 After completing the final module, you will have generated several output files including Microsoft .csv and .xlsx files in your working directory. Compress the entire working directory into a zip file. Rename the .zip extension to .piz to prevent Outlook from blocking the file, and send it to evich.marina@epa.gov.

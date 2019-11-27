@@ -261,6 +261,11 @@ InitWorkflow <- function(ion.id,db.dir,use.CAMERA,use.XCMS,CAMERA.obj,XCMS.obj,
 #' @importFrom DBI dbListTables dbDisconnect
 FinalWorkflow <- function(peak_db,lib_db) {
 
+  #Initialize all global variables
+  peak.tbls <- NULL
+  lib.tbls <- NULL
+
+
   #Set default values
   if(missing(peak_db)) {
     peak_db <- NULL
@@ -321,6 +326,10 @@ FinalWorkflow <- function(peak_db,lib_db) {
       mylist <- c(mylist,deparse(substitute(lib_db)))
         }
     }
+
+  #Set LUMA log variables globally
+  peak.tbls <<- peak.tbls
+  lib.tbls <<- lib.tbls
 
   #Clean up the database connections in the global environment
   rm(list=mylist,envir = .GlobalEnv)
