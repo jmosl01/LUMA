@@ -9,14 +9,11 @@
 \usage{
 output_MetaData(mSetObj, Peak.list, Sample.df, Sample.data)
 
-\method{output_MetaData}{pktable}(mSetObj, Peak.list, Sample.df,
-  Sample.data)
+\method{output_MetaData}{pktable}(mSetObj, Peak.list, Sample.df, Sample.data)
 
-\method{output_MetaData}{mass_all}(mSetObj, Peak.list, Sample.df,
-  Sample.data)
+\method{output_MetaData}{mass_all}(mSetObj, Peak.list, Sample.df, Sample.data)
 
-\method{output_MetaData}{default}(mSetObj, Peak.list, Sample.df,
-  Sample.data)
+\method{output_MetaData}{default}(mSetObj, Peak.list, Sample.df, Sample.data)
 }
 \arguments{
 \item{mSetObj}{NULL}

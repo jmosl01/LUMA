@@ -4,8 +4,15 @@
 \alias{FormatForMetaboAnalystR}
 \title{Formatting of metabolite data for MetaboAnalystR.}
 \usage{
-FormatForMetaboAnalystR(from.table, to.csv, data.type = "pktable",
-  anal.type = "stat", paired = FALSE, peak.db, db.dir)
+FormatForMetaboAnalystR(
+  from.table,
+  to.csv,
+  data.type = "pktable",
+  anal.type = "stat",
+  paired = FALSE,
+  peak.db,
+  db.dir
+)
 }
 \arguments{
 \item{from.table}{from which table should LUMA read the Peaklist}

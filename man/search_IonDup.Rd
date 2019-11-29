@@ -8,11 +8,9 @@
 \usage{
 search_IonDup(object, Peak.list.pos, Peak.list.neg, search.par, col.names)
 
-\method{search_IonDup}{mz}(object, Peak.list.pos, Peak.list.neg,
-  search.par, col.names)
+\method{search_IonDup}{mz}(object, Peak.list.pos, Peak.list.neg, search.par, col.names)
 
-\method{search_IonDup}{monoMass}(object, Peak.list.pos, Peak.list.neg,
-  search.par, col.names)
+\method{search_IonDup}{monoMass}(object, Peak.list.pos, Peak.list.neg, search.par, col.names)
 }
 \arguments{
 \item{object}{used for method dispatch. Can be any object. See usage for details}

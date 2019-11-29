@@ -4,8 +4,16 @@
 \alias{CombinePeaklists}
 \title{Combine Peaklists from different ion modes}
 \usage{
-CombinePeaklists(from.tables, to.table, method, peak.db, db.dir, gen.plots,
-  CAMERA.pos, CAMERA.neg)
+CombinePeaklists(
+  from.tables,
+  to.table,
+  method,
+  peak.db,
+  db.dir,
+  gen.plots,
+  CAMERA.pos,
+  CAMERA.neg
+)
 }
 \arguments{
 \item{from.tables}{character vector of table names to draw from databases to be combined.

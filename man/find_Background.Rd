@@ -6,14 +6,47 @@
 \alias{find_Background.monoMass}
 \title{Finds background components in Peak.list}
 \usage{
-find_Background(object, Peak.list, Solv.list, Sample.df, search.par,
-  lib_db, ion.id, QC.id, MB.id, db.id, ion.mode)
+find_Background(
+  object,
+  Peak.list,
+  Solv.list,
+  Sample.df,
+  search.par,
+  lib_db,
+  ion.id,
+  QC.id,
+  MB.id,
+  db.id,
+  ion.mode
+)
 
-\method{find_Background}{mz}(object, Peak.list, Solv.list, Sample.df,
-  search.par, lib_db, ion.id, QC.id, MB.id, db.id, ion.mode)
+\method{find_Background}{mz}(
+  object,
+  Peak.list,
+  Solv.list,
+  Sample.df,
+  search.par,
+  lib_db,
+  ion.id,
+  QC.id,
+  MB.id,
+  db.id,
+  ion.mode
+)
 
-\method{find_Background}{monoMass}(object, Peak.list, Solv.list, Sample.df,
-  search.par, lib_db, ion.id, QC.id, MB.id, db.id, ion.mode)
+\method{find_Background}{monoMass}(
+  object,
+  Peak.list,
+  Solv.list,
+  Sample.df,
+  search.par,
+  lib_db,
+  ion.id,
+  QC.id,
+  MB.id,
+  db.id,
+  ion.mode
+)
 }
 \arguments{
 \item{object}{used for method dispatch. Can be any object. See usage for details}

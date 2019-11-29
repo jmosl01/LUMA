@@ -4,8 +4,18 @@
 \alias{remove_background_peaks}
 \title{Removes background components from Peak.list}
 \usage{
-remove_background_peaks(Peak.list = NULL, Sample.df, search.par, method,
-  lib.db, tbl.id, db.list, db.dir, new.db, ...)
+remove_background_peaks(
+  Peak.list = NULL,
+  Sample.df,
+  search.par,
+  method,
+  lib.db,
+  tbl.id,
+  db.list,
+  db.dir,
+  new.db,
+  ...
+)
 }
 \arguments{
 \item{Peak.list}{a named list of data frames (two per ionization mode) containing intensity matrices across all study samples and Pooled QCs and process blanks.

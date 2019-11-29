@@ -4,8 +4,19 @@
 \alias{InitWorkflow}
 \title{Constructor function to initiate LUMA Workflow}
 \usage{
-InitWorkflow(ion.id, db.dir, use.CAMERA, use.XCMS, CAMERA.obj, XCMS.obj,
-  graph.method, ion.mode, mytable, calc.minfrac, multiple)
+InitWorkflow(
+  ion.id,
+  db.dir,
+  use.CAMERA,
+  use.XCMS,
+  CAMERA.obj,
+  XCMS.obj,
+  graph.method,
+  ion.mode,
+  mytable,
+  calc.minfrac,
+  multiple
+)
 }
 \arguments{
 \item{ion.id}{character vector specifying identifier in mz data filenames designating positive or negative ionization or both. Must be a (case-insensitive) abbreviation of the ionization mode name.

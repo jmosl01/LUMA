@@ -4,8 +4,14 @@
 \alias{combine_phenodata}
 \title{Combine phenotype data in Peak.list}
 \usage{
-combine_phenodata(Sample.df, Peak.list, Summed.list, search.par, BLANK,
-  IonMode)
+combine_phenodata(
+  Sample.df,
+  Peak.list,
+  Summed.list,
+  search.par,
+  BLANK,
+  IonMode
+)
 }
 \arguments{
 \item{Sample.df}{a data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns 'Sex','Class','n','Endogenous'.}

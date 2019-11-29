@@ -4,8 +4,14 @@
 \alias{replace_zeros_normalize}
 \title{Replaces zeros and normalizes}
 \usage{
-replace_zeros_normalize(Peak.list = NULL, Sample.df, tbl.id = NULL,
-  QC.id = "Pooled_QC_", mult = 1000, ...)
+replace_zeros_normalize(
+  Peak.list = NULL,
+  Sample.df,
+  tbl.id = NULL,
+  QC.id = "Pooled_QC_",
+  mult = 1000,
+  ...
+)
 }
 \arguments{
 \item{Peak.list}{a data frame containing combined ion mode peaklist with ion mode duplicates removed.  Alternatively can be retrieved from databases.  Default is NULL}

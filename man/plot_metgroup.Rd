@@ -4,8 +4,18 @@
 \alias{plot_metgroup}
 \title{Loop-based EIC Plotter for metabolite groups}
 \usage{
-plot_metgroup(CAMERA.obj, Sample.df, Peak.list, center, BLANK, gen.plots,
-  IonMode, file.base, QC.id, maxlabel)
+plot_metgroup(
+  CAMERA.obj,
+  Sample.df,
+  Peak.list,
+  center,
+  BLANK,
+  gen.plots,
+  IonMode,
+  file.base,
+  QC.id,
+  maxlabel
+)
 }
 \arguments{
 \item{CAMERA.obj}{xsannotate object with annotated isotopes and ion adducts and fragments}

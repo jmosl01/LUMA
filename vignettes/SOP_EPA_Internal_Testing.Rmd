@@ -2,13 +2,13 @@
 title: 'Processing data using LUMA: LCMS-Based Untargeted Metabolomics Assistant'
 author: "Jonathan Mosley and Marina Evich"
 output:
-  word_document:
-    reference_docx: Word_Styles_Reference.docx
+  # word_document:
+  #   reference_docx: Word_Styles_Reference.docx
   html_document: 
     toc: TRUE
-  pdf_document:
-    fig_crop: TRUE
-    number_sections: FALSE
+  # pdf_document:
+  #   fig_crop: TRUE
+  #   number_sections: FALSE
 vignette: >
   \usepackage[utf8]{inputenc}
   %\VignetteIndexEntry{Processing data using LUMA: LCMS-Based Untargeted Metabolomics Assistant}

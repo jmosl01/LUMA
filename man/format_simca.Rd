@@ -4,8 +4,14 @@
 \alias{format_simca}
 \title{Formats Peak.list for SIMCA}
 \usage{
-format_simca(Peak.list = NULL, Sample.df, Sample.data, tbl.id = NULL,
-  QC.id = "Pooled_QC_", ...)
+format_simca(
+  Peak.list = NULL,
+  Sample.df,
+  Sample.data,
+  tbl.id = NULL,
+  QC.id = "Pooled_QC_",
+  ...
+)
 }
 \arguments{
 \item{Peak.list}{data frame containing combined ion mode peaklist with ion mode duplicates removed.  Alternatively can be retrieved from databases.  Default is NULL}

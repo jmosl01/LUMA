@@ -4,8 +4,7 @@
 \alias{CullBackground}
 \title{Culls the Peak.list by Background}
 \usage{
-CullBackground(from.tables, to.tables, method, db.list, db.dir, new.db,
-  lib.db)
+CullBackground(from.tables, to.tables, method, db.list, db.dir, new.db, lib.db)
 }
 \arguments{
 \item{from.tables}{character vector of table names to draw from databases.

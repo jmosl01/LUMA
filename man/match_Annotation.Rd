@@ -4,8 +4,14 @@
 \alias{match_Annotation}
 \title{Matches Peak.list annotations against Annotated Library}
 \usage{
-match_Annotation(Peak.list, Annotated.library, rules, search.par, IonMode,
-  lib_db)
+match_Annotation(
+  Peak.list,
+  Annotated.library,
+  rules,
+  search.par,
+  IonMode,
+  lib_db
+)
 }
 \arguments{
 \item{Peak.list}{a table of class 'tbl_dbi', 'tbl_sql', 'tbl_lazy', or 'tbl' with samples as columns.  Should contain all output columns from XCMS and CAMERA, both metadata and sample data. Retention times must be in min.}
