@@ -2,13 +2,13 @@
 title: 'Processing data using LUMA: LCMS-Based Untargeted Metabolomics Assistant'
 author: "Jonathan Mosley and Marina Evich"
 output:
-  # word_document:
-  #   reference_docx: Word_Styles_Reference.docx
+  pdf_document:
+    fig_crop: TRUE
+    number_sections: FALSE
   html_document: 
     toc: TRUE
-  # pdf_document:
-  #   fig_crop: TRUE
-  #   number_sections: FALSE
+  word_document:
+    reference_docx: Word_Styles_Reference.docx
 vignette: >
   \usepackage[utf8]{inputenc}
   %\VignetteIndexEntry{Processing data using LUMA: LCMS-Based Untargeted Metabolomics Assistant}
@@ -24,9 +24,9 @@ knitr::opts_chunk$set(echo = TRUE, tidy.opts = list(width.cutoff=35),tidy = TRUE
 #### I.	Introduction
 
 
-The LCMS-Based Untargeted Metabolomics Assistant (LUMA) package is an automated data processing tool, bridging the outputs of XCMS and CAMERA to a comprehensive data matrix in the R environment for discovery-based studies. The intended users of this R package are LC-MS-based untargeted metabolomics practitioners with minimal to advanced experience in the R environment who process raw LC-MS data files in preparation for downstream statistical analysis. The LUMA package performs feature-reduction by minimizing single features which do not pass quality control (QC) checks and can negatively impact downstream analyses. LUMA contains self-contained functions (herein referred to as called modules) that allow for rapid, automated workflows to perform these QC steps with minimal user input. Furthermore, to expedite manual data curation for potentially conflicting isotope and ion adduct annotations, data visualization is consolidated to a single graphic per metabolite group. This graphic contains all EIC plots and psSpectra from CAMERA and new correlation matrices and dendrograms for all features attributed to a single metabolite. Final processed metabolite data, containing normalized intensities and user-defined meta-data, can be exported to worksheets which are directly formatted to a number of analytical tools including MetaboAnalyst/Mummichog, while retaining traceability in the R environment.
+The LCMS-Based Untargeted Metabolomics Assistant (LUMA) package is an automated data processing tool, bridging the outputs of XCMS and CAMERA to a comprehensive data matrix in the R environment for discovery-based studies. The intended users of this R package are LC-MS-based untargeted metabolomics practitioners with minimal to advanced experience in the R environment who process raw LC-MS data files in preparation for downstream statistical analysis. The LUMA package performs feature-reduction by minimizing single features which do not pass quality control (QC) checks and can negatively impact downstream analyses. LUMA contains self-contained functions (herein referred to as modules) that allow for rapid, automated workflows to perform these QC steps with minimal user input. Furthermore, to expedite manual data curation for potentially conflicting isotope and ion adduct annotations, data visualization is consolidated to a single graphic per metabolite group. This graphic contains all EIC plots and psSpectra from CAMERA and new correlation matrices and dendrograms for all features attributed to a single metabolite. Final processed metabolite data, containing normalized intensities and user-defined meta-data, can be exported to worksheets which are directly formatted to a number of analytical tools including MetaboAnalyst, while retaining traceability in the R environment.
 
-The following tutorial is a guide to testing the basic functionality of LUMA using an LC-MS fish liver dataset using RStudio. It requires R 3.5.1 or newer. Provided with this tutorial are the following: two R scripts, install-LUMA-depend.R and test_workflow.R; one binary package, lcmsfishdata_0.1.0.zip, an accompanying R package containing LC-MS metabolomics data from fish livers, the raw files of which are housed at O:\\Public\\jmosl01.  These comprise all the necessary code and files to complete this SOP. 
+The following tutorial is a guide to testing the basic functionality of LUMA using an LC-MS fish liver dataset using RStudio. It requires R 3.5.1 or newer. Provided with this tutorial are the following: 1) two R scripts, install-LUMA-depend.R and test_workflow.R; and 2) one binary package, lcmsfishdata_0.1.0.zip, an accompanying R package containing LC-MS metabolomics data from fish livers, the raw files of which are housed at O:\\Public\\jmosl01.  These comprise all the necessary code and files to complete this SOP. 
 
 #### II.	Installation guide
 
@@ -168,24 +168,24 @@ N.	The NormalizePeaklists module will next normalize the peaklist using the defa
     NormalizePeaklists(from.table = "Peaklist_Combined",  to.table = "Peaklist_Normalized")
     ```
 
-O.	The FormatForMetaboAnalystR module will format the peaklist and generate the files necessary to be used with MetaboAnalyst for further analysis (see section VII).  The module should generate three files: 'Peaklist_for_MetaboAnalyst.csv', 'Metabolite_Metadata.csv', and 'Sample_Metadata.csv'.
+O.	The FormatForMetaboAnalystR module will format the peaklist and generate the files necessary to be used with MetaboAnalyst for further analysis (see section VI).  The module should generate three files: 'Peaklist_for_MetaboAnalyst.csv', 'Metabolite_Metadata.csv', and 'Sample_Metadata.csv'.
     ```{r eval=FALSE}
     FormatForMetaboAnalystR(from.table = "Peaklist_Normalized", to.csv = "Peaklist_for_MetaboAnalyst", data.type = "pktable", anal.type = "stat")
     ```
 
-P.	The final module, FinalWorkflow, will finalize the LUMA workflow, closing the databases and generating a LUMA log for traceability (see section VI).
+P.	The final module, FinalWorkflow, will finalize the LUMA workflow, closing the databases and generating a LUMA log for traceability (see section V).
     ```{r eval=FALSE}
     FinalWorkflow(peak_db = peak_db, lib_db = lib_db)
     ```
 
-Q.	After running the final module, save the R Workspace image. Run sessionInfo() and copy and paste the output in the console to a Word document saved in the working directory as "session_info.docx".
+Q.	After running the final module, save the R Workspace image. Run sessionInfo() and copy and paste the output in the console to a Word document saved in the working directory as "session_info.docx".  Be sure to follow the instructions in Section VII to submit your beta testing results to the LUMA developers.
     ```{r eval=FALSE}
     sessionInfo()
     ```
 
 #### V.	Traceability in LUMA
 
-After running the FinalWorkflow module, the LUMA log will be printed to the console.  This log contains the names of all tables that exist in the SQLite databases that were saved during the LUMA workflow that was ran in this SOP. LUMA contains database querying functions that can pull these tables into the R environment.  An example of each function is shown below.  Check the R documentation for more details. 
+After running the FinalWorkflow module, the LUMA log will be printed to the console.  This log contains the names of all tables inside the SQLite databases, which were saved during the LUMA workflow that was ran in this SOP. LUMA contains database querying functions that can pull these tables into the R environment for traceability.  An example of each function is shown below.  Check the R documentation for more details. 
 
 A.	Reconnect to LUMA database:
     ```{r eval=FALSE}
@@ -217,7 +217,7 @@ D.	Check that the reading and writing process is reproducible:
 
 #### VI.	Submitting results to MetaboAnalyst
 
-After completing the final module, you will have generated all of the necessary files to submit this dataset to MetaboAnalyst for further analysis.  For the purposes of this SOP, we only ask that you verify the successful upload of the dataset into MetaboAnalyst (https://www.metaboanalyst.ca/).  
+After completing the final module, you will have generated all of the necessary files to submit this dataset to MetaboAnalyst for further analysis.  For the purposes of this SOP, we ask only that you verify the successful upload of the dataset into MetaboAnalyst (https://www.metaboanalyst.ca/).  Any analysis performed by the beta tester in MetaboAnalyst is informative, but optional.
 
 A.	Go to the MetaboAnalyst website (https://www.metaboanalyst.ca/).
 
@@ -237,7 +237,7 @@ D.  In the "Upload Data" section, set the following parameters:
     
 E.	The next window is the 'Data Integrity' check.  After reading about the data processing information, click "Skip" (this data has already had missing value imputation performed).
 
-F.	On the 'Data Filtering' window, choose "None (less than 5000 features)" and click 'Proceed' (this data has already been filtered)
+F.	On the 'Data Filtering' window, choose "None (less than 5000 features)" and click 'Proceed' (this data has already been filtered).
 
 G.	On the 'Normalization Overview' window, choose the following parameters:
 
@@ -245,13 +245,15 @@ G.	On the 'Normalization Overview' window, choose the following parameters:
     
     2. For Data Transformation, I recommend you choose "None", though you may change this if you want.
 
-    3. For Data scaling, I also recommend "None", though you may change this as well.
+    3. For Data scaling, I also recommend "None".
     
     4. Click "Normalize" (even if you selected all "None" options).
     
     5. You may choose to view the result.  Once you are satisfied, click "Proceed".
     
-H.	At this point, the dataset has been successfully uploaded into MetaboAnalyst if you see the "Select an analysis path to explore" page.  Feel free to explore the various analysis options the MetaboAnalyst provides; however, these results are beyond the scope of this SOP.  
+H.	If you can see the "Select an analysis path to explore" page, then the dataset has been successfully uploaded into MetaboAnalyst .  Feel free to explore the various statistical analyses that MetaboAnalyst offers; however, any results you generate are beyond the scope of this SOP.  
 
 #### VII.	Submitting beta-testing results to developers
-After completing the final module, you will have generated several output files including Microsoft .csv and .xlsx files in your working directory. Compress the entire working directory into a zip file. Rename the .zip extension to .piz to prevent Outlook from blocking the file, and send it to evich.marina@epa.gov.
+After completing the final module (and exploring the LUMA outputs), you will have generated several output files including Microsoft .csv and .xlsx files in your working directory. Compress the entire working directory into a zip file. Rename the .zip extension to .piz to prevent Outlook from blocking the file, and send it to evich.marina@epa.gov.
+
+*Thank you for your beta testing, and we hope you enjoyed our package!*

@@ -143,7 +143,7 @@ ScriptInfo_dlg <- function(multiple = FALSE) {
   } else {
 
     #Using individual dlg functions for each query
-    WorkingDir <- dlg_dir(default = getwd(), title = "Select your working directory or copy and paste into console")$res
+    WorkingDir <- dlg_dir(default = getwd(), title = "Select your input directory or copy and paste into console")$res
     DataDir <- ok_cancel_box(message = "If you are using the LUMA recommended data directory, click OK. Otherwise click Cancel.")
     BLANK <- ok_cancel_box(message = "If blank samples are being processed, click OK. Otherwise click Cancel.")
     IonMode <- dlg_list(choices = c("Positive","Negative"))$res
