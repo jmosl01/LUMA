@@ -164,16 +164,16 @@ ScriptInfo_dlg <- function(multiple = FALSE) {
     } else {
 
       mylist <- mylist[-1]
-      SamplesDir <- mylist[grep("Samples", mylist)]
-      BlanksDir <- mylist[grep("Blanks", mylist)]
-      PooledQCsDir <- mylist[grep("PooledQCs", mylist)]
+      SamplesDir <- mylist[grep("Sample", ignore.case = T, mylist)]
+      BlanksDir <- mylist[grep("Blank", ignore.case = T, mylist)]
+      PooledQCsDir <- mylist[grep("QC", ignore.case = T, mylist)]
       mydir <- list(SamplesDir = SamplesDir, BlanksDir = BlanksDir, PooledQCsDir = PooledQCsDir)
     }
 
   }  else {
 
     form <- list(
-      "SampleDir:DIR" = "Select your Samples directory (or copy and paste into console)",
+      "SamplesDir:DIR" = "Select your Samples directory (or copy and paste into console)",
       "BlanksDir:DIR" = "Select your Blanks directory (or copy and paste into console)",
       "PooledQCsDir:DIR" = "Select your Pooled QCs directory (or copy and paste into console)"
     )
