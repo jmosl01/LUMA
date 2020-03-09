@@ -18,7 +18,7 @@
 #' 2nd element is a list of objects used to validate CAMERA results.
 #' @importFrom  CAMERA plotEICs
 #' @importFrom CAMERA plotPsSpectrum
-#' @importFrom grDevices dev.off pdf rainbow
+#' @importFrom grDevices dev.off pdf rainbow graphics.off
 #' @importFrom graphics layout par plot text
 #' @importFrom Hmisc rcorr
 #' @importFrom corrplot corrplot corrMatOrder
