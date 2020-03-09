@@ -102,7 +102,20 @@
   }
 
 
-.CAMERASanityCheck = function(CAMERA.obj,CAMERA.file) {
+.CAMERASanityCheck = function(CAMERA.obj,CAMERA.file,new_filepaths,BLANK) {
+
+  ##Set default values
+  if(missing(new_filepaths)) new_filepaths <- NULL
+  if(missing(BLANK)) {
+
+    if ("BLANK" %in% ls(envir = .GlobalEnv)) {
+      BLANK <- get("BLANK", envir = .GlobalEnv)
+    } else {
+      BLANK <- NULL
+    }
+
+  }
+
   #Check if CAMERA.obj is an xsAnnotate object
   if(class(CAMERA.obj)[1] != "xsAnnotate") {
 
@@ -130,13 +143,48 @@
         myind <- grep("xsAnnotate",myclasses)
         CAMERA.obj <- CAMERA.list[[myind[1]]]
 
+        if(is.null(new_filepaths)) {
+
+          #Sets default value for new_filepaths to existing CAMERA object filepaths
+          new_filepaths <- CAMERA.obj@xcmsSet@filepaths
+
+        } else {
+
+            if(is.logical(BLANK)) {
+
+              if(BLANK) {
+
+                new_filepaths <- new_filepaths[grepl("Blanks", new_filepaths)]
+
+              } else {
+
+                if(!BLANK) {
+
+                  new_filepaths <- new_filepaths[!grepl("Blanks", new_filepaths)]
+
+                }
+              }
+
+            }
+
+        }
+
+
         if(length(grep("Pos",CAMERA.file)) == 1) {
+
+          new_filepaths <- new_filepaths[grepl(ion.id[1],new_filepaths)]
+
+          CAMERA.obj@xcmsSet@filepaths <- new_filepaths
 
           anposGa <<- anposGa <- CAMERA.obj
 
         } else {
 
           if(length(grep("Neg",CAMERA.file)) == 1) {
+
+            new_filepaths <- new_filepaths[grepl(ion.id[2],new_filepaths)]
+
+            CAMERA.obj@xcmsSet@filepaths <- new_filepaths
 
             annegGa <<- annegGa <- CAMERA.obj
 
@@ -225,7 +273,7 @@
     load(file = XCMS.file, verbose = TRUE)
     if(file.exists(CAMERA.file)){
       cat("Reading in CAMERA objects.\n\n")
-      CAMERA.obj <- .CAMERASanityCheck(CAMERA.obj,CAMERA.file)
+      CAMERA.obj <- .CAMERASanityCheck(CAMERA.obj,CAMERA.file, new_filepaths = DataFiles)
 
       ## Converts retention times to min from sec in Peaklist -----
       if(length(grep("Pos",CAMERA.file)) == 1)
