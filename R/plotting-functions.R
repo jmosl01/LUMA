@@ -68,6 +68,9 @@ plot_metgroup = function(CAMERA.obj, Sample.df, Peak.list, center, BLANK, gen.pl
 
     # New code to plot correlation matrix plots for each metabolite group containing more than one feature
     if (gen.plots && !BLANK) {
+
+
+        graphics.off()
         sexes <- unique(paste(Sample.df$Sex, "_", sep = ""))
         sample.cols <- grep(paste(QC.id, paste(strsplit(sexes, "(?<=.[_])", perl = TRUE), collapse = "|"), sep = "|"),
             colnames(Peak.list))
@@ -260,6 +263,9 @@ plot_ionduplicate = function(anposGa, xpos, annegGa, xneg, rt.method, Peak.list,
 
   ## Code to plot EICs for all Duplicate IDs in a loop.####
     if (gen.plots) {
+
+        graphics.off()
+
         total = length(Un.ID)
 
         pdf(file = paste(file.base, ".pdf", sep = ""))
