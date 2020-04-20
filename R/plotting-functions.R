@@ -1,3 +1,4 @@
+source("my_plotEICs.R")
 #' @title Loop-based EIC Plotter for metabolite groups
 #'
 #' @export
@@ -32,7 +33,6 @@ plot_metgroup = function(CAMERA.obj, Sample.df, Peak.list, center, BLANK, gen.pl
         QC.id = "Pooled_QC"
     if (missing(maxlabel))
         maxlabel = 10
-
 
     # Change the psspectra list in the xsAnnotate object to be the unique list of metabolite_groups
     X <- split(Peak.list$EIC_ID, as.numeric(Peak.list$metabolite_group))
@@ -93,8 +93,8 @@ plot_metgroup = function(CAMERA.obj, Sample.df, Peak.list, center, BLANK, gen.pl
                   test.mat <- as.matrix(t(my.mat))
                   dimnames(test.mat) <- list(colnames(my.df[, sample.cols]), my.df$EIC_ID)
                   plot(c(0, 1), c(0, 1), ann = F, bty = "n", type = "n", xaxt = "n", yaxt = "n")
-                  text(x = 0.5, y = 0.5, paste("Dendrograms can't be plotted for two features.\n", "Use the correlation plot to the left to \n",
-                    "Tell if two features are from the same metabolite"), cex = 1.6, col = "black")
+                  text(x = 0.5, y = 0.5, paste("Dendrograms can't be plotted for two features.\n", "Use the correlation plot to the left to tell \n",
+                    "if two features are from the same metabolite"), cex = 1.6, col = "black")
                   res2 <- rcorr(test.mat)
                   M <- res2$r
                   P <- res2$P
@@ -102,12 +102,17 @@ plot_metgroup = function(CAMERA.obj, Sample.df, Peak.list, center, BLANK, gen.pl
                   order.hc2 <- corrplot::corrMatOrder(M, order = "hclust", hclust.method = "complete")
                   col.new = rainbow(maxlabel)[order.hc2]
                   corrplot(M, type = "upper", order = "hclust", hclust.method = "complete", p.mat = P, sig.level = 0.01, insig = "blank",
-                    tl.col = col.new)
+                    tl.col = col.new, cl.ratio = 0.15, cl.align.text = "l", cl.cex = 0.6, cl.offset = 0.2)
 
                   # Plots the EICs and Pseudo-spectra for each metabolite group containing more than one feature in a for loop
-                  EIC.plots <- plotEICs(new_CAMERA.obj, pspec = get.mg[i], maxlabel = maxlabel, sleep = 0)  ## Plot the EICs
+                  EIC.plots <- my_plotEICs(new_CAMERA.obj, pspec = get.mg[i], maxlabel = maxlabel, sleep = 0)  ## Plot the EICs
 
-                  plotPsSpectrum(new_CAMERA.obj, pspec = get.mg[i], maxlabel = maxlabel, sleep = 0)  #Plot the Mass Spectra
+                  a1 <- new_CAMERA.obj@pspectra[[get.mg[i]]]
+                  b1 <- new_CAMERA.obj@groupInfo[a1,"mz"]
+                  mz1 <- min(b1) * 0.80
+                  mz2 <- max(b1) * 1.20
+
+                  plotPsSpectrum(new_CAMERA.obj, pspec = get.mg[i], maxlabel = maxlabel, sleep = 0, cex.main = 0.8, cexMulti = 1.0, mzrange = c(mz1,mz2))  #Plot the Mass Spectra
 
                 } else {
                   my.mat <- as.matrix(my.df[, grep(paste(QC.id, paste(strsplit(sexes, "(?<=.[_])", perl = TRUE),
@@ -129,11 +134,16 @@ plot_metgroup = function(CAMERA.obj, Sample.df, Peak.list, center, BLANK, gen.pl
                   order.hc2 <- corrplot::corrMatOrder(M, order = "hclust", hclust.method = "complete")
                   col.new = rainbow(maxlabel)[order.hc2]
                   corrplot(M, type = "upper", order = "hclust", hclust.method = "complete", p.mat = P, sig.level = 0.01, insig = "blank",
-                    tl.col = col.new)
+                    tl.col = col.new, cl.ratio = 0.15, cl.align.text = "l", cl.cex = 0.6, cl.offset = 0.2)
                   # Plots the EICs and Pseudo-spectra for each metabolite group containing more than one feature in a for loop
-                  EIC.plots <- plotEICs(new_CAMERA.obj, pspec = get.mg[i], maxlabel = maxlabel, sleep = 0)  ## Plot the EICs
+                  EIC.plots <- my_plotEICs(new_CAMERA.obj, pspec = get.mg[i], maxlabel = maxlabel, sleep = 0)  ## Plot the EICs
 
-                  plotPsSpectrum(new_CAMERA.obj, pspec = get.mg[i], maxlabel = maxlabel, sleep = 0)  #Plot the Mass Spectra
+                  a1 <- new_CAMERA.obj@pspectra[[get.mg[i]]]
+                  b1 <- new_CAMERA.obj@groupInfo[a1,"mz"]
+                  mz1 <- min(b1) * 0.80
+                  mz2 <- max(b1) * 1.20
+
+                  plotPsSpectrum(new_CAMERA.obj, pspec = get.mg[i], maxlabel = maxlabel, sleep = 0, cex.main = 0.8, cexMulti = 1.0, mzrange = c(mz1, mz2))  #Plot the Mass Spectra
                 }
             }
         }
