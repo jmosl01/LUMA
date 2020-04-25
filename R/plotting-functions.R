@@ -1,4 +1,3 @@
-source("my_plotEICs.R")
 #' @title Loop-based EIC Plotter for metabolite groups
 #'
 #' @export
@@ -17,8 +16,7 @@ source("my_plotEICs.R")
 #' @param maxlabel numeric How many m/z labels to print
 #' @return List of length 2.  1st element is a data frame with all columns as the original data frame with one additional column 'Correlation.stat'.
 #' 2nd element is a list of objects used to validate CAMERA results.
-#' @importFrom  CAMERA plotEICs
-#' @importFrom CAMERA plotPsSpectrum
+#' @importFrom CAMERA plotEICs plotPsSpectrum
 #' @importFrom grDevices dev.off pdf rainbow graphics.off
 #' @importFrom graphics layout par plot text
 #' @importFrom Hmisc rcorr
@@ -105,7 +103,7 @@ plot_metgroup = function(CAMERA.obj, Sample.df, Peak.list, center, BLANK, gen.pl
                     tl.col = col.new, cl.ratio = 0.15, cl.align.text = "l", cl.cex = 0.6, cl.offset = 0.2)
 
                   # Plots the EICs and Pseudo-spectra for each metabolite group containing more than one feature in a for loop
-                  EIC.plots <- my_plotEICs(new_CAMERA.obj, pspec = get.mg[i], maxlabel = maxlabel, sleep = 0)  ## Plot the EICs
+                  EIC.plots <- plotEICs(new_CAMERA.obj, pspec = get.mg[i], maxlabel = maxlabel, sleep = 0)  ## Plot the EICs
 
                   a1 <- new_CAMERA.obj@pspectra[[get.mg[i]]]
                   b1 <- new_CAMERA.obj@groupInfo[a1,"mz"]
@@ -136,7 +134,7 @@ plot_metgroup = function(CAMERA.obj, Sample.df, Peak.list, center, BLANK, gen.pl
                   corrplot(M, type = "upper", order = "hclust", hclust.method = "complete", p.mat = P, sig.level = 0.01, insig = "blank",
                     tl.col = col.new, cl.ratio = 0.15, cl.align.text = "l", cl.cex = 0.6, cl.offset = 0.2)
                   # Plots the EICs and Pseudo-spectra for each metabolite group containing more than one feature in a for loop
-                  EIC.plots <- my_plotEICs(new_CAMERA.obj, pspec = get.mg[i], maxlabel = maxlabel, sleep = 0)  ## Plot the EICs
+                  EIC.plots <- plotEICs(new_CAMERA.obj, pspec = get.mg[i], maxlabel = maxlabel, sleep = 0)  ## Plot the EICs
 
                   a1 <- new_CAMERA.obj@pspectra[[get.mg[i]]]
                   b1 <- new_CAMERA.obj@groupInfo[a1,"mz"]
