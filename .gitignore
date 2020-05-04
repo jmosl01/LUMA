@@ -4,7 +4,8 @@ doc
 .Rhistory
 .RData
 .Ruserdata
-.Rproj
+*.Rproj
+*.Rbuildignore
 inst/doc
 NAMESPACE
 doc
