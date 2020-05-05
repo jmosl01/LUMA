@@ -456,6 +456,40 @@
 }
 ##END
 
+
+## Database utility functions
+.trim_table_by_mz <- function(x, min_mz, max_mz) {
+
+  if (is.data.frame(x)) {
+
+    x <- x[x[["mz"]] > min_mz,]
+    x <- x[x[["mz"]] < max_mz,]
+    return(x)
+  } else "Warning: input must be a data frame"
+}
+
+.trim_table_by_eic <- function(x, eic) {
+
+  if (is.data.frame(x)) {
+
+    x <- x[which(x[["EIC_ID"]] %in% eic),]
+    return(x)
+  } else "Warning: input must be a data frame"
+}
+
+.trim_table_by_metgroup <- function(x, met) {
+
+  if (is.data.frame(x)) {
+
+    x <- x[which(x[["metabolite_group"]] %in% met),]
+    return(x)
+  } else "Warning: input must be a data frame"
+}
+
+
+##END
+
+
 ## Other module utility functions ----
 .gen_res = function(IonMode,search.par,Peak.list,Sample.df,BLANK) {
   if (IonMode == "Positive") {
