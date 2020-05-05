@@ -14,3 +14,12 @@ FinalWorkflow(peak_db, lib_db)
 \description{
 All LUMA workflows must end with this function.  Records the names of existing data tables and writes out the LUMA log file for traceability.
 }
+\examples{
+\dontrun{
+library(LUMA)
+db.dir <- system.file('extdata/', package = "LUMA")
+InitWorkflow(db.dir = db.dir)
+AnnotatePeaklist(from.table = "From CAMERA", to.table = "Annotated")
+FinalWorkflow(peak_db = peak_db, lib_db = lib_db)
+}
+}

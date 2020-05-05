@@ -8,6 +8,13 @@
 #' @param CAMERA.obj which CAMERA object to use to plot metabolite groups.
 #' Default is to read from saved R objects by call to InitWorkflow
 #' @return NULL
+#' @examples
+#' \dontrun{
+#' library(LUMA)
+#' db.dir <- system.file('extdata/', package = "LUMA")
+#' InitWorkflow(db.dir = db.dir)
+#' ParseCAMERA(from.table = "From CAMERA", to.table = "output_parsed")
+#' }
 ParseCAMERA <- function(from.table,to.table,CAMERA.obj) {
 
   #Set default values
@@ -99,6 +106,13 @@ ParseCAMERA <- function(from.table,to.table,CAMERA.obj) {
 #' @param from.table from which table should LUMA pull the Peak.list
 #' @param to.table to which should LUMA save the modified Peak.list
 #' @return NULL
+#' @examples
+#' \dontrun{
+#' library(LUMA)
+#' db.dir <- system.file('extdata/', package = "LUMA")
+#' InitWorkflow(db.dir = db.dir)
+#' CombineFeatures(from.table = "From CAMERA", to.table = "Combined Isotopes and Adducts")
+#' }
 CombineFeatures <- function(from.table,to.table) {
   ## Sums isotopic and adduct peaks and combined all feature data into a single metadata entry
 

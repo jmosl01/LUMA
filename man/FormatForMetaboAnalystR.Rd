@@ -38,3 +38,12 @@ mSetObj
 \description{
 This function initializes objects that will hold the metabolite data, formats peak intensity data into one of the formats acceptable by MetaboAnalystR, and sets the metabolite data object.
 }
+\examples{
+\dontrun{
+library(LUMA)
+db.dir <- system.file('extdata/', package = "LUMA")
+InitWorkflow(db.dir = db.dir)
+AnnotatePeaklist(from.table = "From CAMERA", to.table = "Annotated")
+FormatForMetaboAnalystR(from.table = "Annotated", to.csv = "Peaklist_for_MetaboAnalyist", peak.db = peak_db, db.dir = db.dir)
+}
+}

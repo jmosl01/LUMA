@@ -15,3 +15,11 @@ CullMF(from.table, to.table)
 Culls the Peak.list by removing all components with minimum fraction less than the user-specified cutoff.
 See trim_minfrac for more details.
 }
+\examples{
+\dontrun{
+library(LUMA)
+db.dir <- system.file('extdata/', package = "LUMA")
+InitWorkflow(db.dir = db.dir)
+CullMF(from.table = "From CAMERA", to.table = "Trimmed by MinFrac")
+}
+}

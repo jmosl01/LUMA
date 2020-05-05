@@ -59,3 +59,10 @@ global variables and Peaklist in database are returned
 \description{
 All LUMA workflows must start with this function. Creates the first Peaklist and sets up storing and passing Peaklists and ancillary data between modules.
 }
+\examples{
+\dontrun{
+library(LUMA)
+db.dir <- system.file('extdata/', package = "LUMA")
+InitWorkflow(db.dir = db.dir)
+}
+}

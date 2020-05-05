@@ -1,0 +1,2 @@
+ppm	rt	Voidrt	Corr.stat.pos	Corr.stat.neg	CV	Minfrac	Endogenous	Solvent	gen.plots	keep.singletons
+3	0.2	0.5	0.524	0.469	0.3	0.8	100000	10	FALSE	FALSE

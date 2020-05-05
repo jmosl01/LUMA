@@ -17,3 +17,11 @@ CullVoidVolume(from.table, to.table, method)
 Culls the Peak.list by removing all components coming from the void volume.
 See remove_void_volume for more details.
 }
+\examples{
+\dontrun{
+library(LUMA)
+db.dir <- system.file('extdata/', package = "LUMA")
+InitWorkflow(db.dir = db.dir)
+CullVoidVolume(from.table = "From CAMERA", to.table = "Trimmed by RT")
+}
+}

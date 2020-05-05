@@ -18,3 +18,11 @@ Default is 'Annotated Library'}
 Compares isotope and adduct annotations within Peak.list (inherited from CAMERA) to user-defined annotation library.
 See match_Annotation for more details.
 }
+\examples{
+\dontrun{
+library(LUMA)
+db.dir <- system.file('extdata/', package = "LUMA")
+InitWorkflow(db.dir = db.dir)
+AnnotatePeaklist(from.table = "From CAMERA", to.table = "Annotated")
+}
+}

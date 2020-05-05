@@ -21,3 +21,12 @@ Default is 'db'}
 Normalizes Peaklists from positive and negative ionization modes separately.
 See replace_zeros_normalize for more details.
 }
+\examples{
+\dontrun{
+library(LUMA)
+db.dir <- system.file('extdata/', package = "LUMA")
+InitWorkflow(db.dir = db.dir)
+NormalizePeaklists(from.table = "From CAMERA", to.table = "Normalized",
+peak.db = peak_db, db.dir = db.dir)
+}
+}

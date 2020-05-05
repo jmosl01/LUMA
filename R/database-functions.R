@@ -99,7 +99,7 @@ connect_libdb = function(lib.db, db.dir, mem) {
 
     dir.create(db.dir, recursive = FALSE, showWarnings = FALSE)
 
-    lib_db <- DBI::dbConnect(RSQLite::SQLite(), patse0(paste(db.dir, lib.db, sep = "/"),".SQLite"))
+    lib_db <- DBI::dbConnect(RSQLite::SQLite(), paste0(paste(db.dir, lib.db, sep = "/"),".SQLite"))
 
   }
 
@@ -124,7 +124,7 @@ connect_lumadb = function(db.list, db.dir, new.db) {
       new.db = "Peaklist_db"
 
     peak_db <- DBI::dbConnect(RSQLite::SQLite(), paste0(paste(db.dir, new.db, sep = "/"),".SQLite"))
-    pos_db <- DBI::dbConnect(RSQLite::SQLite(), patse0(paste(db.dir, db.list[[1]], sep = "/"),".SQLite"))
+    pos_db <- DBI::dbConnect(RSQLite::SQLite(), paste0(paste(db.dir, db.list[[1]], sep = "/"),".SQLite"))
     blanks_pos_db <- DBI::dbConnect(RSQLite::SQLite(), paste0(paste(db.dir, db.list[[3]], sep = "/"),".SQLite"))
     neg_db <- DBI::dbConnect(RSQLite::SQLite(), paste0(paste(db.dir, db.list[[2]], sep = "/"),".SQLite"))
     blanks_neg_db <- DBI::dbConnect(RSQLite::SQLite(), paste0(paste(db.dir, db.list[[4]], sep = "/"),".SQLite"))

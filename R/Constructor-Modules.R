@@ -27,6 +27,13 @@
 #' Default is FALSE
 #' @return global variables and Peaklist in database are returned
 #' @importFrom utils read.csv
+#' @examples
+#' \dontrun{
+#' library(LUMA)
+#' db.dir <- system.file('extdata/', package = "LUMA")
+#' InitWorkflow(db.dir = db.dir)
+#' }
+
 InitWorkflow <- function(ion.id,db.dir,use.CAMERA,use.XCMS,CAMERA.obj,XCMS.obj,
                          graph.method,ion.mode,mytable,calc.minfrac,multiple) {
 
@@ -259,6 +266,14 @@ InitWorkflow <- function(ion.id,db.dir,use.CAMERA,use.XCMS,CAMERA.obj,XCMS.obj,
 #' @param lib_db existing library database connection
 #' @return NULL
 #' @importFrom DBI dbListTables dbDisconnect
+#' @examples
+#' \dontrun{
+#' library(LUMA)
+#' db.dir <- system.file('extdata/', package = "LUMA")
+#' InitWorkflow(db.dir = db.dir)
+#' AnnotatePeaklist(from.table = "From CAMERA", to.table = "Annotated")
+#' FinalWorkflow(peak_db = peak_db, lib_db = lib_db)
+#' }
 FinalWorkflow <- function(peak_db,lib_db) {
 
   #Initialize all global variables

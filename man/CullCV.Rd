@@ -15,3 +15,11 @@ CullCV(from.table, to.table)
 Culls the Peak.list by removing all components with a coefficient of variation (CV) greater than the user-specified cutoff across all Pooled QC samples.
 See trim_cv for more details.
 }
+\examples{
+\dontrun{
+library(LUMA)
+db.dir <- system.file('extdata/', package = "LUMA")
+InitWorkflow(db.dir = db.dir)
+CullCV(from.table = "From CAMERA", to.table = "Trimmed by CV")
+}
+}

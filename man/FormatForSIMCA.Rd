@@ -21,3 +21,12 @@ Default is 'db'}
 Formats Peaklists processed by LUMA and exports a csv file for direct import into the multivariate statistical software SIMCA.
 See format_simca for more details.
 }
+\examples{
+\dontrun{
+library(LUMA)
+db.dir <- system.file('extdata/', package = "LUMA")
+InitWorkflow(db.dir = db.dir)
+AnnotatePeaklist(from.table = "From CAMERA", to.table = "Annotated")
+FormatForSIMCA(from.table = "Annotated", to.csv = "Peaklist_for_SIMCA", peak.db = peak_db, db.dir = db.dir)
+}
+}

@@ -7,6 +7,13 @@
 #' @param to.table to which should LUMA save the modified Peak.list
 #' @param method which method to apply to trim by retention time.  See trim_rt for details.
 #' @return NULL
+#' @examples
+#' \dontrun{
+#' library(LUMA)
+#' db.dir <- system.file('extdata/', package = "LUMA")
+#' InitWorkflow(db.dir = db.dir)
+#' CullVoidVolume(from.table = "From CAMERA", to.table = "Trimmed by RT")
+#' }
 CullVoidVolume <- function(from.table,to.table,method) {
   ##Culls Peaklist by RT > void volume
   Peak.list <- read_tbl(mytable = from.table,
@@ -40,6 +47,13 @@ CullVoidVolume <- function(from.table,to.table,method) {
 #' @param from.table from which table should LUMA pull the Peak.list
 #' @param to.table to which should LUMA save the modified Peak.list
 #' @return NULL
+#' @examples
+#' \dontrun{
+#' library(LUMA)
+#' db.dir <- system.file('extdata/', package = "LUMA")
+#' InitWorkflow(db.dir = db.dir)
+#' CullCV(from.table = "From CAMERA", to.table = "Trimmed by CV")
+#' }
 CullCV <- function(from.table,to.table) {
   #Culls Peaklist by CV
   Peak.list <- read_tbl(mytable = from.table,
@@ -77,6 +91,13 @@ CullCV <- function(from.table,to.table) {
 #' @param from.table from which table should LUMA pull the Peak.list
 #' @param to.table to which should LUMA save the modified Peak.list
 #' @return NULL
+#' @examples
+#' \dontrun{
+#' library(LUMA)
+#' db.dir <- system.file('extdata/', package = "LUMA")
+#' InitWorkflow(db.dir = db.dir)
+#' CullMF(from.table = "From CAMERA", to.table = "Trimmed by MinFrac")
+#' }
 CullMF <- function(from.table,to.table) {
   #Trims Peaklist by MinFrac
   Peak.list <- read_tbl(mytable = from.table,

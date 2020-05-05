@@ -9,6 +9,14 @@
 #' Default is 'Peaklist_db'
 #' @param db.dir directory containing the database.
 #' Default is 'db'
+#' @examples
+#' \dontrun{
+#' library(LUMA)
+#' db.dir <- system.file('extdata/', package = "LUMA")
+#' InitWorkflow(db.dir = db.dir)
+#' AnnotatePeaklist(from.table = "From CAMERA", to.table = "Annotated")
+#' FormatForSIMCA(from.table = "Annotated", to.csv = "Peaklist_for_SIMCA", peak.db = peak_db, db.dir = db.dir)
+#' }
 FormatForSIMCA <- function(from.table,to.csv,peak.db,db.dir) {
 
   #Set default values
@@ -54,6 +62,14 @@ FormatForSIMCA <- function(from.table,to.csv,peak.db,db.dir) {
 #' @param db.dir directory containing the database.
 #' Default is 'db'
 #' @return mSetObj
+#' @examples
+#' \dontrun{
+#' library(LUMA)
+#' db.dir <- system.file('extdata/', package = "LUMA")
+#' InitWorkflow(db.dir = db.dir)
+#' AnnotatePeaklist(from.table = "From CAMERA", to.table = "Annotated")
+#' FormatForMetaboAnalystR(from.table = "Annotated", to.csv = "Peaklist_for_MetaboAnalyist", peak.db = peak_db, db.dir = db.dir)
+#' }
 FormatForMetaboAnalystR <- function(from.table, to.csv, data.type = "pktable",
                                     anal.type = "stat", paired = FALSE, peak.db, db.dir)
 {

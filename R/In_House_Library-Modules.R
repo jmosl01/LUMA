@@ -8,6 +8,13 @@
 #' @param lib.db character name of In House Library database.
 #' Default is 'Annotated Library'
 #' @return NULL
+#' @examples
+#' \dontrun{
+#' library(LUMA)
+#' db.dir <- system.file('extdata/', package = "LUMA")
+#' InitWorkflow(db.dir = db.dir)
+#' AnnotatePeaklist(from.table = "From CAMERA", to.table = "Annotated")
+#' }
 AnnotatePeaklist <- function(from.table,to.table,lib.db) {
 
   #Initialize global variables
