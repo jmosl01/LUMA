@@ -1,5 +1,5 @@
 ---
-title: "Making Workflows with LUMA"
+title: "An LCMS-Based Untargeted Metabolomics Assistant (LUMA)"
 author: 
   
 - affiliation: U.S. Environmental Protection Agency
@@ -19,7 +19,7 @@ abstract: >
   The LCMS-Based Untargeted Metabolomics Assistant (LUMA) package is an automated data processing tool, bridging the outputs of XCMS and CAMERA to a comprehensive data matrix in the R environment for discovery-based studies. The intended users of this R package are LC-MS-based untargeted metabolomics practitioners with minimal to advanced experience in the R environment who process raw LC-MS data files in preparation for downstream statistical analysis. The LUMA package performs feature-reduction by minimizing single features which do not pass quality control (QC) checks and can negatively impact downstream analyses. LUMA contains self-contained functions (herein referred to as modules) that allow for rapid, automated workflows to perform these QC steps with minimal user input. Furthermore, to expedite manual data curation for potentially conflicting isotope and ion adduct annotations, data visualization is consolidated to a single graphic per metabolite group. This graphic contains all EIC plots and psSpectra from CAMERA and new correlation matrices and dendrograms for all features attributed to a single metabolite. Final processed metabolite data, containing normalized intensities and user-defined meta-data, can be exported to worksheets which are directly formatted to a number of analytical tools including MetaboAnalyst, while retaining traceability in the R environment.  
     
 vignette: >
-  %\VignetteIndexEntry{Making Workflows with LUMA}
+  %\VignetteIndexEntry{LUMA}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 
