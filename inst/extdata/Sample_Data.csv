@@ -1,0 +1,97 @@
+CT-ID,Treatment,Tank Rep,Pair,Sex,Time,Wet wt (g),Gonad wt(g),GSI,Ex vivo wt (mg),Tubercle score,Urine,Spermiating/ovulating,Gall bladder visible,Gall bladder collected,Notes,Ex vivo notes,Plate Position,Plate Number,Sample ID,File Name
+M_Liv_Control_Pos_1,Control,1,A,M,0.359722222,2.89,0.036,1.24567474,3.5,31,Y,Y,Y,Y,,,A5,Plate 1,330101,M_Control_1
+M_Liv_Control_Pos_2,Control,2,A,M,0.363888889,2.63,0.0435,1.653992395,7.1,21,Y,Y,Y,Y,,,A3,Plate 1,330102,M_Control_2
+M_Liv_Control_Pos_9,Control,3,A,M,0.367361111,2.49,0.0337,1.353413655,4.4,26,Y,Y,Y,N,,,A5,Plate 2,330103,M_Control_9
+M_Liv_Control_Pos_3,Control,4,A,M,0.369444444,1.93,0.0317,1.642487047,5.6,22,Y,Y,Y,Y,,,A6,Plate 1,330104,M_Control_3
+M_Liv_5_Effluent_Pos_1,5% Effluent,1,A,M,0.371527778,2.29,0.0207,0.903930131,5.3,22,Y,N,N,N,,,A7,Plate 1,330105,M_5% Effluent_1
+M_Liv_5_Effluent_Pos_9,5% Effluent,2,A,M,0.375,2.24,0.0402,1.794642857,9.1,21,Y,Y,Y,Y,,,A3,Plate 2,330106,M_5% Effluent_9
+M_Liv_5_Effluent_Pos_2,5% Effluent,3,A,M,0.376388889,3.04,0.0481,1.582236842,6.5,28,Y,Y,Y,Y,,,A9,Plate 1,330107,M_5% Effluent_2
+M_Liv_5_Effluent_Pos_3,5% Effluent,4,A,M,0.377777778,2.39,0.017,0.711297071,4.8,23,Y,Y,N,N,,,A10,Plate 1,330108,M_5% Effluent_3
+M_Liv_20_Effluent_Pos_9,20% Effluent,1,A,M,0.379861111,3.16,0.0608,1.924050633,8,24,Y,Y,Y,Y,,,A6,Plate 2,330109,M_20% Effluent_9
+M_Liv_20_Effluent_Pos_1,20% Effluent,2,A,M,0.384027778,2.18,0.0377,1.729357798,7.5,20,Y,Y,Y,Y,,,A11,Plate 1,330110,M_20% Effluent_1
+M_Liv_20_Effluent_Pos_2,20% Effluent,3,A,M,0.384722222,2.68,0.0409,1.526119403,9.5,22,Y,Y,Y,Y,,,B1,Plate 1,330111,M_20% Effluent_2
+M_Liv_20_Effluent_Pos_10,20% Effluent,4,A,M,0.3875,2.51,0.045,1.792828685,7.2,24,Y,Y,N,N,,,A7,Plate 2,330112,M_20% Effluent_10
+M_Liv_100_Effluent_Pos_1,100% Effluent,1,A,M,0.390277778,2.07,0.0264,1.275362319,4.9,21,Y,Y,Y,Y,,,B3,Plate 1,330113,M_100% Effluent_1
+M_Liv_100_Effluent_Pos_2,100% Effluent,2,A,M,0.395833333,2.54,0.0625,2.460629921,5.7,23,Y,Y,Y,Y,,,B4,Plate 1,330114,M_100% Effluent_2
+M_Liv_100_Effluent_Pos_9,100% Effluent,3,A,M,0.398611111,2.85,0.0533,1.870175439,10.5,19,Y,Y,Y,Y,Urine contaminated w/ sperm,,A9,Plate 2,330115,M_100% Effluent_9
+M_Liv_100_Effluent_Pos_3,100% Effluent,4,A,M,0.400694444,2.1,0.0378,1.8,4.7,22,Y,N,N,N,,,B7,Plate 1,330116,M_100% Effluent_3
+F_Liv_Control_Pos_1,Control,1,A,F,0.413888889,0.95,0.1405,14.78947368,10.5,,-,N,Y,N,,,B8,Plate 1,330117,F_Control_1
+F_Liv_Control_Pos_9,Control,2,A,F,0.415277778,1.04,0.1522,14.63461538,13.8,,-,N,Y,Y,,,A10,Plate 2,330118,F_Control_9
+F_Liv_Control_Pos_2,Control,3,A,F,0.418055556,1.33,0.189,14.21052632,14.8,,-,N,Y,Y,,,B10,Plate 1,330119,F_Control_2
+F_Liv_Control_Pos_3,Control,4,A,F,0.420138889,1.09,,,12.6,0,-,N,N,N,,,B11,Plate 1,330120,F_Control_3
+F_Liv_5_Effluent_Pos_9,5% Effluent,1,A,F,0.422222222,1.3,0.1477,11.36153846,18.2,,-,N,N,N,,,B7,Plate 2,330121,F_5% Effluent_9
+F_Liv_5_Effluent_Pos_1,5% Effluent,2,A,F,0.425,1.28,0.1866,14.578125,7.9,,-,N,Y,Y,,,B12,Plate 1,330122,F_5% Effluent_1
+F_Liv_5_Effluent_Pos_2,5% Effluent,3,A,F,0.427083333,0.94,0.1217,12.94680851,13.6,,-,N,Y,Y,,,C1,Plate 1,330123,F_5% Effluent_2
+F_Liv_5_Effluent_Pos_10,5% Effluent,4,A,F,0.429166667,1.1,0.1814,16.49090909,11.7,,-,N,Y,Y,,,B1,Plate 2,330124,F_5% Effluent_10
+F_Liv_20_Effluent_Pos_1,20% Effluent,1,A,F,0.431944444,1.2,0.197,16.41666667,12.1,,-,N,Y,Y,,,C2,Plate 1,330125,F_20% Effluent_1
+F_Liv_20_Effluent_Pos_2,20% Effluent,2,A,F,0.432638889,1.39,0.1289,9.273381295,13,0,-,N,Y,Y,,,C4,Plate 1,330126,F_20% Effluent_2
+F_Liv_20_Effluent_Pos_9,20% Effluent,3,A,F,0.436111111,1.01,0.1095,10.84158416,9.9,0,-,N,N,N,,,B3,Plate 2,330127,F_20% Effluent_9
+F_Liv_20_Effluent_Pos_3,20% Effluent,4,A,F,0.438888889,1.26,0.2091,16.5952381,13.5,0,-,N,Y,Y (Partial?),,,C5,Plate 1,330128,F_20% Effluent_3
+F_Liv_100_Effluent_Pos_1,100% Effluent,1,A,F,0.444444444,0.99,0.0997,10.07070707,16.7,0,-,N,N,N,,,C8,Plate 1,330129,F_100% Effluent_1
+F_Liv_100_Effluent_Pos_9,100% Effluent,3,A,F,0.445138889,0.86,0.0921,10.70930233,12.8,0,-,N,N,N,,,B4,Plate 2,330130,F_100% Effluent_9
+F_Liv_100_Effluent_Pos_2,100% Effluent,2,A,F,0.446527778,1.23,0.238,19.3495935,12.3,0,-,N,N,N,,,C9,Plate 1,330131,F_100% Effluent_2
+F_Liv_100_Effluent_Pos_3,100% Effluent,4,A,F,0.448611111,1.08,0.0914,8.462962963,10.8,0,-,N,N,N,,,C11,Plate 1,330132,F_100% Effluent_3
+M_Liv_Control_Pos_10,Control,1,B,M,0.473611111,2.52,0.0463,1.837301587,7.1,18,Y,Y,Y,Y,Gonad 337133 vial top blew off and landed on floor.,,A11,Plate 2,330133,M_Control_10
+M_Liv_Control_Pos_4,Control,2,B,M,0.475,2.55,0.0302,1.184313725,6.8,28,Y,Y,Y,Y,no pituitary collected,,C12,Plate 1,330134,M_Control_4
+M_Liv_Control_Pos_5,Control,3,B,M,0.478472222,3.44,0.0533,1.549418605,9.2,27,Y,Y,Y,Y,,,D1,Plate 1,330135,M_Control_5
+M_Liv_Control_Pos_11,Control,4,B,M,0.48125,3.04,0.0394,1.296052632,7.7,26,Y,N,Y,Y,,,B8,Plate 2,330136,M_Control_11
+M_Liv_5_Effluent_Pos_4,5% Effluent,1,B,M,0.483333333,2.85,0.04,1.403508772,9.4,20,Y,Y,Y,Y,Two tubes labeled 137 for gall bladder,,D2,Plate 1,330137,M_5% Effluent_4
+M_Liv_5_Effluent_Pos_5,5% Effluent,2,B,M,0.4875,2.38,0.0391,1.642857143,6.5,19,Y,Y,N,N,,,D3,Plate 1,330138,M_5% Effluent_5
+M_Liv_5_Effluent_Pos_10,5% Effluent,3,B,M,0.490277778,2.28,0.0298,1.307017544,4.6,20,Y,Y,Y (Popped),N,,,B10,Plate 2,330139,M_5% Effluent_10
+M_Liv_5_Effluent_Pos_6,5% Effluent,4,B,M,0.493055556,2.59,0.0382,1.474903475,6.8,25,Y,Y,N,N,,,D5,Plate 1,330140,M_5% Effluent_6
+M_Liv_20_Effluent_Pos_3,20% Effluent,1,B,M,0.496527778,2.35,0.0544,2.314893617,7.4,22,Y,Y,N,N,,,D6,Plate 1,330141,M_20% Effluent_3
+M_Liv_20_Effluent_Pos_11,20% Effluent,2,B,M,0.498611111,2.07,0.0516,2.492753623,6.3,23,Y,Y,Y,Y,,,B11,Plate 2,330142,M_20% Effluent_11
+M_Liv_20_Effluent_Pos_4,20% Effluent,3,B,M,0.502083333,2.92,0.0319,1.092465753,7.6,27,Y,Y,N,N,,,D9,Plate 1,330143,M_20% Effluent_4
+M_Liv_20_Effluent_Pos_5,20% Effluent,4,B,M,0.508333333,2.37,0.029,1.223628692,6.2,28,Y,Y,N,N,,,D10,Plate 1,330144,M_20% Effluent_5
+M_Liv_100_Effluent_Pos_10,100% Effluent,1,B,M,0.509722222,2.67,0.0361,1.352059925,10.7,19,Y,Y,Y,Y,,,B12,Plate 2,330145,M_100% Effluent_10
+M_Liv_100_Effluent_Pos_4,100% Effluent,2,B,M,0.513888889,2.43,0.0423,1.740740741,6.1,24,Y,Y,Y,Y,,,D12,Plate 1,330146,M_100% Effluent_4
+M_Liv_100_Effluent_Pos_5,100% Effluent,3,B,M,0.515277778,2.78,0.0504,1.81294964,9.3,18,Y,Y,Y,Y,Urine contaminated w/ sperm,,E2,Plate 1,330147,M_100% Effluent_5
+M_Liv_100_Effluent_Pos_11,100% Effluent,4,B,M,0.51875,2.4,0.0647,2.695833333,4.8,20,Y,Y,Y,Y,,,C1,Plate 2,330148,M_100% Effluent_11
+F_Liv_Control_Pos_4,Control,1,B,F,0.522916667,0.94,0.1119,11.90425532,9.6,0,-,N,Y,Y,,,E3,Plate 1,330149,F_Control_4
+F_Liv_Control_Pos_5,Control,2,B,F,0.525,1.05,0.1883,17.93333333,13.9,0,-,N,Y,Y,,,E4,Plate 1,330150,F_Control_5
+F_Liv_Control_Pos_10,Control,3,B,F,0.527777778,1.39,0.1718,12.35971223,19.5,0,-,N,Y,Y,,,C2,Plate 2,330151,F_Control_10
+F_Liv_Control_Pos_6,Control,4,B,F,0.529166667,1.47,0.1521,10.34693878,12.6,0,-,N,Y,Y,,,E6,Plate 1,330152,F_Control_6
+F_Liv_5_Effluent_Pos_3,5% Effluent,1,B,F,0.531944444,1,0.1503,15.03,5.2,0,-,N,Y,Y,,,E7,Plate 1,330153,F_5% Effluent_3
+F_Liv_5_Effluent_Pos_11,5% Effluent,2,B,F,0.534722222,1.18,0.123,10.42372881,12,0,-,N,Y,Y,,,C4,Plate 2,330154,F_5% Effluent_11
+F_Liv_5_Effluent_Pos_4,5% Effluent,3,B,F,0.536111111,1.32,0.1723,13.0530303,7.4,0,-,N,Y,Y,,,E10,Plate 1,330155,F_5% Effluent_4
+F_Liv_5_Effluent_Pos_5,5% Effluent,4,B,F,0.538194444,0.81,0.1082,13.35802469,13.2,0,-,N,Y,Y,,,E11,Plate 1,330156,F_5% Effluent_5
+F_Liv_20_Effluent_Pos_10,20% Effluent,1,B,F,0.540277778,0.83,0.1048,12.62650602,9.9,0,-,N,Y,Y (Popped),,,C5,Plate 2,330157,F_20% Effluent_10
+F_Liv_20_Effluent_Pos_4,20% Effluent,2,B,F,0.043055556,1.04,0.1875,18.02884615,12.7,0,-,N,Y,Y,,,F1,Plate 1,330158,F_20% Effluent_4
+F_Liv_20_Effluent_Pos_5,20% Effluent,3,B,F,0.044444444,1.26,0.1072,8.507936508,7,0,-,N,Y,Y (Popped),,,F3,Plate 1,330159,F_20% Effluent_5
+F_Liv_20_Effluent_Pos_11,20% Effluent,4,B,F,0.047222222,1.41,0.1699,12.04964539,11.7,0,-,N,Y,Y (Popped),no plasma sample,,C8,Plate 2,330160,F_20% Effluent_11
+F_Liv_100_Effluent_Pos_4,100% Effluent,1,B,F,0.050694444,1.17,0.2019,17.25641026,13.3,0,-,N,Y,N,,stinky ex vivo sample,F4,Plate 1,330161,F_100% Effluent_4
+F_Liv_100_Effluent_Pos_5,100% Effluent,2,B,F,0.052083333,0.94,0.0863,9.180851064,9.9,0,-,N,Y,Y (Popped),,,F5,Plate 1,330162,F_100% Effluent_5
+F_Liv_100_Effluent_Pos_10,100% Effluent,3,B,F,0.054861111,1.06,0.1249,11.78301887,3.8,0,-,N,Y,N,,mushy ex vivo tissue/almost looks like testes,C9,Plate 2,330163,F_100% Effluent_10
+F_Liv_100_Effluent_Pos_6,100% Effluent,4,B,F,0.05625,1.29,0.2283,17.69767442,18.5,0,-,N,Y,Y,,,F7,Plate 1,330164,F_100% Effluent_6
+M_Liv_Control_Pos_6,Control,1,C,M,0.104166667,1.77,0.0288,1.627118644,6.7,14,Y,Y,N,N,Urine contaminated w/ sperm,,F8,Plate 1,330165,M_Control_6
+M_Liv_Control_Pos_12,Control,2,C,M,0.106944444,2.44,0.0365,1.495901639,10.1,15,Y,Y,Y,Y,,,C11,Plate 2,330166,M_Control_12
+M_Liv_Control_Pos_7,Control,3,C,M,0.109027778,2.76,0.0471,1.706521739,8,24,Y,Y,,Y (Popped),,,F11,Plate 1,330167,M_Control_7
+M_Liv_Control_Pos_8,Control,4,C,M,0.111805556,2.4,0.0513,2.1375,9.7,24,Y,Y,Y,N,,,F12,Plate 1,330168,M_Control_8
+M_Liv_5_Effluent_Pos_11,5% Effluent,1,C,M,0.114583333,2.97,0.0374,1.259259259,3.6,22,Y,Y,N,Y,,,C12,Plate 2,330169,M_5% Effluent_11
+M_Liv_5_Effluent_Pos_7,5% Effluent,2,C,M,0.118055556,2.58,0.0384,1.488372093,5.9,19,Y,Y,Y,N,,,G1,Plate 1,330170,M_5% Effluent_7
+M_Liv_5_Effluent_Pos_8,5% Effluent,3,C,M,0.120138889,2.22,0.0221,0.995495495,5.2,23,Y,Y,Y,Y,no histology sample,,G2,Plate 1,330171,M_5% Effluent_8
+M_Liv_5_Effluent_Pos_12,5% Effluent,4,C,M,0.122222222,2.14,0.0195,0.911214953,4.7,28,Y,Y,Y,Y,,,D1,Plate 2,330172,M_5% Effluent_12
+M_Liv_20_Effluent_Pos_6,20% Effluent,1,C,M,0.123611111,2.82,0.0466,1.65248227,9.8,28,Y,Y,N,Y,,,G4,Plate 1,330173,M_20% Effluent_6
+M_Liv_20_Effluent_Pos_7,20% Effluent,2,C,M,0.127777778,2.15,0.0315,1.465116279,6.6,23,Y,Y,Y,N,,,G5,Plate 1,330174,M_20% Effluent_7
+M_Liv_20_Effluent_Pos_12,20% Effluent,3,C,M,0.131944444,3.03,0.0347,1.145214521,4.9,17,Y,Y,Y,Y (Popped),,,D2,Plate 2,330175,M_20% Effluent_12
+M_Liv_100_Effluent_Pos_6,100% Effluent,1,C,M,0.133333333,2.34,0.0537,2.294871795,8.7,21,Y,Y,Y,Y,,,G6,Plate 1,330176,M_100% Effluent_6
+M_Liv_20_Effluent_Pos_8,20% Effluent,4,C,M,0.136111111,2.11,0.0351,1.663507109,6.8,22,Y,Y,N,Y,Urine contaminated w/ sperm,,G8,Plate 1,330177,M_20% Effluent_8
+M_Liv_100_Effluent_Pos_12,100% Effluent,2,C,M,0.138888889,2.19,0.0428,1.9543379,6.6 (double ex vivo media),22,Y,Y,Y,N,,Double ex vivo media,D3,Plate 2,330178,M_100% Effluent_12
+M_Liv_100_Effluent_Pos_7,100% Effluent,3,C,M,0.141666667,2.06,0.068,3.300970874,5.8,20,Y,Y,Y,Y,curved tail/spine,,G9,Plate 1,330179,M_100% Effluent_7
+M_Liv_100_Effluent_Pos_8,100% Effluent,4,C,M,0.144444444,2.07,0.0484,2.338164251,3.8,26,Y,Y,Y,Y,,,G12,Plate 1,330180,M_100% Effluent_8
+F_Liv_Control_Pos_11,Control,1,C,F,0.147222222,1.18,0.1329,11.26271186,5,0,-,N,Y,Y,,,D5,Plate 2,330181,F_Control_11
+F_Liv_Control_Pos_7,Control,2,C,F,0.150694444,0.97,0.0951,9.804123711,8,0,-,N,Y,Y,,,H1,Plate 1,330182,F_Control_7
+F_Liv_Control_Pos_8,Control,3,C,F,0.153472222,1.13,0.1712,15.15044248,10.4,0,-,N,Y,Y,,,H2,Plate 1,330183,F_Control_8
+F_Liv_Control_Pos_12,Control,4,C,F,No fish- mortality,,,,No tissue,no fish,-,,,,,,D6,Plate 2,330184,F_Control_12
+F_Liv_5_Effluent_Pos_6,5% Effluent,1,C,F,0.15625,1.04,0.1264,12.15384615,12.9,0,-,N,Y,Y,,,H3,Plate 1,330185,F_5% Effluent_6
+F_Liv_5_Effluent_Pos_7,5% Effluent,2,C,F,0.157638889,1.03,0.1329,12.90291262,9.5,0,-,N,Y,Y (Popped),,,H4,Plate 1,330186,F_5% Effluent_7
+F_Liv_5_Effluent_Pos_12,5% Effluent,3,C,F,0.161805556,0.78,0.064,8.205128205,10.7,0,-,N,Y,Y,,,D8,Plate 2,330187,F_5% Effluent_12
+F_Liv_5_Effluent_Pos_8,5% Effluent,4,C,F,0.165277778,1.17,0.1651,14.11111111,15.1,0,-,N,Y,Y,,,H5,Plate 1,330188,F_5% Effluent_8
+F_Liv_20_Effluent_Pos_6,20% Effluent,1,C,F,0.166666667,1.36,0.1693,12.44852941,8.4,0,-,N,Y,Y,,,H6,Plate 1,330189,F_20% Effluent_6
+F_Liv_20_Effluent_Pos_12,20% Effluent,2,C,F,0.16875,0.94,0.1336,14.21276596,11.4,0,-,N,Y,Y,,,D9,Plate 2,330190,F_20% Effluent_12
+F_Liv_20_Effluent_Pos_7,20% Effluent,3,C,F,0.171527778,1.11,0.1451,13.07207207,11.7,0,-,N,Y,Y (Popped),Dropped fish on floor,,H7,Plate 1,330191,F_20% Effluent_7
+F_Liv_20_Effluent_Pos_8,20% Effluent,4,C,F,0.173611111,1.06,0.1544,14.56603774,12.5,0,-,N,Y,Y,,,H8,Plate 1,330192,F_20% Effluent_8
+F_Liv_100_Effluent_Pos_11,100% Effluent,1,C,F,0.175,1.1,0.1738,15.8,6.3,0,-,N,Y,Y (not sure if gall bladder; texture looks different,,,D10,Plate 2,330193,F_100% Effluent_11
+F_Liv_100_Effluent_Pos_7,100% Effluent,2,C,F,0.177083333,1.24,0.1579,12.73387097,9.5,0,-,N,Y,Y,,,H9,Plate 1,330194,F_100% Effluent_7
+F_Liv_100_Effluent_Pos_8,100% Effluent,3,C,F,0.179166667,1.27,0.2169,17.07874016,14.4,0,-,N,N,N,Appears egg bound,,H10,Plate 1,330195,F_100% Effluent_8
+F_Liv_100_Effluent_Pos_12,100% Effluent,4,C,F,0.180555556,1.22,0.1587,13.00819672,9.9,0,-,N,Y,Y,,,D12,Plate 2,330196,F_100% Effluent_12

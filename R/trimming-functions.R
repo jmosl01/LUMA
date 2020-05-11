@@ -7,6 +7,12 @@
 #' @param method which method to apply to trim by retention time.  See trim_rt for details
 #' @param ... Arguments to pass to trim_rt
 #' @return data frame Peak.list.trimmed original Peak.list without all metabolite groups containing at least one feature in the void volume
+#' @examples
+# library(LUMA)
+# file <- system.file('extdata/Search_Parameters.txt', package = "LUMA")
+# search.par <- read.table(file, sep = "\t", header = TRUE) #Ignore Warning message
+# test <- remove_void_volume(Peak.list = Peaklist_Pos$Annotated, search.par = search.par, method = "mz")
+# Peaklist_Pos$From_CAMERA
 remove_void_volume = function(Peak.list, search.par, method,...) {
     void.rt <- as.numeric(search.par[1, "Voidrt"])
     class(method) <- method

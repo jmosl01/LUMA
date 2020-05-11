@@ -21,3 +21,9 @@ data frame Peak.list.trimmed original Peak.list without all metabolite groups co
 \description{
 Removes features or compounds found in the void volume of the chromatographic run from the Peak.list
 }
+\examples{
+library(LUMA)
+file <- system.file('extdata/Search_Parameters.txt', package = "LUMA")
+search.par <- read.table(file, sep = "\t") #Ignore Warning message
+remove_void_volume(Peak.list = Peaklist_Pos$From_CAMERA, search.par = search.par, method = "mz")
+}
