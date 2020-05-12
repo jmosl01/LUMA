@@ -27,6 +27,7 @@ Imports:
     gtools,
     Hmisc,
     igraph,
+    lcmsfishdata,
     openxlsx,
     plyr,
     RSQLite,

@@ -29,5 +29,6 @@ Only the minimum fraction across all sample classes is returned.
   load(file)
   file2 <- system.file('extdata/Sample_Class.txt', package = "LUMA")
   Sample.df <- read.table(file2, sep = "\t", header = TRUE) #Ignore Warning message
-  test <- calc_minfrac(Sample.df = Sample.df, xset4 = xset4, BLANK = FALSE, Peak.list = Peaklist_Pos_db$From_CAMERA)
+  test <- calc_minfrac(Sample.df = Sample.df, xset4 = xset4, BLANK = FALSE,
+  Peak.list = Peaklist_Pos_db$From_CAMERA)
 }

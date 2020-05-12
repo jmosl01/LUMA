@@ -17,26 +17,30 @@ FormatForMetaboAnalystR(
 \arguments{
 \item{from.table}{from which table should LUMA read the Peaklist}
 
-\item{to.csv}{to what filename (excluding .csv extension) should LUMA save the formatted Peaklist}
+\item{to.csv}{to what filename (excluding .csv extension) should LUMA save
+the formatted Peaklist}
 
-\item{data.type}{What type of data will be generated. See usage and format_MetabolomicData for options.}
+\item{data.type}{What type of data will be generated. See usage and
+format_MetabolomicData for options.}
 
-\item{anal.type}{character Indicates the analysis module the data will be used for. See usage and documentation for MetaboAnalystR::InitDataObjects() for options.}
+\item{anal.type}{character Indicates the analysis module the data will be
+used for. See usage and documentation for MetaboAnalystR::InitDataObjects()
+for options.}
 
-\item{paired}{logical Indicate if the data is paired or not.
-Default is FALSE}
+\item{paired}{logical Indicate if the data is paired or not. Default is FALSE}
 
-\item{peak.db}{what database contains the Peaklists to be combined.
-Default is 'Peaklist_db'}
+\item{peak.db}{what database contains the Peaklists to be combined. Default
+is 'Peaklist_db'}
 
-\item{db.dir}{directory containing the database.
-Default is 'db'}
+\item{db.dir}{directory containing the database. Default is 'db'}
 }
 \value{
 mSetObj
 }
 \description{
-This function initializes objects that will hold the metabolite data, formats peak intensity data into one of the formats acceptable by MetaboAnalystR, and sets the metabolite data object.
+This function initializes objects that will hold the metabolite
+  data, formats peak intensity data into one of the formats acceptable by
+  MetaboAnalystR, and sets the metabolite data object.
 }
 \examples{
 \dontrun{

@@ -9,17 +9,18 @@ FormatForSIMCA(from.table, to.csv, peak.db, db.dir)
 \arguments{
 \item{from.table}{from which table should LUMA read the Peaklist}
 
-\item{to.csv}{to what filename (excluding .csv extension) should LUMA save the formatted Peaklist}
+\item{to.csv}{to what filename (excluding .csv extension) should LUMA save
+the formatted Peaklist}
 
-\item{peak.db}{what database contains the Peaklists to be combined.
-Default is 'Peaklist_db'}
+\item{peak.db}{what database contains the Peaklists to be combined. Default
+is 'Peaklist_db'}
 
-\item{db.dir}{directory containing the database.
-Default is 'db'}
+\item{db.dir}{directory containing the database. Default is 'db'}
 }
 \description{
-Formats Peaklists processed by LUMA and exports a csv file for direct import into the multivariate statistical software SIMCA.
-See format_simca for more details.
+Formats Peaklists processed by LUMA and exports a csv file for
+  direct import into the multivariate statistical software SIMCA. See
+  format_simca for more details.
 }
 \examples{
 \dontrun{
@@ -27,6 +28,7 @@ library(LUMA)
 db.dir <- system.file('extdata/', package = "LUMA")
 InitWorkflow(db.dir = db.dir)
 AnnotatePeaklist(from.table = "From CAMERA", to.table = "Annotated")
-FormatForSIMCA(from.table = "Annotated", to.csv = "Peaklist_for_SIMCA", peak.db = peak_db, db.dir = db.dir)
+FormatForSIMCA(from.table = "Annotated", to.csv = "Peaklist_for_SIMCA",
+peak.db = peak_db, db.dir = db.dir)
 }
 }

@@ -119,6 +119,7 @@ calc_corrstat = function(Sample.df, Peak.list, get.mg, BLANK, IonMode) {
 #' @param BLANK a logical indicating whether blanks are being evaluated
 #' @param Peak.list a table of class 'tbl_df',tbl' or 'data.frame' with variables as columns.  Should contain all output columns from XCMS and CAMERA, and additional columns from IHL.search.
 #' @return data frame containing the original table with one additional column 'Minfrac' at the end, followed by the CAMERA columns 'isotopes','adduct','pcgroup'
+#' @import lcmsfishdata
 #' @importFrom xcms peakTable
 #' @importFrom utils read.table write.table str head
 #' @importFrom stats variable.names
@@ -129,7 +130,8 @@ calc_corrstat = function(Sample.df, Peak.list, get.mg, BLANK, IonMode) {
 #'   load(file)
 #'   file2 <- system.file('extdata/Sample_Class.txt', package = "LUMA")
 #'   Sample.df <- read.table(file2, sep = "\t", header = TRUE) #Ignore Warning message
-#'   test <- calc_minfrac(Sample.df = Sample.df, xset4 = xset4, BLANK = FALSE, Peak.list = Peaklist_Pos_db$From_CAMERA)
+#'   test <- calc_minfrac(Sample.df = Sample.df, xset4 = xset4, BLANK = FALSE,
+#'   Peak.list = Peaklist_Pos_db$From_CAMERA)
 calc_minfrac = function(Sample.df, xset4, BLANK, Peak.list) {
     peakSN <- peakTable(xset4, filebase=NULL, value="sn") #writes the SN peak table to file
     SN.list <- data.frame(X = rownames(peakSN),peakSN)
