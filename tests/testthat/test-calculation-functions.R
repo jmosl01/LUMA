@@ -26,3 +26,16 @@ test_that("calculates minimum fraction values", {
   test <- calc_minfrac(Sample.df = Sample.df, xset4 = xset4, BLANK = FALSE, Peak.list = Peaklist_Pos_db$From_CAMERA)
   expect_equal(sum(test$MinFrac),4952.333333)
 })
+
+test_that("calculates correlation statistic value", {
+  library(LUMA)
+  library(lcmsfishdata)
+  file <- system.file('extdata/CAMERA_objects_Pos.Rdata', package = "lcmsfishdata")
+  load(file)
+  pspec.length <- sapply(anposGa@pspectra, function(x) length(x))
+  get.mg <- which(pspec.length > 1)
+  file2 <- system.file('extdata/Sample_Class.txt', package = "LUMA")
+  Sample.df <- read.table(file2, sep = "\t", header = TRUE) #Ignore Warning message
+  test <- calc_corrstat(Sample.df = Sample.df, Peak.list = Peaklist_Pos_db$input_parsed, get.mg = get.mg, BLANK = FALSE, IonMode = "Positive")
+  expect_equal(sum(test$Correlation.stat),261.1041613)
+})

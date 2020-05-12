@@ -1,5 +1,6 @@
 #' @title Calculates correlation matrices for metabolite groups
 #'
+#' @export
 #' @description Calculates the correlation matrices for metabolite groups based on the best feature within the group that belongs to the primary metabolite.
 #' @param Sample.df a data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns 'Sex','Class','n','Endogenous'.
 #' @param Peak.list a data frame from CAMERA that has been parsed.  Should contain all output columns from XCMS and CAMERA, and additional columns from IHL.search, Calc.MinFrac and CAMERA.parser.
@@ -10,6 +11,17 @@
 #' @importFrom stats cor dist
 #' @importFrom utils setTxtProgressBar
 #' @importFrom flashClust flashClust
+#' @examples
+#'  library(LUMA)
+#'  library(lcmsfishdata)
+#'  file <- system.file('extdata/CAMERA_objects_Pos.Rdata', package = "lcmsfishdata")
+#'  load(file)
+#'  pspec.length <- sapply(anposGa@pspectra, function(x) length(x))
+#'  get.mg <- which(pspec.length > 1)
+#'  file2 <- system.file('extdata/Sample_Class.txt', package = "LUMA")
+#'  Sample.df <- read.table(file2, sep = "\t", header = TRUE) #Ignore Warning message
+#'  test <- calc_corrstat(Sample.df = Sample.df, Peak.list = Peaklist_Pos_db$input_parsed, get.mg = get.mg, BLANK = FALSE, IonMode = "Positive")
+#'  test[["Correlation.stat"]][1:10]
 calc_corrstat = function(Sample.df, Peak.list, get.mg, BLANK, IonMode) {
 
     ## Error check
@@ -132,6 +144,7 @@ calc_corrstat = function(Sample.df, Peak.list, get.mg, BLANK, IonMode) {
 #'   Sample.df <- read.table(file2, sep = "\t", header = TRUE) #Ignore Warning message
 #'   test <- calc_minfrac(Sample.df = Sample.df, xset4 = xset4, BLANK = FALSE,
 #'   Peak.list = Peaklist_Pos_db$From_CAMERA)
+#'   test[["MinFrac"]][1:10]
 calc_minfrac = function(Sample.df, xset4, BLANK, Peak.list) {
     peakSN <- peakTable(xset4, filebase=NULL, value="sn") #writes the SN peak table to file
     SN.list <- data.frame(X = rownames(peakSN),peakSN)

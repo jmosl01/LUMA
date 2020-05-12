@@ -48,6 +48,7 @@ library(LUMA)
 db.dir <- system.file('extdata/', package = "LUMA")
 InitWorkflow(db.dir = db.dir)
 AnnotatePeaklist(from.table = "From CAMERA", to.table = "Annotated")
-FormatForMetaboAnalystR(from.table = "Annotated", to.csv = "Peaklist_for_MetaboAnalyist", peak.db = peak_db, db.dir = db.dir)
+FormatForMetaboAnalystR(from.table = "Annotated", to.csv =
+"Peaklist_for_MetaboAnalyist", peak.db = peak_db, db.dir = db.dir)
 }
 }

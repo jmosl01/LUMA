@@ -74,7 +74,8 @@ FormatForSIMCA <- function(from.table,to.csv,peak.db,db.dir) {
 #' db.dir <- system.file('extdata/', package = "LUMA")
 #' InitWorkflow(db.dir = db.dir)
 #' AnnotatePeaklist(from.table = "From CAMERA", to.table = "Annotated")
-#' FormatForMetaboAnalystR(from.table = "Annotated", to.csv = "Peaklist_for_MetaboAnalyist", peak.db = peak_db, db.dir = db.dir)
+#' FormatForMetaboAnalystR(from.table = "Annotated", to.csv =
+#' "Peaklist_for_MetaboAnalyist", peak.db = peak_db, db.dir = db.dir)
 #' }
 FormatForMetaboAnalystR <- function(from.table, to.csv, data.type = "pktable",
                                     anal.type = "stat", paired = FALSE, peak.db, db.dir)
