@@ -24,6 +24,7 @@ Removes features or compounds found in the void volume of the chromatographic ru
 \examples{
 library(LUMA)
 file <- system.file('extdata/Search_Parameters.txt', package = "LUMA")
-search.par <- read.table(file, sep = "\t") #Ignore Warning message
-remove_void_volume(Peak.list = Peaklist_Pos$From_CAMERA, search.par = search.par, method = "mz")
+search.par <- read.table(file, sep = "\t", header = TRUE) #Ignore Warning message
+test <- remove_void_volume(Peak.list = Peaklist_Pos$From_CAMERA, search.par = search.par, method = "mz")
+nrow(Peaklist_Pos$From_CAMERA) - nrow(test)
 }
