@@ -38,11 +38,17 @@ remove_void_volume = function(Peak.list, search.par, method,...) {
 #' @param search.par a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.
 #' @return data frame Peak.list.trimmed original Peak.list without all metabolite groups with coefficient of variation greater than user specified threshold; if dataset contains blanks, data.frame with all NA values is returned
 #' @importFrom stats sd
+#' @examples
+#' library(LUMA)
+#' file <- system.file('extdata/Search_Parameters.txt', package = "LUMA")
+#' search.par <- read.table(file, sep = "\t", header = TRUE) #Ignore Warning message
+#' test <- trim_cv(Peak.list = Peaklist_Pos$From_CAMERA, search.par = search.par)
+#' nrow(Peaklist_Pos$From_CAMERA) -  nrow(test)
 trim_cv = function(Peak.list, search.par) {
 
     Peak.list.cv <- calc_cv(Peak.list)
     CV.cutoff <- as.numeric(search.par[1, "CV"])
-    Peak.list.trimmed <- Peak.list.cv[RSD < CV.cutoff, ]
+    Peak.list.trimmed <- Peak.list.cv[Peak.list.cv["%CV"][[1]] < CV.cutoff, ]
     return(Peak.list.trimmed)
 }
 
@@ -50,25 +56,50 @@ trim_cv = function(Peak.list, search.par) {
 #'
 #' @export
 #' @description Removes metabolites with MinFrac smaller than the user specified threshold. The maximum MinFrac value is chosen from all features within a metabolite group.
+#' @param object used for method dispatch. Can be any object. See usage for details
 #' @param Peak.list data frame. Must have MinFrac column.  Should contain output columns from XCMS and CAMERA, and additional columns from IHL.search, Calc.MinFrac, CAMERA.parser, Calc.corr.stat and Combine.phenodata base functions.
 #' @param search.par a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.
 #' @return data frame Peak.list.trimmed original Peak.list containing all metabolite groups containing at least one feature that has MinFrac value greater than user specified threshold; if all MinFrac values are NA (i.e. dataset contains blanks), NULL is returned
-trim_minfrac = function(Peak.list, search.par) {
-    MF <- Peak.list[, "MinFrac"]
-    if(all(!is.na(MF))) {   # Safeguard in case this function is called on blanks; if BLANK = TRUE in Script info, then MF will contain all NA values
-      AllMF <- strsplit(MF, split = ";")
-      AllMF <- lapply(AllMF, function(x) as.numeric(x))  #Convert character values to numeric values
-      MaxMF <- lapply(AllMF, function(x) max(x))
-      # MeanMF <- lapply(AllMF, function(x) mean(x)) #calculates mean values for minfrac trimming; not used
-      MF.cutoff <- as.numeric(search.par[1, "Minfrac"])
-      # temp <- data.frame(MinFrac = MF, Max.cutoff = MaxMF>=MF.cutoff, Mean.cutoff = MeanMF>=MF.cutoff, CV =
-      # Peak.list[,'%CV'], Corr.stat = Peak.list[,'Correlation.stat'])
-      # temp[which(temp$Max.cutoff!=temp$Mean.cutoff),] #compares mean thresholding to max thresholding
-      Peak.list.trimmed <- Peak.list[MaxMF >= MF.cutoff, ]
-      return(Peak.list.trimmed)
-    }
+trim_minfrac = function(object, Peak.list, search.par) {
+  UseMethod("trim_minfrac", object)
+}
+
+#' @rdname trim_minfrac
+#' @export
+trim_minfrac.mz = function(object, Peak.list, search.par) {
+
+  MF <- Peak.list[["MinFrac"]]
+
+  if(all(!is.na(MF))) {   # Safeguard in case this function is called on blanks; if BLANK = TRUE in Script info, then MF will contain all NA values
+
+    MF.cutoff <- as.numeric(search.par[1, "Minfrac"])
+    Peak.list.trimmed <- Peak.list[MF >= MF.cutoff, ]
+    return(Peak.list.trimmed)
+  }
 
 }
+
+#' @rdname trim_minfrac
+#' @export
+trim_minfrac.monoMass = function(object, Peak.list, search.par) {
+
+  MF <- Peak.list[, "MinFrac"]
+
+
+  if(all(!is.na(MF))) {   # Safeguard in case this function is called on blanks; if BLANK = TRUE in Script info, then MF will contain all NA values
+    AllMF <- strsplit(MF, split = ";")
+    AllMF <- lapply(AllMF, function(x) as.numeric(x))  #Convert character values to numeric values
+    MaxMF <- lapply(AllMF, function(x) max(x))
+    # MeanMF <- lapply(AllMF, function(x) mean(x)) #calculates mean values for minfrac trimming; not used
+    MF.cutoff <- as.numeric(search.par[1, "Minfrac"])
+    # temp <- data.frame(MinFrac = MF, Max.cutoff = MaxMF>=MF.cutoff, Mean.cutoff = MeanMF>=MF.cutoff, CV =
+    # Peak.list[,'%CV'], Corr.stat = Peak.list[,'Correlation.stat'])
+    # temp[which(temp$Max.cutoff!=temp$Mean.cutoff),] #compares mean thresholding to max thresholding
+    Peak.list.trimmed <- Peak.list[MaxMF >= MF.cutoff, ]
+    return(Peak.list.trimmed)
+  }
+}
+
 
 #' @title Trims by retention time
 #'

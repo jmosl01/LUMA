@@ -2,11 +2,19 @@
 % Please edit documentation in R/trimming-functions.R
 \name{trim_minfrac}
 \alias{trim_minfrac}
+\alias{trim_minfrac.mz}
+\alias{trim_minfrac.monoMass}
 \title{Trims by MinFrac}
 \usage{
-trim_minfrac(Peak.list, search.par)
+trim_minfrac(object, Peak.list, search.par)
+
+\method{trim_minfrac}{mz}(object, Peak.list, search.par)
+
+\method{trim_minfrac}{monoMass}(object, Peak.list, search.par)
 }
 \arguments{
+\item{object}{used for method dispatch. Can be any object. See usage for details}
+
 \item{Peak.list}{data frame. Must have MinFrac column.  Should contain output columns from XCMS and CAMERA, and additional columns from IHL.search, Calc.MinFrac, CAMERA.parser, Calc.corr.stat and Combine.phenodata base functions.}
 
 \item{search.par}{a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.}

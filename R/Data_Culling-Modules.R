@@ -90,6 +90,7 @@ CullCV <- function(from.table,to.table) {
 #' See trim_minfrac for more details.
 #' @param from.table from which table should LUMA pull the Peak.list
 #' @param to.table to which should LUMA save the modified Peak.list
+#' @param method which method to apply to trim by minimum fraction values.  See trim_minfrac for details.
 #' @return NULL
 #' @examples
 #' \dontrun{
@@ -98,11 +99,13 @@ CullCV <- function(from.table,to.table) {
 #' InitWorkflow(db.dir = db.dir)
 #' CullMF(from.table = "From CAMERA", to.table = "Trimmed by MinFrac")
 #' }
-CullMF <- function(from.table,to.table) {
+CullMF <- function(from.table,to.table,method) {
   #Trims Peaklist by MinFrac
   Peak.list <- read_tbl(mytable = from.table,
                         peak.db = peak_db,
                         asdf = TRUE)
+
+  class(method) <- method
 
   Peak.list.trimmed <- trim_minfrac(Peak.list = Peak.list,
                                     search.par = data.frame(ppm = ppm.cutoff,
@@ -115,7 +118,8 @@ CullMF <- function(from.table,to.table) {
                                                             Endogenous = Endogenous.thresh,
                                                             Solvent = Solvent.ratio,
                                                             gen.plots = gen.plots,
-                                                            keep.singletons = keep.singletons))
+                                                            keep.singletons = keep.singletons),
+                                    object = method)
 
 
   if(!is.null(Peak.list.trimmed)) {

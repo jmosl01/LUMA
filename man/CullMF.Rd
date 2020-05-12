@@ -4,12 +4,14 @@
 \alias{CullMF}
 \title{Culls the Peak.list by Minimum Fraction}
 \usage{
-CullMF(from.table, to.table)
+CullMF(from.table, to.table, method)
 }
 \arguments{
 \item{from.table}{from which table should LUMA pull the Peak.list}
 
 \item{to.table}{to which should LUMA save the modified Peak.list}
+
+\item{method}{which method to apply to trim by minimum fraction values.  See trim_minfrac for details.}
 }
 \description{
 Culls the Peak.list by removing all components with minimum fraction less than the user-specified cutoff.
