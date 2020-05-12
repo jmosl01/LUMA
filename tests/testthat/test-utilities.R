@@ -21,3 +21,8 @@ test_that("EICs are converted to numbers", {
   expect_null(.convert_EIC(NULL))
 
 })
+
+test_that("is a whole number", {
+  expect_true(.isWhole(10))
+  expect_false(.isWhole(0.1))
+})
