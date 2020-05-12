@@ -15,3 +15,14 @@ test_that("Sums features", {
   test2 <- Sum.Peak.list[my_int2,"Pooled_QC_Pos_1"][[1]]
   expect_equal(test,test2)
 })
+
+test_that("calculates minimum fraction values", {
+  library(LUMA)
+  library(lcmsfishdata)
+  file <- system.file('extdata/XCMS_objects_Pos.Rdata', package = "lcmsfishdata")
+  load(file)
+  file2 <- system.file('extdata/Sample_Class.txt', package = "LUMA")
+  Sample.df <- read.table(file2, sep = "\t", header = TRUE) #Ignore Warning message
+  test <- calc_minfrac(Sample.df = Sample.df, xset4 = xset4, BLANK = FALSE, Peak.list = Peaklist_Pos_db$From_CAMERA)
+  expect_equal(sum(test$MinFrac),4952.333333)
+})

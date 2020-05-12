@@ -88,7 +88,7 @@ trim_rt <- function(object, Peak.list, void.rt, rt.list) {
 
 #' @rdname trim_rt
 #' @export
-trim_rt.mz <- function(object, Peak.list, void.rt, rt.list = Peak.list["rt"]) {
+trim_rt.mz <- function(object, Peak.list, void.rt, rt.list = Peak.list["rt"][[1]]) {
   drops <- Peak.list[rt.list < void.rt, "EIC_ID"][[1]]  #Creates a vector of features with rt in the void volume
   Peak.list.trimmed <- Peak.list[which(!(Peak.list$EIC_ID) %in% drops),]
   return(Peak.list.trimmed)
@@ -96,7 +96,7 @@ trim_rt.mz <- function(object, Peak.list, void.rt, rt.list = Peak.list["rt"]) {
 
 #' @rdname trim_rt
 #' @export
-trim_rt.monoMass  <- function(object, Peak.list, void.rt, rt.list = Peak.list["rt"]) {
+trim_rt.monoMass  <- function(object, Peak.list, void.rt, rt.list = Peak.list["rt"][[1]]) {
   drops <- Peak.list[rt.list < void.rt, "metabolite_group"]  #Creates a vector of metabolite groups that contain at least one feature with rt in the void volume
   length(which(!unlist(Peak.list[, "metabolite_group"]) %in% unlist(drops)))
   met.list <- Peak.list["metabolite_group"]

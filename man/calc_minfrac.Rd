@@ -22,3 +22,12 @@ data frame containing the original table with one additional column 'Minfrac' at
 Calculates the fraction of samples within each class that contains a given feature.
 Only the minimum fraction across all sample classes is returned.
 }
+\examples{
+  library(LUMA)
+  library(lcmsfishdata)
+  file <- system.file('extdata/XCMS_objects_Pos.Rdata', package = "lcmsfishdata")
+  load(file)
+  file2 <- system.file('extdata/Sample_Class.txt', package = "LUMA")
+  Sample.df <- read.table(file2, sep = "\t", header = TRUE) #Ignore Warning message
+  test <- calc_minfrac(Sample.df = Sample.df, xset4 = xset4, BLANK = FALSE, Peak.list = Peaklist_Pos_db$From_CAMERA)
+}

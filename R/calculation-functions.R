@@ -122,6 +122,14 @@ calc_corrstat = function(Sample.df, Peak.list, get.mg, BLANK, IonMode) {
 #' @importFrom xcms peakTable
 #' @importFrom utils read.table write.table str head
 #' @importFrom stats variable.names
+#' @examples
+#'   library(LUMA)
+#'   library(lcmsfishdata)
+#'   file <- system.file('extdata/XCMS_objects_Pos.Rdata', package = "lcmsfishdata")
+#'   load(file)
+#'   file2 <- system.file('extdata/Sample_Class.txt', package = "LUMA")
+#'   Sample.df <- read.table(file2, sep = "\t", header = TRUE) #Ignore Warning message
+#'   test <- calc_minfrac(Sample.df = Sample.df, xset4 = xset4, BLANK = FALSE, Peak.list = Peaklist_Pos_db$From_CAMERA)
 calc_minfrac = function(Sample.df, xset4, BLANK, Peak.list) {
     peakSN <- peakTable(xset4, filebase=NULL, value="sn") #writes the SN peak table to file
     SN.list <- data.frame(X = rownames(peakSN),peakSN)

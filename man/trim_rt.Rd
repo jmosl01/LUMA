@@ -8,9 +8,9 @@
 \usage{
 trim_rt(object, Peak.list, void.rt, rt.list)
 
-\method{trim_rt}{mz}(object, Peak.list, void.rt, rt.list = Peak.list["rt"])
+\method{trim_rt}{mz}(object, Peak.list, void.rt, rt.list = Peak.list["rt"][[1]])
 
-\method{trim_rt}{monoMass}(object, Peak.list, void.rt, rt.list = Peak.list["rt"])
+\method{trim_rt}{monoMass}(object, Peak.list, void.rt, rt.list = Peak.list["rt"][[1]])
 }
 \arguments{
 \item{object}{used for method dispatch. Can be any object. See usage for details}
