@@ -31,5 +31,5 @@ Only the minimum fraction across all sample classes is returned.
   Sample.df <- read.table(file2, sep = "\t", header = TRUE) #Ignore Warning message
   test <- calc_minfrac(Sample.df = Sample.df, xset4 = xset4, BLANK = FALSE,
   Peak.list = Peaklist_Pos_db$From_CAMERA)
-  test[["MinFrac"]][1:10]
+  test[["MinFrac"]][11:23]
 }

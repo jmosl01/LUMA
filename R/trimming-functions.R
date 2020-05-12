@@ -39,14 +39,10 @@ remove_void_volume = function(Peak.list, search.par, method,...) {
 #' @return data frame Peak.list.trimmed original Peak.list without all metabolite groups with coefficient of variation greater than user specified threshold; if dataset contains blanks, data.frame with all NA values is returned
 #' @importFrom stats sd
 trim_cv = function(Peak.list, search.par) {
-    res <- lapply(colnames(Peak.list), function(ch) grep("Pooled_QC_", ch))
-    QC.list <- Peak.list[sapply(res, function(x) length(x) > 0)]
-    QCsd <- apply((as.matrix(QC.list)), 1, sd)
-    QCmean <- rowMeans(QC.list)
-    RSD <- QCsd/QCmean
-    Peak.list[, "%CV"] <- RSD
+
+    Peak.list.cv <- calc_cv(Peak.list)
     CV.cutoff <- as.numeric(search.par[1, "CV"])
-    Peak.list.trimmed <- Peak.list[RSD < CV.cutoff, ]
+    Peak.list.trimmed <- Peak.list.cv[RSD < CV.cutoff, ]
     return(Peak.list.trimmed)
 }
 

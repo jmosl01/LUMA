@@ -2,7 +2,7 @@
 % Please edit documentation in R/calculation-functions.R
 \name{calc_corrstat}
 \alias{calc_corrstat}
-\title{Calculates correlation matrices for metabolite groups}
+\title{Calculate correlation matrices for metabolite groups}
 \usage{
 calc_corrstat(Sample.df, Peak.list, get.mg, BLANK, IonMode)
 }
@@ -32,6 +32,8 @@ Calculates the correlation matrices for metabolite groups based on the best feat
  get.mg <- which(pspec.length > 1)
  file2 <- system.file('extdata/Sample_Class.txt', package = "LUMA")
  Sample.df <- read.table(file2, sep = "\t", header = TRUE) #Ignore Warning message
- test <- calc_corrstat(Sample.df = Sample.df, Peak.list = Peaklist_Pos_db$input_parsed, get.mg = get.mg, BLANK = FALSE, IonMode = "Positive")
- test[["Correlation.stat"]][1:10]
+ test <- calc_corrstat(Sample.df = Sample.df, Peak.list =
+ Peaklist_Pos_db$input_parsed, get.mg = get.mg, BLANK = FALSE, IonMode =
+ "Positive")
+ test[["Correlation.stat"]][11:23]
 }

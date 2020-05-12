@@ -1,4 +1,4 @@
-#' @title Calculates correlation matrices for metabolite groups
+#' @title Calculate correlation matrices for metabolite groups
 #'
 #' @export
 #' @description Calculates the correlation matrices for metabolite groups based on the best feature within the group that belongs to the primary metabolite.
@@ -20,8 +20,10 @@
 #'  get.mg <- which(pspec.length > 1)
 #'  file2 <- system.file('extdata/Sample_Class.txt', package = "LUMA")
 #'  Sample.df <- read.table(file2, sep = "\t", header = TRUE) #Ignore Warning message
-#'  test <- calc_corrstat(Sample.df = Sample.df, Peak.list = Peaklist_Pos_db$input_parsed, get.mg = get.mg, BLANK = FALSE, IonMode = "Positive")
-#'  test[["Correlation.stat"]][1:10]
+#'  test <- calc_corrstat(Sample.df = Sample.df, Peak.list =
+#'  Peaklist_Pos_db$input_parsed, get.mg = get.mg, BLANK = FALSE, IonMode =
+#'  "Positive")
+#'  test[["Correlation.stat"]][11:23]
 calc_corrstat = function(Sample.df, Peak.list, get.mg, BLANK, IonMode) {
 
     ## Error check
@@ -144,7 +146,7 @@ calc_corrstat = function(Sample.df, Peak.list, get.mg, BLANK, IonMode) {
 #'   Sample.df <- read.table(file2, sep = "\t", header = TRUE) #Ignore Warning message
 #'   test <- calc_minfrac(Sample.df = Sample.df, xset4 = xset4, BLANK = FALSE,
 #'   Peak.list = Peaklist_Pos_db$From_CAMERA)
-#'   test[["MinFrac"]][1:10]
+#'   test[["MinFrac"]][11:23]
 calc_minfrac = function(Sample.df, xset4, BLANK, Peak.list) {
     peakSN <- peakTable(xset4, filebase=NULL, value="sn") #writes the SN peak table to file
     SN.list <- data.frame(X = rownames(peakSN),peakSN)
@@ -342,7 +344,7 @@ calc_minfrac = function(Sample.df, xset4, BLANK, Peak.list) {
     return(raw)
 }
 
-#' @title Sums features into Metabolites
+#' @title Sum features by metabolite group
 #'
 #' @export
 #' @description Sums all features belonging to the same metabolite into a single
@@ -391,8 +393,34 @@ sum_features = function(Peak.list, Sample.df, search.par, BLANK, IonMode) {
     return(sum.range.list)
 }
 
-##Checks if a numeric value is a whole number
-.isWhole <- function(a) {
-  (is.numeric(a) && floor(a) == a) || (is.complex(a) && floor(Re(a)) == Re(a) && floor(Im(a)) == Im(a))
-}
+#' @title Calculate coeffient of variation (CV) by pooled QCs
+#'
+#' @export
+#' @description Calculates the CV value across all pooled QC samples
+#' @param Peak.list a table of class 'tbl_df',tbl' or 'data.frame' with variables as columns.  Should contain all output columns from XCMS and CAMERA.
+#' @examples
+#' library(LUMA)
+#' test <- calc_cv(Peak.list = Peaklist_Pos$From_CAMERA)
+#' test[["%CV"]][11:23]
+calc_cv = function(Peak.list) {
 
+  #Sanity Check
+  if(length(grep("Pooled_QC",colnames(Peak.list))) <= 2) {
+    stop("Peak.list must contain columns for at least 3 pooled QC samples!")
+  }
+
+  res <- lapply(colnames(Peak.list), function(ch) grep("Pooled_QC_", ch)) #Generates list equal in length to number of columns in Peak.list
+
+  QC.list <- Peak.list[sapply(res, function(x) length(x) > 0)] #Subsets a tibble containing only the pooled QC sample columns
+
+  QCsd <- apply((as.matrix(QC.list)), 1, sd) #Creates a vector of standard deviations for each metabolite/feature across all pooled QC samples
+
+  QCmean <- rowMeans(QC.list) #Creates a vector of mean intensity values for each metabolite/feature across all pooled QC samples
+
+  RSD <- QCsd/QCmean #Calculates the relative standard deviation vector from the mean and sd vectors
+
+  Peak.list[, "%CV"] <- RSD #Appends RSd's as a new column to the original Peak.list
+
+  return(Peak.list)
+
+}

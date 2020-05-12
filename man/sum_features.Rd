@@ -2,7 +2,7 @@
 % Please edit documentation in R/calculation-functions.R
 \name{sum_features}
 \alias{sum_features}
-\title{Sums features into Metabolites}
+\title{Sum features by metabolite group}
 \usage{
 sum_features(Peak.list, Sample.df, search.par, BLANK, IonMode)
 }

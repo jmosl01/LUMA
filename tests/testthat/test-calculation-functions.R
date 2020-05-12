@@ -1,7 +1,6 @@
 context("test-calculation-functions")
 
 test_that("Sums features", {
-  library(LUMA)
   file <- system.file('extdata/Search_Parameters.txt', package = "LUMA")
   search.par <- read.table(file, sep = "\t", header = TRUE) #Ignore Warning message
   file2 <- system.file('extdata/Sample_Class.txt', package = "LUMA")
@@ -17,8 +16,6 @@ test_that("Sums features", {
 })
 
 test_that("calculates minimum fraction values", {
-  library(LUMA)
-  library(lcmsfishdata)
   file <- system.file('extdata/XCMS_objects_Pos.Rdata', package = "lcmsfishdata")
   load(file)
   file2 <- system.file('extdata/Sample_Class.txt', package = "LUMA")
@@ -28,8 +25,6 @@ test_that("calculates minimum fraction values", {
 })
 
 test_that("calculates correlation statistic value", {
-  library(LUMA)
-  library(lcmsfishdata)
   file <- system.file('extdata/CAMERA_objects_Pos.Rdata', package = "lcmsfishdata")
   load(file)
   pspec.length <- sapply(anposGa@pspectra, function(x) length(x))
@@ -38,4 +33,9 @@ test_that("calculates correlation statistic value", {
   Sample.df <- read.table(file2, sep = "\t", header = TRUE) #Ignore Warning message
   test <- calc_corrstat(Sample.df = Sample.df, Peak.list = Peaklist_Pos_db$input_parsed, get.mg = get.mg, BLANK = FALSE, IonMode = "Positive")
   expect_equal(sum(test$Correlation.stat),261.1041613)
+})
+
+test_that("calculates coefficient of variation", {
+  test <- calc_cv(Peak.list = Peaklist_Pos$From_CAMERA)
+  expect_equal(sum(test$`%CV`),10.738880808)
 })

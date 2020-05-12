@@ -457,7 +457,7 @@
 ##END
 
 
-## Database utility functions
+## Database utility functions ----
 .trim_table_by_mz <- function(x, min_mz, max_mz) {
 
   if (is.data.frame(x)) {
@@ -489,6 +489,18 @@
 
 ##END
 
+
+## Calculation utility functions ----
+
+##Checks if a numeric value is a whole number
+.isWhole <- function(a) {
+  (is.numeric(a) && floor(a) == a) || (is.complex(a) && floor(Re(a)) == Re(a) && floor(Im(a)) == Im(a))
+}
+
+
+
+
+## END
 
 ## Other module utility functions ----
 .gen_res = function(IonMode,search.par,Peak.list,Sample.df,BLANK) {
