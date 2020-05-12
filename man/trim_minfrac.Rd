@@ -25,3 +25,15 @@ data frame Peak.list.trimmed original Peak.list containing all metabolite groups
 \description{
 Removes metabolites with MinFrac smaller than the user specified threshold. The maximum MinFrac value is chosen from all features within a metabolite group.
 }
+\examples{
+  file <- system.file('extdata/Search_Parameters.txt', package = "LUMA")
+  search.par <- read.table(file, sep = "\t", header = TRUE) #Ignore Warning message
+  method = "mz"
+  class(method) = method
+  test <- trim_minfrac(Peak.list = Peaklist_Pos$From_CAMERA_with_MinFrac, search.par = search.par, object = method)
+  nrow(Peaklist_Pos$From_CAMERA_with_MinFrac) -  nrow(test) #equals 7
+
+  method = "monoMass"
+  class(method) = method
+  test <- trim_minfrac(Peak.list = Peaklist_Pos$Combined_Isotopes_and_Adducts, search.par = search.par, object = method)
+}

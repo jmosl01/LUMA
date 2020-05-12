@@ -24,16 +24,16 @@ Peak.list of class 'tbl_df',tbl' or 'data.frame' with variables as columns.  Has
 Calculates the correlation matrices for metabolite groups based on the best feature within the group that belongs to the primary metabolite.
 }
 \examples{
- library(LUMA)
- library(lcmsfishdata)
- file <- system.file('extdata/CAMERA_objects_Pos.Rdata', package = "lcmsfishdata")
- load(file)
- pspec.length <- sapply(anposGa@pspectra, function(x) length(x))
- get.mg <- which(pspec.length > 1)
- file2 <- system.file('extdata/Sample_Class.txt', package = "LUMA")
- Sample.df <- read.table(file2, sep = "\t", header = TRUE) #Ignore Warning message
- test <- calc_corrstat(Sample.df = Sample.df, Peak.list =
- Peaklist_Pos_db$input_parsed, get.mg = get.mg, BLANK = FALSE, IonMode =
- "Positive")
- test[["Correlation.stat"]][11:23]
+library(LUMA)
+library(lcmsfishdata)
+file <- system.file('extdata/CAMERA_objects_Pos.Rdata', package = "lcmsfishdata")
+load(file)
+pspec.length <- sapply(anposGa@pspectra, function(x) length(x))
+get.mg <- which(pspec.length > 1)
+file2 <- system.file('extdata/Sample_Class.txt', package = "LUMA")
+Sample.df <- read.table(file2, sep = "\t", header = TRUE) #Ignore Warning message
+test <- calc_corrstat(Sample.df = Sample.df, Peak.list =
+Peaklist_Pos_db$input_parsed, get.mg = get.mg, BLANK = FALSE, IonMode =
+"Positive")
+test[["Correlation.stat"]][11:23]
 }

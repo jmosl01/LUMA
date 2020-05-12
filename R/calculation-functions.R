@@ -12,18 +12,18 @@
 #' @importFrom utils setTxtProgressBar
 #' @importFrom flashClust flashClust
 #' @examples
-#'  library(LUMA)
-#'  library(lcmsfishdata)
-#'  file <- system.file('extdata/CAMERA_objects_Pos.Rdata', package = "lcmsfishdata")
-#'  load(file)
-#'  pspec.length <- sapply(anposGa@pspectra, function(x) length(x))
-#'  get.mg <- which(pspec.length > 1)
-#'  file2 <- system.file('extdata/Sample_Class.txt', package = "LUMA")
-#'  Sample.df <- read.table(file2, sep = "\t", header = TRUE) #Ignore Warning message
-#'  test <- calc_corrstat(Sample.df = Sample.df, Peak.list =
-#'  Peaklist_Pos_db$input_parsed, get.mg = get.mg, BLANK = FALSE, IonMode =
-#'  "Positive")
-#'  test[["Correlation.stat"]][11:23]
+#' library(LUMA)
+#' library(lcmsfishdata)
+#' file <- system.file('extdata/CAMERA_objects_Pos.Rdata', package = "lcmsfishdata")
+#' load(file)
+#' pspec.length <- sapply(anposGa@pspectra, function(x) length(x))
+#' get.mg <- which(pspec.length > 1)
+#' file2 <- system.file('extdata/Sample_Class.txt', package = "LUMA")
+#' Sample.df <- read.table(file2, sep = "\t", header = TRUE) #Ignore Warning message
+#' test <- calc_corrstat(Sample.df = Sample.df, Peak.list =
+#' Peaklist_Pos_db$input_parsed, get.mg = get.mg, BLANK = FALSE, IonMode =
+#' "Positive")
+#' test[["Correlation.stat"]][11:23]
 calc_corrstat = function(Sample.df, Peak.list, get.mg, BLANK, IonMode) {
 
     ## Error check
@@ -56,7 +56,7 @@ calc_corrstat = function(Sample.df, Peak.list, get.mg, BLANK, IonMode) {
         stop("Something is wrong with your metabolite groups. Check out from Matlab script!")
     }
     corr.stat = vector(mode = "numeric", length = nrow(Peak.list.pspec))
-    corr.df <- data.frame(corr.stat = corr.stat, row.names = as.character(Peak.list.pspec$EIC_ID))
+    corr.df <- data.frame("Correlation.stat" = corr.stat, row.names = as.character(Peak.list.pspec$EIC_ID))
     rownames(corr.df)
     colnames(corr.df)
 
@@ -69,56 +69,32 @@ calc_corrstat = function(Sample.df, Peak.list, get.mg, BLANK, IonMode) {
         colnames(my.df)
         if (nrow(my.df) == 1) {
         } else {
-            if (nrow(my.df) == 2) {
-                my.mat <- as.matrix(my.df[, sample.cols])
-                test.mat <- as.matrix(t(my.mat))
-                dimnames(test.mat) <- list(colnames(my.df[, sample.cols]), my.df$EIC_ID)
-                colnames(test.mat)
-                res <- cor(test.mat)
-                d <- dist(res)
-                sim.by.hclust <- flashClust(d)
-                attributes(d)
-                labels(d)
-                # plot(sim.by.hclust)
-                attributes(sim.by.hclust)
-                sim.by.hclust$merge
-                sim.by.hclust$labels
-                labels(d)[sim.by.hclust$order]
-                corr.stat <- res[which(rowSums(res) %in% max(rowSums(res))), ]
-                new.df <- as.data.frame(corr.stat, row.names = names(corr.stat))
-                j <- rownames(new.df)
-                corr.df[j, ] <- new.df
+              my.mat <- as.matrix(my.df[, sample.cols])
+              test.mat <- as.matrix(t(my.mat))
+              dimnames(test.mat) <- list(colnames(my.df[, sample.cols]), my.df$EIC_ID)
+              colnames(test.mat)
+              res <- cor(test.mat)
+              d <- dist(res)
+              sim.by.hclust <- flashClust(d)
+              attributes(d)
+              labels(d)
+              # plot(sim.by.hclust)
+              attributes(sim.by.hclust)
+              sim.by.hclust$merge
+              sim.by.hclust$labels
+              labels(d)[sim.by.hclust$order]
+              corr.stat <- res[which(rowSums(res) %in% max(rowSums(res))), ]
+              new.df <- as.data.frame(corr.stat, row.names = names(corr.stat))
+              j <- rownames(new.df)
+              corr.df[j, ] <- new.df[[1]]
 
+              # ordered.hclust <- reorder(sim.by.hclust, wts = my.df$monoisotopic_flg, agglo.FUN = 'mean')
+              # ordered.hclust$value ordered.hclust$labels
 
-            } else {
-                my.mat <- as.matrix(my.df[, sample.cols])
-                test.mat <- as.matrix(t(my.mat))
-                dimnames(test.mat) <- list(colnames(my.df[, sample.cols]), my.df$EIC_ID)
-                colnames(test.mat)
-                res <- cor(test.mat)
-                d <- dist(res)
-                sim.by.hclust <- flashClust(d)
-                attributes(d)
-                labels(d)
-                # plot(sim.by.hclust)
-                attributes(sim.by.hclust)
-                sim.by.hclust$merge
-                sim.by.hclust$labels
-                labels(d)[sim.by.hclust$order]
-                corr.stat <- res[which(rowSums(res) %in% max(rowSums(res))), ]
-                new.df <- as.data.frame(corr.stat, row.names = names(corr.stat))
-                j <- rownames(new.df)
-                corr.df[j, ] <- new.df
-
-
-                # ordered.hclust <- reorder(sim.by.hclust, wts = my.df$monoisotopic_flg, agglo.FUN = 'mean')
-                # ordered.hclust$value ordered.hclust$labels
-
-            }
         }
         setTxtProgressBar(pb, i)
     }
-    Peak.list.pspec[, "Correlation.stat"] <- corr.df
+    Peak.list.pspec <- cbind(Peak.list.pspec, corr.df)
     close(pb)
     return(Peak.list.pspec)
 }

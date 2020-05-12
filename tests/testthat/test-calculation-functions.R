@@ -16,6 +16,7 @@ test_that("Sums features", {
 })
 
 test_that("calculates minimum fraction values", {
+  library(lcmsfishdata)
   file <- system.file('extdata/XCMS_objects_Pos.Rdata', package = "lcmsfishdata")
   load(file)
   file2 <- system.file('extdata/Sample_Class.txt', package = "LUMA")

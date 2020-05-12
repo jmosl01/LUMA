@@ -60,6 +60,17 @@ trim_cv = function(Peak.list, search.par) {
 #' @param Peak.list data frame. Must have MinFrac column.  Should contain output columns from XCMS and CAMERA, and additional columns from IHL.search, Calc.MinFrac, CAMERA.parser, Calc.corr.stat and Combine.phenodata base functions.
 #' @param search.par a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.
 #' @return data frame Peak.list.trimmed original Peak.list containing all metabolite groups containing at least one feature that has MinFrac value greater than user specified threshold; if all MinFrac values are NA (i.e. dataset contains blanks), NULL is returned
+#' @examples
+#'   file <- system.file('extdata/Search_Parameters.txt', package = "LUMA")
+#'   search.par <- read.table(file, sep = "\t", header = TRUE) #Ignore Warning message
+#'   method = "mz"
+#'   class(method) = method
+#'   test <- trim_minfrac(Peak.list = Peaklist_Pos$From_CAMERA_with_MinFrac, search.par = search.par, object = method)
+#'   nrow(Peaklist_Pos$From_CAMERA_with_MinFrac) -  nrow(test) #equals 7
+#'
+#'   method = "monoMass"
+#'   class(method) = method
+#'   test <- trim_minfrac(Peak.list = Peaklist_Pos$Combined_Isotopes_and_Adducts, search.par = search.par, object = method)
 trim_minfrac = function(object, Peak.list, search.par) {
   UseMethod("trim_minfrac", object)
 }
@@ -83,7 +94,7 @@ trim_minfrac.mz = function(object, Peak.list, search.par) {
 #' @export
 trim_minfrac.monoMass = function(object, Peak.list, search.par) {
 
-  MF <- Peak.list[, "MinFrac"]
+  MF <- Peak.list[["MinFrac"]]
 
 
   if(all(!is.na(MF))) {   # Safeguard in case this function is called on blanks; if BLANK = TRUE in Script info, then MF will contain all NA values

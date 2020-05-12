@@ -6,3 +6,4 @@
 *.Rbuildignore
 inst/doc
 .Renviron
+data-raw/Peaklist_Pos_old.SQLite

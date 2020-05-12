@@ -17,3 +17,10 @@ data frame Peak.list.trimmed original Peak.list without all metabolite groups wi
 \description{
 Removes metabolites with coefficient of variation greater than the user specified threshold, calculated from the QC samples
 }
+\examples{
+library(LUMA)
+file <- system.file('extdata/Search_Parameters.txt', package = "LUMA")
+search.par <- read.table(file, sep = "\t", header = TRUE) #Ignore Warning message
+test <- trim_cv(Peak.list = Peaklist_Pos$From_CAMERA, search.par = search.par)
+nrow(Peaklist_Pos$From_CAMERA) -  nrow(test)
+}
