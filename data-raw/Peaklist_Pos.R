@@ -1,5 +1,6 @@
 library(RSQLite)
 library(LUMA)
+library(dplyr)
 
 if(!file.exists("data-raw/Peaklist_Pos.SQLite")) {
   download.file(
@@ -15,8 +16,6 @@ if(!file.exists("data-raw/Peaklist_Pos.SQLite")) {
 
 #Fresh start
 rm(list = ls())
-library(LUMA)
-library(dplyr)
 
 #code to execute
 #Make database connection
@@ -53,7 +52,7 @@ EIC_ID_cv <- test %>%
 EIC_list <- c(485,502,518,531,3070,3093,3110,3127,3333,3345,3435,5321,5325)
 EIC_list <- sort(c(EIC_list, as.numeric(EIC_ID_rt$EIC_ID)))
 
-new_test <- .trim_table_by_eic(test, eic = EIC_list)
+new_test <- LUMA:::.trim_table_by_eic(test, eic = EIC_list)
 assign(paste0(gsub(" ","_",precombined_tables[i]),"_test"), new_test, envir = as.environment(-1))
 
 write_tbl(mydf = new_test, peak.db = peak.db, myname = precombined_tables[i])
@@ -65,7 +64,7 @@ identical(new_test,test_from_db)
 for (i in seq_along(precombined_tables)) {
   x <- read_tbl(mytable = precombined_tables[i], peak.db = old.peak.db)
   assign(paste0(gsub(" ", "_",precombined_tables[i])), x, envir = as.environment(-1))
-  new_x <- .trim_table_by_eic(x,
+  new_x <- LUMA:::.trim_table_by_eic(x,
                               eic = EIC_list)
   assign(paste0(gsub(" " , "_", precombined_tables[i])), new_x, envir = as.environment(-1))
 
@@ -79,7 +78,7 @@ for (i in seq_along(precombined_tables)) {
 i = 1
 test <- read_tbl(mytable = combined_tables[i], peak.db = old.peak.db)
 assign(paste0(gsub(" ", "_",combined_tables[i])), test, envir = as.environment(-1))
-new_test <- .trim_table_by_metgroup(test, met = c(230,898))
+new_test <- LUMA:::.trim_table_by_metgroup(test, met = c(230,898))
 assign(paste0(gsub( " ", "_" , combined_tables[i]),"_test"), new_test, envir = as.environment(-1))
 
 write_tbl(mydf = new_test, peak.db = peak.db, myname = combined_tables[i])
@@ -91,7 +90,7 @@ identical(new_test,test_from_db)
 for (i in seq_along(combined_tables)) {
   x <- read_tbl(mytable = combined_tables[i], peak.db = old.peak.db)
   assign(paste0(gsub(" ", "_",combined_tables[i])), x, envir = as.environment(-1))
-  new_x <- .trim_table_by_metgroup(x, met = c(230,898))
+  new_x <- LUMA:::.trim_table_by_metgroup(x, met = c(230,898))
   assign(paste0(gsub( " " , "_" , combined_tables[i])), new_x, envir = as.environment(-1))
 
   #write to database
@@ -110,6 +109,9 @@ rm(list = c(test_list,x_list))
 
 #remove old database
 if (file.exists("./data-raw/Peaklist_Pos_old.SQLite")) file.remove("./data-raw/Peaklist_Pos_old.SQLite")
+
+#Copy database to inst directory
+file.copy(from = "./data-raw/Peaklist_Pos.SQLite", to = "./inst/extdata/Peaklist_Pos.SQLite")
 
 ## END
 
@@ -131,5 +133,4 @@ names(Peaklist_Pos) <- temp
 usethis::use_data(Peaklist_Pos, compress = "xz", overwrite = T)
 
 dbDisconnect(peak_db)
-
 ### END

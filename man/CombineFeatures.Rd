@@ -20,6 +20,6 @@ See sum_features and combine_phenodata for more details.
 library(LUMA)
 db.dir <- system.file('extdata/', package = "LUMA")
 InitWorkflow(db.dir = db.dir)
-CombineFeatures(from.table = "From CAMERA", to.table = "Combined Isotopes and Adducts")
+CombineFeatures(from.table = "output_parsed", to.table = "Combined Isotopes and Adducts")
 }
 }

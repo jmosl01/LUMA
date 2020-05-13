@@ -111,7 +111,7 @@ ParseCAMERA <- function(from.table,to.table,CAMERA.obj) {
 #' library(LUMA)
 #' db.dir <- system.file('extdata/', package = "LUMA")
 #' InitWorkflow(db.dir = db.dir)
-#' CombineFeatures(from.table = "From CAMERA", to.table = "Combined Isotopes and Adducts")
+#' CombineFeatures(from.table = "output_parsed", to.table = "Combined Isotopes and Adducts")
 #' }
 CombineFeatures <- function(from.table,to.table) {
   ## Sums isotopic and adduct peaks and combined all feature data into a single metadata entry
