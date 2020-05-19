@@ -22,5 +22,8 @@ library(LUMA)
 file <- system.file('extdata/Search_Parameters.txt', package = "LUMA")
 search.par <- read.table(file, sep = "\t", header = TRUE) #Ignore Warning message
 test <- trim_cv(Peak.list = Peaklist_Pos$From_CAMERA, search.par = search.par)
-nrow(Peaklist_Pos$From_CAMERA) -  nrow(test)
+nrow(Peaklist_Pos$From_CAMERA) -  nrow(test) #Equals 14
+
+test <- trim_cv(Peak.list = Peaklist_Pos$Combined_Isotopes_and_Adducts, search.par = search.par)
+nrow(Peaklist_Pos$Combined_Isotopes_and_Adducts) -  nrow(test) #Equals 9
 }

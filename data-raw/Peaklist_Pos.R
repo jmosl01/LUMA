@@ -40,17 +40,9 @@ EIC_ID_rt <- test %>%
                   select(EIC_ID) %>%
                     slice(1:10)
 
-#List of EICs that can be trimmed by CV
-EIC_ID_cv <- test %>%
-  filter(rt < 0.5) %>%
-  select(EIC_ID) %>%
-  slice(1:10)
 
-
-
-
-EIC_list <- c(485,502,518,531,3070,3093,3110,3127,3333,3345,3435,5321,5325)
-EIC_list <- sort(c(EIC_list, as.numeric(EIC_ID_rt$EIC_ID)))
+EIC_list <- c(482,502,518,531,3070,3093,3110,3127,3333,3345,3435,5321,5325)
+EIC_list <- unique(sort(c(EIC_list, as.numeric(EIC_ID_rt$EIC_ID))))
 
 new_test <- LUMA:::.trim_table_by_eic(test, eic = EIC_list)
 assign(paste0(gsub(" ","_",precombined_tables[i]),"_test"), new_test, envir = as.environment(-1))
@@ -78,7 +70,19 @@ for (i in seq_along(precombined_tables)) {
 i = 1
 test <- read_tbl(mytable = combined_tables[i], peak.db = old.peak.db)
 assign(paste0(gsub(" ", "_",combined_tables[i])), test, envir = as.environment(-1))
-new_test <- LUMA:::.trim_table_by_metgroup(test, met = c(230,898))
+
+
+#List of metgroups that can be trimmed by MinFrac
+metgroup_mf <- test %>%
+  filter(MinFrac < 0.8) %>%
+  select(metabolite_group) %>%
+  slice(1:10)
+
+
+met_list <- c(230,898)
+met_list <- unique(sort(c(met_list, as.numeric(metgroup_mf$metabolite_group))))
+
+new_test <- LUMA:::.trim_table_by_metgroup(test, met = met_list)
 assign(paste0(gsub( " ", "_" , combined_tables[i]),"_test"), new_test, envir = as.environment(-1))
 
 write_tbl(mydf = new_test, peak.db = peak.db, myname = combined_tables[i])
@@ -90,7 +94,7 @@ identical(new_test,test_from_db)
 for (i in seq_along(combined_tables)) {
   x <- read_tbl(mytable = combined_tables[i], peak.db = old.peak.db)
   assign(paste0(gsub(" ", "_",combined_tables[i])), x, envir = as.environment(-1))
-  new_x <- LUMA:::.trim_table_by_metgroup(x, met = c(230,898))
+  new_x <- LUMA:::.trim_table_by_metgroup(x, met = met_list)
   assign(paste0(gsub( " " , "_" , combined_tables[i])), new_x, envir = as.environment(-1))
 
   #write to database
@@ -111,7 +115,7 @@ rm(list = c(test_list,x_list))
 if (file.exists("./data-raw/Peaklist_Pos_old.SQLite")) file.remove("./data-raw/Peaklist_Pos_old.SQLite")
 
 #Copy database to inst directory
-file.copy(from = "./data-raw/Peaklist_Pos.SQLite", to = "./inst/extdata/Peaklist_Pos.SQLite")
+file.copy(from = "./data-raw/Peaklist_Pos.SQLite", to = "./inst/extdata/Peaklist_Pos.SQLite", overwrite = T)
 
 ## END
 

@@ -43,7 +43,10 @@ remove_void_volume = function(Peak.list, search.par, method,...) {
 #' file <- system.file('extdata/Search_Parameters.txt', package = "LUMA")
 #' search.par <- read.table(file, sep = "\t", header = TRUE) #Ignore Warning message
 #' test <- trim_cv(Peak.list = Peaklist_Pos$From_CAMERA, search.par = search.par)
-#' nrow(Peaklist_Pos$From_CAMERA) -  nrow(test)
+#' nrow(Peaklist_Pos$From_CAMERA) -  nrow(test) #Equals 14
+#'
+#' test <- trim_cv(Peak.list = Peaklist_Pos$Combined_Isotopes_and_Adducts, search.par = search.par)
+#' nrow(Peaklist_Pos$Combined_Isotopes_and_Adducts) -  nrow(test) #Equals 9
 trim_cv = function(Peak.list, search.par) {
 
     Peak.list.cv <- calc_cv(Peak.list)
@@ -75,6 +78,7 @@ trim_cv = function(Peak.list, search.par) {
 #' @examples
 #'   file <- system.file('extdata/Search_Parameters.txt', package = "LUMA")
 #'   search.par <- read.table(file, sep = "\t", header = TRUE) #Ignore Warning message
+#'
 #'   method = "mz"
 #'   class(method) = method
 #'   test <- trim_minfrac(Peak.list = Peaklist_Pos$From_CAMERA_with_MinFrac,
@@ -86,6 +90,7 @@ trim_cv = function(Peak.list, search.par) {
 #'   test <- trim_minfrac(Peak.list =
 #'   Peaklist_Pos$Combined_Isotopes_and_Adducts, search.par = search.par, object
 #'   = method)
+#'   nrow(Peaklist_Pos$Combined_Isotopes_and_Adducts) - nrow(test) #equals 4
 trim_minfrac = function(object, Peak.list, search.par) {
   UseMethod("trim_minfrac", object)
 }
