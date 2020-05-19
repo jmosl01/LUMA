@@ -21,3 +21,11 @@ character
 \description{
 Generates filebase for reading and writing to databases
 }
+\examples{
+library(LUMA)
+file <- system.file("extdata/Sample_Data.csv", package =  "LUMA")
+sample_data <- read.table(file, header = T, sep = ",")
+mzdatafiles <- sample_data$CT.ID
+test <- gen_filebase(mzdatafiles = mzdatafiles, BLANK = FALSE, IonMode = "Positive", ion.id = c("Pos","Neg")) #Returns "Peaklist_Pos"
+print(test)
+}

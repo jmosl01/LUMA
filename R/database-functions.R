@@ -7,6 +7,13 @@
 #' @param IonMode a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'
 #' @param ion.id character vector of length 2 specifying identifier in filename designating positive or negative ionization mode.  Positive identifier must come first.
 #' @return character
+#' @examples
+#' library(LUMA)
+#' file <- system.file("extdata/Sample_Data.csv", package =  "LUMA")
+#' sample_data <- read.table(file, header = T, sep = ",")
+#' mzdatafiles <- sample_data$CT.ID
+#' test <- gen_filebase(mzdatafiles = mzdatafiles, BLANK = FALSE, IonMode = "Positive", ion.id = c("Pos","Neg")) #Returns "Peaklist_Pos"
+#' print(test)
 gen_filebase = function(mzdatafiles, BLANK, ion.id, IonMode) {
   if (IonMode == "Positive" && BLANK == TRUE) {
     mzdatafiles <- subset(mzdatafiles, subset = grepl(paste(ion.id[1]), mzdatafiles, ignore.case = TRUE))
@@ -47,6 +54,15 @@ gen_filebase = function(mzdatafiles, BLANK, ion.id, IonMode) {
 #' @return Formal class SQLiteConnection
 #' @importFrom DBI dbConnect
 #' @importFrom RSQLite SQLite
+#' @examples
+#' library(LUMA)
+#' file <- system.file("extdata/Sample_Data.csv", package =  "LUMA")
+#' sample_data <- read.table(file, header = T, sep = ",")
+#' mzdatafiles <- sample_data$CT.ID
+#' file.base <- gen_filebase(mzdatafiles = mzdatafiles, BLANK = FALSE, IonMode = "Positive", ion.id = c("Pos","Neg")) #Returns "Peaklist_Pos"
+#' peak_db <- connect_peakdb(file.base = file.base, mem = T)
+#' dbIsValid(peak_db) #valid database is created
+#' dbDisconnect(peak_db)
 connect_peakdb = function(file.base, db.dir, mem) {
 
     #Set default variables
@@ -82,6 +98,11 @@ connect_peakdb = function(file.base, db.dir, mem) {
 #' @return Formal class SQLiteConnection
 #' @importFrom DBI dbConnect
 #' @importFrom RSQLite SQLite
+#' @examples
+#' library(LUMA)
+#' lib_db <- connect_libdb(mem = T)
+#' dbIsValid(lib_db) #Valid database is created
+#' dbDisconnect(lib_db)
 connect_libdb = function(lib.db, db.dir, mem) {
 
   #Set default variables
@@ -114,20 +135,58 @@ connect_libdb = function(lib.db, db.dir, mem) {
 #' @param db.list list character names of databases containing results from processing positive mode and negative mode data for samples and blanks
 #' @param db.dir character directory containing the databases
 #' @param new.db character what should the new database be called.
+#' @param mem logical should database be in-memory. Default is FALSE
 #' @return list of Formal class SQLiteConnections, starting with new.db entry followed by one for each db.list entry
 #' @importFrom DBI dbConnect
 #' @importFrom RSQLite SQLite
-connect_lumadb = function(db.list, db.dir, new.db) {
+#' @examples
+#' library(LUMA)
+#' file <- system.file("extdata/Sample_Data.csv", package =  "LUMA")
+#' sample_data <- read.table(file, header = T, sep = ",")
+#' mzdatafiles <- sample_data$CT.ID
+#' samples.pos <- gen_filebase(mzdatafiles = mzdatafiles, BLANK = FALSE, IonMode = "Positive", ion.id = c("Pos","Neg")) #Returns "Peaklist_Pos"
+#' samples.neg <- gen_filebase(mzdatafiles = mzdatafiles, BLANK = FALSE, IonMode = "Negative", ion.id = c("Pos","Neg")) #Returns "Peaklist_Neg"
+#' blanks.pos <- gen_filebase(mzdatafiles = mzdatafiles, BLANK = TRUE, IonMode = "Positive", ion.id = c("Pos","Neg")) #Returns "Blanks_Pos"
+#' blanks.neg <- gen_filebase(mzdatafiles = mzdatafiles, BLANK = TRUE, IonMode = "Negative", ion.id = c("Pos","Neg")) #Returns "Blanks_Neg"
+#'
+#' spos_db <- connect_peakdb(file.base = samples.pos, mem = T)
+#' sneg_db <- connect_peakdb(file.base = samples.neg, mem = T)
+#' bpos_db <- connect_peakdb(file.base = blanks.pos, mem = T)
+#' bneg_db <- connect_peakdb(file.base = blanks.neg, mem = T)
+#' new_db.list <- connect_lumadb(db.list = c("spos_db","sneg_db","bpos_db","bneg_db"), mem = T)
+#' all(sapply(new_db.list, function(x) { #All valid databases are created
+#'   dbIsValid(x)
+#' }))
+connect_lumadb = function(db.list, db.dir, new.db, mem) {
 
     #Set default variables
+    if (missing(db.dir))
+      db.dir = "db"
     if (missing(new.db))
-      new.db = "Peaklist_db"
+        new.db = "Peaklist_db"
+    if (missing(mem))
+      mem = F
 
-    peak_db <- DBI::dbConnect(RSQLite::SQLite(), paste0(paste(db.dir, new.db, sep = "/"),".SQLite"))
-    pos_db <- DBI::dbConnect(RSQLite::SQLite(), paste0(paste(db.dir, db.list[[1]], sep = "/"),".SQLite"))
-    blanks_pos_db <- DBI::dbConnect(RSQLite::SQLite(), paste0(paste(db.dir, db.list[[3]], sep = "/"),".SQLite"))
-    neg_db <- DBI::dbConnect(RSQLite::SQLite(), paste0(paste(db.dir, db.list[[2]], sep = "/"),".SQLite"))
-    blanks_neg_db <- DBI::dbConnect(RSQLite::SQLite(), paste0(paste(db.dir, db.list[[4]], sep = "/"),".SQLite"))
+    if(mem) {
+
+      peak_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+      pos_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+      blanks_pos_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+      neg_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+      blanks_neg_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+
+
+    } else {
+
+
+      peak_db <- DBI::dbConnect(RSQLite::SQLite(), paste0(paste(db.dir, new.db, sep = "/"),".SQLite"))
+      pos_db <- DBI::dbConnect(RSQLite::SQLite(), paste0(paste(db.dir, db.list[[1]], sep = "/"),".SQLite"))
+      blanks_pos_db <- DBI::dbConnect(RSQLite::SQLite(), paste0(paste(db.dir, db.list[[3]], sep = "/"),".SQLite"))
+      neg_db <- DBI::dbConnect(RSQLite::SQLite(), paste0(paste(db.dir, db.list[[2]], sep = "/"),".SQLite"))
+      blanks_neg_db <- DBI::dbConnect(RSQLite::SQLite(), paste0(paste(db.dir, db.list[[4]], sep = "/"),".SQLite"))
+
+    }
+
 
     return(list(peak_db = peak_db, pos_db = pos_db, neg_db = neg_db, blanks_pos_db = blanks_pos_db, blanks_neg_db = blanks_neg_db))
 
