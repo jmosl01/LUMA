@@ -35,7 +35,7 @@ mydf <- Peaklist_Pos$From_CAMERA
 write_tbl(mydf = mydf, myname = "From_CAMERA", peak.db = peak_db)
 test <- read_tbl(mytable = "From_CAMERA", peak.db = peak_db)
 identical(test,mydf) ## Objects are identical of class "tbl"
-test2 <- read_tbl(mytable = "From_CAMERA", peak.db = peak_db, asdf = T)
+test2 <- read_tbl(mytable = "From_CAMERA", peak.db = peak_db, asdf = TRUE)
 !identical(test2,mydf) ## test2 is a data.frame
 }
 }

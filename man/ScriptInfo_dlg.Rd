@@ -7,11 +7,22 @@
 ScriptInfo_dlg(multiple = FALSE)
 }
 \arguments{
-\item{multiple}{should dialog box with multiple fields be used; default if FALSE}
+\item{multiple}{should dialog box with multiple fields be used; default if
+FALSE}
 }
 \value{
 named list
 }
 \description{
-Creates dialog box for user to set basic workflow (used to be called script) information
+Creates dialog box for user to set basic workflow (used to be
+  called script) information
+}
+\examples{
+\dontrun{
+library(LUMA)
+if(require(lcmsfishdata, quietly = TRUE)) {
+  (mypath <- system.file("extdata", package = "LUMA"))
+  (test <- ScriptInfo_dlg(multiple = TRUE))
+  }
+}
 }

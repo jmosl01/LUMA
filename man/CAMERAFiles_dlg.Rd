@@ -15,3 +15,12 @@ named list
 \description{
 Creates dialog box for user to select saved CAMERA objects when running LUMA workflow
 }
+\examples{
+\dontrun{
+library(LUMA)
+if(require(lcmsfishdata, quietly = TRUE)) {
+  (mypath <- system.file("extdata", package = "lcmsfishdata"))
+  (test <- CAMERAFiles_dlg(multiple = TRUE))
+  }
+}
+}

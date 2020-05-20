@@ -6,6 +6,14 @@
 #' @param multiple should dialog box with multiple fields be used; caution this is buggy and doesn't always work on all platforms; default if FALSE
 #' @importFrom svDialogs ok_cancel_box dlg_form dlg_open dlg_dir dlg_list
 #' @return named list
+#' @examples
+#' \dontrun{
+#' library(LUMA)
+#' if(require(lcmsfishdata, quietly = TRUE)) {
+#'   (mypath <- system.file("extdata", package = "lcmsfishdata"))
+#'   (test <- InputFiles_dlg(WorkingDir = mypath, multiple = TRUE))
+#'   }
+#' }
 InputFiles_dlg <- function(WorkingDir,multiple = FALSE) {
 
   #Set initial values
@@ -109,9 +117,19 @@ InputFiles_dlg <- function(WorkingDir,multiple = FALSE) {
 #' @title Script Info Dialog Box
 #'
 #' @export
-#' @description Creates dialog box for user to set basic workflow (used to be called script) information
-#' @param multiple should dialog box with multiple fields be used; default if FALSE
+#' @description Creates dialog box for user to set basic workflow (used to be
+#'   called script) information
+#' @param multiple should dialog box with multiple fields be used; default if
+#'   FALSE
 #' @return named list
+#' @examples
+#' \dontrun{
+#' library(LUMA)
+#' if(require(lcmsfishdata, quietly = TRUE)) {
+#'   (mypath <- system.file("extdata", package = "LUMA"))
+#'   (test <- ScriptInfo_dlg(multiple = TRUE))
+#'   }
+#' }
 ScriptInfo_dlg <- function(multiple = FALSE) {
 
   #Set default values
@@ -194,6 +212,14 @@ ScriptInfo_dlg <- function(multiple = FALSE) {
 #' @param multiple should dialog box with multiple fields be used; caution this is buggy and doesn't always work on all platforms; default if FALSE
 #' @importFrom svDialogs ok_cancel_box dlg_form dlg_open dlg_dir dlg_list
 #' @return named list
+#' @examples
+#' \dontrun{
+#' library(LUMA)
+#' if(require(lcmsfishdata, quietly = TRUE)) {
+#'   (mypath <- system.file("extdata", package = "lcmsfishdata"))
+#'   (test <- CAMERAFiles_dlg(multiple = TRUE))
+#'   }
+#' }
 CAMERAFiles_dlg <- function(multiple = FALSE) {
 
   #Set default values
