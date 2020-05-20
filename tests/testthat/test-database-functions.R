@@ -21,6 +21,10 @@ test_that("valid databases are created", {
     mzdatafiles <- sample_data$CT.ID
     file.base <- gen_filebase(mzdatafiles = mzdatafiles, BLANK = FALSE, IonMode = "Positive", ion.id = c("Pos","Neg")) #Returns "Peaklist_Pos"
     peak_db <- connect_peakdb(file.base = file.base, mem = TRUE)
+    mydf <- Peaklist_Pos$From_CAMERA
+    write_tbl(mydf = mydf, myname = "From_CAMERA", peak.db = peak_db)
+    test <- read_tbl(mytable = "From_CAMERA", peak.db = peak_db)
+
     lib_db <- connect_libdb(mem = TRUE)
     samples.pos <- gen_filebase(mzdatafiles = mzdatafiles, BLANK = FALSE, IonMode = "Positive", ion.id = c("Pos","Neg")) #Returns "Peaklist_Pos"
     samples.neg <- gen_filebase(mzdatafiles = mzdatafiles, BLANK = FALSE, IonMode = "Negative", ion.id = c("Pos","Neg")) #Returns "Peaklist_Neg"
@@ -34,9 +38,13 @@ test_that("valid databases are created", {
     new_db.list <- connect_lumadb(db.list = c("spos_db","sneg_db","bpos_db","bneg_db"), mem = TRUE)
 
     expect_true(dbIsValid(peak_db))
+    expect_equal(dbListTables(peak_db)[[1]],"From_CAMERA")
+    expect_equal(test,mydf)
     expect_true(dbIsValid(lib_db))
     expect_true(all(sapply(new_db.list, function(x) { #All valid databases are created
       dbIsValid(x) })))
+    lapply(list(peak_db, lib_db), function(x) dbDisconnect(x))
+    lapply(new_db.list, function(x) dbDisconnect(x))
   }
 
 })
