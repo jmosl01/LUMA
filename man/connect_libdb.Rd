@@ -17,11 +17,14 @@ connect_libdb(lib.db, db.dir, mem)
 Formal class SQLiteConnection
 }
 \description{
-Establishes a connection to an SQLite database for searching Peak.list against library; if doesn't exist, creates new database
+Establishes a connection to an SQLite database for searching
+  Peak.list against library; if doesn't exist, creates new database
 }
 \examples{
 library(LUMA)
-lib_db <- connect_libdb(mem = T)
+if(require(RSQLite, quietly = TRUE)) {
+lib_db <- connect_libdb(mem = TRUE)
 dbIsValid(lib_db) #Valid database is created
 dbDisconnect(lib_db)
+}
 }

@@ -2,17 +2,22 @@
 #'
 #' @export
 #' @description Generates filebase for reading and writing to databases
-#' @param mzdatafiles character vector containing data files to process and store results in databases
+#' @param mzdatafiles character vector containing data files to process and
+#'   store results in databases
 #' @param BLANK a logical indicating whether blanks are being evaluated
-#' @param IonMode a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'
-#' @param ion.id character vector of length 2 specifying identifier in filename designating positive or negative ionization mode.  Positive identifier must come first.
+#' @param IonMode a character string defining the ionization mode.  Must be
+#'   either 'Positive' or 'Negative'
+#' @param ion.id character vector of length 2 specifying identifier in filename
+#'   designating positive or negative ionization mode.  Positive identifier must
+#'   come first.
 #' @return character
 #' @examples
 #' library(LUMA)
 #' file <- system.file("extdata/Sample_Data.csv", package =  "LUMA")
-#' sample_data <- read.table(file, header = T, sep = ",")
+#' sample_data <- read.table(file, header = TRUE, sep = ",")
 #' mzdatafiles <- sample_data$CT.ID
-#' test <- gen_filebase(mzdatafiles = mzdatafiles, BLANK = FALSE, IonMode = "Positive", ion.id = c("Pos","Neg")) #Returns "Peaklist_Pos"
+#' test <- gen_filebase(mzdatafiles = mzdatafiles, BLANK = FALSE, IonMode =
+#' "Positive", ion.id = c("Pos","Neg")) #Returns "Peaklist_Pos"
 #' print(test)
 gen_filebase = function(mzdatafiles, BLANK, ion.id, IonMode) {
   if (IonMode == "Positive" && BLANK == TRUE) {
@@ -47,22 +52,27 @@ gen_filebase = function(mzdatafiles, BLANK, ion.id, IonMode) {
 #' @title Connects to peak database
 #'
 #' @export
-#' @description Establishes a connection to an SQLite database for storing Peak.list; if doesn't exist, creates new database
+#' @description Establishes a connection to an SQLite database for storing
+#'   Peak.list; if doesn't exist, creates new database
 #' @param file.base character return from gen_filebase function
-#' @param db.dir character what should the database directory be called.  Default is 'db'
+#' @param db.dir character what should the database directory be called.
+#'   Default is 'db'
 #' @param mem logical should database be in-memory. Default is FALSE
 #' @return Formal class SQLiteConnection
 #' @importFrom DBI dbConnect
 #' @importFrom RSQLite SQLite
 #' @examples
 #' library(LUMA)
+#' if(require(RSQLite, quietly = TRUE)) {
 #' file <- system.file("extdata/Sample_Data.csv", package =  "LUMA")
-#' sample_data <- read.table(file, header = T, sep = ",")
+#' sample_data <- read.table(file, header = TRUE, sep = ",")
 #' mzdatafiles <- sample_data$CT.ID
-#' file.base <- gen_filebase(mzdatafiles = mzdatafiles, BLANK = FALSE, IonMode = "Positive", ion.id = c("Pos","Neg")) #Returns "Peaklist_Pos"
-#' peak_db <- connect_peakdb(file.base = file.base, mem = T)
+#' file.base <- gen_filebase(mzdatafiles = mzdatafiles, BLANK = FALSE, IonMode =
+#' "Positive", ion.id = c("Pos","Neg")) #Returns "Peaklist_Pos"
+#' peak_db <- connect_peakdb(file.base = file.base, mem = TRUE)
 #' dbIsValid(peak_db) #valid database is created
 #' dbDisconnect(peak_db)
+#' }
 connect_peakdb = function(file.base, db.dir, mem) {
 
     #Set default variables
@@ -91,7 +101,8 @@ connect_peakdb = function(file.base, db.dir, mem) {
 #' @title Connects to library database
 #'
 #' @export
-#' @description Establishes a connection to an SQLite database for searching Peak.list against library; if doesn't exist, creates new database
+#' @description Establishes a connection to an SQLite database for searching
+#'   Peak.list against library; if doesn't exist, creates new database
 #' @param lib.db character name of database
 #' @param db.dir character directory containing the database. Default is 'db'
 #' @param mem logical should database be in-memory. Default is TRUE
@@ -100,9 +111,11 @@ connect_peakdb = function(file.base, db.dir, mem) {
 #' @importFrom RSQLite SQLite
 #' @examples
 #' library(LUMA)
-#' lib_db <- connect_libdb(mem = T)
+#' if(require(RSQLite, quietly = TRUE)) {
+#' lib_db <- connect_libdb(mem = TRUE)
 #' dbIsValid(lib_db) #Valid database is created
 #' dbDisconnect(lib_db)
+#' }
 connect_libdb = function(lib.db, db.dir, mem) {
 
   #Set default variables
@@ -130,33 +143,41 @@ connect_libdb = function(lib.db, db.dir, mem) {
 #' @title Connects to LUMA database
 #'
 #' @export
-#' @description Establishes a connection to an RSQLite database for combining Peak.lists together from two different ionization modes.
-#' Must have previously saved SQLite databases to hard disk.
-#' @param db.list list character names of databases containing results from processing positive mode and negative mode data for samples and blanks
+#' @description Establishes a connection to an RSQLite database for combining
+#'   Peak.lists together from two different ionization modes. Must have
+#'   previously saved SQLite databases to hard disk.
+#' @param db.list list character names of databases containing results from
+#'   processing positive mode and negative mode data for samples and blanks
 #' @param db.dir character directory containing the databases
 #' @param new.db character what should the new database be called.
 #' @param mem logical should database be in-memory. Default is FALSE
-#' @return list of Formal class SQLiteConnections, starting with new.db entry followed by one for each db.list entry
+#' @return list of Formal class SQLiteConnections, starting with new.db entry
+#'   followed by one for each db.list entry
 #' @importFrom DBI dbConnect
 #' @importFrom RSQLite SQLite
 #' @examples
 #' library(LUMA)
+#' if(require(RSQLite, quietly = TRUE)) {
 #' file <- system.file("extdata/Sample_Data.csv", package =  "LUMA")
-#' sample_data <- read.table(file, header = T, sep = ",")
+#' sample_data <- read.table(file, header = TRUE, sep = ",")
 #' mzdatafiles <- sample_data$CT.ID
-#' samples.pos <- gen_filebase(mzdatafiles = mzdatafiles, BLANK = FALSE, IonMode = "Positive", ion.id = c("Pos","Neg")) #Returns "Peaklist_Pos"
-#' samples.neg <- gen_filebase(mzdatafiles = mzdatafiles, BLANK = FALSE, IonMode = "Negative", ion.id = c("Pos","Neg")) #Returns "Peaklist_Neg"
-#' blanks.pos <- gen_filebase(mzdatafiles = mzdatafiles, BLANK = TRUE, IonMode = "Positive", ion.id = c("Pos","Neg")) #Returns "Blanks_Pos"
-#' blanks.neg <- gen_filebase(mzdatafiles = mzdatafiles, BLANK = TRUE, IonMode = "Negative", ion.id = c("Pos","Neg")) #Returns "Blanks_Neg"
+#' samples.pos <- gen_filebase(mzdatafiles = mzdatafiles, BLANK = FALSE, IonMode
+#' = "Positive", ion.id = c("Pos","Neg")) #Returns "Peaklist_Pos" samples.neg <-
+#' gen_filebase(mzdatafiles = mzdatafiles, BLANK = FALSE, IonMode = "Negative",
+#' ion.id = c("Pos","Neg")) #Returns "Peaklist_Neg" blanks.pos <-
+#' gen_filebase(mzdatafiles = mzdatafiles, BLANK = TRUE, IonMode = "Positive",
+#' ion.id = c("Pos","Neg")) #Returns "Blanks_Pos" blanks.neg <-
+#' gen_filebase(mzdatafiles = mzdatafiles, BLANK = TRUE, IonMode = "Negative",
+#' ion.id = c("Pos","Neg")) #Returns "Blanks_Neg"
 #'
-#' spos_db <- connect_peakdb(file.base = samples.pos, mem = T)
-#' sneg_db <- connect_peakdb(file.base = samples.neg, mem = T)
-#' bpos_db <- connect_peakdb(file.base = blanks.pos, mem = T)
-#' bneg_db <- connect_peakdb(file.base = blanks.neg, mem = T)
-#' new_db.list <- connect_lumadb(db.list = c("spos_db","sneg_db","bpos_db","bneg_db"), mem = T)
+#' spos_db <- connect_peakdb(file.base = samples.pos, mem = TRUE)
+#' sneg_db <- connect_peakdb(file.base = samples.neg, mem = TRUE)
+#' bpos_db <- connect_peakdb(file.base = blanks.pos, mem = TRUE)
+#' bneg_db <- connect_peakdb(file.base = blanks.neg, mem = TRUE)
+#' new_db.list <- connect_lumadb(db.list = c("spos_db","sneg_db","bpos_db","bneg_db"), mem = TRUE)
 #' all(sapply(new_db.list, function(x) { #All valid databases are created
 #'   dbIsValid(x)
-#' }))
+#' }))}
 connect_lumadb = function(db.list, db.dir, new.db, mem) {
 
     #Set default variables
