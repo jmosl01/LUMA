@@ -19,41 +19,52 @@ remove_background_peaks(
 )
 }
 \arguments{
-\item{Peak.list}{a named list of data frames (two per ionization mode) containing intensity matrices across all study samples and Pooled QCs and process blanks.
-Names should be c('pos','neg','blanks_pos','blanks_neg'). Alternatively may use existing database connections by setting to NULL}
+\item{Peak.list}{a named list of data frames (two per ionization mode)
+containing intensity matrices across all study samples and Pooled QCs and
+process blanks. Names should be c('pos','neg','blanks_pos','blanks_neg').
+Alternatively may use existing database connections by setting to NULL}
 
-\item{Sample.df}{a data frame with class info as columns, containing a separate row entry for each unique sex/class combination.
-Must contain the columns 'Sex','Class','n','Endogenous'.}
+\item{Sample.df}{a data frame with class info as columns, containing a
+separate row entry for each unique sex/class combination. Must contain the
+columns 'Sex','Class','n','Endogenous'.}
 
-\item{search.par}{a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.}
+\item{search.par}{a single-row data frame with 11 variables containing
+user-defined search parameters. Must contain the columns
+'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous',
+'Solvent','gen.plots','keep.singletons'.}
 
-\item{method}{which method to apply to search for background components.  See find_Background for details.}
+\item{method}{which method to apply to search for background components.  See
+find_Background for details.}
 
 \item{lib.db}{character name of database to contain Solvent Library}
 
-\item{tbl.id}{character vector of table names to draw from databases.
-First value should be table name from peak database, second should be table name from solvent database.
-Default is NULL}
+\item{tbl.id}{character vector of table names to draw from databases. First
+value should be table name from peak database, second should be table name
+from solvent database. Default is NULL}
 
-\item{db.list}{list chracter names of databases containing results from processing positive mode (1,3) and negative mode (2,4) data for samples (1,2) and blanks (3,4)
-Default is NULL}
+\item{db.list}{list chracter names of databases containing results from
+processing positive mode (1,3) and negative mode (2,4) data for samples
+(1,2) and blanks (3,4) Default is NULL}
 
-\item{db.dir}{character directory containing the databases
-Default is 'db'}
+\item{db.dir}{character directory containing the databases Default is 'db'}
 
-\item{new.db}{character what should the new database be called
-Default is 'Peaklist_db'}
+\item{new.db}{character what should the new database be called Default is
+'Peaklist_db'}
 
 \item{mem}{logical should database be in-memory. Default is FALSE}
 
 \item{...}{Arguments to pass parameters to find_Background}
 }
 \value{
-nested list a list for each ionization mode, each containing a list of two dataframes: the first contains the intensity matrix for the peaklist with solvent peaks removed, the second contains the intensity matrix for the solvent peaks
+nested list a list for each ionization mode, each containing a list
+  of two dataframes: the first contains the intensity matrix for the peaklist
+  with solvent peaks removed, the second contains the intensity matrix for
+  the solvent peaks
 }
 \description{
-Searches features or compounds in Peak.list that are present in process blanks and removes them.
-Also flags compounds as exogenous, defined as mean abundance in endogenous samples below user-defined threshold.
+Searches features or compounds in Peak.list that are present in
+  process blanks and removes them. Also flags compounds as exogenous, defined
+  as mean abundance in endogenous samples below user-defined threshold.
 }
 \examples{
 library(LUMA)
@@ -64,14 +75,21 @@ file2 <- system.file('extdata/Search_parameters.txt', package = "LUMA")
 search.par <- read.table(file2, header = TRUE, sep = "\t")
 \donttest{
   #From m/z features
-  Peak.list <- list(pos = Peaklist_Pos_db$From_CAMERA, neg = Peaklist_Neg_db$From_CAMERA, blanks_pos = Blanks_Pos_db$From_CAMERA, blanks_neg = Blanks_Neg_db$From_CAMERA)
-  test <- remove_background_peaks(Peak.list = Peak.list, Sample.df = Sample.df, search.par = search.par, method = "mz", mem = TRUE)
+  Peak.list <- list(pos = Peaklist_Pos_db$From_CAMERA, neg =
+  Peaklist_Neg_db$From_CAMERA, blanks_pos = Blanks_Pos_db$From_CAMERA,
+  blanks_neg = Blanks_Neg_db$From_CAMERA)
+  test <- remove_background_peaks(Peak.list = Peak.list, Sample.df =
+  Sample.df, search.par = search.par, method = "mz", mem = TRUE)
   lapply(test, head) #Peaklists with removed background components are returned
 }
 
 #From combined features
-Peak.list <- list(pos = Peaklist_Pos_db$Trimmed_by_MinFrac, neg = Peaklist_Neg_db$Trimmed_by_MinFrac, blanks_pos = Blanks_Pos_db$Combined_Isotopes_and_Adducts, blanks_neg = Blanks_Neg_db$Combined_Isotopes_and_Adducts)
-test <- remove_background_peaks(Peak.list = Peak.list, Sample.df = Sample.df, search.par = search.par, method = "monoMass", mem = TRUE)
+Peak.list <- list(pos = Peaklist_Pos_db$Trimmed_by_MinFrac, neg =
+Peaklist_Neg_db$Trimmed_by_MinFrac, blanks_pos =
+Blanks_Pos_db$Combined_Isotopes_and_Adducts, blanks_neg =
+Blanks_Neg_db$Combined_Isotopes_and_Adducts)
+test <- remove_background_peaks(Peak.list = Peak.list, Sample.df = Sample.df,
+search.par = search.par, method = "monoMass", mem = TRUE)
 lapply(test, head) #Peaklists with removed background components are returned
  }
 }
