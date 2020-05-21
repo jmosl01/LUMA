@@ -14,6 +14,7 @@ remove_background_peaks(
   db.list,
   db.dir,
   new.db,
+  mem,
   ...
 )
 }
@@ -43,6 +44,8 @@ Default is 'db'}
 \item{new.db}{character what should the new database be called
 Default is 'Peaklist_db'}
 
+\item{mem}{logical should database be in-memory. Default is FALSE}
+
 \item{...}{Arguments to pass parameters to find_Background}
 }
 \value{
@@ -51,4 +54,24 @@ nested list a list for each ionization mode, each containing a list of two dataf
 \description{
 Searches features or compounds in Peak.list that are present in process blanks and removes them.
 Also flags compounds as exogenous, defined as mean abundance in endogenous samples below user-defined threshold.
+}
+\examples{
+library(LUMA)
+if(require(lcmsfishdata, quietly = TRUE)) {
+file <- system.file('extdata/Sample_Class.txt', package = "LUMA")
+Sample.df <- read.table(file, header = TRUE, sep = "\t")
+file2 <- system.file('extdata/Search_parameters.txt', package = "LUMA")
+search.par <- read.table(file2, header = TRUE, sep = "\t")
+\donttest{
+  #From m/z features
+  Peak.list <- list(pos = Peaklist_Pos_db$From_CAMERA, neg = Peaklist_Neg_db$From_CAMERA, blanks_pos = Blanks_Pos_db$From_CAMERA, blanks_neg = Blanks_Neg_db$From_CAMERA)
+  test <- remove_background_peaks(Peak.list = Peak.list, Sample.df = Sample.df, search.par = search.par, method = "mz", mem = TRUE)
+  lapply(test, head) #Peaklists with removed background components are returned
+}
+
+#From combined features
+Peak.list <- list(pos = Peaklist_Pos_db$Trimmed_by_MinFrac, neg = Peaklist_Neg_db$Trimmed_by_MinFrac, blanks_pos = Blanks_Pos_db$Combined_Isotopes_and_Adducts, blanks_neg = Blanks_Neg_db$Combined_Isotopes_and_Adducts)
+test <- remove_background_peaks(Peak.list = Peak.list, Sample.df = Sample.df, search.par = search.par, method = "monoMass", mem = TRUE)
+lapply(test, head) #Peaklists with removed background components are returned
+ }
 }
