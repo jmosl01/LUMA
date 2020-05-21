@@ -7,6 +7,13 @@
 #' @param to.table to which should LUMA save the modified Peak.list
 #' @param method which method to apply to trim by retention time.  See trim_rt for details.
 #' @return NULL
+#' @examples
+#' \dontrun{
+#' library(LUMA)
+#' db.dir <- system.file('extdata/', package = "LUMA")
+#' InitWorkflow(db.dir = db.dir)
+#' CullVoidVolume(from.table = "From CAMERA", to.table = "Trimmed by RT")
+#' }
 CullVoidVolume <- function(from.table,to.table,method) {
   ##Culls Peaklist by RT > void volume
   Peak.list <- read_tbl(mytable = from.table,
@@ -40,6 +47,13 @@ CullVoidVolume <- function(from.table,to.table,method) {
 #' @param from.table from which table should LUMA pull the Peak.list
 #' @param to.table to which should LUMA save the modified Peak.list
 #' @return NULL
+#' @examples
+#' \dontrun{
+#' library(LUMA)
+#' db.dir <- system.file('extdata/', package = "LUMA")
+#' InitWorkflow(db.dir = db.dir)
+#' CullCV(from.table = "From CAMERA", to.table = "Trimmed by CV")
+#' }
 CullCV <- function(from.table,to.table) {
   #Culls Peaklist by CV
   Peak.list <- read_tbl(mytable = from.table,
@@ -60,24 +74,38 @@ CullCV <- function(from.table,to.table) {
                                                        keep.singletons = keep.singletons))
 
 
-  write_tbl(mydf = Peak.list.trimmed,
-            peak.db = peak_db,
-            myname = to.table)
+  if(!all(is.na(Peak.list.trimmed))) { #Only writes table to database if Peak.list.trimmed contains actual values
+
+    write_tbl(mydf = Peak.list.trimmed,
+              peak.db = peak_db,
+              myname = to.table)
+
+  }
 }
 
 #' @title Culls the Peak.list by Minimum Fraction
 #'
 #' @export
 #' @description Culls the Peak.list by removing all components with minimum fraction less than the user-specified cutoff.
-#' See trim_mf for more details.
+#' See trim_minfrac for more details.
 #' @param from.table from which table should LUMA pull the Peak.list
 #' @param to.table to which should LUMA save the modified Peak.list
+#' @param method which method to apply to trim by minimum fraction values.  See trim_minfrac for details.
 #' @return NULL
-CullMF <- function(from.table,to.table) {
+#' @examples
+#' \dontrun{
+#' library(LUMA)
+#' db.dir <- system.file('extdata/', package = "LUMA")
+#' InitWorkflow(db.dir = db.dir)
+#' CullMF(from.table = "From CAMERA", to.table = "Trimmed by MinFrac")
+#' }
+CullMF <- function(from.table,to.table,method) {
   #Trims Peaklist by MinFrac
   Peak.list <- read_tbl(mytable = from.table,
                         peak.db = peak_db,
                         asdf = TRUE)
+
+  class(method) <- method
 
   Peak.list.trimmed <- trim_minfrac(Peak.list = Peak.list,
                                     search.par = data.frame(ppm = ppm.cutoff,
@@ -90,12 +118,17 @@ CullMF <- function(from.table,to.table) {
                                                             Endogenous = Endogenous.thresh,
                                                             Solvent = Solvent.ratio,
                                                             gen.plots = gen.plots,
-                                                            keep.singletons = keep.singletons))
+                                                            keep.singletons = keep.singletons),
+                                    object = method)
 
 
-  write_tbl(mydf = Peak.list.trimmed,
-            peak.db = peak_db,
-            myname = to.table)
+  if(!is.null(Peak.list.trimmed)) {
+
+    write_tbl(mydf = Peak.list.trimmed,
+              peak.db = peak_db,
+              myname = to.table)
+
+  }
 }
 
 #' @title Culls the Peak.list by Background
@@ -148,7 +181,7 @@ CullBackground <- function(from.tables,to.tables,method,db.list,db.dir,new.db,li
                                                                gen.plots = gen.plots,
                                                                keep.singletons = keep.singletons),
                                        tbl.id = from.tables,
-                                       ion.modes = ion.modes,
+                                       ion.mode = ion.mode,
                                        method = method,
                                        db.list = db.list,
                                        lib.db = lib.db,

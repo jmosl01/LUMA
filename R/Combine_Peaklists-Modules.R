@@ -38,14 +38,18 @@ CombinePeaklists <- function(from.tables,to.table,method,peak.db,db.dir,gen.plot
   } else {
     mygen.plots = gen.plots
   }
+  if(exists("BLANK",where = .GlobalEnv)) {
+    #Update BLANK to FALSE globally, because it doesn't make sense to plot duplicates for blanks!
+    BLANK <<- BLANK <- FALSE
+  }
 
 
   #Update Peaklist database connection globally
   peak_db <<- peak_db <- connect_peakdb(file.base = peak.db,db.dir = db.dir)
 
   #Ion modes sanity check
-  if(length(ion.modes) != 2) {
-    stop(paste("ion.modes must be a vector of length 2. \nIt is currently of length ",length(ion.modes),sep = ""))
+  if(length(ion.mode) != 2) {
+    stop(paste("ion.mode must be a vector of length 2. \nIt is currently of length ",length(ion.mode),sep = ""))
   }
 
   if(mygen.plots) {
@@ -53,7 +57,7 @@ CombinePeaklists <- function(from.tables,to.table,method,peak.db,db.dir,gen.plot
     ##Check for existing positive mode CAMERA objects. If not specified, check for saved CAMERA objects.
     ##If none exist, return error.
     if(is.null(CAMERA.pos)) {
-      PreProcesslist <- .set_PreProcessFileNames(ion.modes[1],BLANK)
+      PreProcesslist <- .set_PreProcessFileNames(ion.mode[1],BLANK)
       CAMERA.pos <- PreProcesslist[[2]]
 
       #CAMERA sanity check
@@ -61,7 +65,7 @@ CombinePeaklists <- function(from.tables,to.table,method,peak.db,db.dir,gen.plot
         cat("Reading in positive mode CAMERA files.\n\n")
         load(file = CAMERA.pos)
       } else {
-        stop("No saved positve mode CAMERA files exist. \nBe sure to call InitWorkflow module for positive mode first!\n\n")
+        stop("No saved positive mode CAMERA files exist. \nBe sure to call InitWorkflow module for positive mode first!\n\n")
       }
     } else {
       if(!exists(CAMERA.pos)) {
@@ -73,7 +77,7 @@ CombinePeaklists <- function(from.tables,to.table,method,peak.db,db.dir,gen.plot
     ##Check for existing negative mode CAMERA objects. If not specified, check for saved CAMERA objects.
     ##If none exist, return error.
     if(is.null(CAMERA.neg)) {
-      PreProcesslist <- .set_PreProcessFileNames(ion.modes[2],BLANK)
+      PreProcesslist <- .set_PreProcessFileNames(ion.mode[2],BLANK)
       CAMERA.neg <- PreProcesslist[[2]]
 
       #CAMERA sanity check
@@ -147,14 +151,14 @@ CombinePeaklists <- function(from.tables,to.table,method,peak.db,db.dir,gen.plot
 #'
 #' @export
 #' @description Combines Peaklists from positive and negative ionization modes without removing ion mode duplicates.
-#' See
 #' @param from.tables character vector of table names to draw from databases to be combined simply.
+#' @param to.table to which table should LUMA save the modified Peak.list
 #' @param peak.db what database contains the Peaklists to be combined simply.
 #' Default is 'Peaklist_db'
 #' @param db.dir directory containing the database.
 #' Default is 'db'
 #' @return the file 'Peaklist_Combined.csv" is written to the working directory
-SimplyPeaklists <- function(from.tables,peak.db,db.dir){
+SimplyPeaklists <- function(from.tables,to.table,peak.db,db.dir){
 
   #Set default values
   if(missing(peak.db))
@@ -169,6 +173,11 @@ SimplyPeaklists <- function(from.tables,peak.db,db.dir){
                                               tbl.id = c(from.tables[1],
                                                          from.tables[2]),
                                               peak.db = peak_db)
+
+  write_tbl(Peak.list.combined,
+            peak.db = peak_db,
+            myname = to.table)
+
 
   write.table(Peak.list.combined, file = "Peaklist_Combined.csv", sep = ",", row.names = FALSE)
 

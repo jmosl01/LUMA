@@ -7,17 +7,13 @@
 \alias{format_MetabolomicData.default}
 \title{Formatting of metabolomic data for MetaboAnalystR.}
 \usage{
-format_MetabolomicData(mSetObj, Peak.list, Sample.df, Sample.data, tbl.id,
-  ...)
+format_MetabolomicData(mSetObj, Peak.list, Sample.df, Sample.data, tbl.id, ...)
 
-\method{format_MetabolomicData}{pktable}(mSetObj, Peak.list, Sample.df,
-  Sample.data, tbl.id, ...)
+\method{format_MetabolomicData}{pktable}(mSetObj, Peak.list, Sample.df, Sample.data, tbl.id, ...)
 
-\method{format_MetabolomicData}{mass_all}(mSetObj, Peak.list, Sample.df,
-  Sample.data, tbl.id, ...)
+\method{format_MetabolomicData}{mass_all}(mSetObj, Peak.list, Sample.df, Sample.data, tbl.id, ...)
 
-\method{format_MetabolomicData}{default}(mSetObj, Peak.list, Sample.df,
-  Sample.data, tbl.id, ...)
+\method{format_MetabolomicData}{default}(mSetObj, Peak.list, Sample.df, Sample.data, tbl.id, ...)
 }
 \arguments{
 \item{mSetObj}{NULL}

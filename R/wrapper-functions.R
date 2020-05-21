@@ -11,7 +11,7 @@
 wrap_xcms = function(mzdatafiles, XCMS.par, file.base) {
   #added me >
   #mzdatafiles <- list.files(mzdatapath, recursive = TRUE, full.names = TRUE) #This will cause xcms to run on EVERY file in mzML directory
-  # file.base <- gen_filebase(mzdatafiles, BLANK, ion.id, ion.mode) #Dont do this
+  # file.base <- gen_filebase(mzdatafiles, BLANK, ion.id, IonMode) #Dont do this
   #added me <
     xset <- xcmsSet(files = mzdatafiles, method = "centWave", peakwidth = c(XCMS.par$Peakwidth1, XCMS.par$Peakwidth2),
         ppm = XCMS.par$ppm, noise = XCMS.par$noise, snthresh = XCMS.par$snthresh, mzdiff = XCMS.par$mzdiff, prefilter = c(XCMS.par$prefilter1,
@@ -35,10 +35,10 @@ wrap_xcms = function(mzdatafiles, XCMS.par, file.base) {
 #' @description Run CAMERA with user defined input parameters and return xsAnnotate objects
 #' @param xcms.obj an xcms object that has had peak picking, retention time alignment, peak grouping, and imputing missing values performed
 #' @param CAMERA.par a single-row data frame with 9 variables containing CAMERA parameters. The column names must be c('perfwhm','sigma','minfrac','mzabs','maxiso','corval_eic','corval_exp','pval','mzabs.1')
-#' @param ion.mode a character string defining the ionization mode.  Must be either 'positive' or 'negative'
+#' @param IonMode a character string defining the ionization mode.  Must be either 'positive' or 'negative'
 #' @return two grouped xsannotate objects mz1setpos and anposGa without and with annotated isotopes and ion adducts and fragments
 #' @import CAMERA
-wrap_camera = function(xcms.obj, CAMERA.par, ion.mode) {
+wrap_camera = function(xcms.obj, CAMERA.par, IonMode) {
     best.perfwhm <- CAMERA.par$perfwhm
     best.sigma <- CAMERA.par$sigma
     best.mzabs.iso <- CAMERA.par$mzabs
@@ -50,7 +50,7 @@ wrap_camera = function(xcms.obj, CAMERA.par, ion.mode) {
     best.mzabs.add <- CAMERA.par$mzabs.1
     #me >
     graph_method <- "lpc"
-    CAMERA.ion.mode <- tolower(ion.mode)
+    CAMERA_IonMode <- tolower(IonMode)
     #me <
     mz1setpos <- xsAnnotate(xs = xcms.obj, sample = NA)
     mz1setpos <- groupFWHM(object = mz1setpos, perfwhm = best.perfwhm, sigma = best.sigma, intval = "into")
@@ -59,7 +59,7 @@ wrap_camera = function(xcms.obj, CAMERA.par, ion.mode) {
     mz1setposIso.new <- groupCorr(object = mz1setposIso, cor_eic_th = best.corval_eic, cor_exp_th = best.corval_exp,
         graphMethod = graph_method, pval = best.pval, calcIso = TRUE, calcCiS = TRUE, calcCaS = TRUE, psg_list = NULL,
         xraw = NULL)
-    anposGa <- findAdducts(mz1setposIso.new, polarity = CAMERA.ion.mode, ppm = 3, mzabs = best.mzabs.add, multiplier = 2,
+    anposGa <- findAdducts(mz1setposIso.new, polarity = CAMERA_IonMode, ppm = 3, mzabs = best.mzabs.add, multiplier = 2,
         rules = rules)
     peakGa <- getPeaklist(object = anposGa)
     EIC_ID <- row.names(peakGa)

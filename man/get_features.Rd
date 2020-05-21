@@ -17,5 +17,5 @@ get_features(mytbl, peak.db, asdf)
 tbl alternatively a data frame
 }
 \description{
-Returns mz/rt features from Peak.list stored in RSQLite database
+Returns mz/rt features from Peak.list stored in SQLite database
 }

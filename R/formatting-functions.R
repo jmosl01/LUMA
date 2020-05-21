@@ -272,3 +272,85 @@ format_MetabolomicData.default <- function(mSetObj, Peak.list, Sample.df, Sample
                 class(mSetObj),
                 "and can only be used on classes pktable and mass_all"))
 }
+
+
+#' @title Printing metadata as CSV files for MetaboAnalystR.
+#'
+#' @export
+#' @description This function prints the metabolite and sample metadata to CSV files.
+#' @param mSetObj NULL
+#' @param Peak.list data frame containing combined ion mode peaklist with ion mode duplicates removed.
+#' @param Sample.df data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns 'Sex','Class','n','Endogenous'.
+#' @param Sample.data data frame with phenotype data as columns and a row for each study sample.  First column must be a unique sample identifier with the header 'CT-ID'.  Phenotype columns may vary, but must include two columns called 'Plate Number' and 'Plate Position' for determining run order.
+#' @importFrom utils write.csv
+#' @return mSetObj
+output_MetaData <- function(mSetObj, Peak.list, Sample.df, Sample.data)
+{
+  UseMethod("output_MetaData", mSetObj)
+}
+
+#' @rdname output_MetaData
+#' @export
+output_MetaData.pktable <- function(mSetObj, Peak.list, Sample.df, Sample.data)
+{
+  ##-----------------------------------------------------------------------------------------
+  ## Output metabolite and sample metadata.
+  ##-----------------------------------------------------------------------------------------
+
+  # Determine location of peak intensity data from Peak.list using the sexes
+  # as a search string.
+  sexes  <-  unique(paste(Sample.df$Sex, "_",  sep = ""))    ## Generate search string for all sexes
+  samples  <-  vector(mode = "character", length = length(colnames(Peak.list)))
+  for (i  in  1:length(sexes))
+  {
+    rows_loop  <-  grep(sexes[i], colnames(Peak.list))
+    samples[rows_loop]  <-  sexes[i]
+  }
+  res  <-  samples %in% sexes
+  sample.peaks <- Peak.list[, res]
+
+  # Apply the logical NOT operator "!" to "res" to identify the columns with the metadata.
+  meta_res <- !res
+
+  # Extract the metabolite metadata
+  metabolite_metadata  <- Peak.list[, meta_res]
+
+  # Write metabolite metadata to a CSV file
+  write.csv(metabolite_metadata, "Metabolite_Metadata.csv")
+
+  ## Code to generate the exposure class
+  # Creates a new column for grouping by class based on user input
+  groups <- paste(Sample.df$Sex, Sample.df$Class, sep = ";")  ## Generate search string for all classes
+  groups <- strsplit(groups, split = ";")
+  names(groups) <- paste(Sample.df$Sex, Sample.df$Class, sep = "_")
+  group <- vector(mode = "character", length = length(colnames(sample.peaks)))
+  for (i in 1:length(groups)) {
+    rows_loop <- intersect(grep(groups[[i]][1], colnames(sample.peaks)), grep(groups[[i]][2], colnames(sample.peaks)))
+    group[rows_loop] <- names(groups)[i]
+  }
+  group <- unlist(group)
+
+  # Modify sample data to include the user defined exposure class
+  Sample.data <- Sample.data[order(Sample.data[,1]), ]
+  Sample.data <- setNames(cbind.data.frame(Sample.data[, 1], group, Sample.data[-1]), c(colnames(Sample.data[1]),
+                                                                                        "Exposure Class", colnames(Sample.data[-1])))
+  # Write the sample metadata to a CSV file.
+  write.csv(Sample.data, "Sample_Metadata.csv")
+
+}
+
+#' @rdname output_MetaData
+#' @export
+output_MetaData.mass_all <- function(mSetObj, Peak.list, Sample.df, Sample.data)
+  {
+
+}
+
+#' @rdname output_MetaData
+#' @export
+output_MetaData.default <- function(mSetObj, Peak.list, Sample.df, Sample.data)
+{
+  warning(paste("format_MetaData does not know how to handle object of class ",
+                class(mSetObj),
+                "and can only be used on classes pktable and mass_all"))
+}

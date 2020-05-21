@@ -1,21 +1,28 @@
 ---
-title: "LUMA: an R package"
+title: "An LCMS-Based Untargeted Metabolomics Assistant (LUMA)"
 author: 
+  
+- affiliation: U.S. Environmental Protection Agency
+  email: evich.marina@epa.gov
+  name: Marina Evich
+- affiliation: U.S. Environmental Protection Agency
+  email: melendez.wilson@epa.gov
+  name: Wilson Melendez
 - affiliation: U.S. Environmental Protection Agency
   email: mosley.jonathan@epa.gov
   name: Jonathan Mosley
 date: "`r Sys.Date()`"
 output: 
-  BiocStyle::html_document: default
-  bookdown::pdf_document2: default
+  html_document: default
 package: LUMA
 abstract: >
-  The LCMS-Based Untargeted Metabolomics Assistant package (LUMA) performs quality control (QC) and feature reduction steps on the output of XCMS and CAMERA to generate usable data matrices for discovery-based studies. The outputs of XCMS and CAMERA contain peak matrices for each feature detected by XCMS and annotated by CAMERA. These can contain spurious features that do not pass basic QC checks, which can negatively affect downstream statistical analyses, particularly the clustering of QC samples. Furthermore, conflicting isotope and ion adduct annotations can complicate downstream metabolite annotation attempts. Therefore, curation of these matrices must be performed to ensure quality of the resulting dataset. Often these steps are performed manually and can be very time-consuming. LUMA provides a set of functions that allow for rapid, automated workflows to perform the necessary QC and feature reduction steps with minimal user input. In addition, data visualization is consolidated to a single graphic per metabolite group (containing all features attributed to a single metabolite) with EIC plots and psSpectra from CAMERA, as well as new correlation matrices and dendrograms to minimize the user's time spent validating the dataset, particularly when summing features into a single value per metabolite (an important QC check!). This vignette demonstrates how to use LUMA functions to create workflows in a variety of scenario, using the `lcmsfishdata` package to provide reproducible examples. 
+  The LCMS-Based Untargeted Metabolomics Assistant (LUMA) package is an automated data processing tool, bridging the outputs of XCMS and CAMERA to a comprehensive data matrix in the R environment for discovery-based studies. The intended users of this R package are LC-MS-based untargeted metabolomics practitioners with minimal to advanced experience in the R environment who process raw LC-MS data files in preparation for downstream statistical analysis. The LUMA package performs feature-reduction by minimizing single features which do not pass quality control (QC) checks and can negatively impact downstream analyses. LUMA contains self-contained functions (herein referred to as modules) that allow for rapid, automated workflows to perform these QC steps with minimal user input. Furthermore, to expedite manual data curation for potentially conflicting isotope and ion adduct annotations, data visualization is consolidated to a single graphic per metabolite group. This graphic contains all EIC plots and psSpectra from CAMERA and new correlation matrices and dendrograms for all features attributed to a single metabolite. Final processed metabolite data, containing normalized intensities and user-defined meta-data, can be exported to worksheets which are directly formatted to a number of analytical tools including MetaboAnalyst, while retaining traceability in the R environment.  
     
 vignette: >
-  %\VignetteIndexEntry{Making Workflows with LUMA}
-  %\VignetteEncoding{UTF-8}
+  %\VignetteIndexEntry{LUMA}
   %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+
 ---
 
 ```{r setup, include = FALSE}
@@ -25,53 +32,7 @@ knitr::opts_chunk$set(
 )
 ```
 
+## Disclaimer
 
-# Background
-    
-1. Many tools exist for pre-processing LC-MS-based untargeted metabolomics data and downstream analyses
-    i) Open source and commercially available
-    ii) Popular open source tools for pre-processing include XCMS (with CAMERA), mzMine, xsAnalyze ...
-    iii) Data analysis tools include MetaboAnalystR, ...
-2. Pre-processed results need further data processing before performing analyses to ensure data reproducibility and quality
-    i) quality control steps, feature reduction are a must for reproducible data
-    ii) validation of metabolite annotation results are critical to correct biological interpretation
-    iii) Other data processing steps are sometimes necessary
-        A. QC normalization (NOREVA)
-        B. Batch correction (batchcorr)
-    iv) Integrating all results together can be time consuming
-    v) Doing all of these in the same environment can be very difficult and often requires expertise in bioinformatics
-3. LC-MS untargeted metabolomics assistant (LUMA) provides functionalities within the R environment to integrate key quality control and feature reduction steps to bridge the gap between LC-MS untargeted metabolomics data pre-processing and statistical analysis and biological interpretation
-
-# Implementation
-
-```{r echo=FALSE}
-library(tools)
-library(xtable)
-functions <- unclass(lsf.str(envir = asNamespace("LUMA"), all = T))
-doc_functions <- functions[-grep("\\.", functions)]
-# getTitle <- function(x) {
-#   Rd <- parse_Rd(file = print(paste("../man/" , x[i] , ".Rd",sep = "")))
-#   Txt <- RdTextFilter(Rd)
-#   Title <- Txt[grep("[a:z]",Txt)[1]]
-#   return(Title)
-#   }
-titles <- vector(mode = "character", length = 0)
-for(i in seq_along(doc_functions)){
-  Rd <- parse_Rd(file = print(paste("../man/" , doc_functions[i] , ".Rd",sep = "")))
-  Txt <- RdTextFilter(Rd)
-  titles[i] <- Txt[grep("[a:z]",Txt)[1]]
-}
-
-# titles <- sapply(doc_functions, getTitle)
-mydf <- cbind.data.frame(Command = doc_functions, Description = titles)
-mytable <- xtable(mydf)
-print(mytable)
-
-```
-
-
-# Results
-This Section illustrates the main features of the `LUMA` package through an application example.  The example involves the creation of a database and its population with both positive and negative ionization mode data (samples, pooled QCs, and blanks), quality control and feature reduction steps, validation of the annotation results, and formatting the output.
-
-## Database creation and population
+*This software/application was developed by the U.S. Environmental Protection Agency (USEPA).  No warranty expressed or implied is made regarding the accuracy or utility of the system, nor shall the act of distribution constitute any such warranty.  The USEPA has relinquished control of the information and no longer has responsibility to protect the integrity, confidentiality or availability of the information.  Any reference to specific commercial products, processes, or services by service mark, trademark, manufacturer, or otherwise, does not constiutite or imply their endorsement, recommendation or favoring by the USEPA.  The USEPA seal and logo shall not be used in any manner to imply endorsement of any commercial product or activity by the USEPA or the United States Government.*
 

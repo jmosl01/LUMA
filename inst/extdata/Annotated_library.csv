@@ -1,0 +1,1241 @@
+"Ion Mode","Name","Formula","Molecular Weight","RT [Min]","Levels","Fish Coverage"
+"Pos","INOSINE","C10 H12 N4 O5",268.08077,1.141,"MSI Level I; level 1",NA
+"Pos","Raspberry ketone","C10 H12 O2",164.08373,13.857,"MSI Level III; level 3",NA
+"Pos","2',4'-dimethoxyacetophenone","C10 H12 O3",180.07864,13.381,"MSI Level III; level 3",NA
+"Pos","ADENOSINE","C10 H13 N5 O4",267.09675,1.424,"MSI Level I; level 1",NA
+"Pos","GUANOSINE","C10 H13 N5 O5",283.09167,1.15,"MSI Level I; level 1",NA
+"Pos","4-(Diethylamino)benzenesulfonic acid","C10 H15 N O3 S",229.07726,7.87,"MSI Level III; level 3",NA
+"Pos","(-)-(alpha)-Kainic Acid","C10 H15 N O4",213.10011,13.298,"MSI Level III; level 3",NA
+"Pos","INGAVIRIN","C10 H15 N3 O3",225.11134,1.267,"MSI Level III; level 3",NA
+"Pos","(4-tert-Butylphenyl)phosphonic acid","C10 H15 O3 P",214.07588,13.815,"MSI Level III; level 3",NA
+"Pos","4-Boc-2-morpholinecarboxylic Acid","C10 H17 N O5",231.11067,7.7,"MSI Level III; level 3",NA
+"Pos","tert-Butyl [5-(2-aminoethyl)-1,3-thiazol-2-yl]carbamate","C10 H17 N3 O2 S",243.10415,1.212,"MSI Level III; level 3",NA
+"Pos","ala-gly-pro","C10 H17 N3 O4",243.12191,1.314,"MSI level III; level 3",NA
+"Pos","GLUTATHIONE","C10 H17 N3 O6 S",307.08381,1.111,"MSI Level I; level 1",NA
+"Pos","L-gamma-Glutamyl-L-valine","C10 H18 N2 O5",246.12157,3.046,"MSI Level III; level 3",NA
+"Pos","asp-leu","C10 H18 N2 O5",246.12157,1.791,"MSI Level III; level 3",NA
+"Pos","N~2~-Hydroxy-L-glutaminyl-L-cysteinylglycine","C10 H18 N4 O6 S",322.0947,0.878,"MSI Level III; level 3",NA
+"Pos","Propionylcarnitine","C10 H19 N O4",217.13141,4.215,"MSI Level II; level 2",NA
+"Pos","Propionylcarnitine","C10 H19 N O4",217.13141,3.95,"MSI Level II; level 2",NA
+"Pos","tert-Butyl-2-(hydroxymethyl)morpholin-4-carboxylat","C10 H19 N O4",217.13141,3.805,"MSI Level III; level 3",NA
+"Pos","Gly-Gly-Ile","C10 H19 N3 O4",245.13756,1.219,"MSI Level III; level 3",NA
+"Pos","Valylglutamine","C10 H19 N3 O4",245.13756,1.685,"MSI Level III; level 3",NA
+"Pos","Isoleucylasparagine","C10 H19 N3 O4",245.13756,3.112,"MSI Level III; level 3",NA
+"Pos","L-Valylglycyl-L-serine","C10 H19 N3 O5",261.13247,1.237,"MSI Level III; level 3",NA
+"Pos","1-(4-Morpholinylmethyl)cyclopentanamine","C10 H20 N2 O",184.15756,2.303,"MSI Level III; level 3",NA
+"Pos","1,3,5-Trimethyl-3,7-diazabicyclo[3.3.1]nonan-9-ol","C10 H20 N2 O",184.15756,2.138,"MSI Level III; level 3",NA
+"Pos","tert-Butyl-(morpholin-2-ylmethyl)carbamat","C10 H20 N2 O3",216.14739,2.532,"MSI Level III; level 3",NA
+"Pos","Boc-L-ornithine","C10 H20 N2 O4",232.14231,2.97,"MSI Level III; level 3",NA
+"Pos","tert-Butyl [(2S)-5-amino-1-hydroxy-5-oxopentan-2-yl]carbamate","C10 H20 N2 O4",232.14231,1.626,"MSI level III; level 3",NA
+"Pos","mebutamate","C10 H20 N2 O4",232.14231,3.441,"MSI Level III; level 3",NA
+"Pos","3-{[1-(Hydroxymethyl)cyclohexyl]amino}-1-propanesulfonic acid","C10 H21 N O4 S",251.11913,1.126,"MSI Level III; level 3",NA
+"Pos","S78T1JQV6B","C10 H21 N O5",235.14197,1.124,"MSI Level III; level 3",NA
+"Pos","PEG n5","C10 H22 O6",238.14164,6.655,"MSI Level II; level 3",NA
+"Pos","95W232H4RT","C10 H24 N2 O3",220.17869,1.191,"MSI Level III; level 3",NA
+"Pos","L-TRYPTOPHAN","C11 H12 N2 O2",204.08988,7.304,"MSI Level I; level 1",NA
+"Pos","6VBR220ROM","C11 H13 N O3",207.08954,13.375,"MSI Level III; level 3",NA
+"Pos","N-Acetyl-L-phenylalanine","C11 H13 N O3",207.08954,10.241,"MSI Level III; level 3",NA
+"Pos","DA8G610ZO5","C11 H13 N O4",223.08446,13.542,"MSI Level III; level 3",NA
+"Pos","Gly-Phe","C11 H14 N2 O3",222.10044,5.786,"MSI Level III; level 3",NA
+"Pos","4-[(tert-Butoxycarbonyl)amino]nicotinic acid","C11 H14 N2 O4",238.09536,3.03,"MSI Level III; level 3",NA
+"Pos","5'-METHYLTHIOADENOSINE","C11 H15 N5 O3 S",297.08956,7.468,"MSI Level I; level 1",NA
+"Pos","5'-METHYLTHIOADENOSINE","C11 H15 N5 O3 S",297.08956,7.636,"MSI Level I; level 1",NA
+"Pos","Adenylthiomethylpentose","C11 H15 N5 O3 S",297.08956,1.368,"MSI Level III; level 3",NA
+"Pos","Acetylcarnosine","C11 H16 N4 O4",268.11715,1.121,"MSI Level III; level 3",NA
+"Pos","2-Methyl 1-(2-methyl-2-propanyl) (2S,4R)-4-hydroxy-1,2-pyrrolidinedicarboxylate","C11 H19 N O5",245.12632,8.921,"MSI Level III; level 3",NA
+"Pos","N-Acetylneuraminic acid","C11 H19 N O9",309.10598,0.886,"MSI Level I; level 3","56.69"
+"Pos","L-gamma-Glutamyl-L-cysteinyl-beta-alanine","C11 H19 N3 O6 S",321.09946,1.146,"MSI Level III; level 3","53.85"
+"Pos","Prolylleucine","C11 H20 N2 O3",228.14739,2.091,"MSI Level II; level 3",NA
+"Pos","(3S)-6-Amino-3-({[(2-methyl-2-propanyl)oxy]carbonyl}amino)-6-oxohexanoic acid","C11 H20 N2 O5",260.13722,3.159,"MSI Level III; level 3",NA
+"Pos","L-gamma-Glutamyl-L-leucine","C11 H20 N2 O5",260.13722,2.012,"MSI Level III; level 3",NA
+"Pos","Diethyl 1-(2-methyl-3-oxo-2-butanyl)-1,2-hydrazinedicarboxylate","C11 H20 N2 O5",260.13722,3.73,"MSI Level III; level 3",NA
+"Pos","N-(tert-Butoxycarbonyl)-L-leucine","C11 H21 N O4",231.14706,7.838,"MSI Level III; level 3",NA
+"Pos","6-[(tert-butoxycarbonyl)amino]hexanoic acid","C11 H21 N O4",231.14706,7.542,"MSI Level III; level 3",NA
+"Pos","N-(tert-Butoxycarbonyl)-3-methyl-D-valine","C11 H21 N O4",231.14706,8.079,"MSI Level III; level 3",NA
+"Pos","2-[(tert-Butoxycarbonyl)amino]-2-deoxy-D-glucopyranose","C11 H21 N O7",279.1318,1.226,"MSI Level III; level 3",NA
+"Pos","Glycyl-L-alanyl-L-isoleucine","C11 H21 N3 O4",259.15321,2.944,"MSI Level III; level 3",NA
+"Pos","ala-leu-gly","C11 H21 N3 O4",259.15321,3.419,"MSI Level III; level 3",NA
+"Pos","ile-gln","C11 H21 N3 O4",259.15321,1.113,"MSI Level III; level 3",NA
+"Pos","leu-gln","C11 H21 N3 O4",259.15321,1.578,"MSI Level III; level 3",NA
+"Pos","Leu-Val","C11 H22 N2 O3",230.16304,4.904,"MSI Level III; level 3",NA
+"Pos","1-BOC-4-(2-hydroxyethyl)piperazine","C11 H22 N2 O3",230.16304,4.209,"MSI Level III; Level 3",NA
+"Pos","2-Methyl-2-propanyl 3-(hydroxymethyl)-1,4-diazepane-1-carboxylate","C11 H22 N2 O3",230.16304,5.843,"MSI level III; level 3",NA
+"Pos","2-Methyl-2-propanyl 3-(hydroxymethyl)-1,4-diazepane-1-carboxylate","C11 H22 N2 O3",230.16304,6.099,"MSI Level III; level 3",NA
+"Pos","Methyl N~2~-{[(2-methyl-2-propanyl)oxy]carbonyl}-L-ornithinate","C11 H22 N2 O4",246.15796,1.446,"MSI Level III; level 3",NA
+"Pos","Na-(tert-Butoxycarbonyl)-L-arginine","C11 H22 N4 O4",274.16411,1.294,"MSI Level III; level 3",NA
+"Pos","2-(2,2,6,6-Tetramethyl-4-piperidinyl)ethanol","C11 H23 N O",185.17796,13.509,"MSI Level III; level 3",NA
+"Pos","4-[Cyclohexyl(methyl)amino]-1-butanol","C11 H23 N O",185.17796,13.594,"MSI Level III; level 3",NA
+"Pos","N-Isobutyl-3-(1-piperazinyl)propanamide","C11 H23 N3 O",213.18411,2.607,"MSI Level III; level 3",NA
+"Pos","Lysylvaline","C11 H23 N3 O3",245.17394,1.496,"MSI Level III; level 3",NA
+"Pos","val-arg","C11 H23 N5 O3",273.18009,1.551,"MSI Level III; level 3",NA
+"Pos","3-sulfobenzoic acid succinimidyl ester","C11 H9 N O7 S",299.00997,1.008,"MSI Level III; level 3",NA
+"Pos","LUMICHROME","C12 H10 N4 O2",242.08038,12.098,"MSI Level I; level 1",NA
+"Pos","3-(1,2-Dihydro-5H-tetrazol-5-ylidene)-5,8-dimethoxy-4(3H)-quinolinone","C12 H11 N5 O3",273.08619,13.732,"MSI Level III; level 3",NA
+"Pos","(4S)-3-[(Benzyloxy)carbonyl]-1,3-oxazolidine-4-carboxylic acid","C12 H13 N O5",251.07937,7.792,"MSI Level III; level 3",NA
+"Pos","9BKY99A8HJ","C12 H14 N2 O5",266.09027,2.742,"MSI Level III; level 3",NA
+"Pos","9BKY99A8HJ","C12 H14 N2 O5",266.09027,3.279,"MSI Level III; level 3",NA
+"Pos","9BKY99A8HJ","C12 H14 N2 O5",266.09027,2.949,"MSI Level III; level 3",NA
+"Pos","4-(3-Pyridinyl)-6-(1-pyrrolidinyl)-1,3,5-triazin-2-amine","C12 H14 N6",242.12799,13.854,"MSI Level III; level 3",NA
+"Pos","LBK26E89VE","C12 H14 O2",190.09938,13.44,"MSI Level III; level 3",NA
+"Pos","Alanylphenylalanine","C12 H16 N2 O3",236.11609,4.278,"MSI Level III; level 3",NA
+"Pos","NECA","C12 H16 N6 O4",308.1233,0.865,"MSI level III; level 3",NA
+"Pos","tert-Butyl-1-oxo-2,7-diazaspiro[3.5]nonan-7-carboxylat","C12 H20 N2 O3",240.14739,1.171,"MSI Level III; level 3",NA
+"Pos","Ethyl 4-(5-ethoxy-1H-1,2,3-triazol-1-yl)-1-piperidinecarboxylate","C12 H20 N4 O3",268.15354,2.361,"MSI Level III; level 3",NA
+"Pos","His-Leu","C12 H20 N4 O3",268.15354,1.578,"MSI Level III; level 3",NA
+"Pos","Amino(1-{[(2-methyl-2-propanyl)oxy]carbonyl}-4-piperidinyl)acetic acid","C12 H22 N2 O4",258.15796,13.307,"MSI Level III; level 3",NA
+"Pos","N-{[(2-Methyl-2-propanyl)oxy]carbonyl}glycyl-L-valine","C12 H22 N2 O5",274.15287,1.876,"MSI Level III; level 3",NA
+"Pos","Methyl N-{[(2-methyl-2-propanyl)oxy]carbonyl}-D-alanyl-D-alaninate","C12 H22 N2 O5",274.15287,2.013,"MSI Level III; level 3",NA
+"Pos","3-tert-Butoxycarbonylamino-5-methyl-hexanoic acid","C12 H23 N O4",245.16271,10.365,"MSI Level III; level 3",NA
+"Pos","7-({[(2-Methyl-2-propanyl)oxy]carbonyl}amino)heptanoic acid","C12 H23 N O4",245.16271,10.941,"MSI Level III; level 3",NA
+"Pos","(3S)-5-Methyl-3-({[(2-methyl-2-propanyl)oxy]carbonyl}amino)hexanoic acid","C12 H23 N O4",245.16271,10.727,"MSI Level III; level 3",NA
+"Pos","N-(tert-Butoxycarbonyl)-O-tert-butyl-L-serine","C12 H23 N O5",261.15762,3.758,"MSI Level III; level 3",NA
+"Pos","N~6~-Carbamoyl-N~2~-{[(2-methyl-2-propanyl)oxy]carbonyl}-D-lysine","C12 H23 N3 O5",289.16377,1.558,"MSI Level III; level 3",NA
+"Pos","N~6~-Carbamoyl-N~2~-{[(2-methyl-2-propanyl)oxy]carbonyl}-L-lysine","C12 H23 N3 O5",289.16377,2.413,"MSI Level III; level 3",NA
+"Pos","L-Leucyl-L-seryl-L-alanine","C12 H23 N3 O5",289.16377,2.008,"MSI Level III; level 3",NA
+"Pos","tert-butyl 4-(2-aminoethyl)-4-hydroxypiperidine-1-carboxylate","C12 H24 N2 O3",244.17869,9.989,"MSI Level III; level 3",NA
+"Pos","N-[tert-butyl(methyl)carbamoyl]-3-methyl-L-valine","C12 H24 N2 O3",244.17869,8.772,"MSI Level III; level 3",NA
+"Pos","6-[(6-Aminohexanoyl)amino]hexanoic acid","C12 H24 N2 O3",244.17869,7.921,"MSI Level III; level 3",NA
+"Pos","Leu-Leu","C12 H24 N2 O3",244.17869,9.137,"MSI Level III; level 3",NA
+"Pos","N-Methoxy-N-methyl-N~2~-{[(2-methyl-2-propanyl)oxy]carbonyl}-D-valinamide","C12 H24 N2 O4",260.17361,1.138,"MSI Level III; level 3",NA
+"Pos","bis(1L-myo-inositol) 3,1'-phosphate 1-phosphate","C12 H24 O17 P2",502.04887,0.716,"MSI Level III; level 3",NA
+"Pos","FBO90A88T6","C12 H25 N O",199.19361,13.698,"MSI Level III; level 3",NA
+"Pos","4-[(Benzyloxy)carbonyl]-3-morpholinecarboxylic acid","C13 H15 N O5",265.09502,8.901,"MSI Level III; level 3",NA
+"Pos","4-(p-Tolyl)cyclohexan-1-one","C13 H16 O",188.12012,13.178,"MSI Level III; level 3",NA
+"Pos","6-(tert-Butoxycarbonyl)-5,6,7,8-tetrahydropyrido[3,4-b]pyrazine-7-carboxylic acid","C13 H17 N3 O4",279.12191,1.131,"MSI Level III; level 3",NA
+"Pos","asn-tyr","C13 H17 N3 O5",295.11682,3.066,"MSI Level III; level 3",NA
+"Pos","N-(tert-Butoxycarbonyl)-3-pyridin-2-yl-L-alanine","C13 H18 N2 O4",266.12666,2.796,"MSI Level III; level 3",NA
+"Pos","2,6-Diamino-5-[6-hydroxy-6-(1,3-oxazol-2-yl)hexyl]-4(1H)-pyrimidinone","C13 H19 N5 O3",293.14879,1.159,"MSI Level III; level 3",NA
+"Pos","Benzyl [5-(hydroxyamino)pentyl]carbamate","C13 H20 N2 O3",252.14739,13.373,"MSI Level III; level 3",NA
+"Pos","tert-butyl 1,3-dioxo-2,8-diazaspiro[4.5]decane-8-carboxylate","C13 H20 N2 O4",268.14231,1.157,"MSI Level III; level 3",NA
+"Pos","(4S,4'S)-2,2'-Methylenebis(4-isopropyl-4,5-dihydro-1,3-oxazole)","C13 H22 N2 O2",238.16813,8.001,"MSI Level III; level 3",NA
+"Pos","(4S,4'S)-2,2'-Methylenebis(4-isopropyl-4,5-dihydro-1,3-oxazole)","C13 H22 N2 O2",238.16813,7.813,"MSI Level III; level 3",NA
+"Pos","(2R)-2-({[(2-Methyl-2-propanyl)oxy]carbonyl}amino)octanedioic acid","C13 H23 N O6",289.15254,9.543,"MSI Level III; Level 3","87.5"
+"Pos","(2R)-2-({[(2-Methyl-2-propanyl)oxy]carbonyl}amino)octanedioic acid","C13 H23 N O6",289.15254,9.367,"MSI Level III; Level 3","84"
+"Pos","L-Leucyl-L-serylglycylglycine","C13 H24 N4 O6",332.16958,1.311,"MSI Level III; level 3",NA
+"Pos","Bis(2-methyl-2-propanyl) (2-hydroxy-1,3-propanediyl)biscarbamate","C13 H26 N2 O5",290.18417,8.957,"MSI Level III; level 3",NA
+"Pos","N-Methyldodecanamide","C13 H27 N O",213.20926,13.771,"MSI Level III; level 3",NA
+"Pos","1-Benzyl 2-methyl (2R,4R)-4-hydroxy-1,2-pyrrolidinedicarboxylate","C14 H17 N O5",279.11067,10.334,"MSI Level III; level 3",NA
+"Pos","Methyl alpha-aspartylphenylalaninate","C14 H18 N2 O5",294.12157,7.016,"MSI Level III; level 3",NA
+"Pos","Diethyl (4-methoxyphenyl)malonate","C14 H18 O5",266.11542,13.184,"MSI Level III; level 3",NA
+"Pos","N-Benzyloxycarbonyl-L-leucine","C14 H19 N O4",265.13141,12.447,"MSI Level III; level 3",NA
+"Pos","N-Benzyloxycarbonyl-L-leucine","C14 H19 N O4",265.13141,12.586,"MSI Level III; level 3",NA
+"Pos","Valyltyrosine","C14 H20 N2 O4",280.14231,5.78,"MSI Level III; level 3",NA
+"Pos","(8aR,12S,12aR)-12-Hydroxy-4-methyl-4,5,6,7,8,8a,12,12a-octahydro-2H-3-benzoxecine-2,9(1H)-dione","C14 H20 O4",252.13616,13.586,"MSI Level II; level 3",NA
+"Pos","2-Hydroxyphenyl dibutylphosphinate","C14 H23 O3 P",270.13848,13.812,"MSI Level III; level 3",NA
+"Pos","1,13-Tetradecadien-3-one","C14 H24 O",208.18272,13.575,"MSI Level III; level 3",NA
+"Pos","Glycyl-L-leucyl-L-leucine","C14 H27 N3 O4",301.20016,9.15,"MSI level III; level 3",NA
+"Pos","leu-leu-gly","C14 H27 N3 O4",301.20016,11.426,"MSI level III; level 3",NA
+"Pos","Bis(diisopropylthiocarbamyl) disulfide","C14 H28 N2 S4",352.11353,13.963,"MSI Level III; level 3",NA
+"Pos","9-Acetyl-7-methyl-2-(4-morpholinyl)-4H-pyrido[1,2-a]pyrimidin-4-one","C15 H17 N3 O3",287.12699,7.617,"MSI Level III; level 3",NA
+"Pos","1-Methyl-3-nitro-4-piperidin-1-yl-1H-quinolin-2-one","C15 H17 N3 O3",287.12699,7.8,"MSI Level III; level 3",NA
+"Pos","[({(2S)-1-[4-(Benzoylamino)-2-oxo-1(2H)-pyrimidinyl]-3-hydroxy-2-propanyl}oxy)methyl]phosphonic acid","C15 H18 N3 O7 P",383.08824,10.205,"MSI Level III; level 3",NA
+"Pos","[(3S,4S,7R,8S,9R)-11-Amino-7-methoxy-12-methyl-10,13-dioxo-2,6-diazapentacyclo[7.4.0.0~1,6~.0~2,4~.0~3,7~]tridec-11-en-8-yl]methyl carbamate","C15 H18 N4 O5",334.12772,1.14,"MSI Level III; level 3",NA
+"Pos","N-Boc-D-Homophe-OH","C15 H21 N O4",279.14706,13.058,"MSI Level III; level 3",NA
+"Pos","Cyclic ADP-ribose","C15 H21 N5 O13 P2",541.06111,1.108,"MSI Level II; level 2",NA
+"Pos","leu-phe","C15 H22 N2 O3",278.16304,11.107,"MSI Level III; level 3",NA
+"Pos","Benzyl 2-methyl-2-propanyl 1,2-ethanediylbiscarbamate","C15 H22 N2 O4",294.15796,13.375,"MSI Level III; level 3",NA
+"Pos","N-(4-Carbamoylphenyl)-2,3-dihydro-1,4-benzodioxine-2-carboxamide","C16 H14 N2 O4",298.09536,13.201,"MSI Level III; level 3",NA
+"Pos","Ethyl [(4-{[(butylamino)(oxo)acetyl]sulfamoyl}phenyl)amino](oxo)acetate","C16 H21 N3 O7 S",399.11002,13.108,"MSI Level III; level 3",NA
+"Pos","Moxisylyte","C16 H25 N O3",279.18344,13.856,"MSI Level III; level 3",NA
+"Pos","Hexadecasphinganine","C16 H35 N O2",273.26678,13.426,"MSI Level III; level 3",NA
+"Pos","tert-Butyl 3-(4-methoxyphenyl)-1,4,6,7-tetrahydro-5H-pyrazolo[4,3-c]pyridine-5-carboxylate","C18 H23 N3 O3",329.17394,13.827,"MSI Level III; level 3",NA
+"Pos","N,N'-(Iminodi-3,1-propanediyl)bis(2,3,4,5,6-pentahydroxyhexanamide)","C18 H37 N3 O12",487.23772,1.608,"MSI Level III; level 3",NA
+"Pos","N-Formylformamide","C2 H3 N O2",73.01638,0.862,"MSI Level III; level 3","14.29"
+"Pos","Glycine","C2 H5 N O2",75.03203,0.873,"MSI Level I; Level 3","37.5"
+"Pos","Ethanethiol","C2 H6 S",62.01902,1.156,"MSI Level III; level 3",NA
+"Pos","HYPOTAURINE","C2 H7 N O2 S",109.01975,0.836,"MSI Level I; level 3",NA
+"Pos","Taurine","C2 H7 N O3 S",125.01466,0.827,"MSI Level I; level 2",NA
+"Pos","ETHANOLAMINE PHOSPHATE","C2 H8 N O4 P",141.01909,0.965,"MSI Level I; level 1",NA
+"Pos","N,N-dimethylsulfamide","C2 H8 N2 O2 S",124.03065,1.375,"MSI Level III; level 3",NA
+"Pos","Naftifine","C21 H21 N",287.1674,13.941,"MSI Level III; level 3",NA
+"Pos","Nicotinamide adenine dinucleotide (NAD+)","C21 H27 N7 O14 P2",663.10912,1.107,"MSI Level I; level 2",NA
+"Pos","3,5-Bis[(3-methylbutanoyl)amino]-N-(2-methyl-2-propanyl)benzamide","C21 H33 N3 O3",375.25219,13.646,"MSI Level III; level 3",NA
+"Pos","N-{1-(4-Methoxyphenyl)-3-oxo-3-[2-(2-pyridinylmethylene)hydrazino]-1-propen-2-yl}benzamide","C23 H20 N4 O3",400.15354,13.43,"MSI level III; level 3",NA
+"Pos","N-[4-(1H-Imidazol-1-yl)butyl]-2-isopropyl-11-oxo-11H-pyrido[2,1-b]quinazoline-8-carboxamide","C23 H25 N5 O2",403.20082,13.548,"MSI Level III; level 3",NA
+"Pos","Cervonoyl ethanolamide","C24 H36 O3",372.26644,13.29,"MSI Level III; level 3",NA
+"Pos","Testosterone valerate","C24 H36 O3",372.26644,13.395,"MSI Level III; level 3",NA
+"Pos","(5Z,7E)-9,10-Secocholesta-3,5,7,10-tetraen-25-ol","C27 H42 O",382.32357,13.12,"MSI Level III; level 3",NA
+"Pos","secalciferol","C27 H44 O3",416.32905,13.054,"MSI Level III; level 3",NA
+"Pos","3beta,7alpha-Dihydroxy-5-cholestenoate","C27 H44 O4",432.32396,13.035,"MSI Level III; level 3",NA
+"Pos","2-deoxyecdysone","C27 H44 O5",448.31887,13.376,"MSI Level III; level 3",NA
+"Pos","carpipramine","C28 H38 N4 O",446.30456,13.369,"MSI Level III; level 3",NA
+"Pos","D5J0Q2CM4V","C3 H10 N O4 P",155.03474,1.042,"MSI Level III; level 3",NA
+"Pos","N-methylethanolamine phosphate","C3 H10 N O4 P",155.03474,0.832,"MSI Level III; level 3",NA
+"Pos","(2,3-Dihydroxypropyl)phosphoramidic acid","C3 H10 N O5 P",171.02966,1.002,"MSI Level III; level 3",NA
+"Pos","(6-Amino-1,2,3,5-tetrazin-4-yl)cyanamide","C3 H3 N7",137.04499,0.967,"MSI Level III; level 3",NA
+"Pos","Pyruvic acid","C3 H4 O3",88.01604,1.006,"MSI Level I; level 3",NA
+"Pos","20R035KLCI","C3 H5 N O",71.03711,1.017,"MSI Level III; level 3",NA
+"Pos","dehydroalanine","C3 H5 N O2",87.03203,1.013,"MSI Level III; level 3",NA
+"Pos","oxazolidinone","C3 H5 N O2",87.03203,0.862,"MSI Level III; level 3",NA
+"Pos","(Carbamoylsulfanyl)acetic acid","C3 H5 N O3 S",134.99901,0.872,"MSI Level III; level 3",NA
+"Pos","7H-[1,2,4]Triazolo[4,3-b][1,2,4]triazole-3,7-diamine","C3 H5 N7",139.06064,1.041,"MSI Level III; level 3",NA
+"Pos","glyceraldehyde 3-phosphate","C3 H5 O6 P",167.98237,0.765,"MSI Level I; level 3",NA
+"Pos","2K48456N55","C3 H6 N2 O",86.04801,0.854,"MSI Level III; level 3",NA
+"Pos","DL-Lactic Acid","C3 H6 O3",90.03169,0.834,"MSI Level I; level 3",NA
+"Pos","Lactamide","C3 H7 N O2",89.04768,0.903,"MSI Level I; level 2",NA
+"Pos","L-Serine","C3 H7 N O3",105.04259,0.856,"MSI Level I; level 2",NA
+"Pos","L-cysteic acid","C3 H7 N O5 S",169.00449,0.752,"MSI Level I; level 3",NA
+"Pos","3-phosphoglyceric acid","C3 H7 O7 P",185.99294,0.751,"MSI Level I; level 3",NA
+"Pos","FOSAMINE","C3 H8 N O4 P",153.01909,0.977,"MSI Level III; level 3",NA
+"Pos","2-[Formyl(hydroxy)amino]ethyl dihydrogen phosphate","C3 H8 N O6 P",185.00892,0.936,"MSI Level III; level 3",NA
+"Pos","Phosphoserine","C3 H8 N O6 P",185.00892,0.769,"MSI Level I; level 3",NA
+"Pos","4AB0N08V2H","C3 H8 S",76.03467,0.948,"MSI Level III; level 3",NA
+"Pos","1-Amino-2-propanyl hydrogen sulfate","C3 H9 N O4 S",155.02523,0.838,"MSI Level III; level 3",NA
+"Pos","GLYCEROL 2-PHOSPHATE","C3 H9 O6 P",172.01367,0.73,"MSI Level I; level 1",NA
+"Pos","fosmidomycin","C4 H10 N O5 P",183.02966,1.356,"MSI Level III; level 3",NA
+"Pos","0PK51J4AV7","C4 H10 N2 O",102.07931,2.348,"MSI Level III; level 3",NA
+"Pos","1-Piperazinesulfonamide","C4 H11 N3 O2 S",165.0572,1.358,"MSI Level III; level 3",NA
+"Pos","putrescine","C4 H12 N2",88.10005,1.389,"MSI Level I; level 3",NA
+"Pos","{1-[(E)-(Hydrazinomethylene)amino]propyl}phosphonic acid","C4 H12 N3 O3 P",181.06163,1.147,"MSI Level III; level 3",NA
+"Pos","Bis(2-aminoethyl) hydrogen phosphate","C4 H13 N2 O4 P",184.06129,0.983,"MSI Level III; level 3",NA
+"Pos","6-Azidotetrazolo[1,5-b]pyridazin-8-amine","C4 H3 N9",177.05114,0.983,"MSI Level III; level 3",NA
+"Pos","Uracil","C4 H4 N2 O2",112.02728,1.146,"MSI Level I; level 3",NA
+"Pos","Succinic acid","C4 H6 O4",118.02661,1.155,"MSI Level I; level 3",NA
+"Pos","Butyronitrile","C4 H7 N",69.05785,0.975,"MSI Level III; level 3",NA
+"Pos","2-Pyrrolidone","C4 H7 N O",85.05276,1.464,"MSI Level III; level 3",NA
+"Pos","3K9EJ633GL","C4 H7 N O2",101.04768,0.903,"MSI Level I; level 3",NA
+"Pos","775261TI36","C4 H7 N O2",101.04768,1.149,"MSI Level I; level 3",NA
+"Pos","L-homoserine lactone","C4 H7 N O2",101.04768,1.36,"MSI Level III; level 3",NA
+"Pos","Timonacic","C4 H7 N O2 S",133.01975,0.934,"MSI Level III; Level 3",NA
+"Pos","L-Aspartic 4-semialdehyde","C4 H7 N O3",117.04259,0.843,"MSI Level III; level 3","37.5"
+"Pos","2-Hydroxy-1,3-thiazolidine-4-carboxylic acid","C4 H7 N O3 S",149.01466,0.927,"MSI Level III; level 3",NA
+"Pos","L-Aspartic acid","C4 H7 N O4",133.03751,0.856,"MSI Level I; level 2",NA
+"Pos","CREATININE","C4 H7 N3 O",113.05891,1.241,"MSI Level I; level 1",NA
+"Pos","1-Cyclopropyl-1-nitrosourea","C4 H7 N3 O2",129.05383,1.005,"MSI Level III; level 3",NA
+"Pos","Acetylmethylnitrosourea","C4 H7 N3 O3",145.04874,1.358,"MSI Level III; level 3",NA
+"Pos","Asparagine","C4 H8 N2 O3",132.05349,0.859,"MSI Level I; level 2",NA
+"Pos","(2Z,2'Z)-2,2'-[(1Z,2Z)-1,2-Ethanediylidene]dihydrazinecarboxamide","C4 H8 N6 O2",172.07087,1.154,"MSI Level III; level 3",NA
+"Pos","S4I1G0R11O","C4 H8 N8",168.08719,0.967,"MSI Level III; level 3",NA
+"Pos","Z5SD8DD6CP","C4 H8 O2 S",120.0245,0.935,"MSI Level III; level 3",NA
+"Pos","Pyrrolidine","C4 H9 N",71.0735,1.087,"MSI Level III; level 3",NA
+"Pos","gamma-Aminobutyric acid","C4 H9 N O2",103.06333,1.186,"MSI Level I; level 3",NA
+"Pos","2-Aminoisobutyric Acid","C4 H9 N O2",103.06333,0.966,"MSI Level I; Level 3","61.11"
+"Pos","DL-Homocysteine","C4 H9 N O2 S",135.0354,0.942,"MSI Level I; level 3",NA
+"Pos","L-THREONINE","C4 H9 N O3",119.05824,0.885,"MSI Level I; level 1",NA
+"Pos","Creatine","C4 H9 N3 O2",131.06948,1.055,"MSI Level I; level 2",NA
+"Pos","2156QF7O8M","C4 H9 O7 P",200.00859,0.793,"MSI Level III; level 3",NA
+"Pos","Ethyl 3-amino-3-iminopropanoate","C5 H10 N2 O2",130.07423,1.293,"MSI Level III; level 3",NA
+"Pos","Gly-Ser","C5 H10 N2 O4",162.06406,0.919,"MSI Level III; level 3",NA
+"Pos","3-(Ethylsulfanyl)propanoic acid","C5 H10 O2 S",134.04015,1.149,"MSI Level III; level 3",NA
+"Pos","2,2-Bis(hydroxymethyl)propionic acid","C5 H10 O4",134.05791,0.845,"MSI Level III; level 3",NA
+"Pos","67I85E138Y","C5 H11 N",85.08915,1.447,"MSI Level III; level 3",NA
+"Pos","3-Methyl-2-buten-1-amine","C5 H11 N",85.08915,1.349,"MSI Level III; level 3",NA
+"Pos","Betaine","C5 H11 N O2",117.07898,1.057,"MSI Level I; level 2",NA
+"Pos","Betaine","C5 H11 N O2",117.07898,1.023,"MSI Level I; level 2",NA
+"Pos","5-AMINOPENTANOATE","C5 H11 N O2",117.07898,1.275,"MSI Level I; level 1",NA
+"Pos","L-METHIONINE","C5 H11 N O2 S",149.05105,1.144,"MSI Level I; level 1",NA
+"Pos","tert-Butyl hydroxycarbamate","C5 H11 N O3",133.07389,0.903,"MSI Level III; level 3",NA
+"Pos","Ethyl bis(hydroxymethyl)carbamate","C5 H11 N O4",149.06881,0.872,"MSI Level III; level 3",NA
+"Pos","Acamprosate","C5 H11 N O4 S",181.04088,0.94,"MSI Level III; level 3",NA
+"Pos","4-guanidinobutanal","C5 H11 N3 O",129.09021,1.121,"MSI Level III; level 3",NA
+"Pos","D-Ribulose 5-phosphate","C5 H11 O8 P",230.01915,0.733,"MSI Level I; level 3",NA
+"Pos","DL-Ornithine","C5 H12 N2 O2",132.08988,0.957,"MSI Level I; level 3",NA
+"Pos","S-Aminoethyl-L-cysteine","C5 H12 N2 O2 S",164.06195,1.331,"MSI Level III; level 3",NA
+"Pos","1-Piperazinecarboximidamide","C5 H12 N4",128.1062,1.119,"MSI Level III; level 3",NA
+"Pos","Choline","C5 H13 N O",103.09971,1.194,"MSI Level II; level 2",NA
+"Pos","2-(Propylamino)ethanesulfonic acid","C5 H13 N O3 S",167.06161,0.921,"MSI Level III; level 3",NA
+"Pos","{2-[(2-Aminoethyl)amino]ethyl}carbamic acid","C5 H13 N3 O2",147.10078,0.901,"MSI Level III; level 3",NA
+"Pos","PHOSPHOCHOLINE","C5 H14 N O4 P",183.06604,0.879,"MSI Level I; level 1",NA
+"Pos","{[(2,2-Dimethoxyethyl)amino]methyl}phosphonic acid","C5 H14 N O5 P",199.06096,1.02,"MSI level III; level 3",NA
+"Pos","3-(dimethylamino)-1-propylamine","C5 H14 N2",102.1157,1.394,"MSI Level III; level 3",NA
+"Pos","2TN51YD919","C5 H4 N4 O",136.03851,1.147,"MSI Level III; level 3",NA
+"Pos","Xanthine","C5 H4 N4 O2",152.03343,1.155,"MSI Level I; level 3",NA
+"Pos","Uric Acid","C5 H4 N4 O3",168.02834,1.143,"MSI Level I; level 3",NA
+"Pos","Furfural","C5 H4 O2",96.02113,0.846,"MSI Level III; level 3",NA
+"Pos","Guanine","C5 H5 N5 O",151.04941,1.156,"MSI Level I; level 3",NA
+"Pos","4-IMIDAZOLEACETIC ACID","C5 H6 N2 O2",126.04293,1.126,"MSI Level I; level 1",NA
+"Pos","63OFI15S80","C5 H6 O3",114.03169,1.784,"MSI Level III; level 3",NA
+"Pos","3-Oxocyclobutanecarboxylic acid","C5 H6 O3",114.03169,0.846,"MSI Level III; level 3",NA
+"Pos","alpha-Ketoglutaric acid","C5 H6 O5",146.02152,1.089,"MSI Level I; level 3",NA
+"Pos","L-Pyroglutamic acid","C5 H7 N O3",129.04259,0.894,"MSI Level I; level 2",NA
+"Pos","CBX394737H","C5 H7 N3",109.064,1.001,"MSI Level III; level 3",NA
+"Pos","N-(2-Cyanoethyl)glycine","C5 H8 N2 O2",128.05858,1.035,"MSI Level III; level 3",NA
+"Pos","glutaral","C5 H8 O2",100.05243,1.266,"MSI Level III; level 3",NA
+"Pos","ETHYLMALONIC ACID","C5 H8 O4",132.04226,1.553,"MSI Level I; level 3",NA
+"Pos","Monoethyl malonic acid","C5 H8 O4",132.04226,1.755,"MSI Level III; level 3",NA
+"Pos","Glutaric acid","C5 H8 O4",132.04226,1.346,"MSI Level I; level 3",NA
+"Pos","YA2V724S0A","C5 H8 O4",132.04226,1.141,"MSI Level III; level 3",NA
+"Pos","Glutaric acid","C5 H8 O4",132.04226,1.469,"MSI Level I; level 3",NA
+"Pos","Dimethyl malonate","C5 H8 O4",132.04226,1.62,"MSI Level III; level 3",NA
+"Pos","N-Methylpyrrolidone","C5 H9 N O",99.06841,1.268,"MSI Level III; level 3",NA
+"Pos","d-Valerolactam","C5 H9 N O",99.06841,4.16,"MSI Level II; level 3",NA
+"Pos","L-PROLINE","C5 H9 N O2",115.06333,0.979,"MSI Level I; level 1",NA
+"Pos","L-Hydroxyproline","C5 H9 N O3",131.05824,0.876,"MSI Level I; level 3",NA
+"Pos","Aminolevulinic acid","C5 H9 N O3",131.05824,1.154,"MSI Level I; level 3",NA
+"Pos","N-ACETYL-DL-SERINE","C5 H9 N O4",147.05316,8.918,"MSI Level III; level 3",NA
+"Pos","3-hydroxy-L-glutamic acid","C5 H9 N O5",163.04807,0.836,"MSI Level III; level 3",NA
+"Pos","Histamine","C5 H9 N3",111.07965,1.399,"MSI Level III; level 3",NA
+"Pos","1-(4,6-Diaminopyrimidin-5-yl)guanidine","C5 H9 N7",167.09194,1.367,"MSI Level III; level 3",NA
+"Pos","3-Methyl-4-phosphono-2-butenoic acid","C5 H9 O5 P",180.01876,1.815,"MSI Level III; level 3",NA
+"Pos","4-Methoxy-2,6,7-trioxa-1-phosphabicyclo[2.2.2]octane 1-oxide","C5 H9 O5 P",180.01876,1.942,"MSI Level III; level 3",NA
+"Pos","3-Hydroxy-2,5-dioxopentyl dihydrogen phosphate","C5 H9 O7 P",212.00859,0.741,"MSI Level III; level 3",NA
+"Pos","9434G2C47P","C6 H10 N2 O2",142.07423,1.115,"MSI Level III; level 3",NA
+"Pos","9434G2C47P","C6 H10 N2 O2",142.07423,1.079,"MSI Level III; level 3",NA
+"Pos","1-Methyl-2-pyrrolidinone-4-carboxamide","C6 H10 N2 O2",142.07423,1.017,"MSI Level III; level 3",NA
+"Pos","oxiracetam","C6 H10 N2 O3",158.06914,0.901,"MSI Level III; level 3",NA
+"Pos","YV703N7VOG","C6 H10 N2 O4",174.06406,1.005,"MSI Level III; level 3",NA
+"Pos","2-(5-Amino-2-methyl-4-nitro-1H-imidazol-1-yl)ethanol","C6 H10 N4 O3",186.07529,1.355,"MSI Level III; level 3",NA
+"Pos","Meglutol","C6 H10 O5",162.05282,0.841,"MSI Level I; level 3",NA
+"Pos","58UBG0IB0R","C6 H10 O6",178.04774,1.152,"MSI Level III; level 3",NA
+"Pos","D-Glucono-delta-lactone","C6 H10 O6",178.04774,0.849,"MSI Level III; level 3",NA
+"Pos","Vigabatrin","C6 H11 N O2",129.07898,1.286,"MSI Level III; level 3",NA
+"Pos","(S)-4-Isopropyl-2-oxazolidinone","C6 H11 N O2",129.07898,1.513,"MSI Level III; level 3",NA
+"Pos","PIPECOLATE","C6 H11 N O2",129.07898,0.973,"MSI Level I; level 1",NA
+"Pos","Nipecotic acid","C6 H11 N O2",129.07898,1.13,"MSI Level II; level 3",NA
+"Pos","1V1VN1&1","C6 H11 N O2",129.07898,1.47,"MSI Level III; level 3",NA
+"Pos","R-nipecotic acid","C6 H11 N O2",129.07898,1.326,"MSI Level III; level 3",NA
+"Pos","Isonipecotic acid","C6 H11 N O2",129.07898,1.795,"MSI Level III; level 3",NA
+"Pos","4-Morpholinylacetic acid","C6 H11 N O3",145.07389,0.979,"MSI Level III; level 3",NA
+"Pos","N-METHYL-L-GLUTAMATE","C6 H11 N O4",161.06881,0.993,"MSI Level I; level 1",NA
+"Pos",".alpha.-Aminoadipic acid","C6 H11 N O4",161.06881,1.117,"MSI Level I; level 3",NA
+"Pos","1,2,3-Propanetricarboxamide","C6 H11 N3 O3",173.08004,1.208,"MSI Level III; level 3",NA
+"Pos","4-(Carbamoylhydrazono)pentanoic acid","C6 H11 N3 O3",173.08004,1.259,"MSI Level III; level 3",NA
+"Pos","5-guanidino-2-oxopentanoic acid","C6 H11 N3 O3",173.08004,1.034,"MSI Level III; level 3",NA
+"Pos","Piperidin-4-carboxamid","C6 H12 N2 O",128.09496,1.305,"MSI Level III; level 3",NA
+"Pos","L-Alanyl-L-alanine","C6 H12 N2 O3",160.08479,1.15,"MSI Level III; level 3",NA
+"Pos","D-Alanyl-D-alanine","C6 H12 N2 O3",160.08479,0.977,"MSI Level III; level 3",NA
+"Pos","L-Seryl-L-alanine","C6 H12 N2 O4",176.07971,1.03,"MSI Level III; level 3",NA
+"Pos","(2E,2'E)-2,2'-[(1E,2E)-3,4-Dihydroxy-1,2-butanediylidene]dihydrazinecarbothioamide","C6 H12 N6 O2 S2",264.04631,0.859,"MSI Level III; level 3",NA
+"Pos","cealysin","C6 H12 N6 O3",216.09709,1.459,"MSI Level III; level 3",NA
+"Pos","N,N-Diethylglycine","C6 H13 N O2",131.09463,1.176,"MSI Level III; Level 3","45.45"
+"Pos","Isoleucine","C6 H13 N O2",131.09463,1.352,"MSI Level I; level 2",NA
+"Pos","Leucine","C6 H13 N O2",131.09463,1.445,"MSI Level I; level 2",NA
+"Pos","2-(TERT-BUTYLSULFONYL)ETHANETHIOAMIDE","C6 H13 N O2 S2",195.03877,1.379,"MSI Level III; level 3",NA
+"Pos","2,2-DIETHOXYACETAMIDE","C6 H13 N O3",147.08954,1.094,"MSI Level III; level 3",NA
+"Pos","afegostat","C6 H13 N O3",147.08954,1.007,"MSI Level III; level 3",NA
+"Pos","Bicine","C6 H13 N O4",163.08446,0.88,"MSI Level III; level 3",NA
+"Pos","L-(+)-Citrulline","C6 H13 N3 O3",175.09569,0.918,"MSI Level I; level 2",NA
+"Pos","Argininic acid","C6 H13 N3 O3",175.09569,1.209,"MSI Level III; level 3","65.52"
+"Pos","6-O-Phosphono-D-gluconic acid","C6 H13 O10 P",276.02463,0.718,"MSI Level III; level 3",NA
+"Pos","Glucose 1-phosphate","C6 H13 O9 P",260.02972,0.822,"MSI Level I; level 2",NA
+"Pos","D-Glucose 6-phosphate","C6 H13 O9 P",260.02972,0.715,"MSI Level I; level 2",NA
+"Pos","Beta-lysine","C6 H14 N2 O2",146.10553,1.809,"MSI Level III; level 3",NA
+"Pos","L-LYSINE","C6 H14 N2 O2",146.10553,1.124,"MSI Level I; level 1",NA
+"Pos","L-LYSINE","C6 H14 N2 O2",146.10553,1.005,"MSI Level I; level 1",NA
+"Pos","DL-Arginine","C6 H14 N4 O2",174.11168,1.08,"MSI Level I; level 2",NA
+"Pos","Triethylene glycol","C6 H14 O4",150.08921,1.164,"MSI Level III; level 3",NA
+"Pos","Triethylene glycol","C6 H14 O4",150.08921,1.133,"MSI Level III; level 3",NA
+"Pos","Hexitol","C6 H14 O6",182.07904,0.832,"MSI Level I; level 3",NA
+"Pos","2-Amino-4-methylpentanehydrazide","C6 H15 N3 O",145.12151,2.637,"MSI Level III; level 3",NA
+"Pos","2-(Diethylamino)acetohydrazide","C6 H15 N3 O",145.12151,2.957,"MSI Level III; level 3",NA
+"Pos","Glycerophosphoglycerol","C6 H15 O8 P",246.05045,0.733,"MSI Level III; level 3",NA
+"Pos","NICOTINAMIDE","C6 H6 N2 O",122.04801,1.413,"MSI Level I; level 1",NA
+"Pos","ethoxymethylenemalononitrile","C6 H6 N2 O",122.04801,1.109,"MSI Level III; level 3","16.39"
+"Pos","5-Methylfuran-2-carboxylic acid","C6 H6 O3",126.03169,0.712,"MSI Level III; Level 3","33.33"
+"Pos","(E)-Aconitic Acid","C6 H6 O6",174.01644,1.097,"MSI Level I; level 3",NA
+"Pos","phenylamine","C6 H7 N",93.05785,1.139,"MSI Level III; level 3",NA
+"Pos","1,3-dimethyluracil","C6 H8 N2 O2",140.05858,1.151,"MSI Level III; level 3",NA
+"Pos","1,5-Dimethyl-1H-pyrazole-3-carboxylic acid","C6 H8 N2 O2",140.05858,1.359,"MSI Level III; level 3",NA
+"Pos","1,3-dimethylbarbituric acid","C6 H8 N2 O3",156.05349,1.123,"MSI Level III; level 3",NA
+"Pos","lactide","C6 H8 O4",144.04226,0.845,"MSI Level III; level 3",NA
+"Pos","beta-Ketoadipic acid","C6 H8 O5",160.03717,0.871,"MSI Level III; level 3",NA
+"Pos","alpha-ketoadipic acid","C6 H8 O5",160.03717,1.146,"MSI Level I; level 3",NA
+"Pos","Citric acid","C6 H8 O7",192.027,0.831,"MSI Level I; level 3",NA
+"Pos","Guvacine","C6 H9 N O2",127.06333,1.137,"MSI Level III; level 3",NA
+"Pos","Methyl-5-oxopyrrolidin-3-carboxylat","C6 H9 N O3",143.05824,0.856,"MSI Level III; level 3",NA
+"Pos","N-Formyl-L-glutamic acid","C6 H9 N O5",175.04807,1.151,"MSI Level III; level 3",NA
+"Pos","N-Acetyl-L-aspartic acid","C6 H9 N O5",175.04807,0.827,"MSI Level I; level 3",NA
+"Pos","N-(Carboxymethyl)-L-aspartic acid","C6 H9 N O6",191.04299,0.817,"MSI Level III; level 3",NA
+"Pos","5-Amino-3-cyclopropylpyrazole","C6 H9 N3",123.07965,0.084,"MSI Level III; level 3",NA
+"Pos","L-HISTIDINE","C6 H9 N3 O2",155.06948,1.005,"MSI Level I; level 1",NA
+"Pos","2-(1H-Pyrazolo[1,5-b][1,2,4]triazol-2-yl)ethanamine","C6 H9 N5",151.0858,1.336,"MSI Level III; level 3",NA
+"Pos","3-(2-Hydroxyethyl)-6-methyluracil","C7 H10 N2 O3",170.06914,1.151,"MSI Level III; level 3",NA
+"Pos","JJO1TS4A8Y","C7 H10 N4 O",166.08546,1.339,"MSI Level III; level 3",NA
+"Pos","3-QUINUCLIDINONE","C7 H11 N O",125.08406,1.435,"MSI Level III; level 3",NA
+"Pos","Arecaidine","C7 H11 N O2",141.07898,1.268,"MSI Level III; level 3",NA
+"Pos","Ethyl 3-oxo-1-pyrrolidinecarboxylate","C7 H11 N O3",157.07389,3.171,"MSI Level III; level 3",NA
+"Pos","N-Acetyl-L-glutamic acid","C7 H11 N O5",189.06372,1.144,"MSI Level I; level 3",NA
+"Pos","3-Methylhistidine","C7 H11 N3 O2",169.08513,1.013,"MSI Level I; level 2",NA
+"Pos","5-[(2-Hydroxyethyl)amino]-6-methyl-2,4(1H,3H)-pyrimidinedione","C7 H11 N3 O3",185.08004,1.253,"MSI Level III; level 3",NA
+"Pos","1-butylimidazole","C7 H12 N2",124.10005,1.43,"MSI Level III; level 3",NA
+"Pos","N~2~-Acetyl-L-alpha-glutamine","C7 H12 N2 O4",188.07971,1.145,"MSI Level III; level 3",NA
+"Pos","1SE3HD391H","C7 H13 N O2",143.09463,1.145,"MSI Level III; level 3",NA
+"Pos","N-Acetylvaline","C7 H13 N O3",159.08954,0.993,"MSI Level III; level 3",NA
+"Pos","n-boc-glycine","C7 H13 N O4",175.08446,1.241,"MSI Level III; level 3",NA
+"Pos","3K9BK9LB73","C7 H13 N O4",175.08446,1.14,"MSI Level III; level 3",NA
+"Pos","4-(4,5-Dihydro-1H-imidazol-2-ylamino)butanoic acid","C7 H13 N3 O2",171.10078,1.583,"MSI Level III; level 3",NA
+"Pos","1-(4-Amino-1-piperidinyl)ethanone","C7 H14 N2 O",142.11061,1.445,"MSI Level III; level 3",NA
+"Pos","N-(Butylcarbamoyl)glycine","C7 H14 N2 O3",174.10044,1.687,"MSI Level III; level 3",NA
+"Pos","2,2-Diaminoheptanedioic acid","C7 H14 N2 O4",190.09536,1.103,"MSI Level I; level 3",NA
+"Pos","Acetylcholine","C7 H15 N O2",145.11028,1.347,"MSI Level I; level 2",NA
+"Pos","tert-Butyl (2-hydroxyethyl)carbamate","C7 H15 N O3",161.10519,1.006,"MSI Level III; level 3",NA
+"Pos","L-CARNITINE","C7 H15 N O3",161.10519,1.215,"MSI Level I; level 1",NA
+"Pos","Glycineamide ribonucleotide","C7 H15 N2 O8 P",286.0566,0.799,"MSI Level III; level 3",NA
+"Pos","6-Guanidinohexanoic Acid","C7 H15 N3 O2",173.11643,2.423,"MSI Level III; level 3",NA
+"Pos","1-Isopropylpiperazine","C7 H16 N2",128.13135,1.609,"MSI Level III; level 3",NA
+"Pos","4-(Aminomethyl)-1-methyl-4-piperidinol","C7 H16 N2 O",144.12626,1.449,"MSI Level III; level 3",NA
+"Pos","4-[(3-Aminopropyl)amino]butanoic acid","C7 H16 N2 O2",160.12118,1.132,"MSI Level III; level 3",NA
+"Pos","FCR6T2IYVU","C7 H16 N2 O2",160.12118,1.433,"MSI Level III; level 3",NA
+"Pos","Methyl 3,6-diamino-2,3,6-trideoxyhexopyranoside","C7 H16 N2 O3",176.11609,1.017,"MSI Level III; level 3",NA
+"Pos","(1-Aminoheptyl)phosphonic acid","C7 H18 N O3 P",195.10243,13.546,"MSI Level III; level 3",NA
+"Pos","spermidine","C7 H19 N3",145.1579,1.6,"MSI Level I; level 3",NA
+"Pos","Benzoxazole","C7 H5 N O",119.03711,2.829,"MSI Level III; level 3",NA
+"Pos","Trigonelline","C7 H7 N O2",137.04768,1.142,"MSI Level I; level 2",NA
+"Pos","4-Aminobenzoic acid","C7 H7 N O2",137.04768,5.034,"MSI Level I; level 2",NA
+"Pos","Anthranilic acid","C7 H7 N O2",137.04768,4.809,"MSI Level III; level 3",NA
+"Pos","3-Pyridylacetic acid","C7 H7 N O2",137.04768,2.019,"MSI Level II; level 2",NA
+"Pos","Fosfosal","C7 H7 O6 P",217.99802,0.719,"MSI Level III; level 3",NA
+"Pos","5-(Methoxymethylene)-2,2-dimethyl-1,3-dioxane-4,6-dione","C8 H10 O5",186.05282,1.008,"MSI Level III; level 3",NA
+"Pos","N-Acetyl-L-histidine","C8 H11 N3 O3",197.08004,1.143,"MSI Level III; level 3",NA
+"Pos","2-Amino-5-propyl[1,2,4]triazolo[1,5-a]pyrimidin-7(1H)-one","C8 H11 N5 O",193.09636,1.42,"MSI Level III; level 3",NA
+"Pos","5-Butyl-2,4,6(1H,3H,5H)-pyrimidinetrione","C8 H12 N2 O3",184.08479,1.307,"MSI Level III; level 3",NA
+"Pos","BO8PRP86RH","C8 H12 N3 O5 P",261.05146,0.066,"MSI Level III; level 3",NA
+"Pos","6MW60CB71P","C8 H12 O6",204.06339,0.999,"MSI Level III; level 3",NA
+"Pos","1-Acetyl-2-azepanone","C8 H13 N O2",155.09463,1.155,"MSI Level III; level 3",NA
+"Pos","1-(2-Methoxyethyl)-5-oxo-3-pyrrolidinecarboxylic acid","C8 H13 N O4",187.08446,8.33,"MSI Level III; level 3",NA
+"Pos","1-Amino-1,4-cyclohexanedicarboxylic acid","C8 H13 N O4",187.08446,8.466,"MSI Level III; level 3",NA
+"Pos","(4S)-4-Acetamido-5-methoxy-5-oxopentanoic acid","C8 H13 N O5",203.07937,0.692,"MSI Level III; level 3",NA
+"Pos","4-Cyclobutyl-2,6,7-trioxa-1-phosphabicyclo[2.2.2]octane 1-oxide","C8 H13 O4 P",204.05515,13.815,"MSI Level III; level 3",NA
+"Pos","L-Alanyl-L-proline","C8 H14 N2 O3",186.10044,1.275,"MSI Level II; level 2",NA
+"Pos","ser-pro","C8 H14 N2 O4",202.09536,1.128,"MSI Level III; level 3",NA
+"Pos","ALA-GLU","C8 H14 N2 O5",218.09027,1.154,"MSI Level III; level 3",NA
+"Pos","g-Glutamylcysteine","C8 H14 N2 O5 S",250.06234,1.099,"MSI Level III; level 3",NA
+"Pos","Serylglutamic acid","C8 H14 N2 O6",234.08519,1.038,"MSI Level III; level 3",NA
+"Pos","4-Aminomethyl-cyclohexanecarboxylic acid","C8 H15 N O2",157.11028,1.2,"MSI Level III; level 3",NA
+"Pos","fructosylglycine","C8 H15 N O7",237.08485,0.848,"MSI Level III; level 3",NA
+"Pos","Leucylglycine","C8 H16 N2 O3",188.11609,1.374,"MSI Level III; level 3",NA
+"Pos","NALPHA-ACETYL-L-LYSINE","C8 H16 N2 O3",188.11609,1.696,"MSI Level I; level 3",NA
+"Pos","[4-(2-Hydroxyethyl)-1-piperazinyl]acetic acid","C8 H16 N2 O3",188.11609,2.485,"MSI Level III; level 3",NA
+"Pos","Glycyl-L-leucine","C8 H16 N2 O3",188.11609,2.932,"MSI Level III; level 2",NA
+"Pos","N6-Acetyl-L-lysine","C8 H16 N2 O3",188.11609,1.254,"MSI Level I; level 2",NA
+"Pos","H-Asn-OtBu","C8 H16 N2 O3",188.11609,3.328,"MSI Level III; level 3",NA
+"Pos","3-amino-N-(tert-butoxycarbonyl)-L-alanine","C8 H16 N2 O4",204.11101,1.572,"MSI Level III; level 3",NA
+"Pos","3-Allyl-1,1-diethylthiourea","C8 H16 N2 S",172.10342,1.545,"MSI Level III; level 3",NA
+"Pos","L-Alanyl-N-[1-(1H-pentazol-1-yl)ethyl]-L-alaninamide","C8 H16 N8 O2",256.13962,1.207,"MSI Level III; level 3",NA
+"Pos","Gly-Lys","C8 H17 N3 O3",203.12699,1.294,"MSI Level III; level 3",NA
+"Pos","2-Methyl-2-propanyl (2-hydrazino-2-oxoethyl)methylcarbamate","C8 H17 N3 O3",203.12699,1.64,"MSI Level III; level 3",NA
+"Pos","N3,N4-Dimethyl-L-arginine","C8 H18 N4 O2",202.14298,1.223,"MSI Level II; level 3",NA
+"Pos","Triethylene glycol dimethyl ether","C8 H18 O4",178.12051,1.664,"MSI Level III; level 3",NA
+"Pos","Ethane, 1,1'-oxybis[2,2-dimethoxy-","C8 H18 O5",194.11542,13.106,"MSI Level III; level 3",NA
+"Pos","PEG-4","C8 H18 O5",194.11542,1.973,"MSI Level III; level 3",NA
+"Pos","3,5,7,9,11-Pentaoxatridecane","C8 H18 O5",194.11542,1.619,"MSI Level III; level 3",NA
+"Pos","Dibutylamine","C8 H19 N",129.15175,7.698,"MSI Level III; level 3",NA
+"Pos","diisopropylethylamine","C8 H19 N",129.15175,7.923,"MSI Level III; level 3",NA
+"Pos","Octylamine","C8 H19 N",129.15175,9.077,"MSI Level III; level 3",NA
+"Pos","SN-GLYCERO-3-PHOSPHOCHOLINE","C8 H20 N O6 P",257.10282,0.903,"MSI Level I; level 1",NA
+"Pos","2-Hydroxy-5-(1H-tetrazol-1-yl)benzoic acid","C8 H6 N4 O3",206.04399,0.965,"MSI Level III; level 3",NA
+"Pos","Ethynyloxybenzene","C8 H6 O",118.04186,1.357,"MSI Level III; level 3",NA
+"Pos","ortho-Phthalaldehyde","C8 H6 O2",134.03678,1,"MSI Level III; level 3",NA
+"Pos","6-Hydroxybenzofuran-3-one","C8 H6 O3",150.03169,0.828,"MSI Level III; level 3",NA
+"Pos","3-Methoxybenzaldehyde","C8 H8 O2",136.05243,13.064,"MSI Level II; level 3",NA
+"Pos","34ET764YF8","C8 H9 N",119.0735,2.315,"MSI Level III; level 3",NA
+"Pos","3,4-Dihydro-2H-1,4-benzoxazine","C8 H9 N O",135.06841,1.303,"MSI Level III; level 3",NA
+"Pos","96S7ZZ1KHE","C8 H9 N O2",151.06333,1.173,"MSI Level III; level 3",NA
+"Pos","5-Formyl-2,4-dimethylpyrrole-3-carboxylic acid","C8 H9 N O3",167.05824,0.852,"MSI Level III; level 3",NA
+"Pos","6-Ethyl-1,3-benzothiazol-2-amine","C9 H10 N2 S",178.05647,12.093,"MSI Level III; level 3",NA
+"Pos","4,5,6-Trimethyl-2-sulfanylnicotinonitrile","C9 H10 N2 S",178.05647,11.965,"MSI Level III; level 3",NA
+"Pos","L-PHENYLALANINE","C9 H11 N O2",165.07898,2.318,"MSI Level I; level 1",NA
+"Pos","Benzocaine","C9 H11 N O2",165.07898,10.63,"MSI Level II; level 2",NA
+"Pos","38Y050IUE4","C9 H11 N O2",165.07898,10.234,"MSI Level III; level 3",NA
+"Pos","Benzocaine","C9 H11 N O2",165.07898,10.771,"MSI Level II; level 2",NA
+"Pos","L-TYROSINE","C9 H11 N O3",181.07389,1.304,"MSI Level I; level 1",NA
+"Pos","Uridine","C9 H12 N2 O6",244.06954,1.143,"MSI Level I; level 3",NA
+"Pos","URIDINE-5-MONOPHOSPHATE","C9 H13 N2 O9 P",324.03587,0.819,"MSI Level I; level 1",NA
+"Pos","6-Amino-1-(tetrahydro-2-furanylmethyl)-2,4(1H,3H)-pyrimidinedione","C9 H13 N3 O3",211.09569,1.163,"MSI Level III; level 3",NA
+"Pos","CYTIDINE","C9 H13 N3 O5",243.08552,1.18,"MSI Level I; level 1",NA
+"Pos","Imidazole-5-sulfonamide, 1-methyl-N-(morpholinomethyl)-4-nitro-","C9 H15 N5 O5 S",305.07939,0.83,"MSI Level III; level 3",NA
+"Pos","N(2)-succinyl-L-ornithine","C9 H16 N2 O5",232.10592,1.559,"MSI Level III; level 3",NA
+"Pos","N-(tert-Butoxycarbonyl)glycylglycin","C9 H16 N2 O5",232.10592,1.144,"MSI Level III; level 3",NA
+"Pos","gamma-Glu-Thr","C9 H16 N2 O6",248.10084,1.123,"MSI Level III; level 3",NA
+"Pos","(2S)-5-Carbamimidamido-2-(2-oxo-1-azetidinyl)pentanoic acid","C9 H16 N4 O3",228.12224,1.239,"MSI Level III; level 3",NA
+"Pos","Azelaic acid","C9 H16 O4",188.10486,11.42,"MSI Level I; level 3",NA
+"Pos","Acetyl-L-carnitine","C9 H17 N O4",203.11576,1.906,"MSI Level II; level 2",NA
+"Pos","Boc-Ser-OMe; Boc-L-serine methyl ester","C9 H17 N O5",219.11067,1.321,"MSI Level III; level 3",NA
+"Pos","D-PANTOTHENIC ACID","C9 H17 N O5",219.11067,1.591,"MSI Level I; level 3",NA
+"Pos","8-(Methylsulfanyl)octanenitrile","C9 H17 N S",171.10817,13.963,"MSI Level III; level 3",NA
+"Pos","N~6~-propanoyl-L-lysine","C9 H18 N2 O3",202.13174,2.099,"MSI Level III; level 3",NA
+"Pos","Alanylleucine","C9 H18 N2 O3",202.13174,2.881,"MSI Level III; level 3",NA
+"Pos","Ala-Leu","C9 H18 N2 O3",202.13174,3.403,"MSI Level III; level 3",NA
+"Pos","meprobamate","C9 H18 N2 O4",218.12666,1.471,"MSI Level III; level 3",NA
+"Pos","2,8-Diaminononanedioic acid","C9 H18 N2 O4",218.12666,2.665,"MSI Level III; level 3",NA
+"Pos","[3-(2-Methyl-2-propanyl)-5-nitro-1,3-oxazinan-5-yl]methanol","C9 H18 N2 O4",218.12666,2.956,"MSI Level III; level 3",NA
+"Pos","Methyl 3-[(tert-butoxycarbonyl)amino]-L-alaninate","C9 H18 N2 O4",218.12666,1.257,"MSI Level III; level 3",NA
+"Pos","tert-Butyl {2-[methoxy(methyl)amino]-2-oxoethyl}carbamate","C9 H18 N2 O4",218.12666,1.722,"MSI Level III; level 3",NA
+"Pos","Isopropyl beta-D-1-thiogalactopyranoside","C9 H18 O5 S",238.08749,13.789,"MSI Level III; level 3",NA
+"Pos","2,2,6,6-Tetramethyl-4-piperidinamine","C9 H20 N2",156.16265,1.507,"MSI Level III; level 3",NA
+"Pos","NEPSILON,NEPSILON,NEPSILON-TRIMETHYLLYSINE","C9 H20 N2 O2",188.15248,1.145,"MSI Level I; level 1",NA
+"Pos","tert-Butyl [2-(2-aminoethoxy)ethyl]carbamate","C9 H20 N2 O3",204.14739,1.15,"MSI Level III; level 3",NA
+"Pos","Triisopropanolamine","C9 H21 N O3",191.15214,1.537,"MSI Level II; level 2",NA
+"Pos","59711R38B0","C9 H7 N O2",161.04768,13.373,"MSI Level III; level 3",NA
+"Pos","2-Hydroxycinnamic acid","C9 H8 O3",164.04734,1.317,"MSI Level II; level 3",NA
+"Pos","Di-2-Thienylmethane","C9 H8 S2",180.00674,0.102,"MSI Level III; level 3",NA
+"Pos","Hippuric acid","C9 H9 N O3",179.05824,13.375,"MSI Level III; level 3",NA
+"Pos","4-Acetamidobenzoic acid","C9 H9 N O3",179.05824,10.143,"MSI Level II; level 2",NA
+"Pos","","C3 H9 N O3 S",139.03031,0.866,"MSI Level III; Level 4",NA
+"Pos","","C H3 N O2",61.0165,1.263,"MSI Level III; Level 4",NA
+"Pos","","C6 H12 N4 O S",188.07328,1.36,"MSI Level III; Level 4",NA
+"Pos","","C23 H44 N6 O3 P2",514.29666,13.057,"MSI Level III; Level 4",NA
+"Pos","","C4 H10 N3 O5 P",211.03574,0.826,"MSI Level III; Level 4",NA
+"Pos","","C11 H12 N2 O2",204.08986,7.121,"MSI Level III; Level 4",NA
+"Pos","","C7 H11 N3 O2 S",201.05715,0.922,"MSI Level III; Level 4",NA
+"Pos","","C2 H8 N O4 P",141.01909,0.809,"MSI Level III; Level 4",NA
+"Pos","","C4 H4 O2",84.02113,0.846,"MSI Level III; Level 4",NA
+"Pos","","C8 H5 N3 O3 S",223.0043,0.086,"MSI Level III; Level 4",NA
+"Pos","","C2 H7 N5 O",117.06466,1.053,"MSI Level III; Level 4",NA
+"Pos","","C19 H41 N2 O4 P",392.2786,13.647,"MSI Level III; Level 4",NA
+"Pos","","C8 H18 O5",194.11549,1.336,"MSI Level III; Level 4",NA
+"Pos","","C3 H5 N7",139.06091,1.325,"MSI Level III; Level 4",NA
+"Pos","","C9 H20 N4 O4",248.14848,1.062,"MSI Level III; Level 4",NA
+"Pos","","C22 H27 N3 O16 S4",717.02763,1.11,"MSI Level III; Level 4",NA
+"Pos","","C4 H8 N3 O4 P",193.02535,0.991,"MSI Level III; Level 4",NA
+"Pos","","C5 H6 O3",114.03169,1.429,"MSI Level III; Level 4",NA
+"Pos","","C H2 N3 P3",148.94569,1.358,"MSI Level III; Level 4",NA
+"Pos","","C3 H Cl N O5 P S",228.89939,0.758,"MSI Level III; Level 4",NA
+"Pos","","C3 H3 N O5 S2",196.94461,0.824,"MSI Level III; Level 4",NA
+"Pos","","C9 H9 N O3",179.05829,10.014,"MSI Level III; Level 4",NA
+"Pos","","C5 H8 O3",116.04733,1.051,"MSI Level III; Level 4",NA
+"Pos","","C11 H10 N9 O13 P3 S",600.93357,1.604,"MSI Level III; Level 4",NA
+"Pos","","C13 H25 N5 O2",283.19954,6.657,"MSI Level III; Level 4",NA
+"Pos","","C H4 N3 O P3",166.95649,1.333,"MSI Level III; Level 4",NA
+"Pos","","C17 H9 N5 O14 P2 S",600.93362,1.239,"MSI Level III; Level 4",NA
+"Pos","","C35 H70 N3 O13 P3",833.41261,7.948,"MSI Level III; Level 4",NA
+"Pos","","C35 H70 N3 O13 P3",833.41263,7.789,"MSI Level III; Level 4",NA
+"Pos","","C5 H8 O4",132.04233,1.423,"MSI Level III; Level 4",NA
+"Pos","","C2 H N O5",118.98558,0.816,"MSI Level III; Level 4",NA
+"Pos","","C16 H43 N8 O7 P",490.29748,1.066,"MSI Level III; Level 4",NA
+"Pos","","C4 H4 N6 O2",168.0388,1.368,"MSI Level III; Level 4",NA
+"Pos","","C8 H5 N O5 S",226.98798,1.48,"MSI Level III; Level 4",NA
+"Pos","","C4 H6 N O5 P",178.99866,0.092,"MSI Level III; Level 4",NA
+"Pos","","C3 H8 N2 O2 S",136.03023,0.053,"MSI Level III; Level 4",NA
+"Pos","","C7 H10 O4",158.05786,11.416,"MSI Level III; Level 4",NA
+"Pos","","C11 H10 N9 O13 P3 S",600.93351,1.106,"MSI Level III; Level 4",NA
+"Pos","","C12 H18 N2 O4",254.12676,1.137,"MSI Level III; Level 4",NA
+"Pos","","C2 H2 N6 S",142.00655,0.945,"MSI Level III; Level 4",NA
+"Pos","","C22 H40 N9 O8 P3",651.22079,0.888,"MSI Level III; Level 4",NA
+"Pos","","C33 H41 N2 O4 P S5",720.1407,0.873,"MSI Level III; Level 4",NA
+"Pos","","C30 H34 N4 O14 S2",738.15103,0.857,"MSI Level III; Level 4",NA
+"Pos","","C3 H N7 O P2",212.9724,1.155,"MSI Level III; Level 4",NA
+"Pos","","C20 H43 N10 O16 P S2",774.20428,1.144,"MSI Level III; Level 4",NA
+"Pos","","C41 H57 N3 O15",831.37915,9.695,"MSI Level III; Level 4",NA
+"Pos","","C8 H16 N6 O4",260.12367,6.142,"MSI Level III; Level 4",NA
+"Pos","","C2 H5 O7 P",171.97743,0.992,"MSI Level III; Level 4",NA
+"Pos","","C8 H19 N O6",225.12112,0.838,"MSI Level III; Level 4",NA
+"Pos","","C8 H5 N O5 S",226.98808,1.333,"MSI Level III; Level 4",NA
+"Pos","","C19 H45 N7 O P2 S",481.28622,13.067,"MSI Level III; Level 4",NA
+"Pos","","C3 H8 N O6 P",185.00902,0.957,"MSI Level III; Level 4",NA
+"Pos","","C10 H22 O6",238.14163,5.496,"MSI Level III; Level 4",NA
+"Pos","","C34 H27 O4 P S2",594.10917,0.839,"MSI Level III; Level 4",NA
+"Pos","","C13 H25 N5 O2",283.19942,6.142,"MSI Level III; Level 4",NA
+"Pos","","C10 H16 N9 O13 P3 S",594.97992,1.107,"MSI Level III; Level 4",NA
+"Pos","","C5 H5 N5",135.0546,0.936,"MSI Level III; Level 4",NA
+"Pos","","C7 H6 O2",122.03679,10.424,"MSI Level III; Level 4",NA
+"Pos","","C5 H13 N O7",199.06887,1.372,"MSI Level III; Level 4",NA
+"Pos","","C7 H9 Cl N4 O3 S",264.00893,1.352,"MSI Level III; Level 4",NA
+"Pos","","C34 H27 N3 O10 S2",701.1131,0.839,"MSI Level III; Level 4",NA
+"Pos","","C H2 O7",125.97992,0.777,"MSI Level III; Level 4",NA
+"Pos","","C19 H28 N4 O2 S",376.19267,13.699,"MSI Level III; Level 4",NA
+"Pos","","C15 H22 N2 O3",278.16305,12.522,"MSI Level III; Level 4",NA
+"Pos","","C38 H27 N3 O2 P2 S2",683.10253,0.848,"MSI Level III; Level 4",NA
+"Pos","","C7 H4 O6 S",215.97194,0.838,"MSI Level III; Level 4",NA
+"Pos","","C5 H5 N5 O",151.04907,0.938,"MSI Level III; Level 4",NA
+"Pos","","C5 H4 O P2 S",173.94614,0.76,"MSI Level III; Level 4",NA
+"Pos","","C4 H2 N O7 P S",238.92814,0.78,"MSI Level III; Level 4",NA
+"Pos","","C23 H18 O7",406.10515,10.25,"MSI Level III; Level 4",NA
+"Pos","","C3 H8 N2 O5 S",184.01612,0.071,"MSI Level III; Level 4",NA
+"Pos","","C29 H51 N S2",477.34557,14.009,"MSI Level III; Level 4",NA
+"Pos","","C13 H21 N3 O8 S",379.10464,1.148,"MSI Level III; Level 4",NA
+"Pos","","C8 H17 N O2",159.12583,1.66,"MSI Level III; Level 4",NA
+"Pos","","C42 H34 N5 O12 P S",863.16599,0.843,"MSI Level III; Level 4",NA
+"Pos","","C29 H42 N3 O5 P3 S",637.20569,0.858,"MSI Level III; Level 4",NA
+"Pos","","C2 H5 N3 O3 S2",182.97761,0.83,"MSI Level III; Level 4",NA
+"Pos","","C9 H12 N5 O7 P S3",428.96312,0.824,"MSI Level III; Level 4",NA
+"Pos","","C6 H9 N7 O P2 S2",320.98006,1.231,"MSI Level III; Level 4",NA
+"Pos","","C15 H29 N5 O3",327.22555,7.819,"MSI Level III; Level 4",NA
+"Pos","","C9 H17 O2 P",188.0961,13.696,"MSI Level III; Level 4",NA
+"Pos","","C23 H55 N10 O13 P3 S4",900.20425,0.86,"MSI Level III; Level 4",NA
+"Pos","","C14 H32 Cl N10 O16 P3 S2",788.03423,0.822,"MSI Level III; Level 4",NA
+"Pos","","C33 H75 N10 O13 P3 S",944.44486,11.96,"MSI Level III; Level 4",NA
+"Pos","","C3 H2 N6 O2",154.02418,1.435,"MSI Level III; Level 4",NA
+"Pos","","C24 H39 N O14 S2",629.18268,0.842,"MSI Level III; Level 4",NA
+"Pos","","C3 H9 N P2 S",152.99336,0.81,"MSI Level III; Level 4",NA
+"Pos","","C11 H21 N O6",263.13694,11.42,"MSI Level III; Level 4",NA
+"Pos","","C8 H7 N O8 S",276.98902,0.826,"MSI Level III; Level 4",NA
+"Pos","","C11 H23 N3 O",213.18406,2.905,"MSI Level III; Level 4",NA
+"Pos","","C29 H13 N2 O8 P3 S",641.96005,1.265,"MSI Level III; Level 4",NA
+"Pos","","C6 H2 O12 S5",425.81458,0.975,"MSI Level III; Level 4",NA
+"Pos","","C28 H14 O11 P2 S",619.97354,0.677,"MSI Level III; Level 4",NA
+"Pos","","C25 H12 N5 O11 P3 S2",714.91943,0.673,"MSI Level III; Level 4",NA
+"Pos","","C25 H9 O9 P3 S",577.91759,0.991,"MSI Level III; Level 4",NA
+"Pos","","C4 H8 N3 O P3 S",238.95985,1.328,"MSI Level III; Level 4",NA
+"Pos","","C2 H6 N6 O3",162.04985,8.949,"MSI Level III; Level 4",NA
+"Pos","","C10 H22 O6",238.14145,6.119,"MSI Level III; Level 4",NA
+"Pos","","C13 H25 N5 O2",283.19946,5.594,"MSI Level III; Level 4",NA
+"Pos","","C22 H38 Cl2 N5 O10 P S2",697.11789,0.869,"MSI Level III; Level 4",NA
+"Pos","","C48 H99 N4 O13 P3 S",1064.61401,13.054,"MSI Level III; Level 4",NA
+"Pos","","C52 H38 N2 O11 P2 S3",1024.11077,1.123,"MSI Level III; Level 4",NA
+"Pos","","C5 H3 N2 O10 P S4",409.84059,0.97,"MSI Level III; Level 4",NA
+"Pos","","C82 H152 Cl2 N10 S",1379.13094,1.107,"MSI Level III; Level 4",NA
+"Pos","","C22 H32 N10 O18 S",756.16195,0.846,"MSI Level III; Level 4",NA
+"Pos","","C4 H4 N8 O2",196.04597,0.996,"MSI Level III; Level 4",NA
+"Pos","","C27 H9 N8 O3 P3 S4",713.88934,1.242,"MSI Level III; Level 4",NA
+"Pos","","C37 H35 N2 O11 P3 S",808.11737,0.841,"MSI Level III; Level 4",NA
+"Pos","","C5 H10 Cl N3 O5 P2",288.97896,0.949,"MSI Level III; Level 4",NA
+"Pos","","C20 H9 N8 O16 P3",709.93474,1.345,"MSI Level III; Level 4",NA
+"Pos","","C27 H53 N O6 P2",549.33375,13.054,"MSI Level III; Level 4",NA
+"Pos","","C15 H29 N3 O4",315.21557,12.202,"MSI Level III; Level 4",NA
+"Pos","","C9 H8 O2",148.05244,2.226,"MSI Level III; Level 4",NA
+"Pos","","C4 H11 N O6",169.05813,1.327,"MSI Level III; Level 4",NA
+"Pos","","C69 H108 N7 O16 P3 S",1415.68086,12.867,"MSI Level III; Level 4",NA
+"Pos","","C9 H30 N9 O2 P",327.22565,7.646,"MSI Level III; Level 4",NA
+"Pos","","C14 H30 Cl N8 O14 P S2",664.07505,0.822,"MSI Level III; Level 4",NA
+"Pos","","C15 H22 N2 O4",294.15785,9.25,"MSI Level III; Level 4",NA
+"Pos","","C14 H20 N2 O3",264.14754,9.464,"MSI Level III; Level 4",NA
+"Pos","","C46 H69 N7 O S",767.52924,13.649,"MSI Level III; Level 4",NA
+"Pos","","C28 H32 N O17 P",685.14063,0.839,"MSI Level III; Level 4",NA
+"Pos","","C7 H Cl N4 O10 P2 S3",493.80214,0.973,"MSI Level III; Level 4",NA
+"Pos","","C47 H90 N5 O17 P3",1089.55508,12.916,"MSI Level III; Level 4",NA
+"Pos","","C19 H45 N10 O7 P",556.32215,8.113,"MSI Level III; Level 4",NA
+"Pos","","C14 H22 O7",302.13641,13.269,"MSI Level III; Level 4",NA
+"Pos","","C13 H26 N7 O13 P S5",678.99229,0.814,"MSI Level III; Level 4",NA
+"Pos","","C28 H7 Cl N10 O11 P2",755.94586,0.671,"MSI Level III; Level 4",NA
+"Pos","","C12 H16 N2 O4",252.11103,5.207,"MSI Level III; Level 4",NA
+"Pos","","C26 H12 O16 P2",641.96009,0.932,"MSI Level III; Level 4",NA
+"Pos","","C63 H64 N4 P2",938.4604,13.613,"MSI Level III; Level 4",NA
+"Pos","","C28 H30 N10 O16 S2",826.12789,0.836,"MSI Level III; Level 4",NA
+"Pos","","C12 H24 N2 O4 S2",324.11836,13.266,"MSI Level III; Level 4",NA
+"Pos","","C H O15 P3",345.85444,0.76,"MSI Level III; Level 4",NA
+"Pos","","C33 H42 N3 O15 P3 S",845.15543,0.848,"MSI Level III; Level 4",NA
+"Pos","","C6 H8 N O6 P",221.00912,0.092,"MSI Level III; Level 4",NA
+"Pos","","C13 H34 N9 O16 P S2",667.13003,0.848,"MSI Level III; Level 4",NA
+"Pos","","C13 H26 N3 P S",287.15746,12.119,"MSI Level III; Level 4",NA
+"Pos","","C36 H80 N5 O17 P3 S",979.4495,13.456,"MSI Level III; Level 4",NA
+"Pos","","C36 H81 N10 O13 P S2",956.51707,12.32,"MSI Level III; Level 4",NA
+"Pos","","C29 H22 N5 O17 P",743.0746,0.805,"MSI Level III; Level 4",NA
+"Pos","","C3 H5 N3 O6 P2",240.96634,0.771,"MSI Level III; Level 4",NA
+"Pos","","C40 H58 N3 O16 P3 S3",1025.21845,0.848,"MSI Level III; Level 4",NA
+"Pos","","C31 H54 N2 O2 S2",550.36305,1.36,"MSI Level III; Level 4",NA
+"Pos","","C7 H5 N O",119.03718,3.276,"MSI Level III; Level 4",NA
+"Pos","","C36 H77 N4 O17 P",868.50167,13.34,"MSI Level III; Level 4",NA
+"Pos","","C16 H21 N5 O10 P2",505.07775,0.842,"MSI Level III; Level 4",NA
+"Pos","","C3 H4 N O P3 S",194.92297,0.775,"MSI Level III; Level 4",NA
+"Pos","","C15 H29 N3 O5",331.21052,11.94,"MSI Level III; Level 4",NA
+"Pos","","C43 H81 N4 O17 P S",988.50755,12.637,"MSI Level III; Level 4",NA
+"Pos","","C37 H39 O6 P3 S",704.16781,0.869,"MSI Level III; Level 4",NA
+"Pos","","C6 H N6 O5 P3 S2",393.86674,0.962,"MSI Level III; Level 4",NA
+"Pos","","C3 H3 N3 O5 P2",222.95582,0.763,"MSI Level III; Level 4",NA
+"Pos","","C H3 Cl N3 O2 P S3",250.88127,0.748,"MSI Level III; Level 4",NA
+"Pos","","C8 H8 O2",136.05245,14.051,"MSI Level III; Level 4",NA
+"Pos","","C29 H58 N10 O15 P2",848.35504,12.122,"MSI Level III; Level 4",NA
+"Pos","","C4 H8 P2",118.01031,0.831,"MSI Level III; Level 4",NA
+"Pos","","C24 H38 N6 O18 P2 S",792.14481,0.84,"MSI Level III; Level 4",NA
+"Pos","","C47 H78 N10 O3 P2 S2",956.51756,12.112,"MSI Level III; Level 4",NA
+"Pos","","C4 H15 N3 O14 P2 S",422.97473,1.01,"MSI Level III; Level 4",NA
+"Pos","","C4 H9 N O5",151.04816,0.936,"MSI Level III; Level 4",NA
+"Pos","","C60 H78 N O8 P S",1003.51822,8.07,"MSI Level III; Level 4",NA
+"Pos","","C6 H Cl N2 O4 P2",261.9097,0.724,"MSI Level III; Level 4",NA
+"Pos","","C38 H45 N6 O15 P3",918.21462,0.852,"MSI Level III; Level 4",NA
+"Pos","","C15 H22 N2 O3",278.163,11.954,"MSI Level III; Level 4",NA
+"Pos","","C40 H67 N9 O15",913.47565,12.431,"MSI Level III; Level 4",NA
+"Pos","","C11 H20 O6",248.12595,9.712,"MSI Level III; Level 4",NA
+"Pos","","C7 H13 N O3",159.08947,3.499,"MSI Level III; Level 4",NA
+"Pos","","C39 H69 N8 O13 P3 S",982.3915,11.959,"MSI Level III; Level 4",NA
+"Pos","","C21 H9 N4 O17 P3 S",713.88995,0.934,"MSI Level III; Level 4",NA
+"Pos","","C7 H4 Cl N3 O S",212.97574,0.736,"MSI Level III; Level 4",NA
+"Pos","","C7 H10 O14 P2 S",411.92578,0.727,"MSI Level III; Level 4",NA
+"Pos","","C34 H49 N10 O15 P3 S4",1058.14725,0.837,"MSI Level III; Level 4",NA
+"Pos","","C11 H22 N2 O3 S",262.13504,6.862,"MSI Level III; Level 4",NA
+"Pos","","C15 H21 N10 O15 P3 S",706.01245,0.986,"MSI Level III; Level 4",NA
+"Pos","","C4 H4 N P3 S",190.92736,0.779,"MSI Level III; Level 4",NA
+"Pos","","C29 H39 N9 O17 P2",847.19414,0.847,"MSI Level III; Level 4",NA
+"Pos","","C42 H81 N7 O16 S2",1003.51808,7.895,"MSI Level III; Level 4",NA
+"Pos","","C43 H77 N3 O10",795.56092,13.648,"MSI Level III; Level 4",NA
+"Pos","","C14 H18 N2 O5",294.12146,6.866,"MSI Level III; Level 4",NA
+"Pos","","C20 H27 N",281.21446,14.046,"MSI Level III; Level 4",NA
+"Pos","","C42 H64 N4",624.51195,13.671,"MSI Level III; Level 4",NA
+"Pos","","C18 H34 N O8 P",423.2006,9.751,"MSI Level III; Level 4",NA
+"Pos","","C38 H68 N4 O13 P2",850.42578,13.293,"MSI Level III; Level 4",NA
+"Pos","","C36 H69 N2 O13 P3",830.40177,10.903,"MSI Level III; Level 4",NA
+"Pos","","C H3 Cl2 O2 P",147.92525,0.734,"MSI Level III; Level 4",NA
+"Pos","","C20 H39 N10 O17 P S",754.1963,0.839,"MSI Level III; Level 4",NA
+"Pos","","C64 H90 N4 O16 P2 S",1264.55511,10.69,"MSI Level III; Level 4",NA
+"Pos","","C23 H55 N5 O18 P2",751.30157,9.4,"MSI Level III; Level 4",NA
+"Pos","","C8 H17 N O6",223.10532,1.017,"MSI Level III; Level 4",NA
+"Pos","","C25 H21 N O15",575.09142,0.857,"MSI Level III; Level 4",NA
+"Pos","","C26 H46 N9 O15 P3 S2",881.17664,0.836,"MSI Level III; Level 4",NA
+"Pos","","C39 H74 N3 O15 P3",917.43373,11.108,"MSI Level III; Level 4",NA
+"Pos","","C26 H10 N3 O17 P S",698.94686,0.671,"MSI Level III; Level 4",NA
+"Pos","","C42 H60 N O10 P",769.39638,10.119,"MSI Level III; Level 4",NA
+"Pos","","C26 H56 N O16 P3 S4",859.16941,0.86,"MSI Level III; Level 4",NA
+"Pos","","C36 H53 N4 O16 P S5",988.17988,0.838,"MSI Level III; Level 4",NA
+"Pos","","C50 H79 N O17 S",997.50752,13.06,"MSI Level III; Level 4",NA
+"Pos","","C7 H20 N7 O P",249.14568,4.529,"MSI Level III; Level 4",NA
+"Pos","","C8 H6",102.04698,2.272,"MSI Level III; Level 4",NA
+"Pos","","C23 H45 N4 O4 P",472.31637,13.03,"MSI Level III; Level 4",NA
+"Pos","","C19 H13 N3 O8 P2 S2",536.96201,0.944,"MSI Level III; Level 4",NA
+"Pos","","C47 H47 N4 O18 P S5",1146.12133,0.829,"MSI Level III; Level 4",NA
+"Pos","","C6 H8 N2 O2",140.05889,1.107,"MSI Level III; Level 4",NA
+"Pos","","C8 H29 N10 O17 P3",630.09214,0.831,"MSI Level III; Level 4",NA
+"Pos","","C27 H38 O",378.29209,13.034,"MSI Level III; Level 4",NA
+"Pos","","C62 H85 N O18",1131.57619,8.147,"MSI Level III; Level 4",NA
+"Pos","","C7 H14 N2 O5",206.09023,0.99,"MSI Level III; Level 4",NA
+"Pos","","C48 H59 N O10 P2",871.35996,7.966,"MSI Level III; Level 4",NA
+"Pos","","C11 H34 N9 O3 P",371.25171,8.665,"MSI Level III; Level 4",NA
+"Pos","","C45 H52 N9 O4 P",813.38615,11.201,"MSI Level III; Level 4",NA
+"Pos","","C6 H4 O5",156.00579,1.095,"MSI Level III; Level 4",NA
+"Pos","","C38 H68 N7 O10 P3",875.42309,7.645,"MSI Level III; Level 4",NA
+"Pos","","C29 H50 N7 O17 P3 S5",1021.10806,0.83,"MSI Level III; Level 4",NA
+"Pos","","C64 H95 N5 O17 P2 S",1299.59193,9.905,"MSI Level III; Level 4",NA
+"Pos","","C2 H5 N5 O",115.04896,0.958,"MSI Level III; Level 4",NA
+"Pos","","C53 H80 N3 O3 P S4",965.48172,11.821,"MSI Level III; Level 4",NA
+"Pos","","C17 H33 N3 O4",343.24718,14.04,"MSI Level III; Level 4",NA
+"Pos","","C28 H13 N4 O17 P S",739.97382,0.676,"MSI Level III; Level 4",NA
+"Pos","","C38 H61 N10 O17 P3 S4",1150.23165,0.843,"MSI Level III; Level 4",NA
+"Pos","","C19 H19 N5 O2 P2",411.10275,10.612,"MSI Level III; Level 4",NA
+"Pos","","C43 H51 N O4 S2",709.32784,9.75,"MSI Level III; Level 4",NA
+"Pos","","C30 H31 N",405.24523,14.055,"MSI Level III; Level 4",NA
+"Pos","","C35 H76 N3 O5 P3 S5",871.35993,7.792,"MSI Level III; Level 4",NA
+"Pos","","C16 H10 N2 O2",262.07459,13.759,"MSI Level III; Level 4",NA
+"Pos","","C34 H40 N2 O5 S",588.26433,13.052,"MSI Level III; Level 4",NA
+"Pos","","C2 H2 N8 O18 S",457.92132,0.683,"MSI Level III; Level 4",NA
+"Pos","","C30 H72 N9 O12 P3 S",875.42398,7.842,"MSI Level III; Level 4",NA
+"Pos","","C67 H90 N7 O11 P3",1261.592,13.039,"MSI Level III; Level 4",NA
+"Pos","","C23 H59 N9 O10 P2",683.38496,13.484,"MSI Level III; Level 4",NA
+"Pos","","C25 H36 N10 O15 P2 S",810.15554,0.835,"MSI Level III; Level 4",NA
+"Pos","","C10 H20 O4",204.13598,10.423,"MSI Level III; Level 4",NA
+"Pos","","C59 H54 N6 O15 P2 S5",1308.17324,0.832,"MSI Level III; Level 4",NA
+"Pos","","C87 H109 N O5 P2 S4",1437.66494,12.84,"MSI Level III; Level 4",NA
+"Pos","","C19 H41 N7 O3 S2",479.27065,12.922,"MSI Level III; Level 4",NA
+"Pos","","C8 H8 O4",168.04257,1.008,"MSI Level III; Level 4",NA
+"Pos","","C H N7",111.02966,0.933,"MSI Level III; Level 4",NA
+"Pos","","C10 H16 O5",216.0992,2.165,"MSI Level III; Level 4",NA
+"Pos","","C3 H N2 O16 P3 S",445.82679,0.76,"MSI Level III; Level 4",NA
+"Pos","","C H3 N6 O17 P S5",561.7889,0.969,"MSI Level III; Level 4",NA
+"Pos","","C9 H4 O3",160.0156,0.824,"MSI Level III; Level 4",NA
+"Pos","","C33 H4 N4 O10 P2 S2",741.88431,0.935,"MSI Level III; Level 4",NA
+"Pos","","C21 H37 N O5",383.26711,13.66,"MSI Level III; Level 4",NA
+"Pos","","C35 H80 N9 O10 P3 S3",975.44111,11.871,"MSI Level III; Level 4",NA
+"Pos","","C40 H85 N2 O13 P3 S2",958.47136,7.669,"MSI Level III; Level 4",NA
+"Pos","","C39 H74 N3 O15 P3",917.43337,11.265,"MSI Level III; Level 4",NA
+"Pos","","C31 H66 N9 O11 P3 S",865.38116,11.987,"MSI Level III; Level 4",NA
+"Pos","","C H3 Cl2 N2 O3 P",191.92575,0.781,"MSI Level III; Level 4",NA
+"Pos","","C18 H18 N5 O18 P3 S",716.95765,0.675,"MSI Level III; Level 4",NA
+"Pos","","C17 H41 N8 O3 P",436.30496,13.701,"MSI Level III; Level 4",NA
+"Pos","","C54 H113 N2 O11 P S5",1156.66843,13.769,"MSI Level III; Level 4",NA
+"Pos","","C7 H15 Cl N O4 P",243.04251,6.659,"MSI Level III; Level 4",NA
+"Pos","","C38 H45 N7 O9 S",775.29946,7.902,"MSI Level III; Level 4",NA
+"Pos","","C20 H39 N7 O9",521.27878,13.069,"MSI Level III; Level 4",NA
+"Pos","","C34 H70 N10 O16 P2",936.44455,13.56,"MSI Level III; Level 4",NA
+"Pos","","C H2 N4 O9 P2 S",307.90232,0.764,"MSI Level III; Level 4",NA
+"Pos","","C33 H59 N9 O17 S",885.37568,8.329,"MSI Level III; Level 4",NA
+"Pos","","C14 H20 O3",236.14128,13.886,"MSI Level III; Level 4",NA
+"Pos","","C55 H96 N2 O10 P2",1006.65425,13.579,"MSI Level III; Level 4",NA
+"Pos","","C4 H10 N O6 P",199.02478,0.983,"MSI Level III; Level 4",NA
+"Pos","","C6 H11 N3 O4",189.07488,0.941,"MSI Level III; Level 4",NA
+"Pos","","C8 H27 Cl N7 O16 P3 S4",732.93002,0.675,"MSI Level III; Level 4",NA
+"Pos","","C2 H4 Cl N4 O5 P3 S4",419.79668,0.98,"MSI Level III; Level 4",NA
+"Pos","","C43 H37 N9 O3 P2",789.24882,9.395,"MSI Level III; Level 4",NA
+"Pos","","C70 H95 N O5 P2 S2",1155.6121,11.511,"MSI Level III; Level 4",NA
+"Pos","","C6 H4 O2",108.02137,1.014,"MSI Level III; Level 4",NA
+"Pos","","C22 H51 N9 O6 P2 S",631.31721,2.477,"MSI Level III; Level 4",NA
+"Pos","","C6 H20 N5 P",193.14468,10.715,"MSI Level III; Level 4",NA
+"Pos","","C22 H38 N8 O8 S",574.25494,13.03,"MSI Level III; Level 4",NA
+"Pos","","C44 H77 N8 O12 P3",1002.48673,11.679,"MSI Level III; Level 4",NA
+"Pos","","C21 H52 N7 O17 P",705.31768,7.471,"MSI Level III; Level 4",NA
+"Pos","","C51 H70 N7 O12 P",1003.48196,7.866,"MSI Level III; Level 4",NA
+"Pos","","C12 H21 N O4",243.14676,10.171,"MSI Level III; Level 4",NA
+"Pos","","C29 H58 N O16 P",707.34869,9.475,"MSI Level III; Level 4",NA
+"Pos","","C27 H20 N O4 P S",485.0845,0.845,"MSI Level III; Level 4",NA
+"Pos","","C63 H96 N10 O11 P2 S2",1294.6176,13.644,"MSI Level III; Level 4",NA
+"Pos","","C54 H82 N3 O14 P",1027.55477,12.101,"MSI Level III; Level 4",NA
+"Pos","","C35 H54 N9 O15 P",871.34732,7.02,"MSI Level III; Level 4",NA
+"Pos","","C4 H8 Cl N10 O3 P S2",373.96605,0.97,"MSI Level III; Level 4",NA
+"Pos","","C22 H55 N9 O18",733.3646,12.274,"MSI Level III; Level 4",NA
+"Pos","","C42 H82 N5 O16 P3",1005.49764,9.096,"MSI Level III; Level 4",NA
+"Pos","","C2 H6 N O9 P",218.97797,1.315,"MSI Level III; Level 4",NA
+"Pos","","C30 H70 N8 O17 P2",876.43387,11.221,"MSI Level III; Level 4",NA
+"Pos","","C12 H23 N3 O5",289.16355,5.253,"MSI Level III; Level 4",NA
+"Pos","","C2 H4 Cl N2 O2 P3 S",247.8892,0.992,"MSI Level III; Level 4",NA
+"Pos","","C52 H64 N O5 P S2",877.39703,11.675,"MSI Level III; Level 4",NA
+"Pos","","C27 H61 N9 O4 P2 S",669.40591,13.023,"MSI Level III; Level 4",NA
+"Pos","","C23 H43 O15 P",590.23367,11.155,"MSI Level III; Level 4",NA
+"Pos","","C8 H10 N P",151.05507,1.155,"MSI Level III; Level 4",NA
+"Pos","","C H2 N6",98.03436,0.955,"MSI Level III; Level 4",NA
+"Pos","","C25 H61 N8 O10 P3 S",758.34402,9.581,"MSI Level III; Level 4",NA
+"Pos","","C79 H88 N4 O12",1284.6403,10.747,"MSI Level III; Level 4",NA
+"Pos","","C31 H62 N O9 P3",685.36402,10.42,"MSI Level III; Level 4",NA
+"Pos","","C35 H62 N7 O11 P3 S",881.34364,9.404,"MSI Level III; Level 4",NA
+"Pos","","C35 H64 Cl N6 O18 P",922.37052,10.997,"MSI Level III; Level 4",NA
+"Pos","","C40 H62 N8 O5 P2",796.43186,12.469,"MSI Level III; Level 4",NA
+"Pos","","C38 H74 N O14 P3",861.43206,11.65,"MSI Level III; Level 4",NA
+"Pos","","C54 H65 N O5 S3",903.40045,11.084,"MSI Level III; Level 4",NA
+"Pos","","C51 H56 N5 O4 P S",865.37942,9.412,"MSI Level III; Level 4",NA
+"Pos","","C15 H18 N3 O18 P3 S",652.952,0.709,"MSI Level III; Level 4",NA
+"Pos","","C28 H63 N9 O10 P2",747.41673,12.984,"MSI Level III; Level 4",NA
+"Pos","","C38 H74 N3 O13 P3",873.44425,10.501,"MSI Level III; Level 4",NA
+"Pos","","C39 H56 N9 O8 P3",871.34646,6.523,"MSI Level III; Level 4",NA
+"Pos","","C H Cl2 N4 O6 P3 S",359.82186,0.767,"MSI Level III; Level 4",NA
+"Pos","","C6 H5 N5 O4",211.03445,0.814,"MSI Level III; Level 4",NA
+"Pos","","C36 H77 N10 O18 P",968.51724,13.339,"MSI Level III; Level 4",NA
+"Pos","","C41 H9 N3 O3",591.0651,0.699,"MSI Level III; Level 4",NA
+"Pos","","C5 H O11 P3 S4",457.76234,0.976,"MSI Level III; Level 4",NA
+"Pos","","C6 H6 O5",158.02144,0.798,"MSI Level III; Level 4",NA
+"Pos","","C27 H66 N9 O7 P3 S",753.40219,10.804,"MSI Level III; Level 4",NA
+"Pos","","C17 H39 N10 O7 P",526.27471,9.002,"MSI Level III; Level 4",NA
+"Pos","","C27 H20 N O11 P3 S",658.99704,0.811,"MSI Level III; Level 4",NA
+"Pos","","C2 H7 N4 P S",150.01241,0.852,"MSI Level III; Level 4",NA
+"Pos","","C51 H111 N6 O9 P3 S",1076.73471,13.745,"MSI Level III; Level 4",NA
+"Pos","","C38 H68 N3 O18 P S",917.39754,8.595,"MSI Level III; Level 4",NA
+"Pos","","C58 H82 N5 O11 P3",1117.52496,13.052,"MSI Level III; Level 4",NA
+"Pos","","C21 H4 N6 O15 P2 S",673.8931,0.683,"MSI Level III; Level 4",NA
+"Pos","","C38 H79 N2 O17 P3",928.46088,9.519,"MSI Level III; Level 4",NA
+"Pos","","C33 H55 N9 O15 P2",879.32829,13.384,"MSI Level III; Level 4",NA
+"Pos","","C37 H47 N10 O14 P",886.30239,12.092,"MSI Level III; Level 4",NA
+"Pos","","C31 H45 N9 S",575.34903,13.048,"MSI Level III; Level 4",NA
+"Pos","","C5 H10 N2 O5",178.05978,13.86,"MSI Level III; Level 4",NA
+"Pos","","C45 H34 N4 O3 P2",740.21006,1.266,"MSI Level III; Level 4",NA
+"Pos","","C22 H57 N9 O11 P2 S",717.33658,11.53,"MSI Level III; Level 4",NA
+"Pos","","C43 H34 N8 O5 P2",804.21327,9.396,"MSI Level III; Level 4",NA
+"Pos","","C70 H102 O3 P2 S",1084.70228,13.629,"MSI Level III; Level 4",NA
+"Pos","","C23 H38 N O14 P",583.20236,13.025,"MSI Level III; Level 4",NA
+"Pos","","C H4 N2 O6",140.0071,0.811,"MSI Level III; Level 4",NA
+"Pos","","C4 H3 N5 O11 P2",358.93079,1.847,"MSI Level III; Level 4",NA
+"Pos","","C6 H4 Cl O3 P",189.95954,0.728,"MSI Level III; Level 4",NA
+"Pos","","C23 H53 N9 O10 P2",677.34061,9.157,"MSI Level III; Level 4",NA
+"Pos","","C3 H7 N4 O P S",178.00746,0.048,"MSI Level III; Level 4",NA
+"Pos","","C44 H52 N9 O5 P",817.38152,9.059,"MSI Level III; Level 4",NA
+"Pos","","C69 H104 N3 O3 P3 S2",1179.67425,13.642,"MSI Level III; Level 4",NA
+"Pos","","C45 H47 N8 O3 P3",840.29861,9.318,"MSI Level III; Level 4",NA
+"Pos","","C26 H63 N8 O18 P3",868.34855,10.874,"MSI Level III; Level 4",NA
+"Pos","","C40 H91 N10 O17 P S",1046.6038,13.054,"MSI Level III; Level 4",NA
+"Pos","","C28 H48 Br O13 P S2",766.14658,13.967,"MSI Level III; Level 4",NA
+"Pos","","C24 H54 N7 O3 P S2",583.34458,7.903,"MSI Level III; Level 4",NA
+"Pos","","C45 H58 O7",710.41984,13.823,"MSI Level III; Level 4",NA
+"Pos","","C40 H56 N O8 P",709.37485,8.176,"MSI Level III; Level 4",NA
+"Pos","","C52 H100 N2 O11 P2 S3",1086.59653,13.045,"MSI Level III; Level 4",NA
+"Pos","","C35 H67 N5 O16",813.45938,11.74,"MSI Level III; Level 4",NA
+"Pos","","C74 H78 N O P S4",1155.47036,13.049,"MSI Level III; Level 4",NA
+"Pos","","C32 H68 N9 O6 P3 S",799.42142,13.653,"MSI Level III; Level 4",NA
+"Pos","","C78 H97 N2 O P3",1170.68137,13.949,"MSI Level III; Level 4",NA
+"Pos","","C H4 Cl O9 P3 S4",415.76439,0.775,"MSI Level III; Level 4",NA
+"Pos","","C35 H70 N O16 P3",853.39029,9.578,"MSI Level III; Level 4",NA
+"Pos","","C29 H32 O3",428.23491,9.553,"MSI Level III; Level 4",NA
+"Pos","","C25 H54 N10 O15 S",766.34928,12.228,"MSI Level III; Level 4",NA
+"Neg","Y4XC05H603","C2 H4 O5 S",139.97794,0.773,"MSI Level III; Level 3","33.33"
+"Neg","Xylitol","C5 H12 O5",152.06847,0.876,"MSI Level I; Level 3","9.09"
+"Neg","Xanthine","C5 H4 N4 O2",152.03343,1.188,"MSI Level I; Level 3","10"
+"Neg","VVW38EB8YS","C4 H5 N O5",147.01677,1.173,"MSI Level III; Level 3","7.95"
+"Neg","Valylserine","C8 H16 N2 O4",204.11101,1.6,"MSI Level III; level 3",NA
+"Neg","Valylglutamine","C10 H19 N3 O4",245.13756,1.692,"MSI Level III; level 3",NA
+"Neg","val-ala","C8 H16 N2 O3",188.11609,1.695,"MSI Level III; level 3","25"
+"Neg","Uridine monophosphate","C9 H13 N2 O9 P",324.03587,0.833,"MSI Level I; level 1","2.04"
+"Neg","URIDINE 5'-DIPHOSPHO-N-ACETYLGALACTOSAMINE","C17 H27 N3 O17 P2",607.08157,0.708,"MSI Level I; Level 1",NA
+"Neg","Uridine","C9 H12 N2 O6",244.06954,1.184,"MSI Level I; level 3",NA
+"Neg","Uric acid","C5 H4 N4 O3",168.02834,1.185,"MSI Level I; Level 2",NA
+"Neg","UDP-xylose","C14 H22 N2 O16 P2",536.04446,0.702,"MSI Level III; Level 3","4.55"
+"Neg","tert-Butyl-(morpholin-2-ylmethyl)carbamat","C10 H20 N2 O3",216.14739,2.528,"MSI Level III; Level 3","20"
+"Neg","tert-Butyl [(2S)-4-amino-1-hydroxy-4-oxobutan-2-yl]carbamate","C9 H18 N2 O4",218.12666,2.98,"MSI Level III; level 3",NA
+"Neg","Tauropine","C5 H11 N O5 S",197.03579,1.182,"MSI Level III; level 3",NA
+"Neg","Taurocholic acid","C26 H45 N O7 S",515.29167,12.939,"MSI Level III; Level 3","21.43"
+"Neg","Taurine","C2 H7 N O3 S",125.01466,0.845,"MSI Level I; Level 1",NA
+"Neg","sulfoacetaldehyde","C2 H4 O4 S",123.98303,0.763,"MSI Level III; level 3",NA
+"Neg","Succinic acid","C4 H6 O4",118.02661,1.202,"MSI Level I; Level 1",NA
+"Neg","Seryllysine","C9 H19 N3 O4",233.13756,1.345,"MSI Level III; Level 3","12.5"
+"Neg","Saccharic acid","C6 H10 O8",210.03757,0.783,"MSI Level I; Level 3","48.15"
+"Neg","S36O46U3EA","C5 H10 O3",118.06299,1.899,"MSI Level III; level 3",NA
+"Neg","Ribulose 1,5-diphosphate","C5 H12 O11 P2",309.98548,0.683,"MSI Level I; Level 3","12.5"
+"Neg","Reduced Glutathione","C10 H17 N3 O6 S",307.08381,1.142,"MSI Level I; Level 3","11.11"
+"Neg","Pyroglutamic acid","C5 H7 N O3",129.04259,0.936,"MSI Level I; level 3",NA
+"Neg","Propionic acid","C3 H6 O2",74.03678,1.195,"MSI Level III; Level 3","25"
+"Neg","Phosphoenolpyruvic acid","C3 H5 O6 P",167.98237,0.781,"MSI Level III; level 3","11.11"
+"Neg","Phosphocreatine","C4 H10 N3 O5 P",211.03581,0.838,"MSI Level I; Level 3","2.5"
+"Neg","P-DMEA","C4 H12 N O4 P",169.05039,0.901,"MSI Level III; Level 3","5.26"
+"Neg","Parapyruvic Acid","C6 H8 O6",176.03209,1.018,"MSI Level III; Level 3","29.79"
+"Neg","Ovothiol A","C7 H11 N3 O2 S",201.0572,0.947,"MSI Level III; level 3",NA
+"Neg","O-Sulfotyrosine","C9 H11 N O6 S",261.03071,9.045,"MSI Level III; level 3",NA
+"Neg","O-Succinyl-L-homoserine","C8 H13 N O6",219.07429,1.202,"MSI Level I; level 3",NA
+"Neg","OPHTHALMIC ACID","C11 H19 N3 O6",289.12739,1.179,"MSI Level I; Level 1","54.93"
+"Neg","O-PHOSPHO-L-SERINE","C3 H8 N O6 P",185.00892,0.955,"MSI Level I; Level 3","10"
+"Neg","OOW3025SR1","C11 H19 N3 O6 S",321.09946,1.184,"MSI Level III; Level 3","28.79"
+"Neg","N-Pyruvoylglycine","C5 H7 N O4",145.03751,0.942,"MSI Level III; level 3",NA
+"Neg","N-METHYL-L-GLUTAMATE","C6 H11 N O4",161.06881,1.015,"MSI Level I; level 3",NA
+"Neg","N-Ethylglycocyamine","C8 H17 N O5",207.11067,1.091,"MSI Level III; level 3",NA
+"Neg","N-Carbamoylvaline","C6 H12 N2 O3",160.08479,0.993,"MSI Level III; level 3",NA
+"Neg","N-alpha-Acetyllysine","C8 H16 N2 O3",188.11609,1.303,"MSI Level I; Level 3","33.33"
+"Neg","N-Acryloyl-L-glutamic acid","C8 H11 N O5",201.06372,1.176,"MSI Level III; level 3",NA
+"Neg","N-Acetyl-L-histidine","C8 H11 N3 O3",197.08004,1.181,"MSI Level III; Level 3","46.55"
+"Neg","N-Acetyl-L-glutamic acid","C7 H11 N O5",189.06372,1.186,"MSI Level III; level 3","40.98"
+"Neg","N-Acetyl-L-alanyl-L-alanine","C8 H14 N2 O4",202.09536,1.186,"MSI Level III; level 3",NA
+"Neg","N-Acetylglutamine","C7 H12 N2 O4",188.07971,1.171,"MSI Level III; level 3",NA
+"Neg","N-acetyl-beta-D-glucosaminylamine","C8 H16 N2 O5",220.10592,1.095,"MSI Level I; Level 3","7.69"
+"Neg","N~2~-Acetyl-L-ornithine","C7 H14 N2 O3",174.10044,1.05,"MSI Level II; Level 3","39.08"
+"Neg","N~2~-(Phosphonomethyl)-D-asparagine","C5 H11 N2 O6 P",226.03547,1.129,"MSI Level III; level 3",NA
+"Neg","N-(3-Sulfopropyl)-L-alanine","C6 H13 N O5 S",211.05144,1.192,"MSI Level III; level 3",NA
+"Neg","N-(3-Carboxypropanoyl)-5-hydroxynorvaline","C9 H15 N O6",233.08994,1.188,"MSI Level III; level 3",NA
+"Neg","N-(2-Cyanoethyl)alanine","C6 H10 N2 O2",142.07423,1.146,"MSI Level III; Level 3","18.18"
+"Neg","N-(2-Amino-3-methylpentanoyl)glutamine","C11 H21 N3 O4",259.15321,3.453,"MSI Level III; level 3",NA
+"Neg","N(2)-succinyl-L-ornithine","C9 H16 N2 O5",232.10592,1.186,"MSI Level III; level 3",NA
+"Neg","monoethyl succinate","C6 H10 O4",146.05791,3.096,"MSI Level III; level 3",NA
+"Neg","Metirosine","C10 H13 N O3",195.08954,13.734,"MSI Level III; level 3",NA
+"Neg","Methyl D-galactopyranuronate","C7 H12 O7",208.0583,0.865,"MSI Level III; level 3",NA
+"Neg","Methyl bisulfate","C H4 O4 S",111.98303,0.762,"MSI Level III; level 3",NA
+"Neg","Methyl 3-[(tert-butoxycarbonyl)amino]-L-alaninate","C9 H18 N2 O4",218.12666,1.695,"MSI Level III; level 3",NA
+"Neg","Methionine sulfone","C5 H11 N O4 S",181.04088,0.965,"MSI Level III; level 3",NA
+"Neg","meglumine","C7 H17 N O5",195.11067,1.251,"MSI Level III; level 3",NA
+"Neg","Malondialdehyde","C3 H4 O2",72.02113,1.166,"MSI Level III; level 3",NA
+"Neg","lys-leu","C12 H25 N3 O3",259.18959,1.786,"MSI Level III; Level 3","10.34"
+"Neg","L-TRYPTOPHAN","C11 H12 N2 O2",204.08988,7.488,"MSI Level I; Level 1",NA
+"Neg","L-Threonyl-L-lysine","C10 H21 N3 O4",247.15321,1.373,"MSI Level III; level 3",NA
+"Neg","L-THREONINE","C4 H9 N O3",119.05824,0.901,"MSI Level I; Level 1",NA
+"Neg","L-Threonic acid","C4 H8 O5",136.03717,0.877,"MSI Level II; level 3",NA
+"Neg","L-Proline","C5 H9 N O2",115.06333,1.001,"MSI Level I; Level 3","10"
+"Neg","L-Isoleucyl-L-alanine","C9 H18 N2 O3",202.13174,2.076,"MSI Level III; level 3",NA
+"Neg","L-Hydroxyproline","C5 H9 N O3",131.05824,0.896,"MSI Level I; Level 3","4.55"
+"Neg","L-HISTIDINE","C6 H9 N3 O2",155.06948,1.025,"MSI Level I; Level 1",NA
+"Neg","L-GLUTAMIC ACID","C5 H9 N O4",147.05316,0.922,"MSI Level I; Level 1",NA
+"Neg","L-gamma-Glutamyl-L-leucine","C11 H20 N2 O5",260.13722,3.199,"MSI Level III; level 3",NA
+"Neg","Leu-Leu","C12 H24 N2 O3",244.17869,9.124,"MSI Level III; level 3",NA
+"Neg","leu-ile","C12 H24 N2 O3",244.17869,9.392,"MSI Level III; level 3",NA
+"Neg","Leucine","C6 H13 N O2",131.09463,1.449,"MSI Level I; Level 2",NA
+"Neg","Leucine","C6 H13 N O2",131.09463,1.491,"MSI Level I; Level 2",NA
+"Neg","L-CYSTEIC ACID","C3 H7 N O5 S",169.00449,0.772,"MSI Level I; Level 1",NA
+"Neg","L-ASPARTATE","C4 H7 N O4",133.03751,0.877,"MSI Level I; Level 1",NA
+"Neg","L-(+)-Valine","C5 H11 N O2",117.07898,1.083,"MSI Level I; level 3",NA
+"Neg","L-(-)-Serine","C3 H7 N O3",105.04259,0.884,"MSI Level I; Level 3","33.33"
+"Neg","L-(-)-methionine","C5 H11 N O2 S",149.05105,1.186,"MSI Level I; Level 3","25.64"
+"Neg","Itaconic acid","C5 H6 O4",130.02661,1.186,"MSI Level I; level 3","18.18"
+"Neg","Isoleucine","C6 H13 N O2",131.09463,1.37,"MSI Level I; Level 3","9.52"
+"Neg","Isethionic acid","C2 H6 O4 S",125.99868,0.772,"MSI Level III; level 3",NA
+"Neg","INOSINE","C10 H12 N4 O5",268.08077,1.188,"MSI Level I; Level 1",NA
+"Neg","HYPOXANTHINE","C5 H4 N4 O",136.03851,1.196,"MSI Level I; level 3",NA
+"Neg","Hydroxy acrylic acid","C3 H4 O3",88.01604,0.859,"MSI Level III; Level 3","42.86"
+"Neg","HEXOSE","C6 H12 O6",180.06339,0.745,"MSI Level I; Level 1",NA
+"Neg","Gly-Lys","C8 H17 N3 O3",203.12699,1.64,"MSI Level III; level 3",NA
+"Neg","Gly-Gly-Ile","C10 H19 N3 O4",245.13756,3.153,"MSI Level III; level 3",NA
+"Neg","Glycyl-L-lysylglycine","C10 H20 N4 O4",260.14846,1.365,"MSI Level III; level 3",NA
+"Neg","Glycyl-L-leucyl-L-leucine","C14 H27 N3 O4",301.20016,11.457,"MSI Level III; level 3",NA
+"Neg","Glycyl-L-leucine","C8 H16 N2 O3",188.11609,3.361,"MSI Level II; level 3",NA
+"Neg","Glycyl-L-alanyl-L-lysine","C11 H22 N4 O4",274.16411,1.37,"MSI Level III; Level 3","23.81"
+"Neg","Glycyl-L-alanyl-L-isoleucine","C11 H21 N3 O4",259.15321,1.609,"MSI Level III; level 3",NA
+"Neg","GLYCEROL 2-PHOSPHATE","C3 H9 O6 P",172.01367,0.743,"MSI Level I; Level 1",NA
+"Neg","Glyceraldehyde","C3 H6 O3",90.03169,0.857,"MSI Level I; level 3",NA
+"Neg","Glutaric acid","C5 H8 O4",132.04226,1.469,"MSI Level I; Level 3","17.239999999999998"
+"Neg","Glutamine","C5 H10 N2 O3",146.06914,0.897,"MSI Level I; level 2",NA
+"Neg","Glu-Lys","C11 H21 N3 O5",275.14812,1.381,"MSI Level III; level 3",NA
+"Neg","g-Glutamylcysteine","C8 H14 N2 O5 S",250.06234,1.135,"MSI Level III; level 3",NA
+"Neg","gamma-Glu-Gly","C7 H12 N2 O5",204.07462,1.088,"MSI Level III; level 3",NA
+"Neg","gamma-Aminobutyric acid","C4 H9 N O2",103.06333,1.083,"MSI Level I; Level 3","44.44"
+"Neg","gaboxadol","C6 H8 N2 O2",140.05858,1.407,"MSI Level III; level 3",NA
+"Neg","Fumaric acid","C4 H4 O4",116.01096,1.226,"MSI Level I; Level 3","13.79"
+"Neg","Ethylmalonic acid","C5 H8 O4",132.04226,1.715,"MSI Level I; Level 3","25"
+"Neg","Ethyl lactate","C5 H10 O3",118.06299,1.702,"MSI Level III; level 3",NA
+"Neg","Ethyl 3,5-di-tert-butyl-4-hydroxybenzoate","C17 H26 O3",278.18819,13.695,"MSI Level III; level 3","25"
+"Neg","EIH974RZ8V","C4 H12 N O6 P",201.04022,1.085,"MSI Level III; level 3",NA
+"Neg","EGLU","C7 H13 N O4",175.08446,1.294,"MSI Level III; Level 3","24.05"
+"Neg","D-Sedoheptulose 7-phosphate","C7 H15 O10 P",290.04028,0.727,"MSI Level II; level 2",NA
+"Neg","D-RIBOSE 5-PHOSPHATE","C5 H11 O8 P",230.01915,0.742,"MSI Level I; Level 1",NA
+"Neg","D-PANTOTHENIC ACID","C9 H17 N O5",219.11067,1.481,"MSI Level I; Level 3","4.17"
+"Neg","Dodecyl sulfate","C12 H26 O4 S",266.15518,13.35,"MSI Level II; level 2",NA
+"Neg","DL-TYROSINE","C9 H11 N O3",181.07389,1.345,"MSI Level I; Level 3","27.03"
+"Neg","DL-Ornithine","C5 H12 N2 O2",132.08988,1.188,"MSI Level I; Level 3","10"
+"Neg","DL-Malic acid","C4 H6 O5",134.02152,1.007,"MSI Level I; Level 2",NA
+"Neg","DL-Lysine","C6 H14 N2 O2",146.10553,1.128,"MSI Level I; level 3",NA
+"Neg","DL-Lactic Acid","C3 H6 O3",90.03169,1.106,"MSI Level I; level 2",NA
+"Neg","DL-Citrulline","C6 H13 N3 O3",175.09569,1.26,"MSI Level I; level 3",NA
+"Neg","DL-Arginine","C6 H14 N4 O2",174.11168,1.07,"MSI Level I; level 2",NA
+"Neg","DL-Alanine","C3 H7 N O2",89.04768,1.084,"MSI Level 1; Level 2",NA
+"Neg","DL-2,6-Diaminopimelic acid","C7 H14 N2 O4",190.09536,1.085,"MSI Level III; level 3",NA
+"Neg","Dimethyl hexopyranosiduronate","C8 H14 O7",222.07395,1.182,"MSI Level III; level 3",NA
+"Neg","Dihydroxyacetone phosphate","C3 H7 O6 P",169.99802,0.739,"MSI Level I; Level 3","16.670000000000002"
+"Neg","D-Glucono-delta-lactone","C6 H10 O6",178.04774,1.185,"MSI Level II; Level 3","63.64"
+"Neg","D-FRUCTOSE 6-PHOSPHATE","C6 H13 O9 P",260.02972,0.726,"MSI Level I; Level 1",NA
+"Neg","D-erythronic acid","C4 H8 O5",136.03717,0.787,"MSI Level III; level 3",NA
+"Neg","D-Alanyl-D-alanine","C6 H12 N2 O3",160.08479,1.198,"MSI Level III; level 3",NA
+"Neg","D-4-PHOSPHOERYTHRONIC ACID","C4 H9 O8 P",216.0035,0.745,"MSI Level III; level 3",NA
+"Neg","D-(+)-Glucose","C6 H12 O6",180.06339,0.85,"MSI Level I; Level 3",NA
+"Neg","D-(-)-Ribose","C5 H10 O5",150.05282,0.851,"MSI Level I; level 2",NA
+"Neg","Cyclic ADP-ribose","C15 H21 N5 O13 P2",541.06111,1.14,"MSI Level II; level 2",NA
+"Neg","Creatine","C4 H9 N3 O2",131.06948,1.085,"MSI Level I; Level 2",NA
+"Neg","Citric acid","C6 H8 O7",192.027,1.137,"MSI Level I; Level 2",NA
+"Neg","Cholic acid","C24 H40 O5",408.28757,13.418,"MSI Level I; level 3",NA
+"Neg","Boc-L-ornithine","C10 H20 N2 O4",232.14231,3.469,"MSI Level III; level 3",NA
+"Neg","beta-D-Ethyl glucuronide","C8 H14 O7",222.07395,0.859,"MSI Level III; level 3",NA
+"Neg","BES","C6 H15 N O5 S",213.06709,0.947,"MSI Level III; level 3",NA
+"Neg","AZELAIC ACID","C9 H16 O4",188.10486,11.455,"MSI Level I; Level 1",NA
+"Neg","asp-leu","C10 H18 N2 O5",246.12157,3.073,"MSI Level III; Level 3","39.799999999999997"
+"Neg","Arachidonic acid","C20 H32 O2",304.24023,13.963,"MSI Level II; level 2",NA
+"Neg","Aminolevulinic acid","C5 H9 N O3",131.05824,1.198,"MSI Level I; Level 3","60"
+"Neg","alpha-Ketoglutaric acid oxime","C5 H7 N O5",161.03242,1.096,"MSI Level III; Level 3","36.36"
+"Neg","alpha-Ketoglutaric acid","C5 H6 O5",146.02152,1.172,"MSI Level I; level 3",NA
+"Neg","alpha-ketoadipic acid","C6 H8 O5",160.03717,1.184,"MSI Level I; level 3",NA
+"Neg","Alanylleucine","C9 H18 N2 O3",202.13174,2.906,"MSI Level III; level 3",NA
+"Neg","Ala-Lys","C9 H19 N3 O3",217.14264,1.373,"MSI Level III; level 3",NA
+"Neg","ALA-GLU","C8 H14 N2 O5",218.09027,1.197,"MSI Level III; level 3",NA
+"Neg","ADENINE","C5 H5 N5",135.0545,1.383,"MSI Level I; level 1",NA
+"Neg","aconitate A","C7 H8 O6",188.03209,1.194,"MSI Level III; level 3",NA
+"Neg","9-Amino-9-oxononanoic acid","C9 H17 N O3",187.12084,9.646,"MSI Level III; Level 3","27.59"
+"Neg","900T44YNC7","C5 H11 N O3",133.07389,0.997,"MSI Level III; Level 3","41.67"
+"Neg","8RVEL9W5CF","C10 H12 O3",180.07864,13.409,"MSI Level III; Level 3","33.33"
+"Neg","8-hydroxy-deoxyguanosine","C10 H13 N5 O5",283.09167,1.2,"MSI Level I; level 3",NA
+"Neg","8F78EY72YL","C13 H18 O3",222.12559,13.472,"MSI Level III; Level 3","16.670000000000002"
+"Neg","6VOC18EIBH","C14 H30 O4 S",294.18648,13.423,"MSI Level III; level 3",NA
+"Neg","6-O-Phosphono-D-gluconic acid","C6 H13 O10 P",276.02463,0.729,"MSI Level III; level 3",NA
+"Neg","6-O-Phosphono-D-fructosonic acid","C6 H11 O10 P",274.00898,0.727,"MSI Level III; level 3",NA
+"Neg","5-dehydro-4-deoxy-D-glucaric acid","C6 H8 O7",192.027,0.845,"MSI Level III; level 3",NA
+"Neg","5-Amino-1-pentanesulfonic acid","C5 H13 N O3 S",167.06161,0.941,"MSI Level III; level 3",NA
+"Neg","56X032NVQL","C3 H7 N O4 S",153.00958,0.826,"MSI Level I; level 3",NA
+"Neg","5-[(Ethylsulfonyl)amino]pentanoic acid","C7 H15 N O4 S",209.07218,1.185,"MSI Level III; level 3",NA
+"Neg","4SWT01T54O","C6 H13 N O3",147.08954,1.124,"MSI Level III; level 3",NA
+"Neg","4-Sulfamoylbutanoic acid","C4 H9 N O4 S",167.02523,0.871,"MSI Level III; level 3",NA
+"Neg","4-Oxoproline","C5 H7 N O3",129.04259,1.185,"MSI Level II; level 3",NA
+"Neg","4-Hydroxybutyric acid (GHB)","C4 H8 O3",104.04734,1.203,"MSI Level II; level 3",NA
+"Neg","4-Hydroxy-2-oxoglutaric acid","C5 H6 O6",162.01644,0.827,"MSI Level III; level 3",NA
+"Neg","4-Amino-4,6-dideoxyhexose","C6 H13 N O4",163.08446,1.082,"MSI Level III; level 3",NA
+"Neg","4-Acetamidobenzoic acid","C9 H9 N O3",179.05824,10.18,"MSI Level II; level 2",NA
+"Neg","4,6-Dihydrazino-2-methyl-5-nitropyrimidine","C5 H9 N7 O2",199.08177,1.492,"MSI Level III; level 3",NA
+"Neg","4-(3-Tridecanyl)benzenesulfonic acid","C19 H32 O3 S",340.20722,13.532,"MSI Level III; level 3",NA
+"Neg","3-UREIDOPROPIONATE","C4 H8 N2 O3",132.05349,0.875,"MSI Level I; level 1",NA
+"Neg","3-Phosphonopropanoic acid","C3 H7 O5 P",154.00311,0.796,"MSI Level III; level 3",NA
+"Neg","3-Phosphoglyceric acid","C3 H7 O7 P",185.99294,0.765,"MSI Level I; level 2",NA
+"Neg","3-Oxocyclobutanecarboxylic acid","C5 H6 O3",114.03169,0.856,"MSI Level III; level 3",NA
+"Neg","3-METHYGLUTARIC ACID","C6 H10 O4",146.05791,2.945,"MSI Level I; level 1",NA
+"Neg","3-hydroxy-L-glutamic acid","C5 H9 N O5",163.04807,0.859,"MSI Level III; level 3",NA
+"Neg","3-Hydroxy-5, 8-tetradecadiencarnitine","C21 H37 N O5",383.26717,13.669,"MSI Level III; level 3",NA
+"Neg","3-Deoxytetronic acid","C4 H8 O4",120.04226,0.856,"MSI Level III; level 3",NA
+"Neg","3-Aminopropane-1-sulfonic acid","C3 H9 N O3 S",139.03031,0.886,"MSI Level III; level 3",NA
+"Neg","3678H27Z8L","C8 H17 N O4",191.11576,1.391,"MSI Level III; level 3",NA
+"Neg","3-(2-Deoxypentofuranosyl)-3H-[1,2,3]triazolo[4,5-d]pyrimidine-5,7-diamine","C9 H13 N7 O3",267.10799,9.129,"MSI Level III; level 3",NA
+"Neg","2-Oxo-4-sulfanylbutanoic acid","C4 H6 O3 S",134.00376,0.993,"MSI Level III; level 3",NA
+"Neg","2-Methyl-2-propanyl (2-hydrazino-2-oxoethyl)methylcarbamate","C8 H17 N3 O3",203.12699,1.345,"MSI Level III; level 3",NA
+"Neg","2-Hydroxy-6-oxo-2,4-heptadienoic acid","C7 H8 O4",156.04226,1.011,"MSI Level III; level 3",NA
+"Neg","2-Hydroxy-4-oxo-2-octenedioic acid","C8 H10 O6",202.04774,1.001,"MSI Level III; level 3",NA
+"Neg","2-Hydroxy-3-isopropylsuccinic acid","C7 H12 O5",176.06847,1.137,"MSI Level III; level 3",NA
+"Neg","2-Hydroxy-3-butynoic acid","C4 H4 O3",100.01604,0.996,"MSI Level III; Level 3","20"
+"Neg","2-Furoic acid","C5 H4 O3",112.01604,1.134,"MSI Level II; level 3",NA
+"Neg","2-Deoxy-2-(methylamino)-D-glucose","C7 H15 N O5",193.09502,0.988,"MSI Level III; level 3",NA
+"Neg","2-Deoxy-2-(ethylamino)-D-glucose","C8 H17 N O5",207.11067,1.277,"MSI Level III; level 3",NA
+"Neg","2-Deoxy-2-(ethylamino)-D-glucose","C8 H17 N O5",207.11067,1.253,"MSI Level III; level 3",NA
+"Neg","2-Deoxy-2-(dimethylamino)-alpha-D-glucopyranose","C8 H17 N O5",207.11067,1.115,"MSI Level III; level 3",NA
+"Neg","2-Deoxy-1-O-phosphono-D-arabino-hexitol","C6 H15 O8 P",246.05045,0.748,"MSI Level III; level 3",NA
+"Neg","2-Aminobutanoic acid","C4 H9 N O2",103.06333,0.922,"MSI Level III; Level 3","75"
+"Neg","2-Amino-4-({2-[(2E)-4-ethoxy-4-oxo-2-butenoyl]hydrazino}sulfonyl)butanoic acid","C10 H17 N3 O7 S",323.07872,1.148,"MSI Level III; level 3",NA
+"Neg","2-Amino-2-methylpropyl hydrogen sulfate","C4 H11 N O4 S",169.04088,0.957,"MSI Level III; level 3",NA
+"Neg","2156QF7O8M","C4 H9 O7 P",200.00859,0.727,"MSI Level III; level 3",NA
+"Neg","2-[(Ethoxycarbonyl)oxy]-3-hydroxysuccinic acid","C7 H10 O8",222.03757,0.871,"MSI Level III; level 3",NA
+"Neg","2-[(2,3-Dihydro-1,4-benzodioxin-6-ylcarbonyl)amino]butanoic acid","C13 H15 N O5",265.09502,9.123,"MSI Level III; level 3",NA
+"Neg","2,8-Diaminononanedioic acid","C9 H18 N2 O4",218.12666,1.327,"MSI Level III; level 3",NA
+"Neg","2,6-Dioxoheptanedioic acid","C7 H8 O6",188.03209,1.012,"MSI Level III; level 3",NA
+"Neg","2,5-Bis(2-methyl-2-propen-1-yl)hexanedioic acid","C14 H22 O4",254.15181,13.518,"MSI Level III; Level 3","42.86"
+"Neg","2,3-Dihydroxy-4-oxobutyl dihydrogen phosphate","C4 H9 O7 P",200.00859,0.811,"MSI Level III; level 3",NA
+"Neg","2,3,4,5,6-Pentahydroxy-N-(2-hydroxyethyl)hexanamide","C8 H17 N O7",239.1005,0.944,"MSI Level III; level 3",NA
+"Neg","2,2'-({2-[6-(Benzylsulfanyl)-9H-purin-9-yl]ethyl}imino)diethanol","C18 H23 N5 O2 S",373.15725,10.643,"MSI Level III; level 3",NA
+"Neg","2-(Hydroxymethyl)-L-glutamic acid","C6 H11 N O5",177.06372,0.91,"MSI Level III; level 3",NA
+"Neg","2-(Dimethylamino)ethanesulfonic acid","C4 H11 N O3 S",153.04596,0.93,"MSI Level III; level 3",NA
+"Neg","2-(1,10-Phenanthrolin-2-ylcarbamoyl)benzoic acid","C20 H13 N3 O3",343.09569,7.466,"MSI Level III; level 3",NA
+"Neg","1-Oxo-1,2,4-butanetricarboxylic acid","C7 H8 O7",204.027,1.008,"MSI Level III; level 3",NA
+"Neg","1-O-Phosphonopentitol","C5 H13 O8 P",232.0348,0.764,"MSI Level III; level 3",NA
+"Neg","1-alpha-D-galactosyl-sn-glycerol 3-phosphate","C9 H19 O11 P",334.0665,0.722,"MSI Level III; level 3",NA
+"Neg","18-HEPE","C20 H30 O3",318.21949,13.695,"MSI Level III; level 3",NA
+"Neg","1,3,5-Pentanetricarboxylic acid","C8 H12 O6",204.06339,1.008,"MSI Level III; level 3",NA
+"Neg","02X1W97FWN","C5 H10 O3",118.06299,1.999,"MSI Level III; level 3",NA
+"Neg","02GD87WMPH","C11 H23 N3 O3",245.17394,1.522,"MSI Level III; level 3",NA
+"Neg","[4-(tert-butoxycarbonyl)morpholin-3-yl]acetic acid","C11 H19 N O5",245.12632,9.128,"MSI Level III; level 3",NA
+"Neg","[(Butylimino)bis(methylene)]bis(phosphonic acid)","C6 H17 N O6 P2",261.05311,1.48,"MSI Level III; level 3",NA
+"Neg",".alpha.-Aminoadipic acid","C6 H11 N O4",161.06881,1.182,"MSI Level I; level 3",NA
+"Neg","(Z)-2-Butene-1,2,3-tricarboxylic acid","C7 H8 O6",188.03209,1.143,"MSI Level III; level 3",NA
+"Neg","(R)-methylsuccinic acid","C5 H8 O4",132.04226,0.857,"MSI Level III; Level 3","33.33"
+"Neg","(E)-Aconitic Acid","C6 H6 O6",174.01644,1.193,"MSI Level I; level 3",NA
+"Neg","(E)-2-Butenyl-4-methyl-threonine","C9 H17 N O3",187.12084,9.452,"MSI Level III; Level 3","28.57"
+"Neg","(2S)-2-Hydroxy-2-[(2S)-2-oxiranyl]ethyl methanesulfonate","C5 H10 O5 S",182.02489,1.184,"MSI Level III; level 3",NA
+"Neg","(2S)-2-Amino-4-(N'-methylcarbamimidamido)butanoic acid","C6 H14 N4 O2",174.11168,1.235,"MSI Level III; level 3",NA
+"Neg","(2S)-2-Amino-4-(N'-methylcarbamimidamido)butanoic acid","C6 H14 N4 O2",174.11168,1.182,"MSI Level III; level 3",NA
+"Neg","(2S)-2,4-Dihydroxy-2-(hydroxymethyl)-3-oxobutanoic acid","C5 H8 O6",164.03209,0.956,"MSI Level III; level 3",NA
+"Neg","(2R,3S)-2,3-dimethylmalate","C6 H10 O5",162.05282,0.862,"MSI Level III; level 3",NA
+"Neg","(1-Amino-2-hydroxyethyl)phosphonic acid","C2 H8 N O4 P",141.01909,0.817,"MSI Level I; level 3",NA
+"Neg","({1-[(Benzyloxy)carbonyl]-3-pyrrolidinyl}oxy)acetic acid","C14 H17 N O5",279.11067,10.546,"MSI Level III; level 3",NA
+"Neg","(-)-3-dehydroshikimic acid","C7 H8 O5",172.03717,0.996,"MSI Level I; level 3",NA
+"Neg","(-)-(R)-citramalic acid","C5 H8 O5",148.03717,1.174,"MSI Level I; level 3",NA
+"Neg","","C9 H15 N3 O4 S",261.07846,1.164,"MSI Level III; Level 4",NA
+"Neg","","C14 H23 O3 P",270.13836,13.877,"MSI Level III; Level 4",NA
+"Neg","","C H3 Cl O2",81.98214,0.763,"MSI Level III; Level 4",NA
+"Neg","","C11 H19 N O5",245.12608,8.858,"MSI Level III; Level 4",NA
+"Neg","","C13 H18 N4 O7",342.11635,0.863,"MSI Level III; Level 4",NA
+"Neg","","C9 H10 N4 O3",222.07517,1.189,"MSI Level III; Level 4",NA
+"Neg","","C9 H11 N O2",165.0789,2.3,"MSI Level III; Level 4",NA
+"Neg","","C19 H40 N3 O16 P S",629.1865,0.859,"MSI Level III; Level 4",NA
+"Neg","","C5 H6 O2",98.03667,0.859,"MSI Level III; Level 4",NA
+"Neg","","C6 H8 O4",144.04215,0.85,"MSI Level III; Level 4",NA
+"Neg","","C8 H N2 O4 P3",281.91557,1.208,"MSI Level III; Level 4",NA
+"Neg","","C2 H7 N O2 S",109.01967,0.87,"MSI Level III; Level 4",NA
+"Neg","","C11 H12 N2 O2",204.08988,7.201,"MSI Level III; Level 4",NA
+"Neg","","C4 H6 N4 O3",158.04409,0.928,"MSI Level III; Level 4",NA
+"Neg","","C2 H3 N9",153.05142,1.075,"MSI Level III; Level 4",NA
+"Neg","","C9 H13 N7 O3",267.10827,8.86,"MSI Level III; Level 4",NA
+"Neg","","C3 H5 N2 P S",131.99087,1.421,"MSI Level III; Level 4",NA
+"Neg","","C4 H Cl N4 O4 P2 S",297.88952,1.008,"MSI Level III; Level 4",NA
+"Neg","","C4 H4 O2",84.02111,0.849,"MSI Level III; Level 4",NA
+"Neg","","C2 H7 O7 P",173.99308,1.101,"MSI Level III; Level 4",NA
+"Neg","","C6 H10 O7",194.04258,0.828,"MSI Level III; Level 4",NA
+"Neg","","C3 H2 N6 O2",154.02414,1.473,"MSI Level III; Level 4",NA
+"Neg","","C5 H8 O5",148.0371,0.788,"MSI Level III; Level 4",NA
+"Neg","","C4 H3 N9",177.05126,1.02,"MSI Level III; Level 4",NA
+"Neg","","C24 H37 N5 O16",651.22462,0.903,"MSI Level III; Level 4",NA
+"Neg","","C23 H4 N2 O13 P2",577.91902,0.961,"MSI Level III; Level 4",NA
+"Neg","","C5 H5 N3",107.0483,1.205,"MSI Level III; Level 4",NA
+"Neg","","C5 H10 O3",118.06291,1.447,"MSI Level III; Level 4",NA
+"Neg","","C6 H N6 O10 P3 S2",473.84091,0.065,"MSI Level III; Level 4",NA
+"Neg","","C9 H20 N4 O4",248.1483,1.084,"MSI Level III; Level 4",NA
+"Neg","","C10 H13 N2 P S",224.05309,0.886,"MSI Level III; Level 4",NA
+"Neg","","C14 H17 N O5",279.1106,10.327,"MSI Level III; Level 4",NA
+"Neg","","C4 H8 N3 O4 P",193.02519,1.02,"MSI Level III; Level 4",NA
+"Neg","","C5 H6 Cl O14 P3 S",449.83856,1.001,"MSI Level III; Level 4",NA
+"Neg","","C17 H37 N10 O4 P3 S3",634.13655,1.195,"MSI Level III; Level 4",NA
+"Neg","","C25 H40 N7 O5 P3 S",643.20188,0.88,"MSI Level III; Level 4",NA
+"Neg","","C6 H8 O8",208.02174,0.787,"MSI Level III; Level 4",NA
+"Neg","","C22 H12 N7 O15 P3",706.96095,0.943,"MSI Level III; Level 4",NA
+"Neg","","C5 H4 O4",128.01093,1.182,"MSI Level III; Level 4",NA
+"Neg","","C9 H9 N3 O7",271.04339,1.33,"MSI Level III; Level 4",NA
+"Neg","","C4 H2 Cl N6 O14 P3 S",517.82549,0.997,"MSI Level III; Level 4",NA
+"Neg","","C17 H45 N8 O18 P S",712.2317,0.881,"MSI Level III; Level 4",NA
+"Neg","","C26 H56 N3 O14 P3 S2",791.24208,0.861,"MSI Level III; Level 4",NA
+"Neg","","C6 H3 Cl O11 S3",381.85107,1.004,"MSI Level III; Level 4",NA
+"Neg","","C18 H7 N6 O6 P3 S2",559.90841,0.946,"MSI Level III; Level 4",NA
+"Neg","","C23 H45 N O13 P2 S",637.20921,0.876,"MSI Level III; Level 4",NA
+"Neg","","C9 H11 N5 O3",237.08604,1.183,"MSI Level III; Level 4",NA
+"Neg","","C6 H17 N2 O13 P S",388.01751,0.758,"MSI Level III; Level 4",NA
+"Neg","","C5 H10 O3",118.06291,1.632,"MSI Level III; Level 4",NA
+"Neg","","C29 H31 N8 O3 P S",602.19636,13.459,"MSI Level III; Level 4",NA
+"Neg","","C6 H7 N S",125.03003,0.843,"MSI Level III; Level 4",NA
+"Neg","","C5 H5 N3",107.04829,0.035,"MSI Level III; Level 4",NA
+"Neg","","C12 H14 N2 O5",266.0901,2.98,"MSI Level III; Level 4",NA
+"Neg","","C12 H24 N2 O3",244.17844,10.02,"MSI Level III; Level 4",NA
+"Neg","","C10 H6 N4 O3 S4",357.9313,1.426,"MSI Level III; Level 4",NA
+"Neg","","C6 H6 Cl N4 O14 P3",485.87799,0.983,"MSI Level III; Level 4",NA
+"Neg","","C12 H24 N2 O3",244.1784,10.191,"MSI Level III; Level 4",NA
+"Neg","","C9 H18 N2 O3",202.13176,3.436,"MSI Level III; Level 4",NA
+"Neg","","C28 H28 N10 O7",616.21444,13.497,"MSI Level III; Level 4",NA
+"Neg","","C14 H20 O5",268.13094,13.469,"MSI Level III; Level 4",NA
+"Neg","","C26 H47 N2 O17 P S2",754.20463,0.854,"MSI Level III; Level 4",NA
+"Neg","","C4 H6 Br N5 O11 P2 S",472.84362,0.026,"MSI Level III; Level 4",NA
+"Neg","","C11 H15 N O4",225.09998,13.702,"MSI Level III; Level 4",NA
+"Neg","","C30 H26 N3 O17 P",731.10052,1.143,"MSI Level III; Level 4",NA
+"Neg","","C18 H16 N2 O17 P2 S",625.9643,13.986,"MSI Level III; Level 4",NA
+"Neg","","C9 H9 N4 O10 P3 S5",585.81411,0.991,"MSI Level III; Level 4",NA
+"Neg","","C3 H Br N2 S2",207.87703,0.765,"MSI Level III; Level 4",NA
+"Neg","","C15 H17 N4 O6 P",380.08977,0.838,"MSI Level III; Level 4",NA
+"Neg","","C2 H5 N O3 S",122.99888,0.836,"MSI Level III; Level 4",NA
+"Neg","","C2 H2 Cl N4 O4 P S2",275.89412,0.779,"MSI Level III; Level 4",NA
+"Neg","","C3 H3 Br O4 S",213.89398,0.771,"MSI Level III; Level 4",NA
+"Neg","","C5 H Br N P S",216.87562,0.764,"MSI Level III; Level 4",NA
+"Neg","","C5 H Cl N4 O16 P2 S2",533.79927,1.001,"MSI Level III; Level 4",NA
+"Neg","","C24 H4 N2 O14 P2",605.91371,0.936,"MSI Level III; Level 4",NA
+"Neg","","C10 H21 N2 O18 P3 S",581.97247,13.96,"MSI Level III; Level 4",NA
+"Neg","","C H4 Cl2 N O4 P3 S2",320.8187,0.769,"MSI Level III; Level 4",NA
+"Neg","","C H Cl3 N O2 P3",256.82933,0.733,"MSI Level III; Level 4",NA
+"Neg","","C7 H10 N2 O2 S2",218.01918,1.106,"MSI Level III; Level 4",NA
+"Neg","","C8 H14 O4",174.08919,9.285,"MSI Level III; Level 4",NA
+"Neg","","C8 H8 N10 O13 P2 S2",577.9192,1.158,"MSI Level III; Level 4",NA
+"Neg","","C5 H16 N4 O13 P2",402.01723,0.811,"MSI Level III; Level 4",NA
+"Neg","","C4 H4 N8 O2",196.0459,1.021,"MSI Level III; Level 4",NA
+"Neg","","C H Cl3 N O2 P3",256.82937,0.813,"MSI Level III; Level 4",NA
+"Neg","","C H4 N O4 P",124.98795,1.025,"MSI Level III; Level 4",NA
+"Neg","","C7 H15 N3 O5",221.10106,1.099,"MSI Level III; Level 4",NA
+"Neg","","C18 H36 O2",284.27141,14.106,"MSI Level III; Level 4",NA
+"Neg","","C28 H41 N10 O9 P3 S",786.19853,13.275,"MSI Level III; Level 4",NA
+"Neg","","C7 H10 N6 O2",210.08668,11.432,"MSI Level III; Level 4",NA
+"Neg","","C12 H19 N5 O3",281.14742,1.152,"MSI Level III; Level 4",NA
+"Neg","","C11 H22 N2 O3",230.16293,6.142,"MSI Level III; Level 4",NA
+"Neg","","C H Cl N7 O3 P3 S3",382.81899,0.773,"MSI Level III; Level 4",NA
+"Neg","","C10 H23 N O4 S2",285.10583,0.871,"MSI Level III; Level 4",NA
+"Neg","","C5 H4 O2",96.02112,0.866,"MSI Level III; Level 4",NA
+"Neg","","C8 H5 N O2",147.03276,0.903,"MSI Level III; Level 4",NA
+"Neg","","C21 H12 N5 O12 P3",618.96924,0.695,"MSI Level III; Level 4",NA
+"Neg","","C16 H32 O2",256.24007,14.032,"MSI Level III; Level 4",NA
+"Neg","","C12 H13 N O5",251.07918,7.932,"MSI Level III; Level 4",NA
+"Neg","","C2 H3 Cl O6 S4",285.84958,0.774,"MSI Level III; Level 4",NA
+"Neg","","C H Cl O3 S4",223.84927,0.77,"MSI Level III; Level 4",NA
+"Neg","","C4 H8 O2",88.05246,1.494,"MSI Level III; Level 4",NA
+"Neg","","C28 H27 N7 O10 P2 S2",747.07418,1.124,"MSI Level III; Level 4",NA
+"Neg","","C14 H14 N8 O18 P2 S",675.96235,14.083,"MSI Level III; Level 4",NA
+"Neg","","C7 H Cl N2 O12 P2 S2",465.81241,1.005,"MSI Level III; Level 4",NA
+"Neg","","C15 H3 O11 P",389.94226,1.422,"MSI Level III; Level 4",NA
+"Neg","","C21 H28 O S",328.18767,13.494,"MSI Level III; Level 4",NA
+"Neg","","C9 H29 N9 O5 P2 S",437.14847,13.191,"MSI Level III; Level 4",NA
+"Neg","","C2 H5 O15 P S",331.90892,0.773,"MSI Level III; Level 4",NA
+"Neg","","C18 H47 N10 O5 P S",546.32151,13.102,"MSI Level III; Level 4",NA
+"Neg","","C H Cl N3 O P S3",232.87025,0.792,"MSI Level III; Level 4",NA
+"Neg","","C4 H7 N3 O",113.05894,1.285,"MSI Level III; Level 4",NA
+"Neg","","C26 H28 N5 O15 P3",743.07961,0.841,"MSI Level III; Level 4",NA
+"Neg","","C16 H27 N3 O12 P2",515.10841,0.946,"MSI Level III; Level 4",NA
+"Neg","","C20 H25 N O4 S",375.15179,10.831,"MSI Level III; Level 4",NA
+"Neg","","C24 H24 N4 O4",432.17875,13.554,"MSI Level III; Level 4",NA
+"Neg","","C16 H39 N2 O17 P3 S",656.11875,1.209,"MSI Level III; Level 4",NA
+"Neg","","C19 H19 N10 O9 P3 S",656.0271,0.689,"MSI Level III; Level 4",NA
+"Neg","","C3 H4 N2 O2 S",131.99955,0.073,"MSI Level III; Level 4",NA
+"Neg","","C7 H3 Cl N2 O11",325.94206,1.106,"MSI Level III; Level 4",NA
+"Neg","","C22 H28 N9 O P S5",625.07594,0.829,"MSI Level III; Level 4",NA
+"Neg","","C8 H13 N3 O6 P2 S3",404.94523,0.929,"MSI Level III; Level 4",NA
+"Neg","","C2 H4 N2 P2 S",149.95688,1.427,"MSI Level III; Level 4",NA
+"Neg","","C9 H13 N4 O13 P3 S5",637.82947,0.98,"MSI Level III; Level 4",NA
+"Neg","","C22 H9 N4 O17 P",631.97029,14.045,"MSI Level III; Level 4",NA
+"Neg","","C2 H N4 O3 P3 S",253.89807,1.434,"MSI Level III; Level 4",NA
+"Neg","","C4 H7 N7 O2",185.06637,1.1,"MSI Level III; Level 4",NA
+"Neg","","C6 H11 N3 O12 P2",378.98038,0.718,"MSI Level III; Level 4",NA
+"Neg","","C24 H50 N8 O12 P2 S",736.27304,13.09,"MSI Level III; Level 4",NA
+"Neg","","C8 H13 N O4",187.08447,8.318,"MSI Level III; Level 4",NA
+"Neg","","C3 H3 N3 O3 S",160.98895,1.466,"MSI Level III; Level 4",NA
+"Neg","","C17 H41 N10 O14 P S",672.22592,13.089,"MSI Level III; Level 4",NA
+"Neg","","C7 H10 N2 O8 P2",311.99175,0.771,"MSI Level III; Level 4",NA
+"Neg","","C2 H6 Cl N8 O2 P3 S2",365.89661,0.748,"MSI Level III; Level 4",NA
+"Neg","","C6 H9 N3 O2",155.0694,0.118,"MSI Level III; Level 4",NA
+"Neg","","C4 H5 Cl N2 O",132.00909,0.756,"MSI Level III; Level 4",NA
+"Neg","","C8 H10 Cl N4 O6 P S2",387.94655,1.419,"MSI Level III; Level 4",NA
+"Neg","","C5 H5 Cl N3 O9 P S",348.91813,0.738,"MSI Level III; Level 4",NA
+"Neg","","C20 H44 N5 O5 P S",497.28079,13.093,"MSI Level III; Level 4",NA
+"Neg","","C5 H9 O8 P",228.00326,0.738,"MSI Level III; Level 4",NA
+"Neg","","C6 H2 Cl N3 O3",198.97761,0.814,"MSI Level III; Level 4",NA
+"Neg","","C2 H Br2 N",196.84834,0.765,"MSI Level III; Level 4",NA
+"Neg","","C14 H2 N8 O4 P2 S2",471.91186,1.432,"MSI Level III; Level 4",NA
+"Neg","","C55 H91 N4 O17 P3",1172.55768,11.63,"MSI Level III; Level 4",NA
+"Neg","","C33 H29 N3 O14 P2",753.11232,1.135,"MSI Level III; Level 4",NA
+"Neg","","C15 H19 N8 O14 P3 S",659.99553,0.7,"MSI Level III; Level 4",NA
+"Neg","","C3 H7 N O3 S",137.01467,0.883,"MSI Level III; Level 4",NA
+"Neg","","C2 H4 Cl N3 O4 S4",296.87843,0.743,"MSI Level III; Level 4",NA
+"Neg","","C38 H24 N7 O7 P",721.14778,13.141,"MSI Level III; Level 4",NA
+"Neg","","C23 H47 N8 O13 P3 S",768.21913,0.859,"MSI Level III; Level 4",NA
+"Neg","","C H2 N O4 P3 S2",248.86502,0.789,"MSI Level III; Level 4",NA
+"Neg","","C6 H11 N3 O2",157.08524,1.186,"MSI Level III; Level 4",NA
+"Neg","","C16 H39 N5 O15 P2 S",635.1645,0.921,"MSI Level III; Level 4",NA
+"Neg","","C15 H29 N3 O4",315.2162,12.231,"MSI Level III; Level 4",NA
+"Neg","","C3 H2 Cl N O10 P2 S3",404.80141,0.782,"MSI Level III; Level 4",NA
+"Neg","","C61 H90 O18 P2",1172.56067,11.46,"MSI Level III; Level 4",NA
+"Neg","","C2 H2 Cl2 P2 S",189.87336,0.788,"MSI Level III; Level 4",NA
+"Neg","","C12 H5 N3 O2",223.03896,0.95,"MSI Level III; Level 4",NA
+"Neg","","C25 H50 O10",510.33853,13.637,"MSI Level III; Level 4",NA
+"Neg","","C H2 N O6 P3 S4",344.79725,0.786,"MSI Level III; Level 4",NA
+"Neg","","C36 H46 N7 O9 P",751.30939,9.46,"MSI Level III; Level 4",NA
+"Neg","","C5 H11 O7 P",214.02422,0.778,"MSI Level III; Level 4",NA
+"Neg","","C8 H16 N3 O16 P3 S2",566.91871,1.058,"MSI Level III; Level 4",NA
+"Neg","","C22 H13 N5 O3 P2 S2",520.99379,1.033,"MSI Level III; Level 4",NA
+"Neg","","C15 H18 N7 O18 P3",676.99261,1.083,"MSI Level III; Level 4",NA
+"Neg","","C35 H72 O16",748.48402,1.075,"MSI Level III; Level 4",NA
+"Neg","","C38 H57 N7 O13 P2 S4",1009.23557,0.705,"MSI Level III; Level 4",NA
+"Neg","","C19 H2 N8 O12 P2 S",627.89761,0.985,"MSI Level III; Level 4",NA
+"Neg","","C36 H46 N7 O9 P",751.30962,9.366,"MSI Level III; Level 4",NA
+"Neg","","C42 H31 N8 O6 P",774.2104,1.192,"MSI Level III; Level 4",NA
+"Neg","","C6 H7 N3",121.06398,0.051,"MSI Level III; Level 4",NA
+"Neg","","C5 H4 N4 O4",184.02319,1.191,"MSI Level III; Level 4",NA
+"Neg","","C2 H4 N O3 P3 S5",342.80051,0.772,"MSI Level III; Level 4",NA
+"Neg","","C33 H22 N3 O9 P3",697.05561,0.699,"MSI Level III; Level 4",NA
+"Neg","","C6 H10 N8 O4",258.08285,1.223,"MSI Level III; Level 4",NA
+"Neg","","C2 H3 N5 O18 P2",446.89436,0.75,"MSI Level III; Level 4",NA
+"Neg","","C14 H32 N3 O17 P S",577.11896,10.617,"MSI Level III; Level 4",NA
+"Neg","","C5 H N9 O6 P2",344.95219,1.505,"MSI Level III; Level 4",NA
+"Neg","","C2 H N7 O2",155.01942,0.951,"MSI Level III; Level 4",NA
+"Neg","","C4 H11 Cl N2 O4 S2",249.98519,0.79,"MSI Level III; Level 4",NA
+"Neg","","C3 H10 N2 P2 S",168.00335,0.999,"MSI Level III; Level 4",NA
+"Neg","","C2 H2 Cl2 N5 O14 P",420.87149,0.741,"MSI Level III; Level 4",NA
+"Neg","","C8 H10 N O5 P",231.02942,0.966,"MSI Level III; Level 4",NA
+"Neg","","C7 H9 N3 O2",167.06937,0.157,"MSI Level III; Level 4",NA
+"Neg","","C6 H11 N3 O4",189.07481,0.977,"MSI Level III; Level 4",NA
+"Neg","","C3 H11 N5 O18 P2",466.95706,1.125,"MSI Level III; Level 4",NA
+"Neg","","C6 H7 N3 O3",169.04866,0.117,"MSI Level III; Level 4",NA
+"Neg","","C7 H9 N O4",171.05307,1.197,"MSI Level III; Level 4",NA
+"Neg","","C80 H161 N8 O2 P",1297.24795,1.159,"MSI Level III; Level 4",NA
+"Neg","","C H2 Cl N O S4",206.87079,0.789,"MSI Level III; Level 4",NA
+"Neg","","C5 H5 N3",107.04832,0.816,"MSI Level III; Level 4",NA
+"Neg","","C5 H6 N7 O2 P3",288.9789,0.967,"MSI Level III; Level 4",NA
+"Neg","","C9 H23 N6 O13 P3",516.0536,0.951,"MSI Level III; Level 4",NA
+"Neg","","C8 H15 N O7",237.08478,1.2,"MSI Level III; Level 4",NA
+"Neg","","C3 H10 N4 S",134.06222,1.002,"MSI Level III; Level 4",NA
+"Neg","","C2 H3 Cl N2 O5 P2 S3",327.83659,0.783,"MSI Level III; Level 4",NA
+"Neg","","C82 H137 N O7",1248.03946,0.699,"MSI Level III; Level 4",NA

@@ -2,12 +2,19 @@
 #'
 #' @export
 #' @description Compares isotope and adduct annotations within Peak.list (inherited from CAMERA) to user-defined annotation library.
-#' See search_IHL and match_Annotation for more details.
+#' See match_Annotation for more details.
 #' @param from.table from which table should LUMA pull the Peak.list
 #' @param to.table to which should LUMA save the modified Peak.list
 #' @param lib.db character name of In House Library database.
 #' Default is 'Annotated Library'
 #' @return NULL
+#' @examples
+#' \dontrun{
+#' library(LUMA)
+#' db.dir <- system.file('extdata/', package = "LUMA")
+#' InitWorkflow(db.dir = db.dir)
+#' AnnotatePeaklist(from.table = "From CAMERA", to.table = "Annotated")
+#' }
 AnnotatePeaklist <- function(from.table,to.table,lib.db) {
 
   #Initialize global variables
@@ -18,7 +25,7 @@ AnnotatePeaklist <- function(from.table,to.table,lib.db) {
     lib.db <- "Annotated Library"
 
   #Initialize the library database
-  lib_db <<- lib_db <- connect_peakdb(lib.db)
+  lib_db <<- lib_db <- connect_libdb(lib.db)
 
   Peak.list <- read_tbl(mytable = from.table,
                         peak.db = peak_db)
@@ -42,7 +49,7 @@ AnnotatePeaklist <- function(from.table,to.table,lib.db) {
                                                         Solvent = Solvent.ratio,
                                                         gen.plots = gen.plots,
                                                         keep.singletons = keep.singletons),
-                                ion.mode = ion.mode,
+                                IonMode = IonMode,
                                 lib_db = lib_db)
 
   write_tbl(mydf = Peak.list.Annotated,

@@ -4,10 +4,12 @@
 \alias{SimplyPeaklists}
 \title{Combine Peaklists simply}
 \usage{
-SimplyPeaklists(from.tables, peak.db, db.dir)
+SimplyPeaklists(from.tables, to.table, peak.db, db.dir)
 }
 \arguments{
 \item{from.tables}{character vector of table names to draw from databases to be combined simply.}
+
+\item{to.table}{to which table should LUMA save the modified Peak.list}
 
 \item{peak.db}{what database contains the Peaklists to be combined simply.
 Default is 'Peaklist_db'}
@@ -20,5 +22,4 @@ the file 'Peaklist_Combined.csv" is written to the working directory
 }
 \description{
 Combines Peaklists from positive and negative ionization modes without removing ion mode duplicates.
-See
 }

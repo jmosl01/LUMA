@@ -1,16 +1,30 @@
-#' @title Calculates correlation matrices for metabolite groups
+#' @title Calculate correlation matrices for metabolite groups
 #'
+#' @export
 #' @description Calculates the correlation matrices for metabolite groups based on the best feature within the group that belongs to the primary metabolite.
 #' @param Sample.df a data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns 'Sex','Class','n','Endogenous'.
 #' @param Peak.list a data frame from CAMERA that has been parsed.  Should contain all output columns from XCMS and CAMERA, and additional columns from IHL.search, Calc.MinFrac and CAMERA.parser.
 #' @param get.mg numerical vector of metabolite groups that have more than one feature
 #' @param BLANK a logical indicating whether blanks are being evaluated
-#' @param ion.mode a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'
+#' @param IonMode a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'
 #' @return Peak.list of class 'tbl_df',tbl' or 'data.frame' with variables as columns.  Has all of the columns as the original data frame with one additional column 'Correlation.stat'
 #' @importFrom stats cor dist
 #' @importFrom utils setTxtProgressBar
 #' @importFrom flashClust flashClust
-calc_corrstat = function(Sample.df, Peak.list, get.mg, BLANK, ion.mode) {
+#' @examples
+#' library(LUMA)
+#' library(lcmsfishdata)
+#' file <- system.file('extdata/CAMERA_objects_Pos.Rdata', package = "lcmsfishdata")
+#' load(file)
+#' pspec.length <- sapply(anposGa@pspectra, function(x) length(x))
+#' get.mg <- which(pspec.length > 1)
+#' file2 <- system.file('extdata/Sample_Class.txt', package = "LUMA")
+#' Sample.df <- read.table(file2, sep = "\t", header = TRUE) #Ignore Warning message
+#' test <- calc_corrstat(Sample.df = Sample.df, Peak.list =
+#' Peaklist_Pos_db$input_parsed, get.mg = get.mg, BLANK = FALSE, IonMode =
+#' "Positive")
+#' test[["Correlation.stat"]][11:23]
+calc_corrstat = function(Sample.df, Peak.list, get.mg, BLANK, IonMode) {
 
     ## Error check
     Peak.list.pspec <- Peak.list[which(Peak.list$metabolite_group %in% get.mg), ]
@@ -25,10 +39,10 @@ calc_corrstat = function(Sample.df, Peak.list, get.mg, BLANK, ion.mode) {
         sample.cols <- grep(paste("Pooled_QC_", paste(strsplit(sexes, "(?<=.[_])", perl = TRUE), collapse = "|"),
             sep = "|"), colnames(Peak.list))
     } else {
-        if (ion.mode == "Positive" && BLANK == TRUE) {
+        if (IonMode == "Positive" && BLANK == TRUE) {
             sample.cols <- grep("_Pos", colnames(Peak.list), ignore.case = TRUE)
         } else {
-            if (ion.mode == "Negative" && BLANK == TRUE) {
+            if (IonMode == "Negative" && BLANK == TRUE) {
                 sample.cols <- grep("_Neg", colnames(Peak.list), ignore.case = TRUE)
             }
         }
@@ -42,7 +56,7 @@ calc_corrstat = function(Sample.df, Peak.list, get.mg, BLANK, ion.mode) {
         stop("Something is wrong with your metabolite groups. Check out from Matlab script!")
     }
     corr.stat = vector(mode = "numeric", length = nrow(Peak.list.pspec))
-    corr.df <- data.frame(corr.stat = corr.stat, row.names = as.character(Peak.list.pspec$EIC_ID))
+    corr.df <- data.frame("Correlation.stat" = corr.stat, row.names = as.character(Peak.list.pspec$EIC_ID))
     rownames(corr.df)
     colnames(corr.df)
 
@@ -55,56 +69,32 @@ calc_corrstat = function(Sample.df, Peak.list, get.mg, BLANK, ion.mode) {
         colnames(my.df)
         if (nrow(my.df) == 1) {
         } else {
-            if (nrow(my.df) == 2) {
-                my.mat <- as.matrix(my.df[, sample.cols])
-                test.mat <- as.matrix(t(my.mat))
-                dimnames(test.mat) <- list(colnames(my.df[, sample.cols]), my.df$EIC_ID)
-                colnames(test.mat)
-                res <- cor(test.mat)
-                d <- dist(res)
-                sim.by.hclust <- flashClust(d)
-                attributes(d)
-                labels(d)
-                # plot(sim.by.hclust)
-                attributes(sim.by.hclust)
-                sim.by.hclust$merge
-                sim.by.hclust$labels
-                labels(d)[sim.by.hclust$order]
-                corr.stat <- res[which(rowSums(res) %in% max(rowSums(res))), ]
-                new.df <- as.data.frame(corr.stat, row.names = names(corr.stat))
-                j <- rownames(new.df)
-                corr.df[j, ] <- new.df
+              my.mat <- as.matrix(my.df[, sample.cols])
+              test.mat <- as.matrix(t(my.mat))
+              dimnames(test.mat) <- list(colnames(my.df[, sample.cols]), my.df$EIC_ID)
+              colnames(test.mat)
+              res <- cor(test.mat)
+              d <- dist(res)
+              sim.by.hclust <- flashClust(d)
+              attributes(d)
+              labels(d)
+              # plot(sim.by.hclust)
+              attributes(sim.by.hclust)
+              sim.by.hclust$merge
+              sim.by.hclust$labels
+              labels(d)[sim.by.hclust$order]
+              corr.stat <- res[which(rowSums(res) %in% max(rowSums(res))), ]
+              new.df <- as.data.frame(corr.stat, row.names = names(corr.stat))
+              j <- rownames(new.df)
+              corr.df[j, ] <- new.df[[1]]
 
+              # ordered.hclust <- reorder(sim.by.hclust, wts = my.df$monoisotopic_flg, agglo.FUN = 'mean')
+              # ordered.hclust$value ordered.hclust$labels
 
-            } else {
-                my.mat <- as.matrix(my.df[, sample.cols])
-                test.mat <- as.matrix(t(my.mat))
-                dimnames(test.mat) <- list(colnames(my.df[, sample.cols]), my.df$EIC_ID)
-                colnames(test.mat)
-                res <- cor(test.mat)
-                d <- dist(res)
-                sim.by.hclust <- flashClust(d)
-                attributes(d)
-                labels(d)
-                # plot(sim.by.hclust)
-                attributes(sim.by.hclust)
-                sim.by.hclust$merge
-                sim.by.hclust$labels
-                labels(d)[sim.by.hclust$order]
-                corr.stat <- res[which(rowSums(res) %in% max(rowSums(res))), ]
-                new.df <- as.data.frame(corr.stat, row.names = names(corr.stat))
-                j <- rownames(new.df)
-                corr.df[j, ] <- new.df
-
-
-                # ordered.hclust <- reorder(sim.by.hclust, wts = my.df$monoisotopic_flg, agglo.FUN = 'mean')
-                # ordered.hclust$value ordered.hclust$labels
-
-            }
         }
         setTxtProgressBar(pb, i)
     }
-    Peak.list.pspec[, "Correlation.stat"] <- corr.df
+    Peak.list.pspec <- cbind(Peak.list.pspec, corr.df)
     close(pb)
     return(Peak.list.pspec)
 }
@@ -119,9 +109,20 @@ calc_corrstat = function(Sample.df, Peak.list, get.mg, BLANK, ion.mode) {
 #' @param BLANK a logical indicating whether blanks are being evaluated
 #' @param Peak.list a table of class 'tbl_df',tbl' or 'data.frame' with variables as columns.  Should contain all output columns from XCMS and CAMERA, and additional columns from IHL.search.
 #' @return data frame containing the original table with one additional column 'Minfrac' at the end, followed by the CAMERA columns 'isotopes','adduct','pcgroup'
+#' @import lcmsfishdata
 #' @importFrom xcms peakTable
 #' @importFrom utils read.table write.table str head
 #' @importFrom stats variable.names
+#' @examples
+#'   library(LUMA)
+#'   library(lcmsfishdata)
+#'   file <- system.file('extdata/XCMS_objects_Pos.Rdata', package = "lcmsfishdata")
+#'   load(file)
+#'   file2 <- system.file('extdata/Sample_Class.txt', package = "LUMA")
+#'   Sample.df <- read.table(file2, sep = "\t", header = TRUE) #Ignore Warning message
+#'   test <- calc_minfrac(Sample.df = Sample.df, xset4 = xset4, BLANK = FALSE,
+#'   Peak.list = Peaklist_Pos_db$From_CAMERA)
+#'   test[["MinFrac"]][11:23]
 calc_minfrac = function(Sample.df, xset4, BLANK, Peak.list) {
     peakSN <- peakTable(xset4, filebase=NULL, value="sn") #writes the SN peak table to file
     SN.list <- data.frame(X = rownames(peakSN),peakSN)
@@ -319,19 +320,47 @@ calc_minfrac = function(Sample.df, xset4, BLANK, Peak.list) {
     return(raw)
 }
 
-#' @title Sums features into Metabolites
+#' @title Sum features by metabolite group
 #'
 #' @export
-#' @description Sums all features belonging to the same metabolite into a single intensity value per metabolite group per sample
-#' @param Peak.list data frame. Must have Correlation.stat column.  Should contain output columns from XCMS and CAMERA, and additional columns from IHL.search, Calc.MinFrac, CAMERA.parser and EIC.plotter functions.
-#' @param Sample.df a data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns 'Sex','Class','n','Endogenous'.
-#' @param search.par a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.
+#' @description Sums all features belonging to the same metabolite into a single
+#'   intensity value per metabolite group per sample
+#' @param Peak.list data frame. Must have \emph{metabolite_group} column.  Should
+#'   contain output columns from XCMS and CAMERA. Can contain columns from
+#'   IHL.search, Calc.MinFrac, CAMERA.parser and EIC.plotter functions.
+#' @param Sample.df a data frame with class info as columns.  Must contain a
+#'   separate row entry for each unique sex/class combination. Must contain the
+#'   columns 'Sex','Class','n','Endogenous'.
+#' @param search.par a single-row data frame with 11 variables containing
+#'   user-defined search parameters. Must contain the columns
+#'   'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.
+#'
 #' @param BLANK a logical indicating whether blanks are being evaluated
-#' @param ion.mode a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'
-#' @return sum.range.list with the first column containing metabolite group and the rest containing sample and QC columns
+#' @param IonMode a character string defining the ionization mode.  Must be
+#'   either 'Positive' or 'Negative'
+#' @return sum.range.list with the first column containing metabolite group and
+#'   the rest containing sample and QC columns
 #' @importFrom data.table as.data.table
-sum_features = function(Peak.list, Sample.df, search.par, BLANK, ion.mode) {
-    mylist <- .gen_res(ion.mode,search.par,Peak.list,Sample.df,BLANK)
+#' @examples
+#' library(LUMA)
+#' file <- system.file('extdata/Search_Parameters.txt', package = "LUMA")
+#' search.par <- read.table(file, sep = "\t", header = TRUE) #Ignore Warning message
+#' file2 <- system.file('extdata/Search_Parameters.txt', package = "LUMA")
+#' Sample.df <- read.table(file, sep = "\t", header = TRUE) #Ignore Warning message
+#' Peak.list <- Peaklist_Pos$output_parsed
+#' if("metabolite_group" %in% colnames(Peak.list)) {
+#'   test <- sum_features(Peak.list = Peak.list, Sample.df = Sample.df ,
+#'                        search.par = search.par, BLANK = FALSE, IonMode = "Positive")
+#' } else (stop("Peak.list must have a column called \"metabolite_group\""))
+#' \dontrun{
+#' Peak.list <- Peaklist_Pos$Annotated
+#' if("metabolite_group" %in% colnames(Peak.list)) {
+#'   test <- sum_features(Peak.list = Peak.list, Sample.df = Sample.df ,
+#'                        search.par = search.par, BLANK = FALSE, IonMode = "Positive")
+#' } else (stop("Peak.list must have a column called \"metabolite_group\""))
+#' }
+sum_features = function(Peak.list, Sample.df, search.par, BLANK, IonMode) {
+    mylist <- .gen_res(IonMode,search.par,Peak.list,Sample.df,BLANK)
     Peaklist_corstat <- mylist[[1]]
     res <- mylist[[2]]
     sum.range.list <- Peaklist_corstat[sapply(res, function(x) length(x) > 0)]  #Extracts all of the sample columns for summing by metabolite group
@@ -340,8 +369,34 @@ sum_features = function(Peak.list, Sample.df, search.par, BLANK, ion.mode) {
     return(sum.range.list)
 }
 
-##Checks if a numeric value is a whole number
-.isWhole <- function(a) {
-  (is.numeric(a) && floor(a) == a) || (is.complex(a) && floor(Re(a)) == Re(a) && floor(Im(a)) == Im(a))
-}
+#' @title Calculate coeffient of variation (CV) by pooled QCs
+#'
+#' @export
+#' @description Calculates the CV value across all pooled QC samples
+#' @param Peak.list a table of class 'tbl_df',tbl' or 'data.frame' with variables as columns.  Should contain all output columns from XCMS and CAMERA.
+#' @examples
+#' library(LUMA)
+#' test <- calc_cv(Peak.list = Peaklist_Pos$From_CAMERA)
+#' test[["%CV"]][11:23]
+calc_cv = function(Peak.list) {
 
+  #Sanity Check
+  if(length(grep("Pooled_QC",colnames(Peak.list))) <= 2) {
+    stop("Peak.list must contain columns for at least 3 pooled QC samples!")
+  }
+
+  res <- lapply(colnames(Peak.list), function(ch) grep("Pooled_QC_", ch)) #Generates list equal in length to number of columns in Peak.list
+
+  QC.list <- Peak.list[sapply(res, function(x) length(x) > 0)] #Subsets a tibble containing only the pooled QC sample columns
+
+  QCsd <- apply((as.matrix(QC.list)), 1, sd) #Creates a vector of standard deviations for each metabolite/feature across all pooled QC samples
+
+  QCmean <- rowMeans(QC.list) #Creates a vector of mean intensity values for each metabolite/feature across all pooled QC samples
+
+  RSD <- QCsd/QCmean #Calculates the relative standard deviation vector from the mean and sd vectors
+
+  Peak.list[, "%CV"] <- RSD #Appends RSd's as a new column to the original Peak.list
+
+  return(Peak.list)
+
+}

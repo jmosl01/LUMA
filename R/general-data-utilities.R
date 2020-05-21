@@ -1,56 +1,94 @@
 ## internal constructor utility functions ----
-.get_DataFiles = function(mzdatapath,ion.mode,BLANK,ion.id,blanks.dir) {
-  ## Selects the datafiles to use for data processing
-  mzdatafiles <- list.files(mzdatapath, recursive = TRUE, full.names = TRUE)
-  if(ion.mode == "Positive" && BLANK == TRUE){
-    mzdatafiles <- subset(mzdatafiles, subset = grepl(ion.id[1], mzdatafiles, ignore.case = TRUE))
-    mzdatafiles <- mzdatafiles[c(grep(blanks.dir,mzdatafiles, ignore.case = TRUE))]
-    return(mzdatafiles)
-  } else {
-    if(ion.mode == "Negative" && BLANK == TRUE){
-      mzdatafiles <- subset(mzdatafiles, subset = grepl(ion.id[2], mzdatafiles, ignore.case = TRUE))
-      mzdatafiles <- mzdatafiles[c(grep(blanks.dir,mzdatafiles))]
-      return(mzdatafiles)
-    } else {
-      if(ion.mode == "Positive" && BLANK == FALSE){
-        mzdatafiles <- subset(mzdatafiles, subset = grepl(ion.id[1], mzdatafiles, ignore.case = TRUE))
-        mzdatafiles <- mzdatafiles[-c(grep(blanks.dir,mzdatafiles))]
-        return(mzdatafiles)
-      } else {
-        if(ion.mode == "Negative" && BLANK == FALSE){
-          mzdatafiles <- subset(mzdatafiles, subset = grepl(ion.id[2], mzdatafiles, ignore.case = TRUE))
-          mzdatafiles <- mzdatafiles[-c(grep(blanks.dir,mzdatafiles))]
-          return(mzdatafiles)
-        } else {
-          stop("Ion mode must be Positive or Negative.\nBe sure to specify whether to analyze blanks by setting BLANK to a logical. \nSee LUMA vignette for more details.\n\n")
-        }
-      }
+.SameElements <- function(a, b) return(identical(sort(a), sort(b)))
+
+.get_DataFiles = function(mzdatapath,IonMode,BLANK,ion.id,ion.mode) {
+
+  ##Sanity check
+  dirnames <- c("SamplesDir","BlanksDir","PooledQCsDir")
+
+  if(is.list(mzdatapath)) {#mzdatapath must be a list
+
+    if(!.SameElements(dirnames,names(mzdatapath))) { #list names must be correct
+
+      stop("Error: Check the names of your DataDir list")
 
     }
 
   }
+
+  ## Selects all datafiles to eventually use for data processing
+  mzdatafiles.samples <- list.files(mzdatapath$SamplesDir, recursive = TRUE, full.names = TRUE)
+  mzdatafiles.blanks <- list.files(mzdatapath$BlanksDir, recursive = TRUE, full.names = TRUE)
+  mzdatafiles.pooledqcs <- list.files(mzdatapath$PooledQCsDir, recursive = TRUE, full.names = TRUE)
+
+  ## Sanity Check on Ion Modes to use for data processing
+  if(length(ion.mode) == 0) {
+    stop("Error: Not processing any Ion Modes")
+  } else {
+    if(length(ion.mode) == 1) {
+      temp_ion <- match.arg(ion.id,ion.mode, several.ok = FALSE)
+      if(IonMode != temp_ion) stop("Error: Ion mode must be either Positive or Negative; check your spelling and capitalization")
+    } else {
+      if(length(ion.mode) > 1) {
+        temp_ion <- match.arg(IonMode,ion.mode, several.ok = FALSE)
+        ion.id <- ion.id[which(ion.mode %in% temp_ion)]
+
+      }
+    }
+  }
+
+
+  if(BLANK == TRUE){
+    DataFiles <- subset(mzdatafiles.blanks, subset = grepl(ion.id, mzdatafiles.blanks, ignore.case = TRUE))
+    return(DataFiles)
+  } else {
+    if(BLANK == FALSE){
+      DataFiles <- c(subset(mzdatafiles.samples, subset = grepl(ion.id, mzdatafiles.samples, ignore.case = TRUE)),
+                       subset(mzdatafiles.pooledqcs, subset = grepl(ion.id, mzdatafiles.pooledqcs, ignore.case = TRUE))
+                       )
+    return(DataFiles)
+    } else {
+          stop("Ion mode must be Positive or Negative.\nBe sure to specify whether to analyze blanks by setting BLANK to a logical. \nSee LUMA vignette for more details.\n\n")
+      }
+    }
 }
 
-.set_PreProcessFileNames = function(ion.mode,BLANK) {
-  if(ion.mode == "Positive" && BLANK == TRUE){
+.set_PreProcessFileNames = function(IonMode,BLANK) {
+
+  if(IonMode == "Positive" && BLANK == TRUE){
+
     XCMS.file <- "XCMS_objects_Blanks_Pos"
     CAMERA.file <- "CAMERA_objects_Blanks_Pos"
+
   } else {
-    if(ion.mode == "Negative" && BLANK == TRUE){
+
+    if(IonMode == "Negative" && BLANK == TRUE){
+
       XCMS.file <- "XCMS_objects_Blanks_Neg"
       CAMERA.file <- "CAMERA_objects_Blanks_Neg"
+
     } else {
-      if (ion.mode == "Positive") {
+
+      if (IonMode == "Positive") {
+
         XCMS.file <- "XCMS_objects_Pos"
         CAMERA.file <- "CAMERA_objects_Pos"
+
       } else {
+
         XCMS.file <- "XCMS_objects_Neg"
         CAMERA.file <- "CAMERA_objects_Neg"
+
       }
+
     }
+
   }
+
   return(list(XCMS.file,CAMERA.file))
+
 }
+
 
 .xcmsSanityCheck = function(XCMS.obj) {
   if(length(XCMS.obj@filled) == 0) {
@@ -63,30 +101,97 @@
     }
   }
 
-.CAMERASanityCheck = function(CAMERA.obj,CAMERA.file) {
+
+.CAMERASanityCheck = function(CAMERA.obj,CAMERA.file,new_filepaths,BLANK) {
+
+  ##Set default values
+  if(missing(new_filepaths)) new_filepaths <- NULL
+  if(missing(BLANK)) {
+
+    if ("BLANK" %in% ls(envir = .GlobalEnv)) {
+      BLANK <- get("BLANK", envir = .GlobalEnv)
+    } else {
+      BLANK <- NULL
+    }
+
+  }
+
   #Check if CAMERA.obj is an xsAnnotate object
   if(class(CAMERA.obj)[1] != "xsAnnotate") {
+
     if(is.null(CAMERA.obj)) {
+
       if(file.exists(CAMERA.file)) {
+
+        #Read in saved CAMERA objects file
         cat("Reading in CAMERA objects.\n\n")
+
         load(file = CAMERA.file, verbose = TRUE)
         myvar <- mget(ls())
         myclasses <- lapply(myvar, class)
         myind <- grep("xsAnnotate",myclasses)
         CAMERA.list <- myvar[myind]
+
         CAMERA.list <- lapply(CAMERA.list, function(x) {
           j = length(x@annoGrp)
           if(j!=0) {
               return(x)
           }
         })
+
         myclasses <- lapply(CAMERA.list, class)
         myind <- grep("xsAnnotate",myclasses)
         CAMERA.obj <- CAMERA.list[[myind[1]]]
-        if(length(grep("Pos",CAMERA.file)) == 1)
+
+        if(is.null(new_filepaths)) {
+
+          #Sets default value for new_filepaths to existing CAMERA object filepaths
+          new_filepaths <- CAMERA.obj@xcmsSet@filepaths
+
+        } else {
+
+            if(is.logical(BLANK)) {
+
+              if(BLANK) {
+
+                new_filepaths <- new_filepaths[grepl("Blanks", new_filepaths)]
+
+              } else {
+
+                if(!BLANK) {
+
+                  new_filepaths <- new_filepaths[!grepl("Blanks", new_filepaths)]
+
+                }
+              }
+
+            }
+
+        }
+
+
+        if(length(grep("Pos",CAMERA.file)) == 1) {
+
+          new_filepaths <- new_filepaths[grepl(ion.id[1],new_filepaths)]
+
+          CAMERA.obj@xcmsSet@filepaths <- new_filepaths
+
           anposGa <<- anposGa <- CAMERA.obj
-        if(length(grep("Neg",CAMERA.file)) == 1)
-          annegGa <<- annegGa <- CAMERA.obj
+
+        } else {
+
+          if(length(grep("Neg",CAMERA.file)) == 1) {
+
+            new_filepaths <- new_filepaths[grepl(ion.id[2],new_filepaths)]
+
+            CAMERA.obj@xcmsSet@filepaths <- new_filepaths
+
+            annegGa <<- annegGa <- CAMERA.obj
+
+          } else {
+            stop("Error: Saved CAMERA objects file must have either Pos or Neg in the filename")
+          }
+        }
       }
 
    return(CAMERA.obj)
@@ -97,14 +202,29 @@
     }
 
   } else {
+
     if(length(CAMERA.obj@annoGrp) == 0) {
+
       warning("LUMA works best on CAMERA data that has been annotated.\n\n")
-      if(length(grep("Pos",CAMERA.file)) == 1)
+
+      if(length(grep("Pos",CAMERA.file)) == 1) {
+
         mz1setpos <<- mz1setpos <- CAMERA.obj
-      if(length(grep("Neg",CAMERA.file)) == 1)
-        mz1setneg <<- mz1setneg <- CAMERA.obj
+
+      } else {
+
+        if(length(grep("Neg",CAMERA.file)) == 1) {
+
+          mz1setneg <<- mz1setneg <- CAMERA.obj
+
+        } else {
+          stop("Error: Saved CAMERA objects file must have either Pos or Neg in the filename")
+          }
+
+      }
 
       return(CAMERA.obj)
+
     } else {
       if(length(grep("Pos",CAMERA.file)) == 1)
         anposGa <<- anposGa <- CAMERA.obj
@@ -116,17 +236,15 @@
   }
 }
 
-.get_rules = function(ion.mode, files) {
+
+.get_rules = function(adduct.file) {
+
   ## Reads in the adduct rules list for CAMERA
-  if(ion.mode == "Positive"){
-    rules <- read.csv(file = files[1])
-  } else {
-    if(ion.mode == "Negative"){
-      rules <- read.csv(file = files[2])
-    }
-  }
-  return(rules)
+    rules <- read.csv(file = adduct.file)
+
+    return(rules)
 }
+
 
 .get_Peaklist = function(object,convert.rt) {
   if(missing(convert.rt))
@@ -143,7 +261,8 @@
   return(peak_data)
 }
 
-.PreProcess_Files = function(XCMS.file,CAMERA.file,mytable,file.base,CAMERA.obj) {
+
+.PreProcess_Files = function(XCMS.file,CAMERA.file,mytable,file.base,CAMERA.obj,IonMode) {
 
   #set Default values
   if(missing(CAMERA.obj))
@@ -154,7 +273,7 @@
     load(file = XCMS.file, verbose = TRUE)
     if(file.exists(CAMERA.file)){
       cat("Reading in CAMERA objects.\n\n")
-      CAMERA.obj <- .CAMERASanityCheck(CAMERA.obj,CAMERA.file)
+      CAMERA.obj <- .CAMERASanityCheck(CAMERA.obj,CAMERA.file, new_filepaths = DataFiles)
 
       ## Converts retention times to min from sec in Peaklist -----
       if(length(grep("Pos",CAMERA.file)) == 1)
@@ -170,11 +289,11 @@
       cat("Running CAMERA Only!")
       # Runs CAMERA on datafiles --------------------
       ## Sets the ion mode for CAMERA
-      if(ion.mode == "Positive"){
-        CAMERA.ion.mode <- "positive"
+      if(IonMode == "Positive"){
+        CAMERA_IonMode <- "positive"
       } else {
-        if(ion.mode == "Negative"){
-          CAMERA.ion.mode <- "negative"
+        if(IonMode == "Negative"){
+          CAMERA_IonMode <- "negative"
         }
       }
 
@@ -182,7 +301,7 @@
       time.CAMERA <- system.time({
         myresults <- wrap_camera(xcms.obj = xset4,
                                  CAMERA.par = CAMERA.par,
-                                 ion.mode = CAMERA.ion.mode)
+                                 IonMode = CAMERA_IonMode)
         CAMERA.obj <- .CAMERASanityCheck(myresults[[1]],CAMERA.file)
         CAMERA.obj <- .CAMERASanityCheck(myresults[[2]],CAMERA.file)
       })
@@ -221,11 +340,11 @@
       ## Section End
       # Runs CAMERA on datafiles --------------------
       ## Sets the ion mode for CAMERA
-      if(ion.mode == "Positive"){
-        CAMERA.ion.mode <- "positive"
+      if(IonMode == "Positive"){
+        CAMERA_IonMode <- "positive"
       } else {
-        if(ion.mode == "Negative"){
-          CAMERA.ion.mode <- "negative"
+        if(IonMode == "Negative"){
+          CAMERA_IonMode <- "negative"
         }
       }
 
@@ -233,7 +352,7 @@
       time.CAMERA <- system.time({
         myresults <- wrap_camera(xcms.obj = xset4,
                                  CAMERA.par = CAMERA.par,
-                                 ion.mode = CAMERA.ion.mode)
+                                 IonMode = CAMERA_IonMode)
         CAMERA.obj <- .CAMERASanityCheck(myresults[[1]],CAMERA.file)
         CAMERA.obj <- .CAMERASanityCheck(myresults[[2]],CAMERA.file)
       })
@@ -266,13 +385,129 @@
   return(xset4)
 }
 
+.obj_check = function(x) {
+  if ("x" %in% ls(envir = .GlobalEnv)) {
+    x <- get("x", envir = .GlobalEnv)
+    return(x)
+  } else {
+      x
+    }
+}
+
 ## END
+
+
+## Plotting utility functions ----
+.LUMA_order = function(object){
+  return(object)
+}
+
+.convert_EIC = function(EIC) {
+  if(is.null(EIC))
+    return(EIC) else {
+      EIC_split <- strsplit(EIC, split = ";")
+      EIC_num <- lapply(EIC_split, function(x) as.numeric(x))
+      EICs <- unlist(EIC_num)
+      return(EICs)
+    }
+}
+
+.validate_metgroup <- function(Peak.list.pspec) {
+  validate.df <- Peak.list.pspec[order(Peak.list.pspec$metabolite_group), c("MS.ID", "mz", "rt", "Name",
+                                                                            "Formula","Annotated.adduct",
+                                                                            "isotopes", "adduct",
+                                                                            "mono_mass", "metabolite_group",
+                                                                            "Correlation.stat")]
+  mytbl <- validate.df %>%
+    group_by(metabolite_group)
+
+  mytbl <- mytbl %>%
+    summarise(max = max(Correlation.stat[Correlation.stat!=max(Correlation.stat)]),
+              min = min(Correlation.stat))
+  f1 <- which(mytbl$min >= 0.7)
+  f2 <- which(mytbl$max <= 0.2)
+  clear.groups <- mytbl[(union(f1,f2)),"metabolite_group"] %>%
+    data.frame()
+  TP.groups <- mytbl[f1,"metabolite_group"] %>%
+    data.frame()
+  TN.groups <- mytbl[f2,"metabolite_group"] %>%
+    data.frame()
+  muddy.groups <- mytbl[-(union(f1,f2)),"metabolite_group"] %>%
+    data.frame()
+  ##Error Check
+  if(nrow(clear.groups) != nrow(TP.groups) + nrow(TN.groups))
+    stop("The number of true positives and true negatives does not equal the number of clear cut metabolite groups!", call. = FALSE)
+  n.col <- ncol(validate.df)
+  col.names <- colnames(validate.df)
+  validate.df[,(n.col+1:(n.col+3))] <- NA
+  colnames(validate.df) <- c(col.names,"Category Score1","Category Score2","Category Score3")
+  validate.df$`Category Score2` <- validate.df$Correlation.stat
+  validate.df[which(validate.df$metabolite_group %in% TP.groups$metabolite_group),
+              c("Category Score1","Category Score3")] <- 1
+  validate.df[which(validate.df$metabolite_group %in% TN.groups$metabolite_group),
+              c("Category Score1","Category Score3")] <- 0
+  x <- which(validate.df$metabolite_group %in% clear.groups$metabolite_group)
+  y <- which(validate.df$metabolite_group %in% muddy.groups$metabolite_group)
+  myfactor <- factor(NA, levels = c("clear","muddy"))
+  myfactor[x] <- "clear"
+  myfactor[y] <- "muddy"
+  validate.list <- split(validate.df,myfactor)
+  return(validate.list)
+}
+##END
+
+
+## Database utility functions ----
+.trim_table_by_mz <- function(x, min_mz, max_mz) {
+
+  if (is.data.frame(x)) {
+
+    x <- x[x[["mz"]] > min_mz,]
+    x <- x[x[["mz"]] < max_mz,]
+    return(x)
+  } else "Warning: input must be a data frame"
+}
+
+.trim_table_by_eic <- function(x, eic) {
+
+  if (is.data.frame(x)) {
+
+    x <- x[which(x[["EIC_ID"]] %in% eic),]
+    return(x)
+  } else "Warning: input must be a data frame"
+}
+
+.trim_table_by_metgroup <- function(x, met) {
+
+  if (is.data.frame(x)) {
+
+    x <- x[which(x[["metabolite_group"]] %in% met),]
+    return(x)
+  } else "Warning: input must be a data frame"
+}
+
+
+##END
+
+
+## Calculation utility functions ----
+
+##Checks if a numeric value is a whole number
+.isWhole <- function(a) {
+  (is.numeric(a) && floor(a) == a) || (is.complex(a) && floor(Re(a)) == Re(a) && floor(Im(a)) == Im(a))
+}
+
+
+
+
+## END
+
 ## Other module utility functions ----
-.gen_res = function(ion.mode,search.par,Peak.list,Sample.df,BLANK) {
-  if (ion.mode == "Positive") {
+.gen_res = function(IonMode,search.par,Peak.list,Sample.df,BLANK) {
+  if (IonMode == "Positive") {
     cor.stat <- as.numeric(search.par[1, "Corr.stat.pos"])
   } else {
-    if (ion.mode == "Negative") {
+    if (IonMode == "Negative") {
       cor.stat <- as.numeric(search.par[1, "Corr.stat.neg"])
     }
   }
@@ -284,12 +519,12 @@
                   function(ch) unique(grep(paste("Pooled_QC_", paste(strsplit(sexes,"(?<=.[_]$)", perl = TRUE), collapse = "|"),
                                                  "metabolite_group", sep = "|"), ch)))
   } else {
-    if (ion.mode == "Positive" && BLANK == TRUE) {
+    if (IonMode == "Positive" && BLANK == TRUE) {
       #Flags all of the sample columns and the metabolite group data
       res <- lapply(colnames(Peaklist_corstat),
                     function(ch) unique(grep("_Pos|metabolite_group", ch, ignore.case = TRUE)))
     } else {
-      if (ion.mode == "Negative" && BLANK == TRUE) {
+      if (IonMode == "Negative" && BLANK == TRUE) {
         #Flags all of the sample columns and the metabolite group data
         res <- lapply(colnames(Peaklist_corstat),
                       function(ch) unique(grep("_Neg|metabolite_group", ch, ignore.case = TRUE)))
@@ -299,7 +534,7 @@
   return(list(Peaklist_corstat,res))
 }
 
-.gen_IHL = function(Peak.list, Annotated.library, rules, ion.mode, lib_db) {
+.gen_IHL = function(Peak.list, Annotated.library, rules, IonMode, lib_db) {
   ## Creates search list
   search.list <- Peak.list %>% select(EIC_ID, mz, rt) %>% dplyr::collect()
 
@@ -308,13 +543,13 @@
   x <- rules[,"nmol"]
   IHL.temp <- sweep(IHL, 1, x, "*")
   x <- rules[,"massdiff"]
-  if (ion.mode == "Positive") {
+  if (IonMode == "Positive") {
     IHL.temp <- sweep(IHL.temp, 1, x, "+")
     myion.mode <- "Pos"
     bin <- paste(myion.mode, search.list[["EIC_ID"]], sep = "_")
 
   } else {
-    if (ion.mode == "Negative") {
+    if (IonMode == "Negative") {
       IHL.temp <- sweep(IHL.temp, 1, x, "+")
       IHL.temp <- sweep(IHL.temp, 1, -1, "*")
       myion.mode <- "Neg"
@@ -334,4 +569,7 @@
   return(list(search.list,bin,myion.mode))
 }
 
+.mypaste = function(pheno.list, i) {
+  summarise(pheno.list, X = paste0(pheno.list[, i], collapse = ";"))
+}
 ##END

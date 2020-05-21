@@ -2,18 +2,54 @@
 % Please edit documentation in R/trimming-functions.R
 \name{trim_minfrac}
 \alias{trim_minfrac}
+\alias{trim_minfrac.mz}
+\alias{trim_minfrac.monoMass}
 \title{Trims by MinFrac}
 \usage{
-trim_minfrac(Peak.list, search.par)
+trim_minfrac(object, Peak.list, search.par)
+
+\method{trim_minfrac}{mz}(object, Peak.list, search.par)
+
+\method{trim_minfrac}{monoMass}(object, Peak.list, search.par)
 }
 \arguments{
-\item{Peak.list}{data frame. Must have MinFrac column.  Should contain output columns from XCMS and CAMERA, and additional columns from IHL.search, Calc.MinFrac, CAMERA.parser, Calc.corr.stat and Combine.phenodata base functions.}
+\item{object}{used for method dispatch. Can be any object. See usage for
+details}
 
-\item{search.par}{a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.}
+\item{Peak.list}{data frame. Must have MinFrac column.  Should contain output
+columns from XCMS and CAMERA, and additional columns from IHL.search,
+Calc.MinFrac, CAMERA.parser, Calc.corr.stat and Combine.phenodata base
+functions.}
+
+\item{search.par}{a single-row data frame with 11 variables containing
+user-defined search parameters. Must contain the columns
+'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.}
 }
 \value{
-data frame Peak.list.trimmed original Peak.list containing all metabolite groups containing at least one feature that has MinFrac value greater than user specified threshold
+data frame Peak.list.trimmed original Peak.list containing all
+  metabolite groups containing at least one feature that has MinFrac value
+  greater than user specified threshold; if all MinFrac values are NA (i.e.
+  dataset contains blanks), NULL is returned
 }
 \description{
-Removes metabolites with MinFrac smaller than the user specified threshold. The maximum MinFrac value is chosen from all features within a metabolite group.
+Removes metabolites with MinFrac smaller than the user specified
+  threshold. The maximum MinFrac value is chosen from all features within a
+  metabolite group.
+}
+\examples{
+  file <- system.file('extdata/Search_Parameters.txt', package = "LUMA")
+  search.par <- read.table(file, sep = "\t", header = TRUE) #Ignore Warning message
+
+  method = "mz"
+  class(method) = method
+  test <- trim_minfrac(Peak.list = Peaklist_Pos$From_CAMERA_with_MinFrac,
+  search.par = search.par, object = method)
+  nrow(Peaklist_Pos$From_CAMERA_with_MinFrac) -  nrow(test) #equals 7
+
+  method = "monoMass"
+  class(method) = method
+  test <- trim_minfrac(Peak.list =
+  Peaklist_Pos$Combined_Isotopes_and_Adducts, search.par = search.par, object
+  = method)
+  nrow(Peaklist_Pos$Combined_Isotopes_and_Adducts) - nrow(test) #equals 4
 }

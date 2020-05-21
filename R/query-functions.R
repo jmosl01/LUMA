@@ -6,15 +6,14 @@
 #' @param Annotated.library a data frame with annotated metabolite entries. Must contain the first four columns called 'Name', 'Formula', Molecular.Weight' and 'RT..Min.', respectively.  Can contain additional columns.
 #' @param rules a data frame containing the rule list used by CAMERA to annotate ion adducts and fragments.  Must contain the columns 'name','nmol','charge','massdiff','oidscore','quasi','ips'.
 #' @param search.par a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.
-#' @param ion.mode a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'
+#' @param IonMode a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'
 #' @param lib_db RSQLite connection
 #' @return data frame containing the original table with added columns 'Name','MS.ID','Formula','Annotated.adduct' and any additional info columns from Annotated.library
 #' @importFrom dplyr '%>%' select copy_to tbl between
-#' @importFrom glue glue_collapse
 #' @importFrom utils str txtProgressBar
-match_Annotation = function(Peak.list, Annotated.library, rules, search.par, ion.mode, lib_db) {
+match_Annotation = function(Peak.list, Annotated.library, rules, search.par, IonMode, lib_db) {
 
-  myresults <- .gen_IHL(Peak.list, Annotated.library, rules, ion.mode, lib_db)
+  myresults <- .gen_IHL(Peak.list, Annotated.library, rules, IonMode, lib_db)
   search.list <- myresults[[1]]
   bin <- myresults[[2]]
   myion.mode <- myresults[[3]]
@@ -30,18 +29,19 @@ match_Annotation = function(Peak.list, Annotated.library, rules, search.par, ion
   rt.max <- search.list[["rt"]] + d.rt
 
   # Sets up the match results columns including all phenodata
-  search.list[,"MS.ID"] = NA_character_
-  search.list[,"Name"] = NA_character_
-  search.list[,"Formula"] = NA_character_
-  search.list[,"Molecular.Weight"] = NA_character_
-  search.list[,"RT..Min."] = NA_character_
-  search.list[,"Annotated.adduct"] = NA_character_
-  search.list[,seq(from = 10, to = 10 - 1 + length(colnames(Library.phenodata)), by = 1)] = NA_character_
-  colnames(search.list) <- c(colnames(search.list)[1:9],colnames(Library.phenodata))
+  search.list["MS.ID"] = NA_character_
+  search.list["Name"] = NA_character_
+  search.list["Formula"] = NA_character_
+  search.list["Molecular.Weight"] = NA_character_
+  search.list["RT..Min."] = NA_character_
+  search.list["Annotated.adduct"] = NA_character_
+  search.list["Annotated.mz"] = NA_character_
+  search.list[,seq(from = 11, to = 11 - 1 + length(colnames(Library.phenodata)), by = 1)] = NA_character_
+  colnames(search.list) <- c(colnames(search.list)[1:10],colnames(Library.phenodata))
 
-  ## attempts to match all peaks against the In House Library ! Try to build a query using *apply functions to
+  ## attempts to match all features against the In House Library ! Try to build a query using *apply functions to
   ## search all of the search list at once; should speed ! things up considerably
-  ## i = 27 Used for debugging purposes
+  # i = 13 # Used for debugging purposes
   total = nrow(search.list)
   cat("Annotating features against the In House Library.\n\n\n")
   pb = txtProgressBar(min = 0, max = total, style = 3)
@@ -53,34 +53,35 @@ match_Annotation = function(Peak.list, Annotated.library, rules, search.par, ion
     r.max = rt.max[[i]]
 
     test.list <- tbl(lib_db, paste("Annotated Library", myion.mode, sep = "_")) %>%
-                    dplyr::filter(between(mz, m.min, m.max)) %>%
-                        dplyr::filter(between(RT..Min., r.min, r.max)) %>%
-                            dplyr::collect()
+      dplyr::filter(between(mz, m.min, m.max)) %>%
+      dplyr::filter(between(RT..Min., r.min, r.max)) %>%
+      dplyr::collect()
+
+    colnames(test.list)[colnames(test.list)=="mz"] <- "Annotated.mz"
+    colnames(test.list)[colnames(test.list)=="adduct"] <- "Annotated.adduct"
 
     if (nrow(test.list) == 0) {
       search.list[i,"MS.ID"] = paste(bin[[i]], "Unidentified", sep = "_")
     } else {
-      if (nrow(test.list) >= 1) { ##Matches all features against the In House Library
-        #Prints the results of the match to console
-        # cat("\n\n\nFeature annotated for match number ", cnt, ".\nMatch results below.\n\n\n", sep = "")
-        # str(test.list)
+      if (nrow(test.list) >= 1) { ##Combines all matched features from the In House Library
         search.list[i,"MS.ID"] = paste(bin[[i]], "Annotated", sep = "_")
-        search.list[i,"Name"] = glue_collapse(test.list[,"Name"], sep = ";", width = Inf)
-        search.list[i,"Formula"] = glue_collapse(unique(gsub(" ", "", test.list[,"Formula"])), sep = ";", width = Inf)
-        search.list[i,"Molecular.Weight"] = glue_collapse(unique(test.list[,"Molecular.Weight"]), sep = ";", width = Inf)
-        search.list[i,"RT..Min."] = glue_collapse(unique(test.list[,"RT..Min."]), sep = ";", width = Inf)
-        search.list[i,"Annotated.adduct"] = glue_collapse(test.list[,"adduct"], sep = ";", width = Inf)
-        for(j in seq(from = 10, to = length(colnames(search.list)), by = 1)) {
-          k = j - 5
-          search.list[i,j] = glue_collapse(test.list[,k], sep = ";", width = Inf)
+
+        total_loop = length(colnames(test.list))
+
+        for (j in 1:total_loop) {
+          search.list[i,colnames(test.list)[j]] <- ddply(test.list, ~Ion.Mode, function(x) .mypaste(x,j))[2]
         }
+
         cnt = cnt + 1
+
       }
+
     }
 
     setTxtProgressBar(pb, i)
   }
   close(pb)
+
   named.peak.list <- search.list[, 4:ncol(search.list)]
   colnames(named.peak.list)
   temp <- as.data.frame(Peak.list)
@@ -223,17 +224,17 @@ search_IonDup.monoMass  <- function(object,Peak.list.pos,Peak.list.neg,search.pa
 #' Only the first value will be used. Default is '^MB'
 #' @param db.id character vector specifying identifiers in database names designating sample \[1\] and blank \[2\] databases.
 #' Default is c('Peaklist','Blanks')
-#' @param ion.modes a character vector defining the ionization mode.
+#' @param ion.mode a character vector defining the ionization mode.
 #' Must be either 'Positive', 'Negative' or both. Default is c('Positive','Negative')
 #' @param lib_db RSQLite connection
 #' @return nested list a list for each ionization mode, each containing a list of two dataframes: the first contains the intensity matrix for the peaklist with solvent peaks removed, the second contains the intensity matrix for the solvent peaks
-find_Background <- function(object, Peak.list, Solv.list, Sample.df, search.par, lib_db,ion.id,QC.id,MB.id,db.id,ion.modes) {
+find_Background <- function(object, Peak.list, Solv.list, Sample.df, search.par, lib_db,ion.id,QC.id,MB.id,db.id,ion.mode) {
   UseMethod("find_Background", object)
 }
 
 #' @rdname  find_Background
 #' @export
-find_Background.mz <- function(object, Peak.list, Solv.list, Sample.df, search.par, lib_db,ion.id,QC.id,MB.id,db.id,ion.modes) {
+find_Background.mz <- function(object, Peak.list, Solv.list, Sample.df, search.par, lib_db,ion.id,QC.id,MB.id,db.id,ion.mode) {
   #Set default values
   if(missing(ion.id))
     ion.id <- c("Pos","Neg")
@@ -243,17 +244,17 @@ find_Background.mz <- function(object, Peak.list, Solv.list, Sample.df, search.p
     MB.id <- "^MB"
   if(missing(db.id))
     db.id <- c("Peaklist","Blanks")
-  if(missing(ion.modes))
-    ion.modes <- c("Positive","Negative")
+  if(missing(ion.mode))
+    ion.mode <- c("Positive","Negative")
 
   endo.groups <- as.matrix(paste(Sample.df[which(Sample.df[, "Endogenous"] == TRUE), "Sex"], Sample.df[which(Sample.df[,
                                                                                                                        "Endogenous"] == TRUE), "Class"], sep = "_"))
-  list.length = length(ion.modes)
+  list.length = length(ion.mode)
   mylist <- NULL
   masterlist <- NULL
   for (i in 1:list.length) {
     ## Selects the filebase to use for data processing
-    cur.ion = ion.modes[i]
+    cur.ion = ion.mode[i]
     file.base = paste(db.id[1], ion.id[i], sep = "_")
     blank.base = paste(db.id[2], ion.id[i], sep = "_")
     cur.Peaklist <- Peak.list[[i]]
@@ -347,13 +348,13 @@ find_Background.mz <- function(object, Peak.list, Solv.list, Sample.df, search.p
     names(mylist) <- c("Peaklist", "Solvent_Peaks")
     masterlist[[i]] <- mylist
   }
-  names(masterlist) <- ion.modes
+  names(masterlist) <- ion.mode
   return(masterlist)
 }
 
 #' @rdname find_Background
 #' @export
-find_Background.monoMass <- function(object, Peak.list, Solv.list, Sample.df, search.par, lib_db,ion.id,QC.id,MB.id,db.id,ion.modes) {
+find_Background.monoMass <- function(object, Peak.list, Solv.list, Sample.df, search.par, lib_db,ion.id,QC.id,MB.id,db.id,ion.mode) {
   #Set default values
   if(missing(ion.id))
     ion.id <- c("Pos","Neg")
@@ -363,17 +364,17 @@ find_Background.monoMass <- function(object, Peak.list, Solv.list, Sample.df, se
     MB.id <- "^MB"
   if(missing(db.id))
     db.id <- c("Peaklist","Blanks")
-  if(missing(ion.modes))
-    ion.modes <- c("Positive","Negative")
+  if(missing(ion.mode))
+    ion.mode <- c("Positive","Negative")
 
   endo.groups <- as.matrix(paste(Sample.df[which(Sample.df[, "Endogenous"] == TRUE), "Sex"], Sample.df[which(Sample.df[,
                                                                                                                        "Endogenous"] == TRUE), "Class"], sep = "_"))
-  list.length = length(ion.modes)
+  list.length = length(ion.mode)
   mylist <- NULL
   masterlist <- NULL
   for (i in 1:list.length) {
     ## Selects the filebase to use for data processing
-    cur.ion = ion.modes[i]
+    cur.ion = ion.mode[i]
     file.base = paste(db.id[1], ion.id[i], sep = "_")
     blank.base = paste(db.id[2], ion.id[i], sep = "_")
     cur.Peaklist <- Peak.list[[i]]
@@ -471,7 +472,7 @@ find_Background.monoMass <- function(object, Peak.list, Solv.list, Sample.df, se
     names(mylist) <- c("Peaklist", "Solvent_Peaks")
     masterlist[[i]] <- mylist
   }
-  names(masterlist) <- ion.modes
+  names(masterlist) <- ion.mode
   return(masterlist)
 
 }

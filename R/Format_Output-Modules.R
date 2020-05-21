@@ -1,14 +1,24 @@
 #' @title Format Peaklists for input into SIMCA
 #'
 #' @export
-#' @description Formats Peaklists processed by LUMA and exports a csv file for direct import into the multivariate statistical software SIMCA.
-#' See format_simca for more details.
+#' @description Formats Peaklists processed by LUMA and exports a csv file for
+#'   direct import into the multivariate statistical software SIMCA. See
+#'   format_simca for more details.
 #' @param from.table from which table should LUMA read the Peaklist
-#' @param to.csv to what filename (excluding .csv extension) should LUMA save the formatted Peaklist
-#' @param peak.db what database contains the Peaklists to be combined.
-#' Default is 'Peaklist_db'
-#' @param db.dir directory containing the database.
-#' Default is 'db'
+#' @param to.csv to what filename (excluding .csv extension) should LUMA save
+#'   the formatted Peaklist
+#' @param peak.db what database contains the Peaklists to be combined. Default
+#'   is 'Peaklist_db'
+#' @param db.dir directory containing the database. Default is 'db'
+#' @examples
+#' \dontrun{
+#' library(LUMA)
+#' db.dir <- system.file('extdata/', package = "LUMA")
+#' InitWorkflow(db.dir = db.dir)
+#' AnnotatePeaklist(from.table = "From CAMERA", to.table = "Annotated")
+#' FormatForSIMCA(from.table = "Annotated", to.csv = "Peaklist_for_SIMCA",
+#' peak.db = peak_db, db.dir = db.dir)
+#' }
 FormatForSIMCA <- function(from.table,to.csv,peak.db,db.dir) {
 
   #Set default values
@@ -42,18 +52,31 @@ FormatForSIMCA <- function(from.table,to.csv,peak.db,db.dir) {
 #' @title Formatting of metabolite data for MetaboAnalystR.
 #'
 #' @export
-#' @description This function initializes objects that will hold the metabolite data, formats peak intensity data into one of the formats acceptable by MetaboAnalystR, and sets the metabolite data object.
+#' @description This function initializes objects that will hold the metabolite
+#'   data, formats peak intensity data into one of the formats acceptable by
+#'   MetaboAnalystR, and sets the metabolite data object.
 #' @param from.table from which table should LUMA read the Peaklist
-#' @param to.csv to what filename (excluding .csv extension) should LUMA save the formatted Peaklist
-#' @param data.type What type of data will be generated. See usage and format_MetabolomicData for options.
-#' @param anal.type character Indicates the analysis module the data will be used for. See usage and documentation for MetaboAnalystR::InitDataObjects() for options.
-#' @param paired logical Indicate if the data is paired or not.
-#' Default is FALSE
-#' @param peak.db what database contains the Peaklists to be combined.
-#' Default is 'Peaklist_db'
-#' @param db.dir directory containing the database.
-#' Default is 'db'
+#' @param to.csv to what filename (excluding .csv extension) should LUMA save
+#'   the formatted Peaklist
+#' @param data.type What type of data will be generated. See usage and
+#'   format_MetabolomicData for options.
+#' @param anal.type character Indicates the analysis module the data will be
+#'   used for. See usage and documentation for MetaboAnalystR::InitDataObjects()
+#'   for options.
+#' @param paired logical Indicate if the data is paired or not. Default is FALSE
+#' @param peak.db what database contains the Peaklists to be combined. Default
+#'   is 'Peaklist_db'
+#' @param db.dir directory containing the database. Default is 'db'
 #' @return mSetObj
+#' @examples
+#' \dontrun{
+#' library(LUMA)
+#' db.dir <- system.file('extdata/', package = "LUMA")
+#' InitWorkflow(db.dir = db.dir)
+#' AnnotatePeaklist(from.table = "From CAMERA", to.table = "Annotated")
+#' FormatForMetaboAnalystR(from.table = "Annotated", to.csv =
+#' "Peaklist_for_MetaboAnalyist", peak.db = peak_db, db.dir = db.dir)
+#' }
 FormatForMetaboAnalystR <- function(from.table, to.csv, data.type = "pktable",
                                     anal.type = "stat", paired = FALSE, peak.db, db.dir)
 {
@@ -115,6 +138,21 @@ FormatForMetaboAnalystR <- function(from.table, to.csv, data.type = "pktable",
   MT.data <- cbind(Sample = rownames(conc),Class = mSetObj$dataSet$orig.cls,conc)
 
   write.table(MT.data, file = paste(to.csv,".csv",sep = ""), sep = ",", row.names = FALSE)
+
+  #Generate Metadata files for mSetObj
+  peak.list <- read_tbl(from.table, peak_db)
+
+  output_MetaData(mSetObj, peak.list,
+                  Sample.df = data.frame(Sex = Sexes,
+                                         Class = Classes,
+                                         n = no.Samples,
+                                         Endogenous = Endogenous),
+
+                  Sample.data = cbind.data.frame(CT.ID,
+                                                 Plate.Number,
+                                                 Plate.Position,
+                                                 Sample.phenodata))
+
 
   return(mSetObj)
 }

@@ -8,6 +8,13 @@
 #' @param CAMERA.obj which CAMERA object to use to plot metabolite groups.
 #' Default is to read from saved R objects by call to InitWorkflow
 #' @return NULL
+#' @examples
+#' \dontrun{
+#' library(LUMA)
+#' db.dir <- system.file('extdata/', package = "LUMA")
+#' InitWorkflow(db.dir = db.dir)
+#' ParseCAMERA(from.table = "From CAMERA", to.table = "output_parsed")
+#' }
 ParseCAMERA <- function(from.table,to.table,CAMERA.obj) {
 
   #Set default values
@@ -17,7 +24,7 @@ ParseCAMERA <- function(from.table,to.table,CAMERA.obj) {
   ##Check for existing CAMERA objects. If not specified, check for saved CAMERA objects.
   ##If none exist, return error.
   if(is.null(CAMERA.obj)) {
-    PreProcesslist <- .set_PreProcessFileNames(ion.mode,BLANK)
+    PreProcesslist <- .set_PreProcessFileNames(IonMode,BLANK)
     CAMERA.file <- PreProcesslist[[2]]
 
     #CAMERA sanity check
@@ -42,15 +49,15 @@ ParseCAMERA <- function(from.table,to.table,CAMERA.obj) {
                         asdf = TRUE)
 
   ## Run the CAMERA Parser
-  if(ion.mode == "Positive"){
+  if(IonMode == "Positive"){
     new.Peak.list <- parse_pos_results(raw = Peak.list,
                                    rule = rules,
-                                   ion.mode = ion.mode)
+                                   IonMode = IonMode)
   } else {
-    if(ion.mode == "Negative"){
+    if(IonMode == "Negative"){
       new.Peak.list <- parse_neg_results(raw = Peak.list,
                                      rule = rules,
-                                     ion.mode = ion.mode)
+                                     IonMode = IonMode)
     }
   }
 
@@ -64,7 +71,7 @@ ParseCAMERA <- function(from.table,to.table,CAMERA.obj) {
   Peak.list <- read_tbl(mytable = "input_parsed",
                         peak.db = peak_db,
                         asdf = TRUE)
-  file.base <- gen_filebase(DataFiles,BLANK,ion.id,ion.mode)
+  file.base <- gen_filebase(DataFiles,BLANK,ion.id,IonMode)
 
   myresults <- plot_metgroup(CAMERA.obj = CAMERA.obj,
                              Sample.df = data.frame(Sex = Sexes,
@@ -75,7 +82,7 @@ ParseCAMERA <- function(from.table,to.table,CAMERA.obj) {
                              center = XCMS.par$center,
                              BLANK = BLANK,
                              gen.plots = gen.plots,
-                             ion.mode = ion.mode,
+                             IonMode = IonMode,
                              file.base = file.base)
 
   write_tbl(mydf = myresults[[1]],
@@ -99,6 +106,13 @@ ParseCAMERA <- function(from.table,to.table,CAMERA.obj) {
 #' @param from.table from which table should LUMA pull the Peak.list
 #' @param to.table to which should LUMA save the modified Peak.list
 #' @return NULL
+#' @examples
+#' \dontrun{
+#' library(LUMA)
+#' db.dir <- system.file('extdata/', package = "LUMA")
+#' InitWorkflow(db.dir = db.dir)
+#' CombineFeatures(from.table = "output_parsed", to.table = "Combined Isotopes and Adducts")
+#' }
 CombineFeatures <- function(from.table,to.table) {
   ## Sums isotopic and adduct peaks and combined all feature data into a single metadata entry
 
@@ -123,7 +137,7 @@ CombineFeatures <- function(from.table,to.table) {
                                                          gen.plots = gen.plots,
                                                          keep.singletons = keep.singletons),
                                  BLANK = BLANK,
-                                 ion.mode = ion.mode)
+                                 IonMode = IonMode)
 
   #Combine phenotype data for each metabolite group with summed intensity values
   new.Peak.list <- combine_phenodata(Sample.df = data.frame(Sex = Sexes,
@@ -144,7 +158,7 @@ CombineFeatures <- function(from.table,to.table) {
                                                                 gen.plots = gen.plots,
                                                                 keep.singletons = keep.singletons),
                                         BLANK = BLANK,
-                                        ion.mode = ion.mode)
+                                        IonMode = IonMode)
   write_tbl(mydf = new.Peak.list,
             peak.db = peak_db,
             myname = to.table)

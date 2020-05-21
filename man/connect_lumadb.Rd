@@ -4,18 +4,48 @@
 \alias{connect_lumadb}
 \title{Connects to LUMA database}
 \usage{
-connect_lumadb(db.list, db.dir, new.db)
+connect_lumadb(db.list, db.dir, new.db, mem)
 }
 \arguments{
-\item{db.list}{list chracter names of databases containing results from processing positive mode (1,3) and negative mode (2,4) data for samples (1,2) and blanks (3,4)}
+\item{db.list}{list character names of databases containing results from
+processing positive mode and negative mode data for samples and blanks}
 
 \item{db.dir}{character directory containing the databases}
 
-\item{new.db}{character what should the new database be called}
+\item{new.db}{character what should the new database be called.}
+
+\item{mem}{logical should database be in-memory. Default is FALSE}
 }
 \value{
-list of Formal class SQLiteConnections, starting with new.db entry followed by one for each db.list entry and
+list of Formal class SQLiteConnections, starting with new.db entry
+  followed by one for each db.list entry
 }
 \description{
-Establishes a connection to an RSQLite database for combining Peak.lists together from two different ionization modes
+Establishes a connection to an RSQLite database for combining
+  Peak.lists together from two different ionization modes. Must have
+  previously saved SQLite databases to hard disk.
+}
+\examples{
+library(LUMA)
+if(require(RSQLite, quietly = TRUE)) {
+file <- system.file("extdata/Sample_Data.csv", package =  "LUMA")
+sample_data <- read.table(file, header = TRUE, sep = ",")
+mzdatafiles <- sample_data$CT.ID
+samples.pos <- gen_filebase(mzdatafiles = mzdatafiles, BLANK = FALSE, IonMode
+= "Positive", ion.id = c("Pos","Neg")) #Returns "Peaklist_Pos" samples.neg <-
+gen_filebase(mzdatafiles = mzdatafiles, BLANK = FALSE, IonMode = "Negative",
+ion.id = c("Pos","Neg")) #Returns "Peaklist_Neg" blanks.pos <-
+gen_filebase(mzdatafiles = mzdatafiles, BLANK = TRUE, IonMode = "Positive",
+ion.id = c("Pos","Neg")) #Returns "Blanks_Pos" blanks.neg <-
+gen_filebase(mzdatafiles = mzdatafiles, BLANK = TRUE, IonMode = "Negative",
+ion.id = c("Pos","Neg")) #Returns "Blanks_Neg"
+
+spos_db <- connect_peakdb(file.base = samples.pos, mem = TRUE)
+sneg_db <- connect_peakdb(file.base = samples.neg, mem = TRUE)
+bpos_db <- connect_peakdb(file.base = blanks.pos, mem = TRUE)
+bneg_db <- connect_peakdb(file.base = blanks.neg, mem = TRUE)
+new_db.list <- connect_lumadb(db.list = c("spos_db","sneg_db","bpos_db","bneg_db"), mem = TRUE)
+all(sapply(new_db.list, function(x) { #All valid databases are created
+  dbIsValid(x)
+}))}
 }

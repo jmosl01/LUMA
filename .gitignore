@@ -2,6 +2,8 @@
 .Rhistory
 .RData
 .Ruserdata
-.Rproj
+*.Rproj
+*.Rbuildignore
 inst/doc
-NAMESPACE
+.Renviron
+data-raw/Peaklist_Pos_old.SQLite

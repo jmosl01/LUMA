@@ -1,4 +1,9 @@
+^Meta$
+^doc$
 ^.*\.Rproj$
 ^\.Rproj\.user$
 cran-comments.md
 ^\.travis\.yml$
+^doc$
+^Meta$
+^data-raw$

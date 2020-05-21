@@ -1,0 +1,14 @@
+Sex	Class	n	Endogenous
+
+M	5_Effluent	12	FALSE
+M	20_Effluent	12	FALSE
+
+M	100_Effluent	12	FALSE
+
+M	Control	12	TRUE
+F	5_Effluent	12	FALSE
+F	20_Effluent	12	FALSE
+
+F	100_Effluent	12	FALSE
+
+F	Control	12	TRUE

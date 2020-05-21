@@ -4,20 +4,33 @@
 \alias{gen_filebase}
 \title{Generate Filebase}
 \usage{
-gen_filebase(mzdatafiles, BLANK, ion.id, ion.mode)
+gen_filebase(mzdatafiles, BLANK, ion.id, IonMode)
 }
 \arguments{
-\item{mzdatafiles}{character vector containing data files to process and store results in databases}
+\item{mzdatafiles}{character vector containing data files to process and
+store results in databases}
 
 \item{BLANK}{a logical indicating whether blanks are being evaluated}
 
-\item{ion.id}{character vector of length 2 specifying identifier in filename designating positive or negative ionization mode.  Positive identifier must come first.}
+\item{ion.id}{character vector of length 2 specifying identifier in filename
+designating positive or negative ionization mode.  Positive identifier must
+come first.}
 
-\item{ion.mode}{a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'}
+\item{IonMode}{a character string defining the ionization mode.  Must be
+either 'Positive' or 'Negative'}
 }
 \value{
 character
 }
 \description{
 Generates filebase for reading and writing to databases
+}
+\examples{
+library(LUMA)
+file <- system.file("extdata/Sample_Data.csv", package =  "LUMA")
+sample_data <- read.table(file, header = TRUE, sep = ",")
+mzdatafiles <- sample_data$CT.ID
+test <- gen_filebase(mzdatafiles = mzdatafiles, BLANK = FALSE, IonMode =
+"Positive", ion.id = c("Pos","Neg")) #Returns "Peaklist_Pos"
+print(test)
 }

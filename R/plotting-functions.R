@@ -8,7 +8,7 @@
 #' @param BLANK a logical indicating whether blanks are being evaluated. Default is FALSE
 #' @param gen.plots a logical indicating whether to create plots for metabolite groups.
 #' Default is FALSE
-#' @param ion.mode a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'
+#' @param IonMode a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'
 #' @param CAMERA.obj xsannotate object with annotated isotopes and ion adducts and fragments
 #' @param file.base character string used to name graphical output.  Will be appended with '_CorrPlots.pdf'
 #' @param QC.id character identifier for pooled QC samples.
@@ -16,14 +16,13 @@
 #' @param maxlabel numeric How many m/z labels to print
 #' @return List of length 2.  1st element is a data frame with all columns as the original data frame with one additional column 'Correlation.stat'.
 #' 2nd element is a list of objects used to validate CAMERA results.
-#' @importFrom  CAMERA plotEICs
-#' @importFrom CAMERA plotPsSpectrum
-#' @importFrom grDevices dev.off pdf rainbow
+#' @importFrom CAMERA plotEICs plotPsSpectrum
+#' @importFrom grDevices dev.off pdf rainbow graphics.off
 #' @importFrom graphics layout par plot text
 #' @importFrom Hmisc rcorr
 #' @importFrom corrplot corrplot corrMatOrder
 #' @importFrom dplyr group_by
-plot_metgroup = function(CAMERA.obj, Sample.df, Peak.list, center, BLANK, gen.plots, ion.mode, file.base, QC.id, maxlabel) {
+plot_metgroup = function(CAMERA.obj, Sample.df, Peak.list, center, BLANK, gen.plots, IonMode, file.base, QC.id, maxlabel) {
     if (missing(BLANK))
         BLANK = FALSE
     if (missing(gen.plots))
@@ -33,11 +32,16 @@ plot_metgroup = function(CAMERA.obj, Sample.df, Peak.list, center, BLANK, gen.pl
     if (missing(maxlabel))
         maxlabel = 10
 
-
     # Change the psspectra list in the xsAnnotate object to be the unique list of metabolite_groups
     X <- split(Peak.list$EIC_ID, as.numeric(Peak.list$metabolite_group))
     names(X) <- sort(unique(Peak.list$metabolite_group))
-    new_CAMERA.obj <- CAMERA.obj
+
+    if (CAMERA.obj %in% ls(envir = .GlobalEnv)) {
+      new_CAMERA.obj <- get(CAMERA.obj, envir = .GlobalEnv)
+    } else {
+      new_CAMERA.obj <- CAMERA.obj
+    }
+
     new_CAMERA.obj@pspectra <- X
 
     ## Need to set a numeric value in this slot, else plotEICs will give error
@@ -48,7 +52,7 @@ plot_metgroup = function(CAMERA.obj, Sample.df, Peak.list, center, BLANK, gen.pl
     get.mg <- which(pspec.length > 1)
     names(get.mg) <- NULL
 
-    Peak.list.pspec <- calc_corrstat(Sample.df, Peak.list, get.mg, BLANK, ion.mode)
+    Peak.list.pspec <- calc_corrstat(Sample.df, Peak.list, get.mg, BLANK, IonMode)
     validate.list <- .validate_metgroup(Peak.list.pspec)
 
     Peak.list.new <- list(Peak.list.pspec, validate.list)
@@ -62,6 +66,9 @@ plot_metgroup = function(CAMERA.obj, Sample.df, Peak.list, center, BLANK, gen.pl
 
     # New code to plot correlation matrix plots for each metabolite group containing more than one feature
     if (gen.plots && !BLANK) {
+
+
+        graphics.off()
         sexes <- unique(paste(Sample.df$Sex, "_", sep = ""))
         sample.cols <- grep(paste(QC.id, paste(strsplit(sexes, "(?<=.[_])", perl = TRUE), collapse = "|"), sep = "|"),
             colnames(Peak.list))
@@ -84,8 +91,8 @@ plot_metgroup = function(CAMERA.obj, Sample.df, Peak.list, center, BLANK, gen.pl
                   test.mat <- as.matrix(t(my.mat))
                   dimnames(test.mat) <- list(colnames(my.df[, sample.cols]), my.df$EIC_ID)
                   plot(c(0, 1), c(0, 1), ann = F, bty = "n", type = "n", xaxt = "n", yaxt = "n")
-                  text(x = 0.5, y = 0.5, paste("Dendrograms can't be plotted for two features.\n", "Use the correlation plot to the left to \n",
-                    "Tell if two features are from the same metabolite"), cex = 1.6, col = "black")
+                  text(x = 0.5, y = 0.5, paste("Dendrograms can't be plotted for two features.\n", "Use the correlation plot to the left to tell \n",
+                    "if two features are from the same metabolite"), cex = 1.6, col = "black")
                   res2 <- rcorr(test.mat)
                   M <- res2$r
                   P <- res2$P
@@ -93,12 +100,17 @@ plot_metgroup = function(CAMERA.obj, Sample.df, Peak.list, center, BLANK, gen.pl
                   order.hc2 <- corrplot::corrMatOrder(M, order = "hclust", hclust.method = "complete")
                   col.new = rainbow(maxlabel)[order.hc2]
                   corrplot(M, type = "upper", order = "hclust", hclust.method = "complete", p.mat = P, sig.level = 0.01, insig = "blank",
-                    tl.col = col.new)
+                    tl.col = col.new, cl.ratio = 0.15, cl.align.text = "l", cl.cex = 0.6, cl.offset = 0.2)
 
                   # Plots the EICs and Pseudo-spectra for each metabolite group containing more than one feature in a for loop
                   EIC.plots <- plotEICs(new_CAMERA.obj, pspec = get.mg[i], maxlabel = maxlabel, sleep = 0)  ## Plot the EICs
 
-                  plotPsSpectrum(new_CAMERA.obj, pspec = get.mg[i], maxlabel = maxlabel, sleep = 0)  #Plot the Mass Spectra
+                  a1 <- new_CAMERA.obj@pspectra[[get.mg[i]]]
+                  b1 <- new_CAMERA.obj@groupInfo[a1,"mz"]
+                  mz1 <- min(b1) * 0.80
+                  mz2 <- max(b1) * 1.20
+
+                  plotPsSpectrum(new_CAMERA.obj, pspec = get.mg[i], maxlabel = maxlabel, sleep = 0, cex.main = 0.8, cexMulti = 1.0, mzrange = c(mz1,mz2))  #Plot the Mass Spectra
 
                 } else {
                   my.mat <- as.matrix(my.df[, grep(paste(QC.id, paste(strsplit(sexes, "(?<=.[_])", perl = TRUE),
@@ -120,11 +132,16 @@ plot_metgroup = function(CAMERA.obj, Sample.df, Peak.list, center, BLANK, gen.pl
                   order.hc2 <- corrplot::corrMatOrder(M, order = "hclust", hclust.method = "complete")
                   col.new = rainbow(maxlabel)[order.hc2]
                   corrplot(M, type = "upper", order = "hclust", hclust.method = "complete", p.mat = P, sig.level = 0.01, insig = "blank",
-                    tl.col = col.new)
+                    tl.col = col.new, cl.ratio = 0.15, cl.align.text = "l", cl.cex = 0.6, cl.offset = 0.2)
                   # Plots the EICs and Pseudo-spectra for each metabolite group containing more than one feature in a for loop
                   EIC.plots <- plotEICs(new_CAMERA.obj, pspec = get.mg[i], maxlabel = maxlabel, sleep = 0)  ## Plot the EICs
 
-                  plotPsSpectrum(new_CAMERA.obj, pspec = get.mg[i], maxlabel = maxlabel, sleep = 0)  #Plot the Mass Spectra
+                  a1 <- new_CAMERA.obj@pspectra[[get.mg[i]]]
+                  b1 <- new_CAMERA.obj@groupInfo[a1,"mz"]
+                  mz1 <- min(b1) * 0.80
+                  mz2 <- max(b1) * 1.20
+
+                  plotPsSpectrum(new_CAMERA.obj, pspec = get.mg[i], maxlabel = maxlabel, sleep = 0, cex.main = 0.8, cexMulti = 1.0, mzrange = c(mz1, mz2))  #Plot the Mass Spectra
                 }
             }
         }
@@ -254,6 +271,9 @@ plot_ionduplicate = function(anposGa, xpos, annegGa, xneg, rt.method, Peak.list,
 
   ## Code to plot EICs for all Duplicate IDs in a loop.####
     if (gen.plots) {
+
+        graphics.off()
+
         total = length(Un.ID)
 
         pdf(file = paste(file.base, ".pdf", sep = ""))
@@ -404,59 +424,3 @@ plot_ionduplicate = function(anposGa, xpos, annegGa, xneg, rt.method, Peak.list,
 
 }
 
-.LUMA_order = function(object){
-return(object)
-}
-
-.convert_EIC = function(EIC) {
-  if(is.null(EIC))
-    return(EIC) else {
-      EIC_split <- strsplit(EIC, split = ";")
-      EIC_num <- lapply(EIC_split, function(x) as.numeric(x))
-      EICs <- unlist(EIC_num)
-      return(EICs)
-    }
-}
-
-.validate_metgroup <- function(Peak.list.pspec) {
-  validate.df <- Peak.list.pspec[order(Peak.list.pspec$metabolite_group), c("MS.ID", "mz", "rt", "Name",
-                                                                            "Formula","Annotated.adduct",
-                                                                            "isotopes", "adduct",
-                                                                            "mono_mass", "metabolite_group",
-                                                                            "Correlation.stat")]
-  mytbl <- validate.df %>%
-    group_by(metabolite_group)
-
-  mytbl <- mytbl %>%
-    summarise(max = max(Correlation.stat[Correlation.stat!=max(Correlation.stat)]),
-              min = min(Correlation.stat))
-  f1 <- which(mytbl$min >= 0.7)
-  f2 <- which(mytbl$max <= 0.2)
-  clear.groups <- mytbl[(union(f1,f2)),"metabolite_group"] %>%
-    data.frame()
-  TP.groups <- mytbl[f1,"metabolite_group"] %>%
-    data.frame()
-  TN.groups <- mytbl[f2,"metabolite_group"] %>%
-    data.frame()
-  muddy.groups <- mytbl[-(union(f1,f2)),"metabolite_group"] %>%
-    data.frame()
-  ##Error Check
-  if(nrow(clear.groups) != nrow(TP.groups) + nrow(TN.groups))
-    stop("The number of true positives and true negatives does not equal the number of clear cut metabolite groups!", call. = FALSE)
-  n.col <- ncol(validate.df)
-  col.names <- colnames(validate.df)
-  validate.df[,(n.col+1:(n.col+3))] <- NA
-  colnames(validate.df) <- c(col.names,"Category Score1","Category Score2","Category Score3")
-  validate.df$`Category Score2` <- validate.df$Correlation.stat
-  validate.df[which(validate.df$metabolite_group %in% TP.groups$metabolite_group),
-              c("Category Score1","Category Score3")] <- 1
-  validate.df[which(validate.df$metabolite_group %in% TN.groups$metabolite_group),
-              c("Category Score1","Category Score3")] <- 0
-  x <- which(validate.df$metabolite_group %in% clear.groups$metabolite_group)
-  y <- which(validate.df$metabolite_group %in% muddy.groups$metabolite_group)
-  myfactor <- factor(NA, levels = c("clear","muddy"))
-  myfactor[x] <- "clear"
-  myfactor[y] <- "muddy"
-  validate.list <- split(validate.df,myfactor)
-  return(validate.list)
-}

@@ -9,6 +9,14 @@
 #' Default is 'Peaklist_db'
 #' @param db.dir directory containing the database.
 #' Default is 'db'
+#' @examples
+#' \dontrun{
+#' library(LUMA)
+#' db.dir <- system.file('extdata/', package = "LUMA")
+#' InitWorkflow(db.dir = db.dir)
+#' NormalizePeaklists(from.table = "From CAMERA", to.table = "Normalized",
+#' peak.db = peak_db, db.dir = db.dir)
+#' }
 NormalizePeaklists <- function(from.table,to.table,peak.db,db.dir) {
 
   #Set default values

@@ -6,14 +6,47 @@
 \alias{find_Background.monoMass}
 \title{Finds background components in Peak.list}
 \usage{
-find_Background(object, Peak.list, Solv.list, Sample.df, search.par,
-  lib_db, ion.id, QC.id, MB.id, db.id, ion.modes)
+find_Background(
+  object,
+  Peak.list,
+  Solv.list,
+  Sample.df,
+  search.par,
+  lib_db,
+  ion.id,
+  QC.id,
+  MB.id,
+  db.id,
+  ion.mode
+)
 
-\method{find_Background}{mz}(object, Peak.list, Solv.list, Sample.df,
-  search.par, lib_db, ion.id, QC.id, MB.id, db.id, ion.modes)
+\method{find_Background}{mz}(
+  object,
+  Peak.list,
+  Solv.list,
+  Sample.df,
+  search.par,
+  lib_db,
+  ion.id,
+  QC.id,
+  MB.id,
+  db.id,
+  ion.mode
+)
 
-\method{find_Background}{monoMass}(object, Peak.list, Solv.list, Sample.df,
-  search.par, lib_db, ion.id, QC.id, MB.id, db.id, ion.modes)
+\method{find_Background}{monoMass}(
+  object,
+  Peak.list,
+  Solv.list,
+  Sample.df,
+  search.par,
+  lib_db,
+  ion.id,
+  QC.id,
+  MB.id,
+  db.id,
+  ion.mode
+)
 }
 \arguments{
 \item{object}{used for method dispatch. Can be any object. See usage for details}
@@ -39,7 +72,7 @@ Only the first value will be used. Default is '^MB'}
 \item{db.id}{character vector specifying identifiers in database names designating sample \[1\] and blank \[2\] databases.
 Default is c('Peaklist','Blanks')}
 
-\item{ion.modes}{a character vector defining the ionization mode.
+\item{ion.mode}{a character vector defining the ionization mode.
 Must be either 'Positive', 'Negative' or both. Default is c('Positive','Negative')}
 }
 \value{

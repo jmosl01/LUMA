@@ -4,8 +4,21 @@
 \alias{plot_ionduplicate}
 \title{Loop-based EIC Plotter for Ion Mode Duplicates}
 \usage{
-plot_ionduplicate(anposGa, xpos, annegGa, xneg, rt.method, Peak.list,
-  gen.plots, file.base, QC.id, mytable, maxEIC, maxQC, ...)
+plot_ionduplicate(
+  anposGa,
+  xpos,
+  annegGa,
+  xneg,
+  rt.method,
+  Peak.list,
+  gen.plots,
+  file.base,
+  QC.id,
+  mytable,
+  maxEIC,
+  maxQC,
+  ...
+)
 }
 \arguments{
 \item{anposGa}{xsannotate object with annotated isotopes and ion adducts and fragments for positive mode.}

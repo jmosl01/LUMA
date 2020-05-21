@@ -4,16 +4,33 @@
 \alias{connect_peakdb}
 \title{Connects to peak database}
 \usage{
-connect_peakdb(file.base, db.dir)
+connect_peakdb(file.base, db.dir, mem)
 }
 \arguments{
 \item{file.base}{character return from gen_filebase function}
 
-\item{db.dir}{character what should the database directory be called.  Default is 'db'}
+\item{db.dir}{character what should the database directory be called.
+Default is 'db'}
+
+\item{mem}{logical should database be in-memory. Default is FALSE}
 }
 \value{
 Formal class SQLiteConnection
 }
 \description{
-Establishes a connection to an RSQLite database for storing Peak.list; if doesn't exist, creates new database
+Establishes a connection to an SQLite database for storing
+  Peak.list; if doesn't exist, creates new database
+}
+\examples{
+library(LUMA)
+if(require(RSQLite, quietly = TRUE)) {
+file <- system.file("extdata/Sample_Data.csv", package =  "LUMA")
+sample_data <- read.table(file, header = TRUE, sep = ",")
+mzdatafiles <- sample_data$CT.ID
+file.base <- gen_filebase(mzdatafiles = mzdatafiles, BLANK = FALSE, IonMode =
+"Positive", ion.id = c("Pos","Neg")) #Returns "Peaklist_Pos"
+peak_db <- connect_peakdb(file.base = file.base, mem = TRUE)
+dbIsValid(peak_db) #valid database is created
+dbDisconnect(peak_db)
+}
 }
