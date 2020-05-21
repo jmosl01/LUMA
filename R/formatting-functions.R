@@ -13,6 +13,16 @@
 #' @importFrom stats setNames
 #' @importFrom gtools mixedorder
 #' @importFrom plyr rbind.fill
+#' @examples
+#' library(LUMA)
+#' if(require(lcmsfishdata, quietly = TRUE)) {
+#'   file <- system.file('extdata/Sample_Class.txt', package = "lcmsfishdata")
+#'   Sample.df <- read.table(file, header = TRUE, sep = "\t")
+#'  file2 <- system.file('extdata/Sample_Data.csv', package = "lcmsfishdata")
+#'   Sample.data <- read.table(file2, header = TRUE, sep = ",")
+#'  Peak.list <- Peaklist_db$Peaklist_Normalized
+#'   test <- format_simca(Peak.list = Peak.list, Sample.df = Sample.df, Sample.data = Sample.data)
+#' }
 format_simca = function(Peak.list = NULL, Sample.df, Sample.data, tbl.id = NULL, QC.id = "Pooled_QC_", ...) {
 
 
@@ -63,7 +73,7 @@ format_simca = function(Peak.list = NULL, Sample.df, Sample.data, tbl.id = NULL,
   Sample.data <- Sample.data[order(Sample.data[,1]), ]
   Sample.data <- setNames(cbind.data.frame(Sample.data[, 1], group, Sample.data[-1]), c(colnames(Sample.data[1]),
                                                                                         "Exposure Class", colnames(Sample.data[-1])))
-  sample.ID <- as.numeric(sub("\\D*(\\d{6}).*", "\\1", colnames(sample.peaks)))  #pulls out the 6-digit numeric sample codes into a vector for matching against the Sample data spreadsheet
+  sample.ID <- suppressWarnings(as.numeric(sub("\\D*(\\d{6}).*", "\\1", colnames(sample.peaks))))  #pulls out the 6-digit numeric sample codes into a vector for matching against the Sample data spreadsheet
   if (all(is.na(sample.ID))) {
     ## Alternatively uses a unique alphanumeric ID provided by user
     sample.ID <- sub("\\D*(\\d{6}).*", "\\1", colnames(sample.peaks))
@@ -78,7 +88,7 @@ format_simca = function(Peak.list = NULL, Sample.df, Sample.data, tbl.id = NULL,
   Mettag <- rep("Unidentified", length = length(MetID), mode = "character")
   Mettag[which(grepl("Annotated", temp, fixed = TRUE))] <- "Annotated"
 
-  my_ion <- Peak.list$Ion.Mode
+  my_ion <- Peak.list$Ion.Mode.1
   my_mass <- round(Peak.list$mono_mass, digits = 5)
   my_rt <- round(Peak.list$meanRT, digits = 2)
   Metbase <- paste(my_ion,my_mass,my_rt,sep = "_")
@@ -142,14 +152,41 @@ format_simca = function(Peak.list = NULL, Sample.df, Sample.data, tbl.id = NULL,
 #' @title Formatting of metabolomic data for MetaboAnalystR.
 #'
 #' @export
-#' @description This function initializes objects that will hold the metabolite data, formats peak intensity data into one of the formats acceptable by MetaboAnalystR, and sets the metabolite data object.
+#' @description This function initializes objects that will hold the metabolite
+#'   data, formats peak intensity data into one of the formats acceptable by
+#'   MetaboAnalystR, and sets the metabolite data object.
 #' @param mSetObj NULL
-#' @param Peak.list data frame containing combined ion mode peaklist with ion mode duplicates removed.
-#' @param Sample.df data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns 'Sex','Class','n','Endogenous'.
-#' @param Sample.data data frame with phenotype data as columns and a row for each study sample.  First column must be a unique sample identifier with the header 'CT-ID'.  Phenotype columns may vary, but must include two columns called 'Plate Number' and 'Plate Position' for determining run order.
+#' @param Peak.list data frame containing combined ion mode peaklist with ion
+#'   mode duplicates removed.
+#' @param Sample.df data frame with class info as columns.  Must contain a
+#'   separate row entry for each unique sex/class combination. Must contain the
+#'   columns 'Sex','Class','n','Endogenous'.
+#' @param Sample.data data frame with phenotype data as columns and a row for
+#'   each study sample.  First column must be a unique sample identifier with
+#'   the header 'CT-ID'.  Phenotype columns may vary, but must include two
+#'   columns called 'Plate Number' and 'Plate Position' for determining run
+#'   order.
 #' @param tbl.id character Table name to draw from database. Default is NULL
 #' @param ... Arguments to pass parameters to database functions
 #' @return mSetObj
+#' @examples
+#' library(LUMA)
+#' if(require(lcmsfishdata, quietly = TRUE)) {
+#' file <- system.file("extdata/Sample_Class.txt", package = "LUMA")
+#' Sample.df <- read.table(file, header = TRUE, sep = "\t")
+#' file2 <- system.file("extdata/Sample_Data.csv", package = "LUMA")
+#' Sample.data <- read.table(file2, header = TRUE, sep = ",")
+#' Peak.list <- Peaklist_db$Peaklist_Normalized
+#' class(mSetObj) <- "pktable"
+#' new_mSetObj <- format_MetabolomicData(mSetObj = mSetObj, Peak.list =
+#' Peak.list, Sample.df = Sample.df, Sample.data = Sample.data)
+#' new_mSetObj$dataSet$orig.cls
+#'
+#' class(mSetObj) <- "mass_all"
+#' new_mSetObj <- format_MetabolomicData(mSetObj = mSetObj, Peak.list =
+#'                                         Peak.list, Sample.df = Sample.df, Sample.data = Sample.data)
+#' new_mSetObj$dataSet$orig.cls
+#' }
 format_MetabolomicData <- function(mSetObj, Peak.list, Sample.df, Sample.data, tbl.id, ...)
 {
   UseMethod("format_MetabolomicData", mSetObj)
@@ -193,7 +230,7 @@ format_MetabolomicData.pktable <- function(mSetObj, Peak.list, Sample.df, Sample
   sample.peaks  <- Peak.list[, res]
 
   # Generate sample IDs
-  sample.ID  <-  as.numeric(sub("\\D*(\\d{6}).*", "\\1", colnames(sample.peaks)))
+  sample.ID  <-  suppressWarnings(as.numeric(sub("\\D*(\\d{6}).*", "\\1", colnames(sample.peaks))))
   if (all(is.na(sample.ID)))
   {
     ## Alternatively uses a unique alphanumeric ID provided by user

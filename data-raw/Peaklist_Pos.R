@@ -1,3 +1,7 @@
+##################################################################################
+##### Original code to create Peaklist_Pos for LUMA from lcmsfishdata table ######
+##################################################################################
+
 library(RSQLite)
 library(LUMA)
 library(dplyr)
@@ -8,10 +12,6 @@ if(!file.exists("data-raw/Peaklist_Pos.SQLite")) {
     "data-raw/Peaklist_Pos.SQLite"
   )
 }
-
-##################################################################################
-##### Original code to create Peaklist_Pos for LUMA from lcmsfishdata table ######
-##################################################################################
 
 
 #Fresh start
