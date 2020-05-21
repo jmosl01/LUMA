@@ -52,7 +52,7 @@ InitWorkflow <- function(ion.id,db.dir,use.CAMERA,use.XCMS,CAMERA.obj,XCMS.obj,
   Solvent.ratio <- NULL
   gen.plots <- NULL
   keep.singletons <- NULL
-  DataFiles <- NULL
+  mzdatafiles <- NULL
   Sexes <- NULL
   Classes <- NULL
   no.Samples <- NULL
