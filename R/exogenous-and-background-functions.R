@@ -19,11 +19,31 @@
 #' Default is 'db'
 #' @param new.db character what should the new database be called
 #' Default is 'Peaklist_db'
+#' @param mem logical should database be in-memory. Default is FALSE
 #' @param ... Arguments to pass parameters to find_Background
 #' @return nested list a list for each ionization mode, each containing a list of two dataframes: the first contains the intensity matrix for the peaklist with solvent peaks removed, the second contains the intensity matrix for the solvent peaks
 #' @importFrom plyr llply
 #' @importFrom dplyr filter
-remove_background_peaks = function(Peak.list = NULL, Sample.df, search.par, method, lib.db, tbl.id, db.list, db.dir, new.db, ...) {
+#' @examples
+#' library(LUMA)
+#' if(require(lcmsfishdata, quietly = TRUE)) {
+#' file <- system.file('extdata/Sample_Class.txt', package = "LUMA")
+#' Sample.df <- read.table(file, header = TRUE, sep = "\t")
+#' file2 <- system.file('extdata/Search_parameters.txt', package = "LUMA")
+#' search.par <- read.table(file2, header = TRUE, sep = "\t")
+#' \donttest{
+#'   #From m/z features
+#'   Peak.list <- list(pos = Peaklist_Pos_db$From_CAMERA, neg = Peaklist_Neg_db$From_CAMERA, blanks_pos = Blanks_Pos_db$From_CAMERA, blanks_neg = Blanks_Neg_db$From_CAMERA)
+#'   test <- remove_background_peaks(Peak.list = Peak.list, Sample.df = Sample.df, search.par = search.par, method = "mz", mem = TRUE)
+#'   lapply(test, head) #Peaklists with removed background components are returned
+#' }
+#'
+#' #From combined features
+#' Peak.list <- list(pos = Peaklist_Pos_db$Trimmed_by_MinFrac, neg = Peaklist_Neg_db$Trimmed_by_MinFrac, blanks_pos = Blanks_Pos_db$Combined_Isotopes_and_Adducts, blanks_neg = Blanks_Neg_db$Combined_Isotopes_and_Adducts)
+#' test <- remove_background_peaks(Peak.list = Peak.list, Sample.df = Sample.df, search.par = search.par, method = "monoMass", mem = TRUE)
+#' lapply(test, head) #Peaklists with removed background components are returned
+#'  }
+remove_background_peaks = function(Peak.list = NULL, Sample.df, search.par, method, lib.db, tbl.id, db.list, db.dir, new.db, mem, ...) {
 
     # Set default values
     if (missing(tbl.id))
@@ -32,13 +52,15 @@ remove_background_peaks = function(Peak.list = NULL, Sample.df, search.par, meth
       db.list = NULL
     if (missing(db.dir))
       db.dir = "db"
+    if (missing(mem))
+      mem = FALSE
     if (missing(method))
       stop("Need to specify a method!", call. = FALSE)
     if (is.null(Peak.list) && is.null(tbl.id))
       stop("Need to specify tbl.id if using databases to retrieve Peak.list!", call. = FALSE)
 
     if (is.null(Peak.list)) {
-        mydbs <- connect_lumadb(db.list,db.dir,new.db)
+        mydbs <- connect_lumadb(db.list,db.dir,new.db, mem)
         nm = names(mydbs)[-1]
         nm1 = nm[-grep("blanks", nm)]  # Return all sample databases
         nm2 = nm[grep("blanks", nm)]  #Return all blank databases
@@ -55,8 +77,8 @@ remove_background_peaks = function(Peak.list = NULL, Sample.df, search.par, meth
         Solv.list <- Peak.list[nm2]
         Peak.list <- Peak.list[nm1]
     }
-    lib_db <- connect_libdb(lib.db = lib.db, db.dir = db.dir)
-    peak_db <- connect_lumadb(db.list = db.list, db.dir = db.dir, new.db = new.db)
+    lib_db <- connect_libdb(lib.db = lib.db, db.dir = db.dir, mem = mem)
+    peak_db <- connect_lumadb(db.list = db.list, db.dir = db.dir, new.db = new.db, mem = mem)
 
     class(method) <- method
     masterlist <- find_Background(method, Peak.list, Solv.list, Sample.df, search.par, lib_db, ...)
