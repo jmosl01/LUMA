@@ -51,8 +51,14 @@ Sample.df <- read.table(file, header = TRUE, sep = "\t")
 file2 <- system.file("extdata/Sample_Data.csv", package = "LUMA")
 Sample.data <- read.table(file2, header = TRUE, sep = ",")
 Peak.list <- Peaklist_db$Peaklist_Normalized
+class(mSetObj) <- "pktable"
 new_mSetObj <- format_MetabolomicData(mSetObj = mSetObj, Peak.list =
 Peak.list, Sample.df = Sample.df, Sample.data = Sample.data)
+new_mSetObj$dataSet$orig.cls
+
+class(mSetObj) <- "mass_all"
+new_mSetObj <- format_MetabolomicData(mSetObj = mSetObj, Peak.list =
+                                        Peak.list, Sample.df = Sample.df, Sample.data = Sample.data)
 new_mSetObj$dataSet$orig.cls
 }
 }

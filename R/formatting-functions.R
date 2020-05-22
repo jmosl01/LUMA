@@ -321,6 +321,18 @@ format_MetabolomicData.default <- function(mSetObj, Peak.list, Sample.df, Sample
 #' @param Sample.data data frame with phenotype data as columns and a row for each study sample.  First column must be a unique sample identifier with the header 'CT-ID'.  Phenotype columns may vary, but must include two columns called 'Plate Number' and 'Plate Position' for determining run order.
 #' @importFrom utils write.csv
 #' @return mSetObj
+#' @examples
+#' \dontrun{
+#' library(LUMA)
+#' file <- system.file("extdata/Sample_Class.txt", package = "LUMA")
+#' Sample.df <- read.table(file, header = TRUE, sep = "\t")
+#' file2 <- system.file("extdata/Sample_Data.csv", package = "LUMA")
+#' Sample.data <- read.table(file2, header = TRUE, sep = ",")
+#' Peak.list <- Peaklist_db$Peaklist_Normalized
+#' mSetObj <- NULL
+#' output_MetaData(mSetObj = mSetObj, Peak.list =
+#' Peak.list, Sample.df = Sample.df, Sample.data = Sample.data)
+#' }
 output_MetaData <- function(mSetObj, Peak.list, Sample.df, Sample.data)
 {
   UseMethod("output_MetaData", mSetObj)
