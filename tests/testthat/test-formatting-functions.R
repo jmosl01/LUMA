@@ -14,7 +14,6 @@ test_that("formats for SIMCA correctly", {
 
 })
 
-
 test_that("formats for MetaboAnalystR correctly", {
   if(require(lcmsfishdata, quietly = TRUE)) {
     file <- system.file("extdata/Sample_Class.txt", package = "LUMA")
