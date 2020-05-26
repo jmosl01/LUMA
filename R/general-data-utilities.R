@@ -534,34 +534,77 @@
   return(list(Peaklist_corstat,res))
 }
 
-.gen_IHL = function(Peak.list, Annotated.library, rules, IonMode, lib_db) {
+.gen_IHL = function(Peak.list, Annotated.library, rules, IonMode, lib_db, molweight) {
   ## Creates search list
   search.list <- Peak.list %>% select(EIC_ID, mz, rt) %>% dplyr::collect()
 
   ## Creates full adduct list for all compounds in the Annotated library
   IHL <- Annotated.library[rep(seq_len(nrow(Annotated.library)), each = nrow(rules)), ]
+
+ ####################################
+ #### Multiply by number of moles ###
+ ####################################
+
   x <- rules[,"nmol"]
-  IHL.temp <- sweep(IHL, 1, x, "*")
+
+  #Get only numeric columns
+  IHL.temp <- IHL[,sapply(IHL, is.numeric)]
+
+  #Remove columns that have any NA values
+  IHL.temp <- IHL.temp[,sapply(IHL.temp, function(x) all(!is.na(x)))]
+
+  #Select Molecular Weight column
+  if(molweight %in% names(IHL.temp)) {
+    IHL.temp <- IHL.temp[,which(names(IHL.temp) %in% molweight)]
+  }
+
+  IHL.temp <- IHL.temp * x
+  # IHL.temp <- sweep(IHL.temp, 1, x, "*") #Before R4.0.0
+
+
+  ####################################
+  #### Add/Subtractmass difference ##
+  ####################################
+
+
   x <- rules[,"massdiff"]
   if (IonMode == "Positive") {
-    IHL.temp <- sweep(IHL.temp, 1, x, "+")
+    IHL.temp <- IHL.temp + x
+    # IHL.temp <- sweep(IHL.temp, 1, x, "+") #Before R4.0.0
+
     myion.mode <- "Pos"
     bin <- paste(myion.mode, search.list[["EIC_ID"]], sep = "_")
 
   } else {
     if (IonMode == "Negative") {
-      IHL.temp <- sweep(IHL.temp, 1, x, "+")
-      IHL.temp <- sweep(IHL.temp, 1, -1, "*")
+
+      IHL.temp <- IHL.temp + x
+      # IHL.temp <- sweep(IHL.temp, 1, x, "+") #Before R4.0.0
+
+      IHL.temp <- IHL.temp * -1
+      # IHL.temp <- sweep(IHL.temp, 1, -1, "*") #Before R4.0.0
+
       myion.mode <- "Neg"
       bin <- paste(myion.mode, search.list[["EIC_ID"]], sep = "_")
 
     } else {
+
       stop("You must include the ionization mode!")
+
     }
   }
+
+  ####################################
+  #### Multiply by charge     ########
+  ####################################
+
+
   x <- rules$charge
-  IHL.adduct.data <- sweep(IHL.temp, 1, x, "/")
-  IHL[, "mz"] <- IHL.adduct.data$Molecular.Weight
+
+  IHL.temp <- IHL.temp / x
+  # IHL.adduct.data <- sweep(IHL.temp, 1, x, "/") #Before R4.0.0
+
+  IHL[, "mz"] <- IHL.temp
   IHL[, "adduct"] <- rules[,"name"]
   IHL <- IHL[which(IHL$Ion.Mode %in% myion.mode),]
 

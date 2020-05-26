@@ -10,7 +10,8 @@ match_Annotation(
   rules,
   search.par,
   IonMode,
-  lib_db
+  lib_db,
+  molweight
 )
 }
 \arguments{
@@ -25,10 +26,36 @@ match_Annotation(
 \item{IonMode}{a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'}
 
 \item{lib_db}{RSQLite connection}
+
+\item{molweight}{character string defining the name of the molecular weight column in \code{Annotated.library}.
+Default is "Molecular.Weight"}
 }
 \value{
 data frame containing the original table with added columns 'Name','MS.ID','Formula','Annotated.adduct' and any additional info columns from Annotated.library
 }
 \description{
 Compares isotope and adduct annotations within Peak.list (inherited from CAMERA) to user-defined annotation library and returns annotation results
+}
+\examples{
+library(LUMA)
+if(require(lcmsfishdata, quietly = TRUE)) {
+  Peak.list <- Peaklist_Pos$From_CAMERA
+  file <- system.file('extdata/primary_adducts_pos.csv', package = "lcmsfishdata")
+  rules <- read.table(file, header = TRUE, sep = ",")
+  file2 <- system.file('extdata/Search_Parameters.txt', package = "lcmsfishdata")
+  search.par <- read.table(file2, header = TRUE, sep = "\t")
+  file3 <- system.file('extdata/Annotated_library.csv', package = "lcmsfishdata")
+  temp.library <- read.table(file3, header = TRUE, sep = ",")
+  Library.phenodata = temp.library[,-which(colnames(temp.library) \%in\% c("Name","Formula","Molecular.Weight","RT..Min."))]
+  Annotated.library = cbind.data.frame(Name = temp.library[["Name"]],
+                                       Formula = temp.library[["Formula"]],
+                                       Molecular.Weight = temp.library[["Molecular.Weight"]],
+                                       RT..Min. = temp.library[["RT..Min."]],
+                                       Library.phenodata)
+
+  lib_db <- connect_libdb(lib.db = "Annotated_library", mem = TRUE)
+  test <- match_Annotation(Peak.list = Peak.list, Annotated.library = Annotated.library, rules = rules, search.par = search.par, IonMode = "Positive", lib_db = lib_db)
+  test[grep("GUANOSINE",test$Name),c("Name","Formula","Molecular.Weight","Annotated.adduct","Annotated.mz")]
+  test[grep("INOSINE",test$Name),c("Name","Formula","Molecular.Weight","Annotated.adduct","Annotated.mz")]
+}
 }

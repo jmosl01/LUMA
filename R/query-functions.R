@@ -8,12 +8,46 @@
 #' @param search.par a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.
 #' @param IonMode a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'
 #' @param lib_db RSQLite connection
+#' @param molweight character string defining the name of the molecular weight column in \code{Annotated.library}.
+#' Default is "Molecular.Weight"
 #' @return data frame containing the original table with added columns 'Name','MS.ID','Formula','Annotated.adduct' and any additional info columns from Annotated.library
 #' @importFrom dplyr '%>%' select copy_to tbl between
 #' @importFrom utils str txtProgressBar
-match_Annotation = function(Peak.list, Annotated.library, rules, search.par, IonMode, lib_db) {
+#' @examples
+#' library(LUMA)
+#' if(require(lcmsfishdata, quietly = TRUE)) {
+#'   Peak.list <- Peaklist_Pos$From_CAMERA
+#'   file <- system.file('extdata/primary_adducts_pos.csv', package = "lcmsfishdata")
+#'   rules <- read.table(file, header = TRUE, sep = ",")
+#'   file2 <- system.file('extdata/Search_Parameters.txt', package = "lcmsfishdata")
+#'   search.par <- read.table(file2, header = TRUE, sep = "\t")
+#'   file3 <- system.file('extdata/Annotated_library.csv', package = "lcmsfishdata")
+#'   temp.library <- read.table(file3, header = TRUE, sep = ",")
+#'   Library.phenodata = temp.library[,-which(colnames(temp.library) %in% c("Name","Formula","Molecular.Weight","RT..Min."))]
+#'   Annotated.library = cbind.data.frame(Name = temp.library[["Name"]],
+#'                                        Formula = temp.library[["Formula"]],
+#'                                        Molecular.Weight = temp.library[["Molecular.Weight"]],
+#'                                        RT..Min. = temp.library[["RT..Min."]],
+#'                                        Library.phenodata)
+#'
+#'   lib_db <- connect_libdb(lib.db = "Annotated_library", mem = TRUE)
+#'   test <- match_Annotation(Peak.list = Peak.list, Annotated.library = Annotated.library, rules = rules, search.par = search.par, IonMode = "Positive", lib_db = lib_db)
+#'   test[grep("GUANOSINE",test$Name),c("Name","Formula","Molecular.Weight","Annotated.adduct","Annotated.mz")]
+#'   test[grep("INOSINE",test$Name),c("Name","Formula","Molecular.Weight","Annotated.adduct","Annotated.mz")]
+#' }
+match_Annotation = function(Peak.list, Annotated.library, rules, search.par, IonMode, lib_db, molweight) {
 
-  myresults <- .gen_IHL(Peak.list, Annotated.library, rules, IonMode, lib_db)
+
+  #Set default values
+  if(missing(molweight)) {
+    molweight = "Molecular.Weight"
+  } else {
+    if (length(molweight) > 1) {
+      molweight <- molweight[1] #Should only be one element
+    }
+  }
+
+  myresults <- .gen_IHL(Peak.list, Annotated.library, rules, IonMode, lib_db, molweight)
   search.list <- myresults[[1]]
   bin <- myresults[[2]]
   myion.mode <- myresults[[3]]
@@ -43,7 +77,7 @@ match_Annotation = function(Peak.list, Annotated.library, rules, search.par, Ion
   ## search all of the search list at once; should speed ! things up considerably
   # i = 13 # Used for debugging purposes
   total = nrow(search.list)
-  cat("Annotating features against the In House Library.\n\n\n")
+  cat("\nAnnotating features against the In House Library.\n\n\n")
   pb = txtProgressBar(min = 0, max = total, style = 3)
   cnt = 1
   for (i in 1:nrow(search.list)) {

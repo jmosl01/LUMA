@@ -7,6 +7,7 @@
 #' @param to.table to which should LUMA save the modified Peak.list
 #' @param lib.db character name of In House Library database.
 #' Default is 'Annotated Library'
+#' @param ... arguments to pass to match_Annotation.
 #' @return NULL
 #' @examples
 #' \dontrun{
@@ -15,7 +16,7 @@
 #' InitWorkflow(db.dir = db.dir)
 #' AnnotatePeaklist(from.table = "From CAMERA", to.table = "Annotated")
 #' }
-AnnotatePeaklist <- function(from.table,to.table,lib.db) {
+AnnotatePeaklist <- function(from.table,to.table,lib.db,...) {
 
   #Initialize global variables
   lib_db <- NULL
@@ -50,7 +51,8 @@ AnnotatePeaklist <- function(from.table,to.table,lib.db) {
                                                         gen.plots = gen.plots,
                                                         keep.singletons = keep.singletons),
                                 IonMode = IonMode,
-                                lib_db = lib_db)
+                                lib_db = lib_db,
+                                ...)
 
   write_tbl(mydf = Peak.list.Annotated,
             peak.db = peak_db,

@@ -4,7 +4,7 @@
 \alias{AnnotatePeaklist}
 \title{Annotates Peak.list with In House Library}
 \usage{
-AnnotatePeaklist(from.table, to.table, lib.db)
+AnnotatePeaklist(from.table, to.table, lib.db, ...)
 }
 \arguments{
 \item{from.table}{from which table should LUMA pull the Peak.list}
@@ -13,6 +13,8 @@ AnnotatePeaklist(from.table, to.table, lib.db)
 
 \item{lib.db}{character name of In House Library database.
 Default is 'Annotated Library'}
+
+\item{...}{arguments to pass to match_Annotation.}
 }
 \description{
 Compares isotope and adduct annotations within Peak.list (inherited from CAMERA) to user-defined annotation library.
