@@ -13,20 +13,41 @@ search_IonDup(object, Peak.list.pos, Peak.list.neg, search.par, col.names)
 \method{search_IonDup}{monoMass}(object, Peak.list.pos, Peak.list.neg, search.par, col.names)
 }
 \arguments{
-\item{object}{used for method dispatch. Can be any object. See usage for details}
+\item{object}{used for method dispatch. Can be any object. See usage for
+details}
 
 \item{Peak.list.pos}{Positive ionization mode data table}
 
 \item{Peak.list.neg}{Negative ionization mode data table}
 
-\item{search.par}{a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.}
+\item{search.par}{a single-row data frame with 11 variables containing
+user-defined search parameters. Must contain the columns
+'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous',
+'Solvent','gen.plots','keep.singletons'.}
 
-\item{col.names}{character vector of column names to include when searching for duplicate entries.
-Default is to include the ion mode, unique EIC_ID, monomolecular mass and retention time}
+\item{col.names}{character vector of column names to include when searching
+for duplicate entries. Default is to include the ion mode, unique EIC_ID,
+monomolecular mass and retention time}
 }
 \value{
-data frame containing the original Peak.list with added columns "Duplicate_ID" and "Duplicate_EIC"
+data frame containing the original Peak.list with added columns
+  "Duplicate_ID" and "Duplicate_EIC"
 }
 \description{
-Searches Peak.list with combined ionization mode data tables for duplicate entries
+Searches Peak.list with combined ionization mode data tables for
+  duplicate entries
+}
+\examples{
+library(LUMA)
+if(require(lcmsfishdata, quietly = TRUE)) {
+  file <- system.file("extdata/Search_parameters.txt", package = "lcmsfishdata")
+  search.par <- read.table(file, header = TRUE, sep = "\t")
+  class(method) <- method <- "monoMass"
+  Peak.list.neg <- Peaklist_db$Peaklist_Neg_Solvent_Peaks_Removed
+  Peak.list.pos <- Peaklist_db$Peaklist_Pos_Solvent_Peaks_Removed
+  test <- search_IonDup(method, Peak.list.pos = Peak.list.pos,
+                        Peak.list.neg = Peak.list.neg, search.par = search.par)
+  colnames(test)[-which(colnames(test) \%in\% colnames(Peak.list.pos))] #Adds two new columns
+  length(which(duplicated(test[["Duplicate_ID"]]))) #number of ion mode duplicates found
+}
 }
