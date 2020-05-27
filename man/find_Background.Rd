@@ -49,35 +49,50 @@ find_Background(
 )
 }
 \arguments{
-\item{object}{used for method dispatch. Can be any object. See usage for details}
+\item{object}{used for method dispatch. Can be any object. See usage for
+details}
 
 \item{Peak.list}{data table containing sample data}
 
 \item{Solv.list}{data table containing blank data}
 
-\item{Sample.df}{a data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns 'Sex','Class','n','Endogenous'.}
+\item{Sample.df}{a data frame with class info as columns.  Must contain a
+separate row entry for each unique sex/class combination. Must contain the
+columns 'Sex','Class','n','Endogenous'.}
 
-\item{search.par}{a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.}
+\item{search.par}{a single-row data frame with 11 variables containing
+user-defined search parameters. Must contain the columns
+'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous',
+'Solvent','gen.plots','keep.singletons'.}
 
 \item{lib_db}{RSQLite connection}
 
-\item{ion.id}{character vector specifying identifier in filename designating positive or negative ionization mode or both.  Positive identifier must come first. Default is c('Pos','Neg')}
+\item{ion.id}{character vector specifying identifier in filename designating
+positive or negative ionization mode or both.  Positive identifier must
+come first. Default is c('Pos','Neg')}
 
-\item{QC.id}{character vector specifying identifier in filename designating a Pooled QC sample.  Only the first value will be used.
-Default is 'Pooled_QC_'}
+\item{QC.id}{character vector specifying identifier in filename designating a
+Pooled QC sample.  Only the first value will be used. Default is
+'Pooled_QC_'}
 
-\item{MB.id}{character vector specifying identifier in filename designating a Method Blank.
-Only the first value will be used. Default is '^MB'}
+\item{MB.id}{character vector specifying identifier in filename designating a
+Method Blank. Only the first value will be used. Default is '^MB'}
 
-\item{db.id}{character vector specifying identifiers in database names designating sample \[1\] and blank \[2\] databases.
-Default is c('Peaklist','Blanks')}
+\item{db.id}{character vector specifying identifiers in database names
+designating sample \[1\] and blank \[2\] databases. Default is
+c('Peaklist','Blanks')}
 
-\item{ion.mode}{a character vector defining the ionization mode.
-Must be either 'Positive', 'Negative' or both. Default is c('Positive','Negative')}
+\item{ion.mode}{a character vector defining the ionization mode. Must be
+either 'Positive', 'Negative' or both. Default is c('Positive','Negative')}
 }
 \value{
-nested list a list for each ionization mode, each containing a list of two dataframes: the first contains the intensity matrix for the peaklist with solvent peaks removed, the second contains the intensity matrix for the solvent peaks
+nested list a list for each ionization mode, each containing a list
+  of two dataframes: the first contains the intensity matrix for the peaklist
+  with solvent peaks removed, the second contains the intensity matrix for
+  the solvent peaks
 }
 \description{
-Find components within Peak.list that are also present in the process blanks below a user-defined sample:blank ratio
+Find components within Peak.list that are also present in the
+  process blanks below a user-defined sample:blank ratio.
+  See \code{remove_background_peaks} and \code{CullBackground} for examples that use this function.
 }

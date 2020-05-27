@@ -2,10 +2,10 @@
 #'
 #' @export
 #' @description Culls the Peak.list by removing all components coming from the void volume.
-#' See remove_void_volume for more details.
+#' See \code{remove_void_volume} for more details.
 #' @param from.table from which table should LUMA pull the Peak.list
 #' @param to.table to which should LUMA save the modified Peak.list
-#' @param method which method to apply to trim by retention time.  See trim_rt for details.
+#' @param method which method to apply to trim by retention time.  See \code{trim_rt} for details.
 #' @return NULL
 #' @examples
 #' \dontrun{
@@ -42,8 +42,9 @@ CullVoidVolume <- function(from.table,to.table,method) {
 #' @title Culls the Peak.list by Percent CV
 #'
 #' @export
-#' @description Culls the Peak.list by removing all components with a coefficient of variation (CV) greater than the user-specified cutoff across all Pooled QC samples.
-#' See trim_cv for more details.
+#' @description Culls the Peak.list by removing all components with a
+#'   coefficient of variation (CV) greater than the user-specified cutoff across
+#'   all Pooled QC samples. See \code{trim_cv} for more details.
 #' @param from.table from which table should LUMA pull the Peak.list
 #' @param to.table to which should LUMA save the modified Peak.list
 #' @return NULL
@@ -86,18 +87,19 @@ CullCV <- function(from.table,to.table) {
 #' @title Culls the Peak.list by Minimum Fraction
 #'
 #' @export
-#' @description Culls the Peak.list by removing all components with minimum fraction less than the user-specified cutoff.
-#' See trim_minfrac for more details.
+#' @description Culls the Peak.list by removing all components with minimum
+#'   fraction less than the user-specified cutoff. See \code{trim_minfrac} for more details.
 #' @param from.table from which table should LUMA pull the Peak.list
 #' @param to.table to which should LUMA save the modified Peak.list
-#' @param method which method to apply to trim by minimum fraction values.  See trim_minfrac for details.
+#' @param method which method to apply to trim by minimum fraction values.  See
+#'   \code{trim_minfrac} for details.
 #' @return NULL
 #' @examples
 #' \dontrun{
 #' library(LUMA)
 #' db.dir <- system.file('extdata/', package = "LUMA")
 #' InitWorkflow(db.dir = db.dir)
-#' CullMF(from.table = "From CAMERA", to.table = "Trimmed by MinFrac")
+#' CullMF(from.table = "From CAMERA with MinFrac", to.table = "Trimmed by MinFrac")
 #' }
 CullMF <- function(from.table,to.table,method) {
   #Trims Peaklist by MinFrac
@@ -134,20 +136,21 @@ CullMF <- function(from.table,to.table,method) {
 #' @title Culls the Peak.list by Background
 #'
 #' @export
-#' @description Culls the Peak.list by removing background components
-#' See remove_background_peaks for more details.
+#' @description Culls the Peak.list by removing background components. See
+#'   \code{remove_background_peaks} for more details.
 #' @param from.tables character vector of table names to draw from databases.
-#' First value should be table name from peak database, second should be table name from solvent database.
-#' @param to.tables character vector of table names to write to new database. Should be twice as long as the number of processed ion modes.
+#'   First value should be table name from peak database, second should be table
+#'   name from solvent database.
+#' @param to.tables character vector of table names to write to new database.
+#'   Should be twice as long as the number of processed ion modes.
 #' @param method which method to use to remove background components.
-#' @param db.list vector of database names containing results from processing modules. Can be left blank.
-#' See connect_lumadb for details.
-#' @param db.dir directory containing the databases.
-#' Default is 'db'
-#' @param new.db what should the new database be called.
-#' Default is 'Peaklist_db'
-#' @param lib.db what should the library containing the background components be called.
-#' Default is 'Background Components Library'
+#' @param db.list vector of database names containing results from processing
+#'   modules. Can be left blank. See connect_lumadb for details.
+#' @param db.dir directory containing the databases. Default is 'db'
+#' @param new.db what should the new database be called. Default is
+#'   'Peaklist_db'
+#' @param lib.db what should the library containing the background components be
+#'   called. Default is 'Background Components Library'
 #' @return NULL
 CullBackground <- function(from.tables,to.tables,method,db.list,db.dir,new.db,lib.db) {
 

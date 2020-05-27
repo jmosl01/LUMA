@@ -182,6 +182,18 @@ match_Annotation = function(Peak.list, Annotated.library, Library.phenodata, rul
 #'                         Peak.list.neg = Peak.list.neg, search.par = search.par)
 #'   colnames(test)[-which(colnames(test) %in% colnames(Peak.list.pos))] #Adds two new columns
 #'   length(which(duplicated(test[["Duplicate_ID"]]))) #number of ion mode duplicates found
+#'
+#' \donttest{
+#' class(method) <- method <- "mz"
+#' Peak.list.neg <- Peaklist_Neg_db$output_parsed
+#' Peak.list.pos <- Peaklist_Pos_db$output_parsed
+#'
+#' test <- search_IonDup(method, Peak.list.pos = Peak.list.pos,
+#'                       Peak.list.neg = Peak.list.neg, search.par = search.par)
+#' colnames(test)[-which(colnames(test) %in% colnames(Peak.list.pos))] #Adds two new columns
+#' dupID.mz <- test[["Duplicate_ID"]][which(duplicated(test[["Duplicate_ID"]]))]
+#' length(dupID.mz) #number of ion mode duplicates found
+#'   }
 #' }
 search_IonDup <- function(object, Peak.list.pos,Peak.list.neg,search.par,col.names) {
   UseMethod("search_IonDup", object)
@@ -193,7 +205,7 @@ search_IonDup.mz  <- function(object,Peak.list.pos,Peak.list.neg,search.par,col.
 
   # Set default values
   if(missing(col.names))
-    col.names <- c("Ion.Mode", "EIC_ID", "mz", "rt")
+    col.names <- c("Ion.Mode", "EIC_ID", "mono_mass", "rt")
 
   mono.pos <- subset(Peak.list.pos, select = paste(col.names))
 
@@ -290,30 +302,48 @@ search_IonDup.monoMass  <- function(object,Peak.list.pos,Peak.list.neg,search.pa
 #' @title Finds background components in Peak.list
 #'
 #' @export
-#' @description Find components within Peak.list that are also present in the process blanks below a user-defined sample:blank ratio
-#' @param object used for method dispatch. Can be any object. See usage for details
+#' @description Find components within Peak.list that are also present in the
+#'   process blanks below a user-defined sample:blank ratio.
+#'   See \code{remove_background_peaks} and \code{CullBackground} for examples that use this function.
+#' @param object used for method dispatch. Can be any object. See usage for
+#'   details
 #' @param Peak.list data table containing sample data
 #' @param Solv.list data table containing blank data
-#' @param Sample.df a data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns 'Sex','Class','n','Endogenous'.
-#' @param search.par a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.
-#' @param ion.id character vector specifying identifier in filename designating positive or negative ionization mode or both.  Positive identifier must come first. Default is c('Pos','Neg')
-#' @param QC.id character vector specifying identifier in filename designating a Pooled QC sample.  Only the first value will be used.
-#' Default is 'Pooled_QC_'
-#' @param MB.id character vector specifying identifier in filename designating a Method Blank.
-#' Only the first value will be used. Default is '^MB'
-#' @param db.id character vector specifying identifiers in database names designating sample \[1\] and blank \[2\] databases.
-#' Default is c('Peaklist','Blanks')
-#' @param ion.mode a character vector defining the ionization mode.
-#' Must be either 'Positive', 'Negative' or both. Default is c('Positive','Negative')
+#' @param Sample.df a data frame with class info as columns.  Must contain a
+#'   separate row entry for each unique sex/class combination. Must contain the
+#'   columns 'Sex','Class','n','Endogenous'.
+#' @param search.par a single-row data frame with 11 variables containing
+#'   user-defined search parameters. Must contain the columns
+#'   'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous',
+#'   'Solvent','gen.plots','keep.singletons'.
+#'
+#' @param ion.id character vector specifying identifier in filename designating
+#'   positive or negative ionization mode or both.  Positive identifier must
+#'   come first. Default is c('Pos','Neg')
+#' @param QC.id character vector specifying identifier in filename designating a
+#'   Pooled QC sample.  Only the first value will be used. Default is
+#'   'Pooled_QC_'
+#' @param MB.id character vector specifying identifier in filename designating a
+#'   Method Blank. Only the first value will be used. Default is '^MB'
+#' @param db.id character vector specifying identifiers in database names
+#'   designating sample \[1\] and blank \[2\] databases. Default is
+#'   c('Peaklist','Blanks')
+#' @param ion.mode a character vector defining the ionization mode. Must be
+#'   either 'Positive', 'Negative' or both. Default is c('Positive','Negative')
 #' @param lib_db RSQLite connection
-#' @return nested list a list for each ionization mode, each containing a list of two dataframes: the first contains the intensity matrix for the peaklist with solvent peaks removed, the second contains the intensity matrix for the solvent peaks
-find_Background <- function(object, Peak.list, Solv.list, Sample.df, search.par, lib_db,ion.id,QC.id,MB.id,db.id,ion.mode) {
+#' @return nested list a list for each ionization mode, each containing a list
+#'   of two dataframes: the first contains the intensity matrix for the peaklist
+#'   with solvent peaks removed, the second contains the intensity matrix for
+#'   the solvent peaks
+find_Background <- function(object, Peak.list, Solv.list, Sample.df, search.par, lib_db,
+                            ion.id,QC.id,MB.id,db.id,ion.mode) {
   UseMethod("find_Background", object)
 }
 
 #' @rdname  find_Background
 #' @export
-find_Background.mz <- function(object, Peak.list, Solv.list, Sample.df, search.par, lib_db,ion.id,QC.id,MB.id,db.id,ion.mode) {
+find_Background.mz <- function(object, Peak.list, Solv.list, Sample.df, search.par,
+                               lib_db, ion.id,QC.id,MB.id,db.id,ion.mode) {
   #Set default values
   if(missing(ion.id))
     ion.id <- c("Pos","Neg")
@@ -433,7 +463,8 @@ find_Background.mz <- function(object, Peak.list, Solv.list, Sample.df, search.p
 
 #' @rdname find_Background
 #' @export
-find_Background.monoMass <- function(object, Peak.list, Solv.list, Sample.df, search.par, lib_db,ion.id,QC.id,MB.id,db.id,ion.mode) {
+find_Background.monoMass <- function(object, Peak.list, Solv.list, Sample.df, search.par,
+                                     lib_db,ion.id,QC.id,MB.id,db.id,ion.mode) {
   #Set default values
   if(missing(ion.id))
     ion.id <- c("Pos","Neg")

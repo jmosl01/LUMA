@@ -22,6 +22,6 @@ See trim_minfrac for more details.
 library(LUMA)
 db.dir <- system.file('extdata/', package = "LUMA")
 InitWorkflow(db.dir = db.dir)
-CullMF(from.table = "From CAMERA", to.table = "Trimmed by MinFrac")
+CullMF(from.table = "From CAMERA with MinFrac", to.table = "Trimmed by MinFrac")
 }
 }

@@ -27,6 +27,6 @@ Default is 'Peaklist_db'}
 Default is 'Background Components Library'}
 }
 \description{
-Culls the Peak.list by removing background components
-See remove_background_peaks for more details.
+Culls the Peak.list by removing background components.
+See \code{remove_background_peaks} for more details.
 }

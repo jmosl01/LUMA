@@ -15,7 +15,7 @@ CullVoidVolume(from.table, to.table, method)
 }
 \description{
 Culls the Peak.list by removing all components coming from the void volume.
-See remove_void_volume for more details.
+See \code{remove_void_volume} for more details.
 }
 \examples{
 \dontrun{

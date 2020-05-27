@@ -49,5 +49,17 @@ if(require(lcmsfishdata, quietly = TRUE)) {
                         Peak.list.neg = Peak.list.neg, search.par = search.par)
   colnames(test)[-which(colnames(test) \%in\% colnames(Peak.list.pos))] #Adds two new columns
   length(which(duplicated(test[["Duplicate_ID"]]))) #number of ion mode duplicates found
+
+\donttest{
+class(method) <- method <- "mz"
+Peak.list.neg <- Peaklist_Neg_db$output_parsed
+Peak.list.pos <- Peaklist_Pos_db$output_parsed
+
+test <- search_IonDup(method, Peak.list.pos = Peak.list.pos,
+                      Peak.list.neg = Peak.list.neg, search.par = search.par)
+colnames(test)[-which(colnames(test) \%in\% colnames(Peak.list.pos))] #Adds two new columns
+dupID.mz <- test[["Duplicate_ID"]][which(duplicated(test[["Duplicate_ID"]]))]
+length(dupID.mz) #number of ion mode duplicates found
+  }
 }
 }
