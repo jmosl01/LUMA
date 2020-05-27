@@ -7,7 +7,7 @@
 #' @param search.par a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.
 #' @param tbl.id character vector of table names to draw from databases.  First value should be table containing compounds from positive ionization, second should be table containing compounds from negative ionization. Default is NULL
 #' @param method which method to apply to search for duplicate entries.
-#' See search_IonDup for details.
+#' See \code{search_IonDup} for details.
 #' @param peak.db Formal class SQLiteConnection
 #' @param ... Arguments to pass parameters to search_IonDup
 #' @return data frame containing the intensity matrix for the peaklist with Duplicate IDs

@@ -8,25 +8,26 @@ CullBackground(from.tables, to.tables, method, db.list, db.dir, new.db, lib.db)
 }
 \arguments{
 \item{from.tables}{character vector of table names to draw from databases.
-First value should be table name from peak database, second should be table name from solvent database.}
+First value should be table name from peak database, second should be table
+name from solvent database.}
 
-\item{to.tables}{character vector of table names to write to new database. Should be twice as long as the number of processed ion modes.}
+\item{to.tables}{character vector of table names to write to new database.
+Should be twice as long as the number of processed ion modes.}
 
 \item{method}{which method to use to remove background components.}
 
-\item{db.list}{vector of database names containing results from processing modules. Can be left blank.
-See connect_lumadb for details.}
+\item{db.list}{vector of database names containing results from processing
+modules. Can be left blank. See connect_lumadb for details.}
 
-\item{db.dir}{directory containing the databases.
-Default is 'db'}
+\item{db.dir}{directory containing the databases. Default is 'db'}
 
-\item{new.db}{what should the new database be called.
-Default is 'Peaklist_db'}
+\item{new.db}{what should the new database be called. Default is
+'Peaklist_db'}
 
-\item{lib.db}{what should the library containing the background components be called.
-Default is 'Background Components Library'}
+\item{lib.db}{what should the library containing the background components be
+called. Default is 'Background Components Library'}
 }
 \description{
-Culls the Peak.list by removing background components.
-See \code{remove_background_peaks} for more details.
+Culls the Peak.list by removing background components. See
+  \code{remove_background_peaks} for more details.
 }

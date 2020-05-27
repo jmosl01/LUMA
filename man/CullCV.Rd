@@ -12,8 +12,9 @@ CullCV(from.table, to.table)
 \item{to.table}{to which should LUMA save the modified Peak.list}
 }
 \description{
-Culls the Peak.list by removing all components with a coefficient of variation (CV) greater than the user-specified cutoff across all Pooled QC samples.
-See trim_cv for more details.
+Culls the Peak.list by removing all components with a
+  coefficient of variation (CV) greater than the user-specified cutoff across
+  all Pooled QC samples. See \code{trim_cv} for more details.
 }
 \examples{
 \dontrun{

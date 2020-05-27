@@ -15,7 +15,7 @@ Names must be c('Positive','Negative').  Alternatively may use existing database
 \item{tbl.id}{character vector of table names to draw from databases.  First value should be table containing compounds from positive ionization, second should be table containing compounds from negative ionization. Default is NULL}
 
 \item{method}{which method to apply to search for duplicate entries.
-See search_IonDup for details.}
+See \code{search_IonDup} for details.}
 
 \item{peak.db}{Formal class SQLiteConnection}
 

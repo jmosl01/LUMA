@@ -30,11 +30,14 @@ ____
 
 
 
-[![Travis-CI Build Status](https://travis-ci.com/jmosl01/LUMA.svg?branch=master)](https://travis-ci.com/jmosl01/LUMA)
+[![Travis-CI Build Status](https://travis-ci.com/USEPA/LUMA.svg?branch=master)](https://travis-ci.com/USEPA/LUMA)
 
 ### Website
 
 LUMA is public domain and can be freely downloaded from
 
-https://github.com/jmosl01/LUMA
+https://github.com/USEPA/LUMA
 
+Repository is registered in the Reusable Component Services (RCS) system:
+
+https://sor.epa.gov/sor_extranet/registry2/reusereg/searchandretrieve/details/general/24957

@@ -11,7 +11,7 @@ CullVoidVolume(from.table, to.table, method)
 
 \item{to.table}{to which should LUMA save the modified Peak.list}
 
-\item{method}{which method to apply to trim by retention time.  See trim_rt for details.}
+\item{method}{which method to apply to trim by retention time.  See \code{trim_rt} for details.}
 }
 \description{
 Culls the Peak.list by removing all components coming from the void volume.

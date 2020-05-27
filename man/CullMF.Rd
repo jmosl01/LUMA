@@ -11,11 +11,12 @@ CullMF(from.table, to.table, method)
 
 \item{to.table}{to which should LUMA save the modified Peak.list}
 
-\item{method}{which method to apply to trim by minimum fraction values.  See trim_minfrac for details.}
+\item{method}{which method to apply to trim by minimum fraction values.  See
+\code{trim_minfrac} for details.}
 }
 \description{
-Culls the Peak.list by removing all components with minimum fraction less than the user-specified cutoff.
-See trim_minfrac for more details.
+Culls the Peak.list by removing all components with minimum
+  fraction less than the user-specified cutoff. See \code{trim_minfrac} for more details.
 }
 \examples{
 \dontrun{
