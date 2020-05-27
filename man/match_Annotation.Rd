@@ -7,6 +7,7 @@
 match_Annotation(
   Peak.list,
   Annotated.library,
+  Library.phenodata,
   rules,
   search.par,
   IonMode,
@@ -15,47 +16,72 @@ match_Annotation(
 )
 }
 \arguments{
-\item{Peak.list}{a table of class 'tbl_dbi', 'tbl_sql', 'tbl_lazy', or 'tbl' with samples as columns.  Should contain all output columns from XCMS and CAMERA, both metadata and sample data. Retention times must be in min.}
+\item{Peak.list}{a table of class 'tbl_dbi', 'tbl_sql', 'tbl_lazy', or 'tbl'
+with samples as columns.  Should contain all output columns from XCMS and
+CAMERA, both metadata and sample data. Retention times must be in min.}
 
-\item{Annotated.library}{a data frame with annotated metabolite entries. Must contain the first four columns called 'Name', 'Formula', Molecular.Weight' and 'RT..Min.', respectively.  Can contain additional columns.}
+\item{Annotated.library}{a data frame with annotated metabolite entries. Must
+contain the five columns called 'Name', 'Formula', Molecular.Weight',
+'RT..Min.', and 'Ion.Mode' respectively.  Can contain additional columns.}
 
-\item{rules}{a data frame containing the rule list used by CAMERA to annotate ion adducts and fragments.  Must contain the columns 'name','nmol','charge','massdiff','oidscore','quasi','ips'.}
+\item{Library.phenodata}{a data frame with annotated metabolite entries.
+Contain all columns with additional information from Annotated Library.}
 
-\item{search.par}{a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.}
+\item{rules}{a data frame containing the rule list used by CAMERA to annotate
+ion adducts and fragments.  Must contain the columns
+'name','nmol','charge','massdiff','oidscore','quasi','ips'.}
 
-\item{IonMode}{a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'}
+\item{search.par}{a single-row data frame with 11 variables containing
+user-defined search parameters. Must contain the columns
+'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous',
+ 'Solvent','gen.plots','keep.singletons'.}
+
+\item{IonMode}{a character string defining the ionization mode.  Must be
+either 'Positive' or 'Negative'}
 
 \item{lib_db}{RSQLite connection}
 
-\item{molweight}{character string defining the name of the molecular weight column in \code{Annotated.library}.
-Default is "Molecular.Weight"}
+\item{molweight}{character string defining the name of the molecular weight
+column in \code{Annotated.library}. Default is "Molecular.Weight"}
 }
 \value{
-data frame containing the original table with added columns 'Name','MS.ID','Formula','Annotated.adduct' and any additional info columns from Annotated.library
+data frame containing the original table with added columns
+  'Name','MS.ID','Formula','Annotated.adduct' and any additional info columns
+  from Annotated.library
 }
 \description{
-Compares isotope and adduct annotations within Peak.list (inherited from CAMERA) to user-defined annotation library and returns annotation results
+Compares isotope and adduct annotations within Peak.list
+  (inherited from CAMERA) to user-defined annotation library and returns
+  annotation results
 }
 \examples{
 library(LUMA)
-if(require(lcmsfishdata, quietly = TRUE)) {
+if(require(RSQLite, quietly = TRUE)) {
   Peak.list <- Peaklist_Pos$From_CAMERA
-  file <- system.file('extdata/primary_adducts_pos.csv', package = "lcmsfishdata")
+  file <- system.file('extdata/primary_adducts_pos.csv', package = "LUMA")
   rules <- read.table(file, header = TRUE, sep = ",")
-  file2 <- system.file('extdata/Search_Parameters.txt', package = "lcmsfishdata")
+  file2 <- system.file('extdata/Search_Parameters.txt', package = "LUMA")
   search.par <- read.table(file2, header = TRUE, sep = "\t")
-  file3 <- system.file('extdata/Annotated_library.csv', package = "lcmsfishdata")
+  file3 <- system.file('extdata/Annotated_library.csv', package = "LUMA")
   temp.library <- read.table(file3, header = TRUE, sep = ",")
-  Library.phenodata = temp.library[,-which(colnames(temp.library) \%in\% c("Name","Formula","Molecular.Weight","RT..Min."))]
-  Annotated.library = cbind.data.frame(Name = temp.library[["Name"]],
+  Library.phenodata <- temp.library[,-which(colnames(temp.library) \%in\%
+  c("Name","Formula","Molecular.Weight","RT..Min.","Ion.Mode"))]
+
+  Annotated.library <- cbind.data.frame(Name = temp.library[["Name"]],
                                        Formula = temp.library[["Formula"]],
                                        Molecular.Weight = temp.library[["Molecular.Weight"]],
                                        RT..Min. = temp.library[["RT..Min."]],
-                                       Library.phenodata)
+                                       Ion.Mode = temp.library[["Ion.Mode"]])
 
   lib_db <- connect_libdb(lib.db = "Annotated_library", mem = TRUE)
-  test <- match_Annotation(Peak.list = Peak.list, Annotated.library = Annotated.library, rules = rules, search.par = search.par, IonMode = "Positive", lib_db = lib_db)
-  test[grep("GUANOSINE",test$Name),c("Name","Formula","Molecular.Weight","Annotated.adduct","Annotated.mz")]
-  test[grep("INOSINE",test$Name),c("Name","Formula","Molecular.Weight","Annotated.adduct","Annotated.mz")]
+
+  test <- match_Annotation(Peak.list = Peak.list, Annotated.library =
+  Annotated.library, Library.phenodata = Library.phenodata, rules = rules,
+  search.par = search.par, IonMode = "Positive", lib_db = lib_db)
+
+  mycols <- c("Name","Formula","Molecular.Weight","Annotated.adduct","Annotated.mz")
+  test[grep("GUANOSINE",test$Name),mycols]
+  test[grep("INOSINE",test$Name),mycols]
+  dbDisconnect(lib_db)
 }
 }
