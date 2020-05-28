@@ -88,7 +88,7 @@ format_simca = function(Peak.list = NULL, Sample.df, Sample.data, tbl.id = NULL,
   Mettag <- rep("Unidentified", length = length(MetID), mode = "character")
   Mettag[which(grepl("Annotated", temp, fixed = TRUE))] <- "Annotated"
 
-  my_ion <- Peak.list$Ion.Mode.1
+  my_ion <- Peak.list$Ion.Mode
   my_mass <- round(Peak.list$mono_mass, digits = 5)
   my_rt <- round(Peak.list$meanRT, digits = 2)
   Metbase <- paste(my_ion,my_mass,my_rt,sep = "_")

@@ -23,3 +23,22 @@ NULL testing
 \description{
 Removes the ion mode duplicates based on user-modified indices after visual inspection of EIC_plots
 }
+\examples{
+library(LUMA)
+if(require(lcmsfishdata, quietly = TRUE)) {
+
+  file <- system.file("extdata/EIC_index_pos.txt", package = "lcmsfishdata")
+  EIC_index_pos <- read.table(file, header = TRUE, sep = "\t")
+  file2 <- system.file("extdata/EIC_index_neg.txt", package = "lcmsfishdata")
+  EIC_index_neg <- read.table(file2, header = TRUE, sep = "\t")
+
+  Peak.list <- Peaklist_db$Peaklist_Combined_with_Duplicate_IDs
+
+  Key.list <- list(Positive = EIC_index_pos, Negative = EIC_index_neg)
+
+  test <- remove_ion_dup(Peak.list = Peak.list,
+                         Key.list = Key.list)
+  nrow(Peak.list) - nrow(test) ## Number of ion mode duplicates removed
+
+}
+}

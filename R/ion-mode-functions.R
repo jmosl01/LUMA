@@ -13,6 +13,29 @@
 #' @return data frame containing the intensity matrix for the peaklist with Duplicate IDs
 #' @importFrom igraph clusters graph.adjacency
 #' @importFrom stats ave
+#' @examples
+#' library(LUMA)
+#' if(require(lcmsfishdata, quietly = TRUE)) {
+#'   file <- system.file("extdata/Search_parameters.txt", package = "lcmsfishdata")
+#'   search.par <- read.table(file, header = TRUE, sep = "\t")
+#'   class(method) <- method <- "monoMass"
+#'   Peak.list <- list(Positive = lcmsfishdata::Peaklist_db$Peaklist_Pos_Solvent_Peaks_Removed,
+#'                        Negative = lcmsfishdata::Peaklist_db$Peaklist_Neg_Solvent_Peaks_Removed)
+#'
+#'   test <- combine_ion_modes(Peak.list = Peak.list, search.par = search.par, method = method)
+#'   colnames(test)[-which(colnames(test) %in% colnames(Peak.list[["Positive"]]))] #Adds two new columns
+#'   length(which(duplicated(test[["Duplicate_ID"]]))) #number of ion mode duplicates found
+#'
+#' \donttest{
+#' class(method) <- method <- "mz"
+#'   Peak.list <- list(Positive = lcmsfishdata::Peaklist_Pos$output_parsed,
+#'                        Negative = lcmsfishdata::Peaklist_Neg$output_parsed)
+#'   test <- combine_ion_modes(Peak.list = Peak.list, search.par = search.par, method = method)
+#'   colnames(test)[-which(colnames(test) %in% colnames(Peak.list[["Positive"]]))] #Adds two new columns
+#'   dupID.mz <- test[["Duplicate_ID"]][which(duplicated(test[["Duplicate_ID"]]))]
+#'   length(dupID.mz) #number of ion mode duplicates found
+#'   }
+#' }
 combine_ion_modes = function(Peak.list, search.par, tbl.id, method, peak.db, ...) {
 
   #Set default values
@@ -34,11 +57,11 @@ combine_ion_modes = function(Peak.list, search.par, tbl.id, method, peak.db, ...
             stop("Peaklist must be a named list. Try \n> names(Peak.list) = c(\"Positive\",\"Negative\")", call. = FALSE)
         }
 
-        Peak.list.pos <- Peak.list["Positive"]
-        Peak.list.neg <- Peak.list["Negative"]
+        Peak.list.pos <- Peak.list[["Positive"]]
+        Peak.list.neg <- Peak.list[["Negative"]]
     }
-    Peak.list.pos[, "Ion Mode"] <- "Pos"
-    Peak.list.neg[, "Ion Mode"] <- "Neg"
+    Peak.list.pos[, "Ion.Mode"] <- "Pos"
+    Peak.list.neg[, "Ion.Mode"] <- "Neg"
 
     class(method) <- method
     Peak.list.combined <- search_IonDup(method,Peak.list.pos,Peak.list.neg,search.par,...)
@@ -56,6 +79,24 @@ combine_ion_modes = function(Peak.list, search.par, tbl.id, method, peak.db, ...
 #' Default is NULL
 #' @param ... Arguments to pass parameters to database functions
 #' @return NULL testing
+#' @examples
+#' library(LUMA)
+#' if(require(lcmsfishdata, quietly = TRUE)) {
+#'
+#'   file <- system.file("extdata/EIC_index_pos.txt", package = "lcmsfishdata")
+#'   EIC_index_pos <- read.table(file, header = TRUE, sep = "\t")
+#'   file2 <- system.file("extdata/EIC_index_neg.txt", package = "lcmsfishdata")
+#'   EIC_index_neg <- read.table(file2, header = TRUE, sep = "\t")
+#'
+#'   Peak.list <- Peaklist_db$Peaklist_Combined_with_Duplicate_IDs
+#'
+#'   Key.list <- list(Positive = EIC_index_pos, Negative = EIC_index_neg)
+#'
+#'   test <- remove_ion_dup(Peak.list = Peak.list,
+#'                          Key.list = Key.list)
+#'   nrow(Peak.list) - nrow(test) ## Number of ion mode duplicates removed
+#'
+#' }
 remove_ion_dup = function(Peak.list, Key.list, tbl.id, ...) {
     if (missing(Peak.list))
         Peak.list = NULL
@@ -81,9 +122,9 @@ remove_ion_dup = function(Peak.list, Key.list, tbl.id, ...) {
 
 
     # List of duplicate IDs for both positive and negative modes
-    Dup.ID.Pos <- Peak.list$Duplicate_ID[sapply(res, function(x) x == TRUE) & sapply(Peak.list$`Ion Mode`, function(x) x ==
+    Dup.ID.Pos <- Peak.list$Duplicate_ID[sapply(res, function(x) x == TRUE) & sapply(Peak.list$Ion.Mode, function(x) x ==
         "Pos")]
-    Dup.ID.Neg <- Peak.list$Duplicate_ID[sapply(res, function(x) x == TRUE) & sapply(Peak.list$`Ion Mode`, function(x) x ==
+    Dup.ID.Neg <- Peak.list$Duplicate_ID[sapply(res, function(x) x == TRUE) & sapply(Peak.list$Ion.Mode, function(x) x ==
         "Neg")]
 
     # Initialize the drop vectors
@@ -145,8 +186,8 @@ pre_combine_ion_modes = function(Peak.list = NULL, tbl.id, ...) {
     Peak.list.pos <- Peak.list["Positive"]
     Peak.list.neg <- Peak.list["Negative"]
   }
-  Peak.list.pos[, "Ion Mode"] <- "Pos"
-  Peak.list.neg[, "Ion Mode"] <- "Neg"
+  Peak.list.pos[, "Ion.Mode"] <- "Pos"
+  Peak.list.neg[, "Ion.Mode"] <- "Neg"
 
 
   Col.names.pos <- colnames(Peak.list.pos)

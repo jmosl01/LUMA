@@ -27,3 +27,27 @@ data frame containing the intensity matrix for the peaklist with Duplicate IDs
 \description{
 Combines the two single adduct ion mode feature tables into one for EIC plotting
 }
+\examples{
+library(LUMA)
+if(require(lcmsfishdata, quietly = TRUE)) {
+  file <- system.file("extdata/Search_parameters.txt", package = "lcmsfishdata")
+  search.par <- read.table(file, header = TRUE, sep = "\t")
+  class(method) <- method <- "monoMass"
+  Peak.list <- list(Positive = lcmsfishdata::Peaklist_db$Peaklist_Pos_Solvent_Peaks_Removed,
+                       Negative = lcmsfishdata::Peaklist_db$Peaklist_Neg_Solvent_Peaks_Removed)
+
+  test <- combine_ion_modes(Peak.list = Peak.list, search.par = search.par, method = method)
+  colnames(test)[-which(colnames(test) \%in\% colnames(Peak.list[["Positive"]]))] #Adds two new columns
+  length(which(duplicated(test[["Duplicate_ID"]]))) #number of ion mode duplicates found
+
+\donttest{
+class(method) <- method <- "mz"
+  Peak.list <- list(Positive = lcmsfishdata::Peaklist_Pos$output_parsed,
+                       Negative = lcmsfishdata::Peaklist_Neg$output_parsed)
+  test <- combine_ion_modes(Peak.list = Peak.list, search.par = search.par, method = method)
+  colnames(test)[-which(colnames(test) \%in\% colnames(Peak.list[["Positive"]]))] #Adds two new columns
+  dupID.mz <- test[["Duplicate_ID"]][which(duplicated(test[["Duplicate_ID"]]))]
+  length(dupID.mz) #number of ion mode duplicates found
+  }
+}
+}

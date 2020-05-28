@@ -3,7 +3,7 @@ context("test-query-functions")
 test_that("mz features are annotated correctly", {
 
   if(require(RSQLite, quietly = TRUE)) {
-    Peak.list <- Peaklist_Pos$From_CAMERA
+    Peak.list <- LUMA::Peaklist_Pos$From_CAMERA
     file <- system.file('extdata/primary_adducts_pos.csv', package = "LUMA")
     rules <- read.table(file, header = TRUE, sep = ",")
     file2 <- system.file('extdata/Search_Parameters.txt', package = "LUMA")

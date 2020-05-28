@@ -33,6 +33,8 @@ Tables generated from the fish samples in positive ionization
   mode
 }
 \examples{
-\dontrun{Peaklist_Pos}
+\dontrun{
+Peaklist_Pos
+}
 }
 \keyword{datasets}

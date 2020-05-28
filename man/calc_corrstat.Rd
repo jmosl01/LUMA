@@ -25,15 +25,17 @@ Calculates the correlation matrices for metabolite groups based on the best feat
 }
 \examples{
 library(LUMA)
-library(lcmsfishdata)
+if(require(lcmsfishdata, quietly = TRUE)) {
 file <- system.file('extdata/CAMERA_objects_Pos.Rdata', package = "lcmsfishdata")
 load(file)
 pspec.length <- sapply(anposGa@pspectra, function(x) length(x))
 get.mg <- which(pspec.length > 1)
 file2 <- system.file('extdata/Sample_Class.txt', package = "LUMA")
 Sample.df <- read.table(file2, sep = "\t", header = TRUE) #Ignore Warning message
-test <- calc_corrstat(Sample.df = Sample.df, Peak.list =
-Peaklist_Pos_db$input_parsed, get.mg = get.mg, BLANK = FALSE, IonMode =
+Peak.list <-  lcmsfishdata::Peaklist_Pos$input_parsed
+test <- calc_corrstat(Sample.df = Sample.df, Peak.list = Peak.list,
+get.mg = get.mg, BLANK = FALSE, IonMode =
 "Positive")
 test[["Correlation.stat"]][11:23]
+}
 }

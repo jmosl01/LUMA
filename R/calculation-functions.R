@@ -13,17 +13,19 @@
 #' @importFrom flashClust flashClust
 #' @examples
 #' library(LUMA)
-#' library(lcmsfishdata)
+#' if(require(lcmsfishdata, quietly = TRUE)) {
 #' file <- system.file('extdata/CAMERA_objects_Pos.Rdata', package = "lcmsfishdata")
 #' load(file)
 #' pspec.length <- sapply(anposGa@pspectra, function(x) length(x))
 #' get.mg <- which(pspec.length > 1)
 #' file2 <- system.file('extdata/Sample_Class.txt', package = "LUMA")
 #' Sample.df <- read.table(file2, sep = "\t", header = TRUE) #Ignore Warning message
-#' test <- calc_corrstat(Sample.df = Sample.df, Peak.list =
-#' Peaklist_Pos_db$input_parsed, get.mg = get.mg, BLANK = FALSE, IonMode =
+#' Peak.list <-  lcmsfishdata::Peaklist_Pos$input_parsed
+#' test <- calc_corrstat(Sample.df = Sample.df, Peak.list = Peak.list,
+#' get.mg = get.mg, BLANK = FALSE, IonMode =
 #' "Positive")
 #' test[["Correlation.stat"]][11:23]
+#' }
 calc_corrstat = function(Sample.df, Peak.list, get.mg, BLANK, IonMode) {
 
     ## Error check
@@ -115,14 +117,16 @@ calc_corrstat = function(Sample.df, Peak.list, get.mg, BLANK, IonMode) {
 #' @importFrom stats variable.names
 #' @examples
 #'   library(LUMA)
-#'   library(lcmsfishdata)
+#'   if(require(lcmsfishdata, quietly = TRUE)) {
 #'   file <- system.file('extdata/XCMS_objects_Pos.Rdata', package = "lcmsfishdata")
 #'   load(file)
 #'   file2 <- system.file('extdata/Sample_Class.txt', package = "LUMA")
 #'   Sample.df <- read.table(file2, sep = "\t", header = TRUE) #Ignore Warning message
+#'   Peak.list <- lcmsfishdata::Peaklist_Pos$From_CAMERA
 #'   test <- calc_minfrac(Sample.df = Sample.df, xset4 = xset4, BLANK = FALSE,
-#'   Peak.list = Peaklist_Pos_db$From_CAMERA)
+#'   Peak.list = Peak.list)
 #'   test[["MinFrac"]][11:23]
+#'   }
 calc_minfrac = function(Sample.df, xset4, BLANK, Peak.list) {
     peakSN <- peakTable(xset4, filebase=NULL, value="sn") #writes the SN peak table to file
     SN.list <- data.frame(X = rownames(peakSN),peakSN)

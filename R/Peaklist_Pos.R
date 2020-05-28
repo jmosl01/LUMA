@@ -22,5 +22,7 @@
 #'   \item{output_parsed}{A tibble: 12 x 139, tests sum_features}
 #'    }
 #' @examples
-#' \dontrun{Peaklist_Pos}
+#' \dontrun{
+#' Peaklist_Pos
+#' }
 "Peaklist_Pos"

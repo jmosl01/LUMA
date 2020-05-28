@@ -10,8 +10,12 @@ test_that("background removal works as planned", {
     search.par <- read.table(file2, header = TRUE, sep = "\t")
 
     #From combined features
-    Peak.list <- list(pos = Peaklist_Pos_db$Trimmed_by_MinFrac, neg = Peaklist_Neg_db$Trimmed_by_MinFrac, blanks_pos = Blanks_Pos_db$Combined_Isotopes_and_Adducts, blanks_neg = Blanks_Neg_db$Combined_Isotopes_and_Adducts)
-    test <- remove_background_peaks(Peak.list = Peak.list, Sample.df = Sample.df, search.par = search.par, method = "monoMass", mem = TRUE)
+    Peak.list <- list(pos = lcmsfishdata::Peaklist_Pos$Trimmed_by_MinFrac,
+                      neg = lcmsfishdata::Peaklist_Neg$Trimmed_by_MinFrac,
+                      blanks_pos = lcmsfishdata::Blanks_Pos$Combined_Isotopes_and_Adducts,
+                      blanks_neg = lcmsfishdata::Blanks_Neg$Combined_Isotopes_and_Adducts)
+    test <- remove_background_peaks(Peak.list = Peak.list, Sample.df = Sample.df,
+                                    search.par = search.par, method = "monoMass", mem = TRUE)
     expect_equal(sum(sapply(test, length)),4) #4 Peaklists are returned
     expect_equal(names(test), c("Positive","Negative")) #Two ionization modes are returned
     expect_equal(unname(sapply(test[["Positive"]], nrow)),c(454,36)) #The correct number of metabolites are returned and in the correct order
