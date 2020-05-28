@@ -2,52 +2,69 @@
 % Please edit documentation in R/ion-mode-functions.R
 \name{combine_ion_modes}
 \alias{combine_ion_modes}
-\title{Combines Peak.lists from two ion modes}
+\title{Combines Peak.lists from Two Ionization Modes}
 \usage{
 combine_ion_modes(Peak.list, search.par, tbl.id, method, peak.db, ...)
 }
 \arguments{
-\item{Peak.list}{a named list of data frames (one per ionization mode) containing intensity matrices across all study samples and Pooled QCs.
-Names must be c('Positive','Negative').  Alternatively may use existing database connections by setting to NULL}
+\item{Peak.list}{a named list of data frames (one per ionization mode)
+containing intensity matrices across all study samples and Pooled QCs.
+Names must be \code{c("Positive","Negative")}.  Alternatively may use existing
+database connections by setting to NULL}
 
-\item{search.par}{a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.}
+\item{search.par}{a single-row data frame with 11 variables containing
+user-defined search parameters. Must contain the columns
+\code{'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac',
+'Endogenous','Solvent','gen.plots','keep.singletons'}.}
 
-\item{tbl.id}{character vector of table names to draw from databases.  First value should be table containing compounds from positive ionization, second should be table containing compounds from negative ionization. Default is NULL}
+\item{tbl.id}{character vector of table names to draw from databases.  First
+value should be table containing compounds from positive ionization, second
+should be table containing compounds from negative ionization. Default is
+NULL.}
 
-\item{method}{which method to apply to search for duplicate entries.
-See \code{search_IonDup} for details.}
+\item{method}{which method to apply to search for duplicate entries. See
+\code{search_IonDup} for details.}
 
 \item{peak.db}{Formal class SQLiteConnection}
 
-\item{...}{Arguments to pass parameters to search_IonDup}
+\item{...}{Arguments to pass parameters to \code{search_IonDup}}
 }
 \value{
-data frame containing the intensity matrix for the peaklist with Duplicate IDs
+data frame containing the intensity matrix for the peaklist with
+  Duplicate IDs
 }
 \description{
-Combines the two single adduct ion mode feature tables into one for EIC plotting
+Combines the two single adduct ion mode feature tables into one
+  for EIC plotting
 }
 \examples{
 library(LUMA)
 if(require(lcmsfishdata, quietly = TRUE)) {
-  file <- system.file("extdata/Search_parameters.txt", package = "lcmsfishdata")
-  search.par <- read.table(file, header = TRUE, sep = "\t")
-  class(method) <- method <- "monoMass"
-  Peak.list <- list(Positive = lcmsfishdata::Peaklist_db$Peaklist_Pos_Solvent_Peaks_Removed,
-                       Negative = lcmsfishdata::Peaklist_db$Peaklist_Neg_Solvent_Peaks_Removed)
+file <- system.file("extdata/Search_parameters.txt", package = "lcmsfishdata")
+search.par <- read.table(file, header = TRUE, sep = "\t")
+class(method) <- method <- "monoMass"
+Peak.list <- list(Positive =
+    lcmsfishdata::Peaklist_db$Peaklist_Pos_Solvent_Peaks_Removed, Negative =
+    lcmsfishdata::Peaklist_db$Peaklist_Neg_Solvent_Peaks_Removed)
 
-  test <- combine_ion_modes(Peak.list = Peak.list, search.par = search.par, method = method)
-  colnames(test)[-which(colnames(test) \%in\% colnames(Peak.list[["Positive"]]))] #Adds two new columns
-  length(which(duplicated(test[["Duplicate_ID"]]))) #number of ion mode duplicates found
+test <- combine_ion_modes(Peak.list = Peak.list, search.par = search.par,
+    method = method)
+
+colnames(test)[-which(colnames(test) \%in\%
+    colnames(Peak.list[["Positive"]]))] #Adds two new columns
+length(which(duplicated(test[["Duplicate_ID"]]))) #number of ion mode
+#duplicates found
 
 \donttest{
 class(method) <- method <- "mz"
-  Peak.list <- list(Positive = lcmsfishdata::Peaklist_Pos$output_parsed,
-                       Negative = lcmsfishdata::Peaklist_Neg$output_parsed)
-  test <- combine_ion_modes(Peak.list = Peak.list, search.par = search.par, method = method)
-  colnames(test)[-which(colnames(test) \%in\% colnames(Peak.list[["Positive"]]))] #Adds two new columns
-  dupID.mz <- test[["Duplicate_ID"]][which(duplicated(test[["Duplicate_ID"]]))]
-  length(dupID.mz) #number of ion mode duplicates found
-  }
+Peak.list <- list(Positive = lcmsfishdata::Peaklist_Pos$output_parsed,
+Negative = lcmsfishdata::Peaklist_Neg$output_parsed)
+test <- combine_ion_modes(Peak.list = Peak.list, search.par = search.par,
+method = method)
+colnames(test)[-which(colnames(test) \%in\% colnames(Peak.list[["Positive"]]))]
+#Adds two new columns
+dupID.mz <- test[["Duplicate_ID"]][which(duplicated(test[["Duplicate_ID"]]))]
+length(dupID.mz) #number of ion mode duplicates found
+ }
 }
 }
