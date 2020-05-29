@@ -185,8 +185,8 @@ match_Annotation = function(Peak.list, Annotated.library, Library.phenodata, rul
 #'
 #' \donttest{
 #' class(method) <- method <- "mz"
-#' Peak.list.neg <- Peaklist_Neg_db$output_parsed
-#' Peak.list.pos <- Peaklist_Pos_db$output_parsed
+#' Peak.list.neg <- lcmsfishdata::Peaklist_Neg$output_parsed
+#' Peak.list.pos <- lcmsfishdata::Peaklist_Pos$output_parsed
 #'
 #' test <- search_IonDup(method, Peak.list.pos = Peak.list.pos,
 #'                       Peak.list.neg = Peak.list.neg, search.par = search.par)

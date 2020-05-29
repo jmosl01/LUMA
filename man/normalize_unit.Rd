@@ -7,10 +7,12 @@
 normalize_unit(x)
 }
 \arguments{
-\item{x}{dataframe containing only numeric vectors representing samples with metabolite intensities.  Cannot contain zeros or NA values}
+\item{x}{dataframe containing only numeric vectors representing samples with
+metabolite intensities.  Cannot contain zeros or NA values}
 }
 \value{
-An array with the same shape as \code{x}, but with the summary statistics swept out
+An array with the same shape as \code{x}, but with the summary
+  statistics swept out
 }
 \description{
 normalizes each column to unity

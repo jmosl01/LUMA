@@ -76,8 +76,9 @@ search.par <- read.table(file2, header = TRUE, sep = "\t")
 \donttest{
   #From m/z features
   Peak.list <- list(pos = lcmsfishdata::Peaklist_Pos$From_CAMERA, neg =
-  Peaklist_Neg_db$From_CAMERA, blanks_pos = lcmsfishdata::Blanks_Pos$From_CAMERA,
-  blanks_neg = lcmsfishdata::Blanks_Neg$From_CAMERA)
+  lcmsfishdata::Peaklist_Neg$From_CAMERA, blanks_pos =
+  lcmsfishdata::Blanks_Pos$From_CAMERA, blanks_neg =
+  lcmsfishdata::Blanks_Neg$From_CAMERA)
   test <- remove_background_peaks(Peak.list = Peak.list, Sample.df =
   Sample.df, search.par = search.par, method = "mz", mem = TRUE)
   lapply(test, head) #Peaklists with removed background components are returned

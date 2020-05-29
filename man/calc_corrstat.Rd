@@ -7,21 +7,32 @@
 calc_corrstat(Sample.df, Peak.list, get.mg, BLANK, IonMode)
 }
 \arguments{
-\item{Sample.df}{a data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns 'Sex','Class','n','Endogenous'.}
+\item{Sample.df}{a data frame with class info as columns.  Must contain a
+separate row entry for each unique sex/class combination. Must contain the
+columns \code{"Sex","Class","n","Endogenous"}.}
 
-\item{Peak.list}{a data frame from CAMERA that has been parsed.  Should contain all output columns from XCMS and CAMERA, and additional columns from IHL.search, Calc.MinFrac and CAMERA.parser.}
+\item{Peak.list}{a data frame from CAMERA that has been parsed.  Should
+contain all output columns from XCMS and CAMERA, and additional columns
+from \code{match_Annotation}, \code{calc_minfrac} and either
+\code{parse_pos_results} or \code{parse_neg_results}.}
 
-\item{get.mg}{numerical vector of metabolite groups that have more than one feature}
+\item{get.mg}{numerical vector of metabolite groups that have more than one
+feature}
 
 \item{BLANK}{a logical indicating whether blanks are being evaluated}
 
-\item{IonMode}{a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'}
+\item{IonMode}{a character string defining the ionization mode.  Must be one
+of  \code{c("Positive","Negative")}}
 }
 \value{
-Peak.list of class 'tbl_df',tbl' or 'data.frame' with variables as columns.  Has all of the columns as the original data frame with one additional column 'Correlation.stat'
+Peak.list of class \code{'tbl_df','tbl' or 'data.frame'} with
+  variables as columns.  Has all of the columns as the original data frame
+  with one additional column \code{"Correlation.stat"}
 }
 \description{
-Calculates the correlation matrices for metabolite groups based on the best feature within the group that belongs to the primary metabolite.
+Calculates the correlation matrices for metabolite groups based
+  on the best feature within the group that belongs to the primary
+  metabolite.
 }
 \examples{
 library(LUMA)
@@ -34,8 +45,7 @@ file2 <- system.file('extdata/Sample_Class.txt', package = "LUMA")
 Sample.df <- read.table(file2, sep = "\t", header = TRUE) #Ignore Warning message
 Peak.list <-  lcmsfishdata::Peaklist_Pos$input_parsed
 test <- calc_corrstat(Sample.df = Sample.df, Peak.list = Peak.list,
-get.mg = get.mg, BLANK = FALSE, IonMode =
-"Positive")
+get.mg = get.mg, BLANK = FALSE, IonMode = "Positive")
 test[["Correlation.stat"]][11:23]
 }
 }

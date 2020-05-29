@@ -14,21 +14,60 @@ replace_zeros_normalize(
 )
 }
 \arguments{
-\item{Peak.list}{a data frame containing combined ion mode peaklist with ion mode duplicates removed.  Alternatively can be retrieved from databases.  Default is NULL}
+\item{Peak.list}{a data frame containing combined ion mode peaklist with ion
+mode duplicates removed.  Alternatively can be retrieved from databases.
+Default is \code{NULL}}
 
-\item{Sample.df}{a data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns 'Sex','Class','n','Endogenous'.}
+\item{Sample.df}{a data frame with class info as columns.  Must contain a
+separate row entry for each unique sex/class combination. Must contain the
+columns \code{"Sex","Class","n","Endogenous"}.}
 
-\item{tbl.id}{character vector of table names to draw from databases.  First value should be table name from positive ionization peak database, second should be table name from negative ionization peak database. Default is NULL}
+\item{tbl.id}{character vector of table names to draw from databases.  First
+value should be table name from positive ionization peak database, second
+should be table name from negative ionization peak database. Default is
+\code{NULL}}
 
-\item{QC.id}{character vector specifying identifier in filename designating a Pooled QC sample.  Only the first value will be used.  Default is 'Pooled_QC_'}
+\item{QC.id}{character vector specifying identifier in filename designating a
+Pooled QC sample.  Only the first value will be used.  Default is
+\code{"Pooled_QC_"}}
 
-\item{mult}{numeric multiplier to be added to unit normalization.  Default is 1000}
+\item{mult}{numeric multiplier to be added to unit normalization.  Default is
+\code{1000}}
 
 \item{...}{Arguments to pass parameters to database functions}
 }
 \value{
-data frame containing normalized intensity matrix for all samples plus Pooled QCs
+data frame containing normalized intensity matrix for all samples
+  plus Pooled QCs
 }
 \description{
-Replaces zero values with half of the minimum value from all study samples and normalizes to unity
+Replaces zero values with half of the minimum value from all
+  study samples and normalizes to unity
+}
+\examples{
+library(LUMA)
+if(require(lcmsfishdata, quietly = TRUE)) {
+
+  file <- system.file("extdata/Sample_Class.txt", package = "lcmsfishdata")
+  Sample.df <- read.table(file, header = TRUE, sep = "\t")
+  Peak.list <- lcmsfishdata::Peaklist_db$Peaklist_Combined_FINAL
+  QC.ID <- "Pooled_QC"
+  mult <- 1
+
+  test <- replace_zeros_normalize(Peak.list = Peak.list, Sample.df =
+  Sample.df, QC.id = QC.ID, mult = mult)
+  sum(test[,grep(QC.ID, colnames(test))]) # There are 11 Pooled QC samples,
+  # each with unit normalized intensity values
+
+  mult2 <- 1000
+  test2 <- replace_zeros_normalize(Peak.list = Peak.list, Sample.df =
+  Sample.df, QC.id = QC.ID, mult = mult2)
+  sum(test2[,grep(QC.ID, colnames(test))]) #Now they are each normalized to 1000
+
+  test_pos <- test[grep("Pos",test[["Ion.Mode"]]),grep(QC.ID, colnames(test))]
+  test_neg <- test[grep("Neg",test[["Ion.Mode"]]),grep(QC.ID, colnames(test))]
+
+  sum(test_pos) == sum(test_neg) #Ion modes are given equal weighting
+
+}
 }
