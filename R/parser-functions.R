@@ -1,11 +1,33 @@
 #' @title CAMERA Parser in positive mode
 #'
 #' @export
-#' @description Parses the CAMERA results using well-defined rules to eliminate conflicting annotations.
-#' @param raw a data frame with variables as columns.  Should contain all output columns from XCMS and CAMERA, additional columns from IHL.search and a Minfrac column.  The last columns must be the CAMERA columns "isotopes","adduct","pcgroup" in that order.
-#' @param rule a data frame containing the rule list used by CAMERA to annotate ion adducts and fragments.  Must contain the columns "name","nmol","charge","massdiff","oidscore","quasi","ips".
-#' @param IonMode a character string defining the ionization mode.  Must be "Positive"
-#' @return data frame parsed version of the original data frame with additional columns "mono_mass","metabolite_group","monoisotopic_flg","adduct_flg","isotope_flg","ambiguity_flg","Selection_flg"
+#' @description Parses the CAMERA results using well-defined rules to eliminate
+#'   conflicting annotations.
+#' @param raw a data frame with variables as columns.  Should contain all output
+#'   columns from XCMS and CAMERA, additional columns from \code{match_Annotation} and
+#'   \code{calc_minfrac}.  Must contain the CAMERA columns
+#'   \code{"isotopes","adduct","pcgroup"}.
+#' @param rule a data frame containing the rule list used by CAMERA to annotate
+#'   ion adducts and fragments.  Must contain the columns
+#'   \code{"name","nmol","charge","massdiff","oidscore","quasi","ips"}.
+#' @param IonMode a character string defining the ionization mode.  Must be
+#'   \code{"Positive"}
+#' @return data frame parsed version of the original data frame with additional
+#'   columns
+#'   \code{"mono_mass","metabolite_group","monoisotopic_flg","adduct_flg","isotope_flg","ambiguity_flg","Selection_flg"}
+#' @examples
+#' library(LUMA)
+#' if(require(lcmsfishdata, quietly = TRUE)) {
+#'
+#'   file <- system.file("extdata/primary_adducts_pos.csv", package = "lcmsfishdata")
+#'   rules <- read.csv(file, header = TRUE)
+#'   Peak.list <- as.data.frame(lcmsfishdata::Peaklist_Pos[["Annotated"]])
+#'   test <- parse_pos_results(raw = Peak.list, rule = rules, IonMode = "Positive")
+#'   colnames(test)[-which(colnames(test) %in% colnames(Peak.list))] ##Adds the following columns
+#'   length(unique(Peak.list[["pcgroup"]])) #Originally were this many metabolite groupings
+#'   length(unique(test[["metabolite_group"]])) #Now there are many more metabolite groupings
+#'
+#' }
 parse_pos_results=function(raw,rule,IonMode){
   ##This code is a modified version of CAMERA_parser.m from the Ressom Omics Lab at Georgetown University (http://omics.georgetown.edu/) adapted for the R environment
   ##*******************************************************
@@ -38,7 +60,7 @@ parse_pos_results=function(raw,rule,IonMode){
     if(adducts[i,1]!=""){
       idx<-intersect(which(adducts$adduct %in% adducts[i,1]), which(pcgroup$pcgroup %in% pcgroup[i,1]))
       if (length(idx)>1){
-        warning ("Find same annotation in the same pcgroup, both of them are removed: ",as.character(adducts[i,1]),", pcgroup ",pcgroup[i,1])
+        # warning ("Find same annotation in the same pcgroup, both of them are removed: ",as.character(adducts[i,1]),", pcgroup ",pcgroup[i,1])
         adducts[idx,1]<-""
       }
       else if (length(idx)==0){
@@ -75,7 +97,7 @@ parse_pos_results=function(raw,rule,IonMode){
   adducts$adduct <- as.character(adducts$adduct)
   for (j in 1:length(adducts$adduct)){
     if (length(grep("\\[.+\\].+\\[.+\\]", toString(adducts$adduct[[j]])))>0){
-      warning ("Conflicting annotations are splitted in pc_group ",pcgroup[j,],": ",as.character(adducts[j,]),":::",j)
+      # warning ("Conflicting annotations are splitted in pc_group ",pcgroup[j,],": ",as.character(adducts[j,]),":::",j)
       single_annotations <- strsplit(toString(adducts$adduct[[j]]),"(?<=[^-]\\d{1}) ", perl=TRUE)
       # % If the multiple adduct annotation coincide with isotope
       # % annotation, the isotope annotation is only preserved for the first
@@ -273,8 +295,8 @@ parse_pos_results=function(raw,rule,IonMode){
       mono_mass[grp_ion_idx]<-grp_mass[mono_flg[grp_ion_idx]==1]
     }
     else if (sum(!is.na(grp_mass))>=2){
-      warning("More than one mono mass value for adducts. \nRemoving conflicting adduct annotation.")
-      print(raw_single_annotation[grp_ion_idx,(ncol(raw_single_annotation)-2):ncol(raw_single_annotation)])
+      # warning("More than one mono mass value for adducts. \nRemoving conflicting adduct annotation.")
+      # print(raw_single_annotation[grp_ion_idx,(ncol(raw_single_annotation)-2):ncol(raw_single_annotation)])
       if(is.vector(ion_info_copy)){
         ion_info_copy <- ion_info[-k,]
         for (l in 1:length(grp_ion_idx)){
@@ -405,7 +427,7 @@ parse_pos_results=function(raw,rule,IonMode){
   mono_mass <- mono_mass - PROTO_MASS
   ## Output the parsed results into a csv file
   Peak.list<-raw_single_annotation
-  attributes(Peak.list)
+  # attributes(Peak.list)
   Peak.list <- cbind(Peak.list,mono_mass,metabolite_grp,mono_flg,adduct_flg,iso_flg,ambiguity_flg,mono_selector)
   colnames(Peak.list)[(ncol(raw_single_annotation)+1):(ncol(raw_single_annotation)+7)]<-cbind("mono_mass","metabolite_group","monoisotopic_flg","adduct_flg","isotope_flg","ambiguity_flg","Selection_flg")
 
@@ -420,6 +442,19 @@ parse_pos_results=function(raw,rule,IonMode){
 #' @param rule a data frame containing the rule list used by CAMERA to annotate ion adducts and fragments.  Must contain the columns "name","nmol","charge","massdiff","oidscore","quasi","ips".
 #' @param IonMode a character string defining the ionization mode.  Must be "Negative"
 #' @return data frame parsed version of the original data frame with additional columns "mono_mass","metabolite_group","monoisotopic_flg","adduct_flg","isotope_flg","ambiguity_flg","Selection_flg"
+#' @examples
+#' library(LUMA)
+#' if(require(lcmsfishdata, quietly = TRUE)) {
+#'
+#'   file <- system.file("extdata/primary_adducts_neg.csv", package = "lcmsfishdata")
+#'   rules <- read.csv(file, header = TRUE)
+#'   Peak.list <- as.data.frame(lcmsfishdata::Peaklist_Neg[["Annotated"]])
+#'   test <- parse_neg_results(raw = Peak.list, rule = rules, IonMode = "Negative")
+#'   colnames(test)[-which(colnames(test) %in% colnames(Peak.list))] ##Adds the following columns
+#'   length(unique(Peak.list[["pcgroup"]])) #Originally were this many metabolite groupings
+#'   length(unique(test[["metabolite_group"]])) #Now there are many more metabolite groupings
+#'
+#' }
 parse_neg_results=function(raw,rule,IonMode){
   ##This code is a modified version of CAMERA_parser.m from the Ressom Omics Lab at Georgetown University (http://omics.georgetown.edu/) adapted for the R environment
   ##*******************************************************
@@ -453,7 +488,7 @@ parse_neg_results=function(raw,rule,IonMode){
     if(adducts[i,1]!=""){
       idx<-intersect(which(adducts$adduct %in% adducts[i,1]), which(pcgroup$pcgroup %in% pcgroup[i,1]))
       if (length(idx)>1){
-        warning ("Find same annotation in the same pcgroup, both of them are removed: ",as.character(adducts[i,1]),", pcgroup ",pcgroup[i,1])
+        # warning ("Find same annotation in the same pcgroup, both of them are removed: ",as.character(adducts[i,1]),", pcgroup ",pcgroup[i,1])
         adducts[idx,1]<-""
       }
       else if (length(idx)==0){
@@ -490,7 +525,7 @@ parse_neg_results=function(raw,rule,IonMode){
   adducts$adduct <- as.character(adducts$adduct)
   for (j in 1:length(adducts$adduct)){
     if (length(grep("\\[.+\\].+\\[.+\\]", toString(adducts$adduct[[j]])))>0){
-      warning ("Conflicting annotations are splitted in pc_group ",pcgroup[j,],": ",as.character(adducts[j,]),":::",j)
+      # warning ("Conflicting annotations are splitted in pc_group ",pcgroup[j,],": ",as.character(adducts[j,]),":::",j)
       single_annotations <- strsplit(toString(adducts$adduct[[j]]),"(?<=[^-]\\d{1}) ", perl=TRUE)
       # % If the multiple adduct annotation coincide with isotope
       # % annotation, the isotope annotation is only preserved for the first
@@ -688,8 +723,8 @@ parse_neg_results=function(raw,rule,IonMode){
       # % m/z values as the same isotopic mass, presumably because they are close in mass.
       # % In this case, we don't use either monoisotopic m/z, but assume both are monoisotopic
       # % ions and recalculate them from the original m/z values.
-      warning("More than one mono mass value for adducts. \nRemoving conflicting adduct annotation.")
-      print(raw_single_annotation[grp_ion_idx,(ncol(raw_single_annotation)-2):ncol(raw_single_annotation)])
+      # warning("More than one mono mass value for adducts. \nRemoving conflicting adduct annotation.")
+      # print(raw_single_annotation[grp_ion_idx,(ncol(raw_single_annotation)-2):ncol(raw_single_annotation)])
       ion_info_copy <- ion_info[-k,]
       for (l in 1:length(grp_ion_idx)){
         mass_tmp <- raw_single_annotation[grp_ion_idx[l],"mz"]
@@ -793,7 +828,7 @@ parse_neg_results=function(raw,rule,IonMode){
       mono_selector[idx[idx_mono]]<-1
     }
     else if(length(idx_mono)>=2){
-      print(raw_single_annotation[idx,(ncol(raw_single_annotation)-2):ncol(raw_single_annotation)])
+      # print(raw_single_annotation[idx,(ncol(raw_single_annotation)-2):ncol(raw_single_annotation)])
       #stop("Error: more than one monoisotopic peak")
     }
     else{
@@ -805,7 +840,7 @@ parse_neg_results=function(raw,rule,IonMode){
   mono_mass <- mono_mass + PROTO_MASS
   ## Output the parsed results into a csv file
   Peak.list<-raw_single_annotation
-  attributes(Peak.list)
+  # attributes(Peak.list)
   Peak.list <- cbind(Peak.list,mono_mass,metabolite_grp,mono_flg,adduct_flg,iso_flg,ambiguity_flg,mono_selector)
   colnames(Peak.list)[(ncol(raw_single_annotation)+1):(ncol(raw_single_annotation)+7)]<-cbind("mono_mass","metabolite_group","monoisotopic_flg","adduct_flg","isotope_flg","ambiguity_flg","Selection_flg")
 

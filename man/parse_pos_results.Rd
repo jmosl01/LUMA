@@ -7,15 +7,38 @@
 parse_pos_results(raw, rule, IonMode)
 }
 \arguments{
-\item{raw}{a data frame with variables as columns.  Should contain all output columns from XCMS and CAMERA, additional columns from IHL.search and a Minfrac column.  The last columns must be the CAMERA columns "isotopes","adduct","pcgroup" in that order.}
+\item{raw}{a data frame with variables as columns.  Should contain all output
+columns from XCMS and CAMERA, additional columns from \code{match_Annotation} and
+\code{calc_minfrac}.  Must contain the CAMERA columns
+\code{"isotopes","adduct","pcgroup"}.}
 
-\item{rule}{a data frame containing the rule list used by CAMERA to annotate ion adducts and fragments.  Must contain the columns "name","nmol","charge","massdiff","oidscore","quasi","ips".}
+\item{rule}{a data frame containing the rule list used by CAMERA to annotate
+ion adducts and fragments.  Must contain the columns
+\code{"name","nmol","charge","massdiff","oidscore","quasi","ips"}.}
 
-\item{IonMode}{a character string defining the ionization mode.  Must be "Positive"}
+\item{IonMode}{a character string defining the ionization mode.  Must be
+\code{"Positive"}}
 }
 \value{
-data frame parsed version of the original data frame with additional columns "mono_mass","metabolite_group","monoisotopic_flg","adduct_flg","isotope_flg","ambiguity_flg","Selection_flg"
+data frame parsed version of the original data frame with additional
+  columns
+  \code{"mono_mass","metabolite_group","monoisotopic_flg","adduct_flg","isotope_flg","ambiguity_flg","Selection_flg"}
 }
 \description{
-Parses the CAMERA results using well-defined rules to eliminate conflicting annotations.
+Parses the CAMERA results using well-defined rules to eliminate
+  conflicting annotations.
+}
+\examples{
+library(LUMA)
+if(require(lcmsfishdata, quietly = TRUE)) {
+
+  file <- system.file("extdata/primary_adducts_pos.csv", package = "lcmsfishdata")
+  rules <- read.csv(file, header = TRUE)
+  Peak.list <- lcmsfishdata::Peaklist_Pos[["Annotated"]]
+  test <- parse_pos_results(raw = Peak.list, rule = rules, IonMode = "Positive")
+  colnames(test)[-which(colnames(test) \%in\% colnames(Peak.list))] ##Adds the following columns
+  length(unique(Peak.list[["pcgroup"]])) #Originally were this many metabolite groupings
+  length(unique(test[["metabolite_group"]])) #Now there are many more metabolite groupings
+
+}
 }
