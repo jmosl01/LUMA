@@ -34,7 +34,7 @@ if(require(lcmsfishdata, quietly = TRUE)) {
 
   file <- system.file("extdata/primary_adducts_pos.csv", package = "lcmsfishdata")
   rules <- read.csv(file, header = TRUE)
-  Peak.list <- lcmsfishdata::Peaklist_Pos[["Annotated"]]
+  Peak.list <- as.data.frame(lcmsfishdata::Peaklist_Pos[["Annotated"]])
   test <- parse_pos_results(raw = Peak.list, rule = rules, IonMode = "Positive")
   colnames(test)[-which(colnames(test) \%in\% colnames(Peak.list))] ##Adds the following columns
   length(unique(Peak.list[["pcgroup"]])) #Originally were this many metabolite groupings

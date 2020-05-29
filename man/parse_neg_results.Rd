@@ -25,7 +25,7 @@ if(require(lcmsfishdata, quietly = TRUE)) {
 
   file <- system.file("extdata/primary_adducts_neg.csv", package = "lcmsfishdata")
   rules <- read.csv(file, header = TRUE)
-  Peak.list <- lcmsfishdata::Peaklist_Neg[["Annotated"]]
+  Peak.list <- as.data.frame(lcmsfishdata::Peaklist_Neg[["Annotated"]])
   test <- parse_neg_results(raw = Peak.list, rule = rules, IonMode = "Negative")
   colnames(test)[-which(colnames(test) \%in\% colnames(Peak.list))] ##Adds the following columns
   length(unique(Peak.list[["pcgroup"]])) #Originally were this many metabolite groupings

@@ -14,21 +14,46 @@ combine_phenodata(
 )
 }
 \arguments{
-\item{Sample.df}{a data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns 'Sex','Class','n','Endogenous'.}
+\item{Sample.df}{a data frame with class info as columns.  Must contain a
+separate row entry for each unique sex/class combination. Must contain the
+columns \code{"Sex","Class","n","Endogenous"}.}
 
-\item{Peak.list}{data frame. Must have Correlation.stat, metabolite_group, and mono_mass columns.  Should contain output columns from XCMS and CAMERA, and additional columns from IHL.search, Calc.MinFrac, CAMERA.parser and EIC.plotter functions.}
+\item{Peak.list}{data frame. Must have the columns \code{Correlation.stat,
+metabolite_group, mono_mass}.  Should contain output columns from XCMS and
+CAMERA, and additional columns from functions \code{match_Annotation,
+calc_minfrac, CAMERAParser, plot_metgroup}.}
 
-\item{Summed.list}{data frame containing metabolite group as first column and the rest summed intensities for each sample}
+\item{Summed.list}{data frame containing metabolite group as first column and
+the rest summed intensities for each sample}
 
-\item{search.par}{a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.}
+\item{search.par}{a single-row data frame with 11 variables containing
+user-defined search parameters. Must contain the columns
+\code{"ppm","rt","Voidrt","Corr.stat.pos","Corr.stat.neg","CV","Minfrac","Endogenous","Solvent","gen.plots","keep.singletons"}.}
 
 \item{BLANK}{a logical indicating whether blanks are being evaluated}
 
-\item{IonMode}{a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'}
+\item{IonMode}{a character string defining the ionization mode.  Must be one
+of \code{c("Positive","Negative"}.}
 }
 \value{
-Peak.list.summed with the munged phenotype columns up front followed by QC and sample columns
+Peak.list.summed with the munged phenotype columns up front followed
+  by QC and sample columns
 }
 \description{
-Combine phenotype data for each metabolite group in Peak.list with summed intensity values
+Combine phenotype data for each metabolite group in Peak.list
+  with summed intensity values
+}
+\examples{
+library(LUMA)
+file <- system.file('extdata/Search_Parameters.txt', package = "LUMA")
+search.par <- read.table(file, sep = "\t", header = TRUE) #Ignore Warning message
+file2 <- system.file('extdata/Sample_Class.txt', package = "LUMA")
+Sample.df <- read.table(file2, sep = "\t", header = TRUE) #Ignore Warning message
+Peak.list <- LUMA::Peaklist_Pos$output_parsed
+Summed.list <- sum_features(Peak.list = Peak.list, Sample.df = Sample.df ,
+                       search.par = search.par, BLANK = FALSE, IonMode = "Positive")
+test <- combine_phenodata(Sample.df = Sample.df, Peak.list = Peak.list,
+Summed.list = Summed.list, search.par = search.par, BLANK = FALSE, IonMode =
+"Positive")
+nrow(Peak.list) - nrow(test) ##Combines multiple features into single entries per metabolite
 }

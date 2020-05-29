@@ -339,15 +339,16 @@ calc_minfrac = function(Sample.df, xset4, BLANK, Peak.list) {
 #' @export
 #' @description Sums all features belonging to the same metabolite into a single
 #'   intensity value per metabolite group per sample
-#' @param Peak.list data frame. Must have \emph{metabolite_group} column.  Should
-#'   contain output columns from XCMS and CAMERA. Can contain columns from
-#'   IHL.search, Calc.MinFrac, CAMERA.parser and EIC.plotter functions.
+#' @param Peak.list data frame. Must have column \code{metabolite_group}.
+#'   Should contain output columns from XCMS and CAMERA. Can contain columns
+#'   from functions \code{match_Annotation, calc_minfrac, ParseCAMERA,
+#'   plot_metgroup}.
 #' @param Sample.df a data frame with class info as columns.  Must contain a
 #'   separate row entry for each unique sex/class combination. Must contain the
-#'   columns 'Sex','Class','n','Endogenous'.
+#'   columns \code{"Sex","Class","n","Endogenous"}.
 #' @param search.par a single-row data frame with 11 variables containing
 #'   user-defined search parameters. Must contain the columns
-#'   'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.
+#'   \code{"ppm","rt","Voidrt","Corr.stat.pos","Corr.stat.neg","CV","Minfrac","Endogenous","Solvent","gen.plots","keep.singletons"}.
 #'
 #' @param BLANK a logical indicating whether blanks are being evaluated
 #' @param IonMode a character string defining the ionization mode.  Must be
@@ -361,13 +362,13 @@ calc_minfrac = function(Sample.df, xset4, BLANK, Peak.list) {
 #' search.par <- read.table(file, sep = "\t", header = TRUE) #Ignore Warning message
 #' file2 <- system.file('extdata/Search_Parameters.txt', package = "LUMA")
 #' Sample.df <- read.table(file, sep = "\t", header = TRUE) #Ignore Warning message
-#' Peak.list <- Peaklist_Pos$output_parsed
+#' Peak.list <- LUMA::Peaklist_Pos$output_parsed
 #' if("metabolite_group" %in% colnames(Peak.list)) {
 #'   test <- sum_features(Peak.list = Peak.list, Sample.df = Sample.df ,
 #'                        search.par = search.par, BLANK = FALSE, IonMode = "Positive")
 #' } else (stop("Peak.list must have a column called \"metabolite_group\""))
 #' \dontrun{
-#' Peak.list <- Peaklist_Pos$Annotated
+#' Peak.list <- LUMA::Peaklist_Pos$Annotated
 #' if("metabolite_group" %in% colnames(Peak.list)) {
 #'   test <- sum_features(Peak.list = Peak.list, Sample.df = Sample.df ,
 #'                        search.par = search.par, BLANK = FALSE, IonMode = "Positive")

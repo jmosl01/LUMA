@@ -850,18 +850,43 @@ parse_neg_results=function(raw,rule,IonMode){
 #' @title Combine phenotype data in Peak.list
 #'
 #' @export
-#' @description Combine phenotype data for each metabolite group in Peak.list with summed intensity values
-#' @param Sample.df a data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns 'Sex','Class','n','Endogenous'.
-#' @param Peak.list data frame. Must have Correlation.stat, metabolite_group, and mono_mass columns.  Should contain output columns from XCMS and CAMERA, and additional columns from IHL.search, Calc.MinFrac, CAMERA.parser and EIC.plotter functions.
-#' @param Summed.list data frame containing metabolite group as first column and the rest summed intensities for each sample
-#' @param search.par a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.
+#' @description Combine phenotype data for each metabolite group in Peak.list
+#'   with summed intensity values
+#' @param Sample.df a data frame with class info as columns.  Must contain a
+#'   separate row entry for each unique sex/class combination. Must contain the
+#'   columns \code{"Sex","Class","n","Endogenous"}.
+#' @param Peak.list data frame. Must have the columns \code{Correlation.stat,
+#'   metabolite_group, mono_mass}.  Should contain output columns from XCMS and
+#'   CAMERA, and additional columns from functions \code{match_Annotation,
+#'   calc_minfrac, CAMERAParser, plot_metgroup}.
+#' @param Summed.list data frame containing metabolite group as first column and
+#'   the rest summed intensities for each sample
+#' @param search.par a single-row data frame with 11 variables containing
+#'   user-defined search parameters. Must contain the columns
+#'   \code{"ppm","rt","Voidrt","Corr.stat.pos","Corr.stat.neg","CV","Minfrac","Endogenous","Solvent","gen.plots","keep.singletons"}.
+#'
 #' @param BLANK a logical indicating whether blanks are being evaluated
-#' @param IonMode a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'
-#' @return Peak.list.summed with the munged phenotype columns up front followed by QC and sample columns
+#' @param IonMode a character string defining the ionization mode.  Must be one
+#'   of \code{c("Positive","Negative"}.
+#' @return Peak.list.summed with the munged phenotype columns up front followed
+#'   by QC and sample columns
 #' @importFrom plyr ddply
 #' @importFrom dplyr '%>%' mutate_if summarise bind_cols
 #' @importFrom utils str txtProgressBar setTxtProgressBar
 #' @importFrom stringr str_count
+#' @examples
+#' library(LUMA)
+#' file <- system.file('extdata/Search_Parameters.txt', package = "LUMA")
+#' search.par <- read.table(file, sep = "\t", header = TRUE) #Ignore Warning message
+#' file2 <- system.file('extdata/Sample_Class.txt', package = "LUMA")
+#' Sample.df <- read.table(file2, sep = "\t", header = TRUE) #Ignore Warning message
+#' Peak.list <- LUMA::Peaklist_Pos$output_parsed
+#' Summed.list <- sum_features(Peak.list = Peak.list, Sample.df = Sample.df ,
+#'                        search.par = search.par, BLANK = FALSE, IonMode = "Positive")
+#' test <- combine_phenodata(Sample.df = Sample.df, Peak.list = Peak.list,
+#' Summed.list = Summed.list, search.par = search.par, BLANK = FALSE, IonMode =
+#' "Positive")
+#' nrow(Peak.list) - nrow(test) ##Combines multiple features into single entries per metabolite
 combine_phenodata <- function(Sample.df, Peak.list, Summed.list, search.par, BLANK, IonMode) {
 
   mylist <- .gen_res(IonMode,search.par,Peak.list,Sample.df,BLANK)
@@ -915,7 +940,12 @@ combine_phenodata <- function(Sample.df, Peak.list, Summed.list, search.par, BLA
   if (drop.singletons & BLANK == FALSE) {
     drops <- grep(1, no.features, value = FALSE)
     temp <- Peak.list.summed[drops, ]
-    Peak.list.summed <- Peak.list.summed[-drops, ]
+
+    if(!0 %in% dim(temp)) {
+
+      Peak.list.summed <- Peak.list.summed[-drops, ]
+
+    }
   }
 
   #Combine monomolecular mass values into a single value
