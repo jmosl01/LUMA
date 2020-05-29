@@ -134,7 +134,17 @@ mynames <- mynames[-grep("sqlite",mynames)]
 Peaklist_Pos <- lapply(mynames, function(x) read_tbl(x, peak.db = peak_db))
 temp <- gsub(" ", "_", mynames)
 names(Peaklist_Pos) <- temp
-usethis::use_data(Peaklist_Pos, compress = "xz", overwrite = T)
+test <- sapply(Peaklist_Pos, dim)
+class(test)
+test2 <- matrix(data = as.integer(c(13,131,12,141,23,120,23,121,3,142,2,142,13,121,13,138,13,139)), nrow = 2, ncol = 9,
+                dimnames = list(NULL,c("Annotated","Combined_Isotopes_and_Adducts","From_CAMERA","From_CAMERA_with_MinFrac",
+                                       "Trimmed_by_CV","Trimmed_by_MinFrac","Trimmed_by_RT","input_parsed",
+                                       "output_parsed")))
+if(identical(test,test2)) { #Ensures no changes to saved data if not matching documented data
+
+  usethis::use_data(Peaklist_Pos, compress = "xz", overwrite = T)
+
+}
 
 dbDisconnect(peak_db)
 ### END

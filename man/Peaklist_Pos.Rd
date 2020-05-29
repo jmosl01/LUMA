@@ -19,7 +19,7 @@ list of tibbles \describe{
   \item{Trimmed_by_RT}{A tibble:
   13 x 121}
   \item{input_parsed}{A tibble: 13 x 138, tests calc_corrstat}
-  \item{output_parsed}{A tibble: 12 x 139, tests sum_features}
+  \item{output_parsed}{A tibble: 13 x 139, tests sum_features}
    }
 }
 \source{

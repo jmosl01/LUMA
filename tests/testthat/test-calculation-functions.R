@@ -42,5 +42,5 @@ test_that("calculates correlation statistic value", {
 
 test_that("calculates coefficient of variation", {
   test <- calc_cv(Peak.list = LUMA::Peaklist_Pos$From_CAMERA)
-  expect_equal(sum(test$`%CV`),10.738880808)
+  expect_equal(sum(test$`%CV`),9.848621392)
 })

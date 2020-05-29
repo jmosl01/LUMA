@@ -39,7 +39,7 @@ test_that("trims by cv values", {
 
   Peak2.list <- LUMA::Peaklist_Pos$Combined_Isotopes_and_Adducts
   test2 <- trim_cv(Peak.list = Peak2.list, search.par = search.par)
-  expect_equal(nrow(Peak.list) -  nrow(test), 14)
+  expect_equal(nrow(Peak.list) -  nrow(test), 13)
   expect_equal(nrow(Peak2.list) -  nrow(test2),9)
 })
 
@@ -50,7 +50,7 @@ test_that("trims by minimum fraction values", {
   class(method) = method
   Peak.list <- LUMA::Peaklist_Pos$From_CAMERA_with_MinFrac
   test <- trim_minfrac(Peak.list = Peak.list, search.par = search.par, object = method)
-  expect_equal(nrow(Peak.list) -  nrow(test),7)
+  expect_equal(nrow(Peak.list) -  nrow(test),6)
 
   method = "monoMass"
   class(method) = method
