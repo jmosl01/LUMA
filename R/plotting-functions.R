@@ -1,28 +1,80 @@
 #' @title Loop-based EIC Plotter for metabolite groups
 #'
 #' @export
-#' @description Plots EICs and Pseudospectra from (parsed) metabolite groups using plotEICs-methods and plotPsSpectrum-methods from CAMERA. Also plots correlation matrices and clustered dendrograms for each (parsed) metabolite group.
-#' @param Sample.df a data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns 'Sex','Class','n','Endogenous'.
-#' @param Peak.list a data frame from CAMERA that has been parsed.  Should contain all output columns from XCMS and CAMERA, and additional columns from IHL.search, Calc.MinFrac and CAMERA.parser.
-#' @param center numeric value indicating which sample to pick for plotting purposes
-#' @param BLANK a logical indicating whether blanks are being evaluated. Default is FALSE
-#' @param gen.plots a logical indicating whether to create plots for metabolite groups.
-#' Default is FALSE
-#' @param IonMode a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'
-#' @param CAMERA.obj xsannotate object with annotated isotopes and ion adducts and fragments
-#' @param file.base character string used to name graphical output.  Will be appended with '_CorrPlots.pdf'
-#' @param QC.id character identifier for pooled QC samples.
-#' Default is 'Pooled_QC'
+#' @description Plots EICs and Pseudospectra from parsed metabolite groups using
+#'   \code{plotEICs-methods, plotPsSpectrum-methods} from \code{CAMERA}. Also plots
+#'   correlation matrices and clustered dendrograms for each parsed metabolite
+#'   group.
+#' @param Sample.df a data frame with class info as columns.  Must contain a
+#'   separate row entry for each unique sex/class combination. Must contain the
+#'   columns \code{"Sex","Class","n","Endogenous"}.
+#' @param Peak.list a data frame from CAMERA that has been parsed.  Must contain
+#'   all output columns from \code{XCMS, CAMERA, ParseCAMERA}.Can contain
+#'   additional columns from \code{match_Annotation, calc_minfrac}.
+#' @param center numeric value indicating which sample to pick for plotting
+#'   purposes
+#' @param BLANK a logical indicating whether blanks are being evaluated. Default
+#'   is \code{FALSE}.
+#' @param gen.plots a logical indicating whether to create plots for metabolite
+#'   groups. Default is \code{FALSE}.
+#' @param IonMode a character string defining the ionization mode.  Must be one
+#'   of \code{c("Positive","Negative")}.
+#' @param CAMERA.obj \code{xsannotate} object in parent environment with
+#'   isotopes, ion adducts and fragments for positive mode.
+#' @param file.base character string used to name graphical output.  Will be
+#'   appended with \code{"_CorrPlots.pdf"}.
+#' @param QC.id character identifier for pooled QC samples. Default is
+#'   \code{"Pooled_QC"}.
 #' @param maxlabel numeric How many m/z labels to print
-#' @return List of length 2.  1st element is a data frame with all columns as the original data frame with one additional column 'Correlation.stat'.
-#' 2nd element is a list of objects used to validate CAMERA results.
+#' @return List of length 2.  1st element is a data frame with all columns as
+#'   the original data frame with column \code{"Correlation.stat"}. 2nd element
+#'   is a list of objects used to validate CAMERA results.
 #' @importFrom CAMERA plotEICs plotPsSpectrum
 #' @importFrom grDevices dev.off pdf rainbow graphics.off
 #' @importFrom graphics layout par plot text
 #' @importFrom Hmisc rcorr
 #' @importFrom corrplot corrplot corrMatOrder
 #' @importFrom dplyr group_by
+#' @examples
+#' library(LUMA)
+#' if(require(lcmsfishdata, quietly = TRUE)) {
+#'
+#'   file <- system.file("extdata/Sample_Class.txt", package = "lcmsfishdata")
+#'   Sample.df <- read.table(file, header = TRUE, sep = "\t")
+#'   file2 <- system.file("extdata/CAMERA_objects_Pos.Rdata", package = "lcmsfishdata")
+#'   load(file2, envir = environment())
+#'   Peak.list <- lcmsfishdata::Peaklist_Pos[["input_parsed"]]
+#'   file3 <- system.file("extdata/Sample_Data.csv", package = "lcmsfishdata")
+#'   sample_data <- read.table(file3, header = TRUE, sep = ",")
+#'   mzdatafiles <- sample_data$CT.ID
+#'
+#'   file.base <- gen_filebase(mzdatafiles = mzdatafiles, BLANK = FALSE, IonMode
+#'   = "Positive", ion.id = c("Pos","Neg"))
+#'
+#'   test <- plot_metgroup(CAMERA.obj = anposGa, Sample.df = Sample.df,
+#'   Peak.list = Peak.list, center = 2, BLANK = FALSE, gen.plots = FALSE,
+#'   IonMode = "Positive", file.base = file.base, QC.id = "Pooled_QC", maxlabel
+#'   = 10)
+#'   class(test) ##is list
+#'   length(test) ## with 2 elements
+#'   test2 <- test[[1]]
+#'   colnames(test2)[(which(!colnames(test2) %in% colnames(Peak.list)))] #Adds new column
+#'   test2[["Correlation.stat"]][1:10]
+#'
+#'
+#'   \dontrun{
+#'   #Runs with pdf plotting. This requires access to raw datafiles and won't
+#'   work with lcmsfishdata. Better to use your own data here.
+#'   test <- plot_metgroup(CAMERA.obj = anposGa, Sample.df = Sample.df,
+#'   Peak.list = Peak.list, center = 2, BLANK = FALSE, gen.plots = TRUE, IonMode
+#'   = "Positive", file.base = file.base, QC.id = "Pooled_QC", maxlabel = 10)
+#'
+#'   }
+#' }
 plot_metgroup = function(CAMERA.obj, Sample.df, Peak.list, center, BLANK, gen.plots, IonMode, file.base, QC.id, maxlabel) {
+
+
+    #Set Default Values
     if (missing(BLANK))
         BLANK = FALSE
     if (missing(gen.plots))
@@ -36,11 +88,9 @@ plot_metgroup = function(CAMERA.obj, Sample.df, Peak.list, center, BLANK, gen.pl
     X <- split(Peak.list$EIC_ID, as.numeric(Peak.list$metabolite_group))
     names(X) <- sort(unique(Peak.list$metabolite_group))
 
-    if (CAMERA.obj %in% ls(envir = .GlobalEnv)) {
-      new_CAMERA.obj <- get(CAMERA.obj, envir = .GlobalEnv)
-    } else {
-      new_CAMERA.obj <- CAMERA.obj
-    }
+
+    #Bind CAMERA objects from parent.frame
+    new_CAMERA.obj <- CAMERA.obj
 
     new_CAMERA.obj@pspectra <- X
 
@@ -155,25 +205,68 @@ plot_metgroup = function(CAMERA.obj, Sample.df, Peak.list, center, BLANK, gen.pl
 #' @title Loop-based EIC Plotter for Ion Mode Duplicates
 #'
 #' @export
-#' @description Plots EICs and Pseudospectra from (parsed) metabolite groups using plotEICs-methods and plotPsSpectrum-methods from CAMERA. Also plots correlation matrices and clustered dendrograms for each (parsed) metabolite group.
-#' @param Peak.list a data frame containing combined ion mode peaklist with Duplicate IDs.  Alternatively can be retrieved from databases.  Default is NULL
-#' @param gen.plots a logical indicating whether to create plots for metabolite groups.  Default is FALSE
-#' @param anposGa xsannotate object with annotated isotopes and ion adducts and fragments for positive mode.
-#' @param xpos xcmsSet object shoud have grouping, retention time correction and fillPeaks applied.  Default is to look for this in anposGa
-#' @param annegGa xsannotate object with annotated isotopes and ion adducts and fragments for negative mode.
-#' @param xneg xcmsSet object shoud have grouping, retention time correction and fillPeaks applied.  Default is to look for this in annegGa
-#' @param rt.method Which method to use for EIC. Can be "corrected" or "raw"
-#' @param file.base character string used to name graphical output. Default is 'EIC_plots'
-#' @param QC.id character identifier for pooled QC samples. Default is 'Pooled_QC'
+#' @description Plots EICs from ion mode duplicates using
+#'   \code{plotEICs-methods} from \code{CAMERA}.
+#' @param Peak.list data.frame containing combined ion mode peaklist with column
+#'   \code{"Duplicate_ID"}.  Alternatively can be retrieved from databases.
+#'   Default is \code{NULL}.
+#' @param gen.plots logical indicating whether to create plots for ion mode
+#'   duplicates.  Default is \code{FALSE}.
+#' @param anposGa \code{xsannotate} object in parent environment with
+#'   isotopes, ion adducts and fragments for positive mode.
+#' @param xpos \code{xcmsSet} object shoud have grouping, retention time
+#'   correction and fillPeaks applied.  Default is to look for this in
+#'   \code{anposGa}.
+#' @param annegGa \code{xsannotate} object in parent environment with isotopes,
+#'   ion adducts and fragments for negative mode.
+#' @param xneg \code{xcmsSet} object shoud have grouping, retention time
+#'   correction and fillPeaks applied.  Default is to look for this in
+#'   \code{annegGa}.
+#' @param rt.method Which method to use for EIC. Can be one of
+#'   \code{c("corrected","raw")}.
+#' @param file.base character string used to name graphical output. Default is
+#'   \code{"EIC_plots"}.
+#' @param QC.id character identifier for pooled QC samples. Default is
+#'   \code{"Pooled_QC"}.
 #' @param mytable character name of table in database to return
-#' @param maxEIC numeric How many EICs to plot for each metabolite
-#' @param maxQC numeric How many QCs will be used to plot EICs
+#' @param maxEIC numeric Max number of features for which to \code{plotEICs} for
+#'   each metabolite.
+#' @param maxQC numeric Max number of QCs used to \code{plotEICs}.
 #' @param ... parameters to be passed to database functions
 #' @return list of length 2 EIC indices for the ion duplicate plots
 #' @importFrom xcms getEIC
 #' @importFrom graphics abline title
+#' @examples
+#' library(LUMA)
+#' if(require(lcmsfishdata, quietly = TRUE)) {
+#'
+#' file <- system.file("extdata/CAMERA_objects_Pos.Rdata", package = "lcmsfishdata")
+#' load(file, envir = environment())
+#' file2 <- system.file("extdata/CAMERA_objects_Neg.Rdata", package = "lcmsfishdata")
+#' load(file2, envir = environment())
+#'
+#' Peak.list <- lcmsfishdata::Peaklist_db[["Peaklist_Combined_with_Duplicate_IDs"]]
+#'
+#' test <- plot_ionduplicate(anposGa = anposGa, annegGa = annegGa, Peak.list = Peak.list, gen.plots = FALSE)
+#' class(test) ##is list
+#' length(test) ## with 2 elements
+#'
+#'   \dontrun{
+#'   #Runs with pdf plotting. This requires access to raw datafiles and won't
+#'   work with lcmsfishdata. Better to use your own data here.
+#'   test <- plot_ionduplicate(anposGa = anposGa, annegGa = annegGa, Peak.list =
+#'   Peak.list, gen.plots = TRUE)
+#'
+#'   }
+#' }
 plot_ionduplicate = function(anposGa, xpos, annegGa, xneg, rt.method, Peak.list, gen.plots,
                              file.base, QC.id, mytable, maxEIC, maxQC, ...) {
+
+    #Bind CAMERA objects from parent.frame
+    anposGa <- anposGa
+    annegGa <- annegGa
+
+    #Set default values
     if (missing(Peak.list))
         Peak.list = NULL
     if (missing(gen.plots))
@@ -265,9 +358,9 @@ plot_ionduplicate = function(anposGa, xpos, annegGa, xneg, rt.method, Peak.list,
 
     # List of duplicate IDs for both positive and negative modes
     Dup.ID.Pos <- Peak.list$Duplicate_ID[sapply(res, function(x) x == TRUE) &
-                                           sapply(Peak.list$`Ion Mode`, function(x) x == "Pos")]
+                                           sapply(Peak.list$Ion.Mode, function(x) x == "Pos")]
     Dup.ID.Neg <- Peak.list$Duplicate_ID[sapply(res, function(x) x == TRUE) &
-                                           sapply(Peak.list$`Ion Mode`, function(x) x == "Neg")]
+                                           sapply(Peak.list$Ion.Mode, function(x) x == "Neg")]
 
   ## Code to plot EICs for all Duplicate IDs in a loop.####
     if (gen.plots) {
@@ -282,7 +375,7 @@ plot_ionduplicate = function(anposGa, xpos, annegGa, xneg, rt.method, Peak.list,
             res <- lapply(colnames(EIC.table), function(ch) grep(QC.id, ch))
             QC.list <- EIC.table[sapply(res, function(x) length(x) > 0)]
 
-            EIC.list <- split(EIC.table, as.factor(EIC.table$`Ion Mode`))
+            EIC.list <- split(EIC.table, as.factor(EIC.table$Ion.Mode))
             EIC.pos <- .convert_EIC(EIC.list$Pos$EIC_ID)
             EIC.neg <- .convert_EIC(EIC.list$Neg$EIC_ID)
 
@@ -339,9 +432,9 @@ plot_ionduplicate = function(anposGa, xpos, annegGa, xneg, rt.method, Peak.list,
                 layout(mymatrix)
 
                 for (j in 1:length(EIC.pos)) {
-                  rt <- EIC.table[which(EIC.table$`Ion Mode` %in% "Pos"), "meanRT"] * 60
+                  rt <- EIC.table[which(EIC.table$Ion.Mode %in% "Pos"), "meanRT"] * 60
                   rt <- as.numeric(unlist(rt))
-                  QCmax <- max(QC.list[which(EIC.table$`Ion Mode` %in% "Pos"), ])
+                  QCmax <- max(QC.list[which(EIC.table$Ion.Mode %in% "Pos"), ])
                   plot(pos[[j]], col = color.palette, rtrange = cbind(rt.min, rt.max))
                   title(sub = paste(paste("Positive #", Index.Pos[j], ", EIC_ID:", EIC.pos[j]), paste(strwrap(Name.pos[j],
                     width = 0.9 * getOption("width")), collapse = "\n"), sep = "\n"), cex.sub = 1, col.sub = "limegreen",
@@ -349,9 +442,9 @@ plot_ionduplicate = function(anposGa, xpos, annegGa, xneg, rt.method, Peak.list,
                   abline(v = rt, col = "blue", lty = 2)
                 }
                 for (j in 1:length(EIC.neg)) {
-                  rt <- EIC.table[which(EIC.table$`Ion Mode` %in% "Neg"), "meanRT"] * 60
+                  rt <- EIC.table[which(EIC.table$Ion.Mode %in% "Neg"), "meanRT"] * 60
                   rt <- as.numeric(unlist(rt))
-                  QCmax <- max(QC.list[which(EIC.table$`Ion Mode` %in% "Neg"), ])
+                  QCmax <- max(QC.list[which(EIC.table$Ion.Mode %in% "Neg"), ])
                   plot(neg[[j]], col = color.palette, rtrange = cbind(rt.min, rt.max))
                   title(sub = paste(paste("Negative #", Index.Neg[j], ", EIC_ID:", EIC.neg[j]), paste(strwrap(Name.neg[j],
                     width = 0.9 * getOption("width")), collapse = "\n"), sep = "\n"), cex.sub = 1, col.sub = "red",
@@ -375,9 +468,9 @@ plot_ionduplicate = function(anposGa, xpos, annegGa, xneg, rt.method, Peak.list,
                 Adduct.No <- length(EIC.pos) + length(EIC.neg)
                 layout(matrix(c(1:Adduct.No), nrow = Adduct.No, ncol = 1, byrow = TRUE))
                 for (j in 1:length(EIC.neg)) {
-                  rt <- EIC.table[which(EIC.table$`Ion Mode` %in% "Neg"), "meanRT"] * 60
+                  rt <- EIC.table[which(EIC.table$Ion.Mode %in% "Neg"), "meanRT"] * 60
                   rt <- as.numeric(unlist(rt))
-                  QCmax <- max(QC.list[which(EIC.table$`Ion Mode` %in% "Neg"), ])
+                  QCmax <- max(QC.list[which(EIC.table$Ion.Mode %in% "Neg"), ])
                   plot(neg[[j]], col = color.palette, rtrange = cbind(rt.min, rt.max))
                   title(sub = paste(paste("Negative #", Index.Neg[j], ", EIC_ID:", EIC.neg[j]), paste(strwrap(Name.neg[j],
                                     width = 0.9 * getOption("width")), collapse = "\n"), sep = "\n"), cex.sub = 1, col.sub = "red",
@@ -400,9 +493,9 @@ plot_ionduplicate = function(anposGa, xpos, annegGa, xneg, rt.method, Peak.list,
                 Adduct.No <- length(EIC.pos) + length(EIC.neg)
                 layout(matrix(c(1:Adduct.No), nrow = Adduct.No, ncol = 1, byrow = TRUE))
                 for (j in 1:length(EIC.pos)) {
-                  rt <- EIC.table[which(EIC.table$`Ion Mode` %in% "Pos"), "meanRT"] * 60
+                  rt <- EIC.table[which(EIC.table$Ion.Mode %in% "Pos"), "meanRT"] * 60
                   rt <- as.numeric(unlist(rt))
-                  QCmax <- max(QC.list[which(EIC.table$`Ion Mode` %in% "Pos"), ])
+                  QCmax <- max(QC.list[which(EIC.table$Ion.Mode %in% "Pos"), ])
                   plot(pos[[j]], col = color.palette, rtrange = cbind(rt.min, rt.max))
                   title(sub = paste(paste("Positive #", Index.Pos[j], ", EIC_ID:", EIC.pos[j]), paste(strwrap(Name.pos[j],
                     width = 0.9 * getOption("width")), collapse = "\n"), sep = "\n"), cex.sub = 1, col.sub = "limegreen",

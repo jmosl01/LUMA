@@ -21,29 +21,42 @@ plot_ionduplicate(
 )
 }
 \arguments{
-\item{anposGa}{xsannotate object with annotated isotopes and ion adducts and fragments for positive mode.}
+\item{anposGa}{\code{xsannotate} object in parent environment with
+isotopes, ion adducts and fragments for positive mode.}
 
-\item{xpos}{xcmsSet object shoud have grouping, retention time correction and fillPeaks applied.  Default is to look for this in anposGa}
+\item{xpos}{\code{xcmsSet} object shoud have grouping, retention time
+correction and fillPeaks applied.  Default is to look for this in
+\code{anposGa}.}
 
-\item{annegGa}{xsannotate object with annotated isotopes and ion adducts and fragments for negative mode.}
+\item{annegGa}{\code{xsannotate} object in parent environment with isotopes,
+ion adducts and fragments for negative mode.}
 
-\item{xneg}{xcmsSet object shoud have grouping, retention time correction and fillPeaks applied.  Default is to look for this in annegGa}
+\item{xneg}{\code{xcmsSet} object shoud have grouping, retention time
+correction and fillPeaks applied.  Default is to look for this in
+\code{annegGa}.}
 
-\item{rt.method}{Which method to use for EIC. Can be "corrected" or "raw"}
+\item{rt.method}{Which method to use for EIC. Can be one of
+\code{c("corrected","raw")}.}
 
-\item{Peak.list}{a data frame containing combined ion mode peaklist with Duplicate IDs.  Alternatively can be retrieved from databases.  Default is NULL}
+\item{Peak.list}{data.frame containing combined ion mode peaklist with column
+\code{"Duplicate_ID"}.  Alternatively can be retrieved from databases.
+Default is \code{NULL}.}
 
-\item{gen.plots}{a logical indicating whether to create plots for metabolite groups.  Default is FALSE}
+\item{gen.plots}{logical indicating whether to create plots for ion mode
+duplicates.  Default is \code{FALSE}.}
 
-\item{file.base}{character string used to name graphical output. Default is 'EIC_plots'}
+\item{file.base}{character string used to name graphical output. Default is
+\code{"EIC_plots"}.}
 
-\item{QC.id}{character identifier for pooled QC samples. Default is 'Pooled_QC'}
+\item{QC.id}{character identifier for pooled QC samples. Default is
+\code{"Pooled_QC"}.}
 
 \item{mytable}{character name of table in database to return}
 
-\item{maxEIC}{numeric How many EICs to plot for each metabolite}
+\item{maxEIC}{numeric Max number of features for which to \code{plotEICs} for
+each metabolite.}
 
-\item{maxQC}{numeric How many QCs will be used to plot EICs}
+\item{maxQC}{numeric Max number of QCs used to \code{plotEICs}.}
 
 \item{...}{parameters to be passed to database functions}
 }
@@ -51,5 +64,30 @@ plot_ionduplicate(
 list of length 2 EIC indices for the ion duplicate plots
 }
 \description{
-Plots EICs and Pseudospectra from (parsed) metabolite groups using plotEICs-methods and plotPsSpectrum-methods from CAMERA. Also plots correlation matrices and clustered dendrograms for each (parsed) metabolite group.
+Plots EICs from ion mode duplicates using
+  \code{plotEICs-methods} from \code{CAMERA}.
+}
+\examples{
+library(LUMA)
+if(require(lcmsfishdata, quietly = TRUE)) {
+
+file <- system.file("extdata/CAMERA_objects_Pos.Rdata", package = "lcmsfishdata")
+load(file, envir = environment())
+file2 <- system.file("extdata/CAMERA_objects_Neg.Rdata", package = "lcmsfishdata")
+load(file2, envir = environment())
+
+Peak.list <- lcmsfishdata::Peaklist_db[["Peaklist_Combined_with_Duplicate_IDs"]]
+
+test <- plot_ionduplicate(anposGa = anposGa, annegGa = annegGa, Peak.list = Peak.list, gen.plots = FALSE)
+class(test) ##is list
+length(test) ## with 2 elements
+
+  \dontrun{
+  #Runs with pdf plotting. This requires access to raw datafiles and won't
+  work with lcmsfishdata. Better to use your own data here.
+  test <- plot_ionduplicate(anposGa = anposGa, annegGa = annegGa, Peak.list =
+  Peak.list, gen.plots = TRUE)
+
+  }
+}
 }

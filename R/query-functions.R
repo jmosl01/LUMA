@@ -33,7 +33,7 @@
 #' @examples
 #' library(LUMA)
 #' if(require(RSQLite, quietly = TRUE)) {
-#'   Peak.list <- Peaklist_Pos$From_CAMERA
+#'   Peak.list <- LUMA::Peaklist_Pos$From_CAMERA
 #'   file <- system.file('extdata/primary_adducts_pos.csv', package = "LUMA")
 #'   rules <- read.table(file, header = TRUE, sep = ",")
 #'   file2 <- system.file('extdata/Search_Parameters.txt', package = "LUMA")
@@ -176,8 +176,8 @@ match_Annotation = function(Peak.list, Annotated.library, Library.phenodata, rul
 #'   file <- system.file("extdata/Search_parameters.txt", package = "lcmsfishdata")
 #'   search.par <- read.table(file, header = TRUE, sep = "\t")
 #'   class(method) <- method <- "monoMass"
-#'   Peak.list.neg <- Peaklist_db$Peaklist_Neg_Solvent_Peaks_Removed
-#'   Peak.list.pos <- Peaklist_db$Peaklist_Pos_Solvent_Peaks_Removed
+#'   Peak.list.neg <- lcmsfishdata::Peaklist_db$Peaklist_Neg_Solvent_Peaks_Removed
+#'   Peak.list.pos <- lcmsfishdata::Peaklist_db$Peaklist_Pos_Solvent_Peaks_Removed
 #'   test <- search_IonDup(method, Peak.list.pos = Peak.list.pos,
 #'                         Peak.list.neg = Peak.list.neg, search.par = search.par)
 #'   colnames(test)[-which(colnames(test) %in% colnames(Peak.list.pos))] #Adds two new columns

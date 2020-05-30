@@ -43,8 +43,8 @@ if(require(lcmsfishdata, quietly = TRUE)) {
   file <- system.file("extdata/Search_parameters.txt", package = "lcmsfishdata")
   search.par <- read.table(file, header = TRUE, sep = "\t")
   class(method) <- method <- "monoMass"
-  Peak.list.neg <- Peaklist_db$Peaklist_Neg_Solvent_Peaks_Removed
-  Peak.list.pos <- Peaklist_db$Peaklist_Pos_Solvent_Peaks_Removed
+  Peak.list.neg <- lcmsfishdata::Peaklist_db$Peaklist_Neg_Solvent_Peaks_Removed
+  Peak.list.pos <- lcmsfishdata::Peaklist_db$Peaklist_Pos_Solvent_Peaks_Removed
   test <- search_IonDup(method, Peak.list.pos = Peak.list.pos,
                         Peak.list.neg = Peak.list.neg, search.par = search.par)
   colnames(test)[-which(colnames(test) \%in\% colnames(Peak.list.pos))] #Adds two new columns

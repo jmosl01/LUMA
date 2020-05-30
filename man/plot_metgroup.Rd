@@ -18,32 +18,82 @@ plot_metgroup(
 )
 }
 \arguments{
-\item{CAMERA.obj}{xsannotate object with annotated isotopes and ion adducts and fragments}
+\item{CAMERA.obj}{\code{xsannotate} object in parent environment with
+isotopes, ion adducts and fragments for positive mode.}
 
-\item{Sample.df}{a data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns 'Sex','Class','n','Endogenous'.}
+\item{Sample.df}{a data frame with class info as columns.  Must contain a
+separate row entry for each unique sex/class combination. Must contain the
+columns \code{"Sex","Class","n","Endogenous"}.}
 
-\item{Peak.list}{a data frame from CAMERA that has been parsed.  Should contain all output columns from XCMS and CAMERA, and additional columns from IHL.search, Calc.MinFrac and CAMERA.parser.}
+\item{Peak.list}{a data frame from CAMERA that has been parsed.  Must contain
+all output columns from \code{XCMS, CAMERA, ParseCAMERA}.Can contain
+additional columns from \code{match_Annotation, calc_minfrac}.}
 
-\item{center}{numeric value indicating which sample to pick for plotting purposes}
+\item{center}{numeric value indicating which sample to pick for plotting
+purposes}
 
-\item{BLANK}{a logical indicating whether blanks are being evaluated. Default is FALSE}
+\item{BLANK}{a logical indicating whether blanks are being evaluated. Default
+is \code{FALSE}.}
 
-\item{gen.plots}{a logical indicating whether to create plots for metabolite groups.
-Default is FALSE}
+\item{gen.plots}{a logical indicating whether to create plots for metabolite
+groups. Default is \code{FALSE}.}
 
-\item{IonMode}{a character string defining the ionization mode.  Must be either 'Positive' or 'Negative'}
+\item{IonMode}{a character string defining the ionization mode.  Must be one
+of \code{c("Positive","Negative")}.}
 
-\item{file.base}{character string used to name graphical output.  Will be appended with '_CorrPlots.pdf'}
+\item{file.base}{character string used to name graphical output.  Will be
+appended with \code{"_CorrPlots.pdf"}.}
 
-\item{QC.id}{character identifier for pooled QC samples.
-Default is 'Pooled_QC'}
+\item{QC.id}{character identifier for pooled QC samples. Default is
+\code{"Pooled_QC"}.}
 
 \item{maxlabel}{numeric How many m/z labels to print}
 }
 \value{
-List of length 2.  1st element is a data frame with all columns as the original data frame with one additional column 'Correlation.stat'.
-2nd element is a list of objects used to validate CAMERA results.
+List of length 2.  1st element is a data frame with all columns as
+  the original data frame with column \code{"Correlation.stat"}. 2nd element
+  is a list of objects used to validate CAMERA results.
 }
 \description{
-Plots EICs and Pseudospectra from (parsed) metabolite groups using plotEICs-methods and plotPsSpectrum-methods from CAMERA. Also plots correlation matrices and clustered dendrograms for each (parsed) metabolite group.
+Plots EICs and Pseudospectra from parsed metabolite groups using
+  \code{plotEICs-methods, plotPsSpectrum-methods} from \code{CAMERA}. Also plots
+  correlation matrices and clustered dendrograms for each parsed metabolite
+  group.
+}
+\examples{
+library(LUMA)
+if(require(lcmsfishdata, quietly = TRUE)) {
+
+  file <- system.file("extdata/Sample_Class.txt", package = "lcmsfishdata")
+  Sample.df <- read.table(file, header = TRUE, sep = "\t")
+  file2 <- system.file("extdata/CAMERA_objects_Pos.Rdata", package = "lcmsfishdata")
+  load(file2, envir = environment())
+  Peak.list <- lcmsfishdata::Peaklist_Pos[["input_parsed"]]
+  file3 <- system.file("extdata/Sample_Data.csv", package = "lcmsfishdata")
+  sample_data <- read.table(file3, header = TRUE, sep = ",")
+  mzdatafiles <- sample_data$CT.ID
+
+  file.base <- gen_filebase(mzdatafiles = mzdatafiles, BLANK = FALSE, IonMode
+  = "Positive", ion.id = c("Pos","Neg"))
+
+  test <- plot_metgroup(CAMERA.obj = anposGa, Sample.df = Sample.df,
+  Peak.list = Peak.list, center = 2, BLANK = FALSE, gen.plots = FALSE,
+  IonMode = "Positive", file.base = file.base, QC.id = "Pooled_QC", maxlabel
+  = 10)
+  class(test) ##is list
+  length(test) ## with 2 elements
+  test2 <- test[[1]]
+  colnames(test2)[(which(!colnames(test2) \%in\% colnames(Peak.list)))] #Adds new column
+  test2[["Correlation.stat"]][1:10]
+
+
+  \dontrun{
+  #Runs with pdf plotting. This requires access to raw datafiles and won't
+  work with lcmsfishdata. Better to use your own data here.
+  test <- plot_metgroup(CAMERA.obj = anposGa, Sample.df = Sample.df,
+  Peak.list = Peak.list, center = 2, BLANK = FALSE, gen.plots = TRUE, IonMode
+  = "Positive", file.base = file.base, QC.id = "Pooled_QC", maxlabel = 10)
+
+  }
+}
 }
