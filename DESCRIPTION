@@ -14,7 +14,6 @@ LazyData: true
 RoxygenNote: 7.1.0
 Depends: R (>= 2.10)
 Imports:
-    BiocParallel,
     CAMERA,
     corrplot,
     data.table,
@@ -33,14 +32,15 @@ Imports:
     stats,
     stringr,
     svDialogs,
-    utils,
-    xcms
+    utils
 Suggests: 
+    BiocParallel,
     BiocStyle,
     knitr,
     lcmsfishdata,
     rmarkdown,
     xtable,
-    testthat
+    testthat,
+    xcms
 VignetteBuilder: 
     knitr

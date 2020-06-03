@@ -121,7 +121,6 @@ calc_corrstat = function(Sample.df, Peak.list, get.mg, BLANK, IonMode) {
 #' @param BLANK a logical indicating whether blanks are being evaluated
 #' @param Peak.list a table of class 'tbl_df',tbl' or 'data.frame' with variables as columns.  Should contain all output columns from XCMS and CAMERA, and additional columns from IHL.search.
 #' @return data frame containing the original table with one additional column 'Minfrac' at the end, followed by the CAMERA columns 'isotopes','adduct','pcgroup'
-#' @importFrom xcms peakTable
 #' @importFrom utils read.table write.table str head
 #' @importFrom stats variable.names
 #' @examples
@@ -137,191 +136,194 @@ calc_corrstat = function(Sample.df, Peak.list, get.mg, BLANK, IonMode) {
 #'   test[["MinFrac"]][11:23]
 #'   }
 calc_minfrac = function(Sample.df, xset4, BLANK, Peak.list) {
-    peakSN <- peakTable(xset4, filebase=NULL, value="sn") #writes the SN peak table to file
+
+  if(requireNamespace("xcms", quietly = TRUE)) {
+
+    peakSN <- xcms::peakTable(xset4, filebase=NULL, value="sn") #writes the SN peak table to file
     SN.list <- data.frame(X = rownames(peakSN),peakSN)
 
     if (BLANK == TRUE) {
       MinFrac.table <- NA
     } else {
-        sexes <- unique(paste(Sample.df$Sex, "_", sep = ""))
-        samples <- vector(mode = "character", length = length(colnames(SN.list)))
-        for (i in 1:length(sexes)) {
-            rows_loop <- grep(sexes[i], colnames(SN.list))
-            samples[rows_loop] <- sexes[i]
-        }
-        sum.range.list <- SN.list[, samples %in% sexes]
-        t.list<-as.data.frame(t(sum.range.list)) #transposes the SN list
+      sexes <- unique(paste(Sample.df$Sex, "_", sep = ""))
+      samples <- vector(mode = "character", length = length(colnames(SN.list)))
+      for (i in 1:length(sexes)) {
+        rows_loop <- grep(sexes[i], colnames(SN.list))
+        samples[rows_loop] <- sexes[i]
+      }
+      sum.range.list <- SN.list[, samples %in% sexes]
+      t.list<-as.data.frame(t(sum.range.list)) #transposes the SN list
 
-        ## Grabs the unique sample ID number for each sample, if present in the filename
-        bin <- variable.names(t.list, full = TRUE)
-        colnames(sum.range.list)
-        sample.ID <- sub("\\D*(\\d{6}).*", "\\1", colnames(sum.range.list))
-        colnames(sum.range.list)
+      ## Grabs the unique sample ID number for each sample, if present in the filename
+      bin <- variable.names(t.list, full = TRUE)
+      colnames(sum.range.list)
+      sample.ID <- sub("\\D*(\\d{6}).*", "\\1", colnames(sum.range.list))
+      colnames(sum.range.list)
 
-        ## Creates a new column for grouping by class based on user input
-        groups <- paste(Sample.df$Sex, Sample.df$Class, sep = ";")
-        groups <- strsplit(groups, split = ";")
-        names(groups) <- paste(Sample.df$Sex, Sample.df$Class, sep = "_")
-        group <- vector(mode = "character", length = length(colnames(sum.range.list)))
-        for (i in 1:length(groups)) {
-            rows_loop <- intersect(grep(groups[[i]][1],colnames(sum.range.list)),
-                                   grep(groups[[i]][2],colnames(sum.range.list))
-                                   )
+      ## Creates a new column for grouping by class based on user input
+      groups <- paste(Sample.df$Sex, Sample.df$Class, sep = ";")
+      groups <- strsplit(groups, split = ";")
+      names(groups) <- paste(Sample.df$Sex, Sample.df$Class, sep = "_")
+      group <- vector(mode = "character", length = length(colnames(sum.range.list)))
+      for (i in 1:length(groups)) {
+        rows_loop <- intersect(grep(groups[[i]][1],colnames(sum.range.list)),
+                               grep(groups[[i]][2],colnames(sum.range.list))
+        )
+        group[rows_loop] <- names(groups)[i]
+      }
+      group <- unlist(group)
+      class.n <- unique(Sample.df$n)
+
+      if (length(class.n) > 1) {
+        t.list <- cbind(group, t.list)  #combines the two dataframes together
+        sn.list <- split(t.list, as.factor(group))  #Splits the data frame by a factor
+        sn.list.split <- split(sn.list, sapply(sn.list, function(x) nrow(x)))
+
+        # Create matrix to contain all of the minfrac values for each group from each list in sn.list
+        min.frac.fulltable <- matrix(nrow = length(bin), ncol = sum(sapply(sn.list, function(x) length(x))))
+        # j = 1 This and following line used for debugging purposes
+        k = 1
+        for (j in 1:length(sn.list)) {
+          na_count <- sapply(as.data.frame(sn.list[j]), function(x, y) sum(length(which(is.na(x)))), y = group)  #counts the number of na values per feature across each group
+          na_count <- data.frame(na_count)  #puts the list in a data frame
+          for (i in 1:length(groups)) {
+            rows_loop <- intersect(grep(groups[[i]][1], rownames(na_count)),
+                                   grep(groups[[i]][2], rownames(na_count))
+            )
             group[rows_loop] <- names(groups)[i]
+          }
+          group <- unlist(group)
+          na_count <- cbind(group, na_count)  #combines the grouping variable with the na count values
+          na.count.list <- split(na_count, as.factor(group))  #Splits the data frame into lists of data frames by the grouping variable
+          str(na.count.list)
+
+          all_count <- sapply(as.data.frame(sn.list[j]), function(x, y) length(x), y = group)  #counts the number of na values per feature across each group
+          all_count <- data.frame(all_count)  #puts the list in a data frame
+          str(all_count)
+          for (i in 1:length(groups)) {
+            rows_loop <- intersect(grep(groups[[i]][1], rownames(all_count)),
+                                   grep(groups[[i]][2], rownames(all_count))
+            )
+            group[rows_loop] <- names(groups)[i]
+          }
+          group <- unlist(group)
+          all_count <- cbind(group, all_count)  #combines the grouping variable with the na count values
+          all.count.list <- split(all_count, as.factor(group))  #Splits the data frame into lists of data frames by the grouping variable
+          str(all.count.list)
+
+          ## The next section creates a new data matrix with the number of rows and columns equal to the number of
+          ## features and groups, respectively.  The new table is called 'minfrac.fulltable_loop'
+          minfrac.fulltable_loop <- matrix(nrow = length(bin), ncol = length(all.count.list))
+          colnames(minfrac.fulltable_loop) <- c(names(na.count.list))  ###Names the columns for the new table as indicated
+          rownames(minfrac.fulltable_loop) <- (bin)  ###Pulls out and names the table rows based on the metabolite label (I do this as a QA to make sure the loop is correctly linking the ANOVA output and metbaolite IDs
+
+          ## this section calculates the minfrac values for each exposure class in a for loop and populates the
+          ## minfrac.fulltable_loop with these values
+          group.names <- names(na.count.list)
+          for (i in names(na.count.list)) {
+            na_loop <- na.count.list[i]
+            na_loop <- do.call("rbind", na_loop)
+            all_loop <- all.count.list[i]
+            all_loop <- do.call("rbind", all_loop)
+            min_frac_loop <- rapply(as.data.frame(na_loop$na_count), function(x, y) x/y, y = all_loop$all_count)  ##calculates the min frac values for each feature by exposure class
+            min_frac_loop <- data.frame(min_frac_loop)  ##changes the format of the min frac results into a data frame
+            colnames(min_frac_loop) <- paste(i, "", "min_frac")
+            min_frac_loop <- min_frac_loop[-1, ]  ##Removes the value corresponding to the grouping variable
+            minfrac.fulltable_loop[, i] = min_frac_loop  ##Pastes the min frac results from an exposure class into the next col of the min frac full table.
+          }
+          ## Code to calculate min_frac for one of the exposure classes; used to QA the loop output
+          i = names(na.count.list[1])
+          group.names <- names(na.count.list)
+          test.na <- na.count.list[i]
+          test.na <- do.call("rbind", test.na)
+          test.all <- all.count.list[i]
+          test.all <- do.call("rbind", test.all)
+          min_frac <- rapply(as.data.frame(test.na$na_count), function(x, y) x/y, y = as.data.frame(test.all$all_count))  #Need to find a way to get rid of the subset operator $
+          min_frac <- data.frame(min_frac)
+          str(min_frac)
+          colnames(min_frac) <- paste(i, "", "min_frac")
+          min_frac <- min_frac[-1, ]
+          head(min_frac)
+
+          # Bring loop-based minfrac values out of the loop by placing them in the minfrac master table
+          min.frac.fulltable[, k:sum(k - 1, ncol(minfrac.fulltable_loop))] <- minfrac.fulltable_loop
+
+          # Update the counter to keep track of where to copy the results in the master table
+          k <- k + ncol(minfrac.fulltable_loop)
         }
-        group <- unlist(group)
-        class.n <- unique(Sample.df$n)
+      } else {
+        if (length(class.n) == 1) {
+          t.list <- cbind(group, t.list)  #combines the two dataframes together
+          sn.list <- split(t.list, as.factor(group))  #Splits the data frame by a factor
 
-        if (length(class.n) > 1) {
-            t.list <- cbind(group, t.list)  #combines the two dataframes together
-            sn.list <- split(t.list, as.factor(group))  #Splits the data frame by a factor
-            sn.list.split <- split(sn.list, sapply(sn.list, function(x) nrow(x)))
+          na_count <- sapply(as.data.frame(sn.list), function(x, y) sum(length(which(is.na(x)))), y = group)  #counts the number of na values per feature across each group
+          na_count <- data.frame(na_count)  #puts the list in a data frame
+          # group<-unlist(strsplit(gsub('(([MF])_([RN])S_T([0482]))|.', '\\1', rownames(na_count)), '\\s+'))
+          # #generates a character vector of grouping variables for each na count value
+          for (i in 1:length(groups)) {
+            rows_loop <- intersect(grep(groups[[i]][1], rownames(na_count)),
+                                   grep(groups[[i]][2], rownames(na_count))
+            )
+            group[rows_loop] <- names(groups)[i]
+          }
+          group <- unlist(group)
+          na_count <- cbind(group, na_count)  #combines the grouping variable with the na count values
+          na.count.list <- split(na_count, as.factor(group))  #Splits the data frame into lists of data frames by the grouping variable
+          all_count <- sapply(as.data.frame(sn.list), function(x, y) length(x), y = group)  #counts the number of na values per feature across each group
+          all_count <- data.frame(all_count)  #puts the list in a data frame
+          for (i in 1:length(groups)) {
+            rows_loop <- intersect(grep(groups[[i]][1], rownames(all_count)),
+                                   grep(groups[[i]][2], rownames(all_count))
+            )
+            group[rows_loop] <- names(groups)[i]
+          }
+          group <- unlist(group)
+          all_count <- cbind(group, all_count)  #combines the grouping variable with the na count values
+          all.count.list <- split(all_count, as.factor(group))  #Splits the data frame into lists of data frames by the grouping variable
 
-            # Create matrix to contain all of the minfrac values for each group from each list in sn.list
-            min.frac.fulltable <- matrix(nrow = length(bin), ncol = sum(sapply(sn.list, function(x) length(x))))
-            # j = 1 This and following line used for debugging purposes
-            k = 1
-            for (j in 1:length(sn.list)) {
-                na_count <- sapply(as.data.frame(sn.list[j]), function(x, y) sum(length(which(is.na(x)))), y = group)  #counts the number of na values per feature across each group
-                na_count <- data.frame(na_count)  #puts the list in a data frame
-                for (i in 1:length(groups)) {
-                  rows_loop <- intersect(grep(groups[[i]][1], rownames(na_count)),
-                                         grep(groups[[i]][2], rownames(na_count))
-                                         )
-                  group[rows_loop] <- names(groups)[i]
-                }
-                group <- unlist(group)
-                na_count <- cbind(group, na_count)  #combines the grouping variable with the na count values
-                na.count.list <- split(na_count, as.factor(group))  #Splits the data frame into lists of data frames by the grouping variable
-                str(na.count.list)
+          ## The next section creates a new data matrix with the number of rows and columns equal to the number of
+          ## features and groups, respectively.  The new table is called 'min.frac.fulltable'
+          min.frac.fulltable <- matrix(nrow = length(bin), ncol = length(all.count.list))
+          colnames(min.frac.fulltable) <- c(names(na.count.list))  ###Names the columns for the new table as indicated
+          rownames(min.frac.fulltable) <- (bin)  ###Pulls out and names the table rows based on the metabolite label (I do this as a QA to make sure the loop is correctly linking the ANOVA output and metbaolite IDs
+          head(min.frac.fulltable)  ##A double-check to make sure the new table was created properly
 
-                all_count <- sapply(as.data.frame(sn.list[j]), function(x, y) length(x), y = group)  #counts the number of na values per feature across each group
-                all_count <- data.frame(all_count)  #puts the list in a data frame
-                str(all_count)
-                for (i in 1:length(groups)) {
-                  rows_loop <- intersect(grep(groups[[i]][1], rownames(all_count)),
-                                         grep(groups[[i]][2], rownames(all_count))
-                                         )
-                  group[rows_loop] <- names(groups)[i]
-                }
-                group <- unlist(group)
-                all_count <- cbind(group, all_count)  #combines the grouping variable with the na count values
-                all.count.list <- split(all_count, as.factor(group))  #Splits the data frame into lists of data frames by the grouping variable
-                str(all.count.list)
+          # this section calculates the minfrac values for each exposure class in a for loop and populates the
+          # min.frac.fulltable with these values
+          group.names <- names(na.count.list)
+          for (i in names(na.count.list)) {
+            na_loop <- na.count.list[i]
+            na_loop <- do.call("rbind", na_loop)
+            all_loop <- all.count.list[i]
+            all_loop <- do.call("rbind", all_loop)
+            min_frac_loop <- rapply(as.data.frame(na_loop$na_count), function(x, y) x/y, y = all_loop$all_count)  ##calculates the min frac values for each feature by exposure class
+            min_frac_loop <- data.frame(min_frac_loop)  ##changes the format of the min frac results into a data frame
+            colnames(min_frac_loop) <- paste(i, "", "min_frac")
+            min_frac_loop <- min_frac_loop[-1, ]  ##Removes the value corresponding to the grouping variable
+            min.frac.fulltable[, i] = min_frac_loop  ##Pastes the min frac results from an exposure class into the next row of the min frac full table.
+          }
+          # Code to calculate min_frac for one of the exposure classes; used to QA the loop output
+          i = names(na.count.list[2])
+          group.names <- names(na.count.list)
+          test.na <- na.count.list[i]
+          test.na <- do.call("rbind", test.na)
+          test.all <- all.count.list[i]
+          test.all <- do.call("rbind", test.all)
+          min_frac <- rapply(as.data.frame(test.na$na_count), function(x, y) x/y, y = as.data.frame(test.all$all_count))  #Need to find a way to get rid of the subset operator $
+          min_frac <- data.frame(min_frac)
+          colnames(min_frac) <- paste(i, "", "min_frac")
+          min_frac <- min_frac[-1, ]
+          head(min_frac)
 
-                ## The next section creates a new data matrix with the number of rows and columns equal to the number of
-                ## features and groups, respectively.  The new table is called 'minfrac.fulltable_loop'
-                minfrac.fulltable_loop <- matrix(nrow = length(bin), ncol = length(all.count.list))
-                colnames(minfrac.fulltable_loop) <- c(names(na.count.list))  ###Names the columns for the new table as indicated
-                rownames(minfrac.fulltable_loop) <- (bin)  ###Pulls out and names the table rows based on the metabolite label (I do this as a QA to make sure the loop is correctly linking the ANOVA output and metbaolite IDs
-
-                ## this section calculates the minfrac values for each exposure class in a for loop and populates the
-                ## minfrac.fulltable_loop with these values
-                group.names <- names(na.count.list)
-                for (i in names(na.count.list)) {
-                  na_loop <- na.count.list[i]
-                  na_loop <- do.call("rbind", na_loop)
-                  all_loop <- all.count.list[i]
-                  all_loop <- do.call("rbind", all_loop)
-                  min_frac_loop <- rapply(as.data.frame(na_loop$na_count), function(x, y) x/y, y = all_loop$all_count)  ##calculates the min frac values for each feature by exposure class
-                  min_frac_loop <- data.frame(min_frac_loop)  ##changes the format of the min frac results into a data frame
-                  colnames(min_frac_loop) <- paste(i, "", "min_frac")
-                  min_frac_loop <- min_frac_loop[-1, ]  ##Removes the value corresponding to the grouping variable
-                  minfrac.fulltable_loop[, i] = min_frac_loop  ##Pastes the min frac results from an exposure class into the next col of the min frac full table.
-                }
-                ## Code to calculate min_frac for one of the exposure classes; used to QA the loop output
-                i = names(na.count.list[1])
-                group.names <- names(na.count.list)
-                test.na <- na.count.list[i]
-                test.na <- do.call("rbind", test.na)
-                test.all <- all.count.list[i]
-                test.all <- do.call("rbind", test.all)
-                min_frac <- rapply(as.data.frame(test.na$na_count), function(x, y) x/y, y = as.data.frame(test.all$all_count))  #Need to find a way to get rid of the subset operator $
-                min_frac <- data.frame(min_frac)
-                str(min_frac)
-                colnames(min_frac) <- paste(i, "", "min_frac")
-                min_frac <- min_frac[-1, ]
-                head(min_frac)
-
-                # Bring loop-based minfrac values out of the loop by placing them in the minfrac master table
-                min.frac.fulltable[, k:sum(k - 1, ncol(minfrac.fulltable_loop))] <- minfrac.fulltable_loop
-
-                # Update the counter to keep track of where to copy the results in the master table
-                k <- k + ncol(minfrac.fulltable_loop)
-            }
-        } else {
-            if (length(class.n) == 1) {
-                t.list <- cbind(group, t.list)  #combines the two dataframes together
-                sn.list <- split(t.list, as.factor(group))  #Splits the data frame by a factor
-
-                na_count <- sapply(as.data.frame(sn.list), function(x, y) sum(length(which(is.na(x)))), y = group)  #counts the number of na values per feature across each group
-                na_count <- data.frame(na_count)  #puts the list in a data frame
-                # group<-unlist(strsplit(gsub('(([MF])_([RN])S_T([0482]))|.', '\\1', rownames(na_count)), '\\s+'))
-                # #generates a character vector of grouping variables for each na count value
-                for (i in 1:length(groups)) {
-                  rows_loop <- intersect(grep(groups[[i]][1], rownames(na_count)),
-                                         grep(groups[[i]][2], rownames(na_count))
-                                         )
-                  group[rows_loop] <- names(groups)[i]
-                }
-                group <- unlist(group)
-                na_count <- cbind(group, na_count)  #combines the grouping variable with the na count values
-                na.count.list <- split(na_count, as.factor(group))  #Splits the data frame into lists of data frames by the grouping variable
-                all_count <- sapply(as.data.frame(sn.list), function(x, y) length(x), y = group)  #counts the number of na values per feature across each group
-                all_count <- data.frame(all_count)  #puts the list in a data frame
-                for (i in 1:length(groups)) {
-                  rows_loop <- intersect(grep(groups[[i]][1], rownames(all_count)),
-                                         grep(groups[[i]][2], rownames(all_count))
-                                         )
-                  group[rows_loop] <- names(groups)[i]
-                }
-                group <- unlist(group)
-                all_count <- cbind(group, all_count)  #combines the grouping variable with the na count values
-                all.count.list <- split(all_count, as.factor(group))  #Splits the data frame into lists of data frames by the grouping variable
-
-                ## The next section creates a new data matrix with the number of rows and columns equal to the number of
-                ## features and groups, respectively.  The new table is called 'min.frac.fulltable'
-                min.frac.fulltable <- matrix(nrow = length(bin), ncol = length(all.count.list))
-                colnames(min.frac.fulltable) <- c(names(na.count.list))  ###Names the columns for the new table as indicated
-                rownames(min.frac.fulltable) <- (bin)  ###Pulls out and names the table rows based on the metabolite label (I do this as a QA to make sure the loop is correctly linking the ANOVA output and metbaolite IDs
-                head(min.frac.fulltable)  ##A double-check to make sure the new table was created properly
-
-                # this section calculates the minfrac values for each exposure class in a for loop and populates the
-                # min.frac.fulltable with these values
-                group.names <- names(na.count.list)
-                for (i in names(na.count.list)) {
-                  na_loop <- na.count.list[i]
-                  na_loop <- do.call("rbind", na_loop)
-                  all_loop <- all.count.list[i]
-                  all_loop <- do.call("rbind", all_loop)
-                  min_frac_loop <- rapply(as.data.frame(na_loop$na_count), function(x, y) x/y, y = all_loop$all_count)  ##calculates the min frac values for each feature by exposure class
-                  min_frac_loop <- data.frame(min_frac_loop)  ##changes the format of the min frac results into a data frame
-                  colnames(min_frac_loop) <- paste(i, "", "min_frac")
-                  min_frac_loop <- min_frac_loop[-1, ]  ##Removes the value corresponding to the grouping variable
-                  min.frac.fulltable[, i] = min_frac_loop  ##Pastes the min frac results from an exposure class into the next row of the min frac full table.
-                }
-                # Code to calculate min_frac for one of the exposure classes; used to QA the loop output
-                i = names(na.count.list[2])
-                group.names <- names(na.count.list)
-                test.na <- na.count.list[i]
-                test.na <- do.call("rbind", test.na)
-                test.all <- all.count.list[i]
-                test.all <- do.call("rbind", test.all)
-                min_frac <- rapply(as.data.frame(test.na$na_count), function(x, y) x/y, y = as.data.frame(test.all$all_count))  #Need to find a way to get rid of the subset operator $
-                min_frac <- data.frame(min_frac)
-                colnames(min_frac) <- paste(i, "", "min_frac")
-                min_frac <- min_frac[-1, ]
-                head(min_frac)
-
-            } else print("Please include the number of samples in each class in the Sample Class file!")
-        }
-        ## Code to calculate MinFrac as the minimum fraction of samples with a feature across all exposure classes and
-        ## sexes
-        MinFrac.table <- matrix(nrow = length(bin), ncol = 1)  #This creates a new table to fill with one MinFrac value for each feature
-        for (i in 1:length(bin)) {
-            minfrac_loop <- 1 - min(min.frac.fulltable[i, ], na.rm = TRUE)
-            MinFrac.table[i, ] <- minfrac_loop
-        }
+        } else print("Please include the number of samples in each class in the Sample Class file!")
+      }
+      ## Code to calculate MinFrac as the minimum fraction of samples with a feature across all exposure classes and
+      ## sexes
+      MinFrac.table <- matrix(nrow = length(bin), ncol = 1)  #This creates a new table to fill with one MinFrac value for each feature
+      for (i in 1:length(bin)) {
+        minfrac_loop <- 1 - min(min.frac.fulltable[i, ], na.rm = TRUE)
+        MinFrac.table[i, ] <- minfrac_loop
+      }
     }
 
     CAMERA.list <- Peak.list[, c("isotopes", "adduct", "pcgroup")]  #Extracts all of the CAMERA columns to a separate dataframe
@@ -331,6 +333,13 @@ calc_minfrac = function(Sample.df, xset4, BLANK, Peak.list) {
     new.peak.list <- cbind(stripped.list, CAMERA.list)
     raw <- new.peak.list
     return(raw)
+
+  } else {
+
+    stop("You must install xcms to use calc_minfrac! See installation instructions at:
+         \n\nhttps://www.bioconductor.org/packages/release/bioc/html/xcms.html\n\n\n")
+
+  }
 }
 
 #' @title Sum features by metabolite group

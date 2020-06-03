@@ -234,7 +234,6 @@ plot_metgroup = function(CAMERA.obj, Sample.df, Peak.list, center, BLANK, gen.pl
 #' @param maxQC numeric Max number of QCs used to \code{plotEICs}.
 #' @param ... parameters to be passed to database functions
 #' @return list of length 2 EIC indices for the ion duplicate plots
-#' @importFrom xcms getEIC
 #' @importFrom graphics abline title
 #' @examples
 #' library(LUMA)
@@ -364,7 +363,7 @@ plot_ionduplicate = function(anposGa, xpos, annegGa, xneg, rt.method, Peak.list,
                                            sapply(Peak.list$Ion.Mode, function(x) x == "Neg")]
 
   ## Code to plot EICs for all Duplicate IDs in a loop.####
-    if (gen.plots) {
+    if (gen.plots && requireNamespace("xcms", quietly = TRUE)) {
 
         graphics.off()
 
@@ -400,11 +399,11 @@ plot_ionduplicate = function(anposGa, xpos, annegGa, xneg, rt.method, Peak.list,
                 pos = list()
                 cat("Be patient! EIC group No.", which(Un.ID[] %in% i), "out of a total of", length(Un.ID), "\n")
                 for (i in 1:length(EIC.pos)) {
-                  pos[[i]] = getEIC(xpos, rt = rt.method, groupidx = EIC.pos[i], sampleidx = pos.QC.files)
+                  pos[[i]] = xcms::getEIC(xpos, rt = rt.method, groupidx = EIC.pos[i], sampleidx = pos.QC.files)
                 }
                 neg = list()
                 for (i in 1:length(EIC.neg)) {
-                  neg[[i]] = getEIC(xneg, rt = rt.method, groupidx = EIC.neg[i], sampleidx = neg.QC.files)
+                  neg[[i]] = xcms::getEIC(xneg, rt = rt.method, groupidx = EIC.neg[i], sampleidx = neg.QC.files)
                 }
                 rt <- neg[[1]]@rtrange
                 rt.min <- min(rt[, "rtmin"])
@@ -456,9 +455,9 @@ plot_ionduplicate = function(anposGa, xpos, annegGa, xneg, rt.method, Peak.list,
               if (length(EIC.pos) == 0) {
                 ## has duplicate in negative mode ONLY
                 neg = list()
-                cat("Neg mode only! EIC group No.", which(Un.ID[] %in% i), "out of a total of", length(Un.ID), "\n")
+                cat("\n\nNeg mode only! EIC group No.", which(Un.ID[] %in% i), "out of a total of", length(Un.ID), "\n\n\n")
                 for (j in 1:length(EIC.neg)) {
-                  neg[[j]] = getEIC(xneg, rt = rt.method, groupidx = EIC.neg[j], sampleidx = neg.QC.files)
+                  neg[[j]] = xcms::getEIC(xneg, rt = rt.method, groupidx = EIC.neg[j], sampleidx = neg.QC.files)
                 }
                 rt <- neg[[1]]@rtrange
                 rt.min <- min(rt[, "rtmin"])
@@ -483,7 +482,7 @@ plot_ionduplicate = function(anposGa, xpos, annegGa, xneg, rt.method, Peak.list,
                 pos = list()
                 cat("\n\nPos mode only! EIC group No.", which(Un.ID[] %in% i), "out of a total of", length(Un.ID), "\n\n\n")
                 for (j in 1:length(EIC.pos)) {
-                  pos[[j]] = getEIC(xpos, rt = rt.method, groupidx = EIC.pos[j], sampleidx = pos.QC.files)
+                  pos[[j]] = xcms::getEIC(xpos, rt = rt.method, groupidx = EIC.pos[j], sampleidx = pos.QC.files)
                 }
                 rt <- pos[[1]]@rtrange
                 rt.min <- min(rt[, "rtmin"])
@@ -511,10 +510,21 @@ plot_ionduplicate = function(anposGa, xpos, annegGa, xneg, rt.method, Peak.list,
         return(list(x.pos, x.neg))
         ## End Plotting code####
     } else {
+      if(!requireNamespace("xcms", quietly = TRUE)) {
+        if(gen.plots) {
+          stop("You must install xcms to use plot_ionduplicate with gen.plots = TRUE!\n
+          See installation instructions at:
+         \n\nhttps://www.bioconductor.org/packages/release/bioc/html/xcms.html\n\n\n")
+        } else {
+        x.pos <- rep(1, length.out = length(Dup.ID.Pos))  #needs to be as long as the number of positive plots in the PDF file
+        x.neg <- rep(1, length.out = length(Dup.ID.Neg))  #needs to be as long as the number of negative plots in the PDF file
+        return(list(x.pos, x.neg))
+        }
+      } else {
       x.pos <- rep(1, length.out = length(Dup.ID.Pos))  #needs to be as long as the number of positive plots in the PDF file
       x.neg <- rep(1, length.out = length(Dup.ID.Neg))  #needs to be as long as the number of negative plots in the PDF file
       return(list(x.pos, x.neg))
+        }
     }
-
 }
 

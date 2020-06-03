@@ -12,8 +12,6 @@
 #' @return two \code{xcmsSet} objects \code{xset,xset4} without and with
 #'   retention time alignment, peak grouping, and imputed missing values,
 #'   respectively.
-#' @importFrom xcms xcmsSet retcor group fillPeaks
-#' @importFrom BiocParallel SnowParam snowWorkers
 #' @examples
 #' library(LUMA)
 #' if(require(lcmsfishdata, quietly = TRUE)) {
@@ -41,20 +39,36 @@ wrap_xcms = function(mzdatafiles, XCMS.par, file.base) {
   #mzdatafiles <- list.files(mzdatapath, recursive = TRUE, full.names = TRUE) #This will cause xcms to run on EVERY file in mzML directory
   # file.base <- gen_filebase(mzdatafiles, BLANK, ion.id, IonMode) #Dont do this
   #added me <
-    xset <- xcmsSet(files = mzdatafiles, method = "centWave", peakwidth = c(XCMS.par$Peakwidth1, XCMS.par$Peakwidth2),
-        ppm = XCMS.par$ppm, noise = XCMS.par$noise, snthresh = XCMS.par$snthresh, mzdiff = XCMS.par$mzdiff, prefilter = c(XCMS.par$prefilter1,
-            XCMS.par$prefilter2), mzCenterFun = "wMean", integrate = 1, fitgauss = FALSE, verbose.columns = FALSE,
-        BPPARAM = SnowParam(workers = snowWorkers(), type = "SOCK", stop.on.error = TRUE, progressbar = FALSE))
-    pdf(file = paste(file.base, "RTDev Plot.pdf", sep = "_"))
-    xset2 <- retcor(xset, method = "obiwarp", plottype = "deviation", distFunc = "cor_opt", profStep = 1, center = XCMS.par$center,
-        response = 1, gapInit = XCMS.par$gapInit, gapExtend = 2.7, factorDiag = 2, factorGap = 1, localAlignment = 0)
-    dev.off()
-    xset3 <- group(xset2, method = "density", bw = XCMS.par$bw, mzwid = XCMS.par$mzwid, minfrac = XCMS.par$minfrac,
-        minsamp = 1, max = 50)
 
-    xset4 <- fillPeaks(xset3, BPPARAM = SnowParam(workers = snowWorkers(), type = "SOCK", stop.on.error = TRUE,
-        progressbar = FALSE))
+  if(!requireNamespace("xcms", quietly = TRUE)) {
+    stop("You must install xcms to use xcms_wrap! See installation instructions at:
+         \n\nhttps://www.bioconductor.org/packages/release/bioc/html/xcms.html\n\n\n")
+  } else {
+
+    if(requireNamespace("BiocParallel", quietly = TRUE)) {
+
+      xset <- xcms::xcmsSet(files = mzdatafiles, method = "centWave", peakwidth = c(XCMS.par$Peakwidth1, XCMS.par$Peakwidth2),
+                      ppm = XCMS.par$ppm, noise = XCMS.par$noise, snthresh = XCMS.par$snthresh, mzdiff = XCMS.par$mzdiff, prefilter = c(XCMS.par$prefilter1,
+                                                                                                                                        XCMS.par$prefilter2), mzCenterFun = "wMean", integrate = 1, fitgauss = FALSE, verbose.columns = FALSE,
+                      BPPARAM = BiocParallel::SnowParam(workers = BiocParallel::snowWorkers(), type = "SOCK", stop.on.error = TRUE, progressbar = FALSE))
+
+    } else {
+      warning("Running xcms_wrap without BiocParallel takes a very long time! See installation instructions at:
+         \n\nhttps://bioconductor.org/packages/release/bioc/html/BiocParallel.html\n\n\n")
+
+    }
+
+    pdf(file = paste(file.base, "RTDev Plot.pdf", sep = "_"))
+    xset2 <- xcms::retcor(xset, method = "obiwarp", plottype = "deviation", distFunc = "cor_opt", profStep = 1, center = XCMS.par$center,
+                    response = 1, gapInit = XCMS.par$gapInit, gapExtend = 2.7, factorDiag = 2, factorGap = 1, localAlignment = 0)
+    dev.off()
+    xset3 <- xcms::group(xset2, method = "density", bw = XCMS.par$bw, mzwid = XCMS.par$mzwid, minfrac = XCMS.par$minfrac,
+                   minsamp = 1, max = 50)
+
+    xset4 <- xcms::fillPeaks(xset3, BPPARAM = BiocParallel::SnowParam(workers = BiocParallel::snowWorkers(), type = "SOCK", stop.on.error = TRUE,
+                                                  progressbar = FALSE))
     return(list(xset, xset4))
+  }
 }
 
 #' @title Wraps CAMERA
@@ -72,7 +86,7 @@ wrap_xcms = function(mzdatafiles, XCMS.par, file.base) {
 #' @return two grouped \code{xsannotate} objects \code{mz1setpos,anposGa}
 #'   without and with annotated isotopes and ion adducts and fragments,
 #'   respectively.
-#' @importFrom CAMERA xsAnnotate groupFWHM findIsotopes findAdducts getPeaklist
+#' @importFrom CAMERA xsAnnotate groupFWHM groupCorr findIsotopes findAdducts getPeaklist
 #' @examples
 #' library(LUMA)
 #' if(require(lcmsfishdata, quietly = TRUE)) {
