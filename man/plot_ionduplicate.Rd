@@ -78,7 +78,8 @@ load(file2, envir = environment())
 
 Peak.list <- lcmsfishdata::Peaklist_db[["Peaklist_Combined_with_Duplicate_IDs"]]
 
-test <- plot_ionduplicate(anposGa = anposGa, annegGa = annegGa, Peak.list = Peak.list, gen.plots = FALSE)
+test <- plot_ionduplicate(anposGa = anposGa, annegGa = annegGa, Peak.list =
+Peak.list, gen.plots = FALSE)
 class(test) ##is list
 length(test) ## with 2 elements
 

@@ -56,8 +56,9 @@ test_that("prepares peaklist for direct plotting of ion duplicates correctly", {
     expect_equal(54, sum(test2))
     expect_equal(58, sum(test3))
     expect_error(plot_ionduplicate(anposGa = anposGa, annegGa = annegGa, Peak.list = Peak.list, gen.plots = TRUE))
-    expect_true(file.exists("EIC_plots.pdf")) #Plotting file is created
     dev.off()
+
+    expect_true(file.exists("EIC_plots.pdf")) #Plotting file is created
     file.remove("EIC_plots.pdf") #Cleanup change to working directory
   }
 

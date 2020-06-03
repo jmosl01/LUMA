@@ -901,7 +901,7 @@ combine_phenodata <- function(Sample.df, Peak.list, Summed.list, search.par, BLA
   new.pheno.list <- as.data.frame(mylist)
   # i = 11 ##for debugging purposes
   total = length(colnames(pheno.list))
-  cat("Combining metadata for isotopes and adducts.\n\n\n")
+  cat("\n\nCombining metadata for isotopes and adducts.\n\n\n")
   pb <- txtProgressBar(min = 0, max = total, style = 3)
 
   for (i in 1:total) {

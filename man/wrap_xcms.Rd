@@ -9,13 +9,42 @@ wrap_xcms(mzdatafiles, XCMS.par, file.base)
 \arguments{
 \item{mzdatafiles}{a character vector of data files with full path names}
 
-\item{XCMS.par}{a single-row data frame with 13 variables containing XCMS parameters. The column names must be c('Peakwidth1','Peakwidth2','ppm','noise','snthresh','mzdiff','prefilter1','prefilter2','center','gapInit','bw','mzwid','minfrac')}
+\item{XCMS.par}{a single-row data frame with 13 variables containing
+parameters for \code{xcms}. Must include the columns \code{c("Peakwidth1",
+"Peakwidth2","ppm","noise","snthresh","mzdiff","prefilter1","prefilter2",
+"center","gapInit","bw","mzwid","minfrac")}.}
 
-\item{file.base}{a single-row data frame with 13 variables containing XCMS parameters. The column names must be c('Peakwidth1','Peakwidth2','ppm','noise','snthresh','mzdiff','prefilter1','prefilter2','center','gapInit','bw','mzwid','minfrac')}
+\item{file.base}{character return from \code{gen_filebase}.}
 }
 \value{
-two XCMS objects xset and xset4 without and with retention time alignment, peak grouping, and imputing missing values
+two \code{xcmsSet} objects \code{xset,xset4} without and with
+  retention time alignment, peak grouping, and imputed missing values,
+  respectively.
 }
 \description{
-Run XCMS with user defined input parameters and return xcms objects
+Run a simple XCMS workflow with user defined input parameters
+  and return xcms objects
+}
+\examples{
+library(LUMA)
+if(require(lcmsfishdata, quietly = TRUE)) {
+
+    file <- system.file("extdata/Sample_Data.csv", package = "lcmsfishdata")
+    sample_data <- read.table(file, header = TRUE, sep = ",")
+    mzdatafiles <- sample_data$CT.ID
+
+    file.base <- gen_filebase(mzdatafiles = mzdatafiles, BLANK = FALSE, IonMode
+    = "Positive", ion.id = c("Pos","Neg"))
+    file2 <- system.file("extdata/Best_XCMS_parameters_positive.csv", package
+    ="lcmsfishdata")
+    XCMS.par <- read.table(file2, header = TRUE, sep = ",")
+
+    \dontrun{
+
+    #Runs XCMS This requires access to raw datafiles and won't work with
+    #lcmsfishdata. Better to use your own data here.
+    test <- wrap_xcms(mzdatafiles = mzdatafiles, XCMS.par = XCMS.par, file.base = file.base)
+    }
+
+}
 }

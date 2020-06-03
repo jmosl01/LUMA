@@ -1,13 +1,41 @@
 #' @title Wraps xcms
 #'
 #' @export
-#' @description Run XCMS with user defined input parameters and return xcms objects
+#' @description Run a simple XCMS workflow with user defined input parameters
+#'   and return xcms objects
 #' @param mzdatafiles a character vector of data files with full path names
-#' @param XCMS.par a single-row data frame with 13 variables containing XCMS parameters. The column names must be c('Peakwidth1','Peakwidth2','ppm','noise','snthresh','mzdiff','prefilter1','prefilter2','center','gapInit','bw','mzwid','minfrac')
-#' @param file.base a single-row data frame with 13 variables containing XCMS parameters. The column names must be c('Peakwidth1','Peakwidth2','ppm','noise','snthresh','mzdiff','prefilter1','prefilter2','center','gapInit','bw','mzwid','minfrac')
-#' @return two XCMS objects xset and xset4 without and with retention time alignment, peak grouping, and imputing missing values
-#' @import xcms
+#' @param XCMS.par a single-row data frame with 13 variables containing
+#'   parameters for \code{xcms}. Must include the columns \code{c("Peakwidth1",
+#'   "Peakwidth2","ppm","noise","snthresh","mzdiff","prefilter1","prefilter2",
+#'   "center","gapInit","bw","mzwid","minfrac")}.
+#' @param file.base character return from \code{gen_filebase}.
+#' @return two \code{xcmsSet} objects \code{xset,xset4} without and with
+#'   retention time alignment, peak grouping, and imputed missing values,
+#'   respectively.
+#' @importFrom xcms xcmsSet retcor group fillPeaks
 #' @importFrom BiocParallel SnowParam snowWorkers
+#' @examples
+#' library(LUMA)
+#' if(require(lcmsfishdata, quietly = TRUE)) {
+#'
+#'     file <- system.file("extdata/Sample_Data.csv", package = "lcmsfishdata")
+#'     sample_data <- read.table(file, header = TRUE, sep = ",")
+#'     mzdatafiles <- sample_data$CT.ID
+#'
+#'     file.base <- gen_filebase(mzdatafiles = mzdatafiles, BLANK = FALSE, IonMode
+#'     = "Positive", ion.id = c("Pos","Neg"))
+#'     file2 <- system.file("extdata/Best_XCMS_parameters_positive.csv", package
+#'     ="lcmsfishdata")
+#'     XCMS.par <- read.table(file2, header = TRUE, sep = ",")
+#'
+#'     \dontrun{
+#'
+#'     #Runs XCMS This requires access to raw datafiles and won't work with
+#'     #lcmsfishdata. Better to use your own data here.
+#'     test <- wrap_xcms(mzdatafiles = mzdatafiles, XCMS.par = XCMS.par, file.base = file.base)
+#'     }
+#'
+#' }
 wrap_xcms = function(mzdatafiles, XCMS.par, file.base) {
   #added me >
   #mzdatafiles <- list.files(mzdatapath, recursive = TRUE, full.names = TRUE) #This will cause xcms to run on EVERY file in mzML directory
@@ -32,12 +60,36 @@ wrap_xcms = function(mzdatafiles, XCMS.par, file.base) {
 #' @title Wraps CAMERA
 #'
 #' @export
-#' @description Run CAMERA with user defined input parameters and return xsAnnotate objects
-#' @param xcms.obj an xcms object that has had peak picking, retention time alignment, peak grouping, and imputing missing values performed
-#' @param CAMERA.par a single-row data frame with 9 variables containing CAMERA parameters. The column names must be c('perfwhm','sigma','minfrac','mzabs','maxiso','corval_eic','corval_exp','pval','mzabs.1')
-#' @param IonMode a character string defining the ionization mode.  Must be either 'positive' or 'negative'
-#' @return two grouped xsannotate objects mz1setpos and anposGa without and with annotated isotopes and ion adducts and fragments
-#' @import CAMERA
+#' @description Run a simple CAMERA workflow with user defined input parameters
+#'   and return xsAnnotate objects
+#' @param xcms.obj an \code{xcmsSet} object that has had peak picking, retention time
+#'   alignment, peak grouping, and imputing missing values performed.
+#' @param CAMERA.par a single-row data frame with 9 variables containing CAMERA
+#'   parameters. Must include columns \code{c("perfwhm","sigma","minfrac","mzabs",
+#'   "maxiso","corval_eic","corval_exp","pval","mzabs.1")}.
+#' @param IonMode a character string defining the ionization mode.  Must be one
+#'   of \code{c("Positive","Negative")}.
+#' @return two grouped \code{xsannotate} objects \code{mz1setpos,anposGa}
+#'   without and with annotated isotopes and ion adducts and fragments,
+#'   respectively.
+#' @importFrom CAMERA xsAnnotate groupFWHM findIsotopes findAdducts getPeaklist
+#' @examples
+#' library(LUMA)
+#' if(require(lcmsfishdata, quietly = TRUE)) {
+#' file <- system.file("extdata/XCMS_objects_pos.Rdata", package = "lcmsfishdata")
+#' load(file, envir = environment())
+#' file2 <- system.file("extdata/Best_CAMERA_parameters_positive.csv", package
+#' ="lcmsfishdata")
+#' CAMERA.par <- read.table(file2, header = TRUE, sep = ",")
+#'
+#' \dontrun{
+#'
+#' #Runs CAMERA. This requires access to raw datafiles and won't work with
+#' #lcmsfishdata. Better to use your own data here.
+#' test <- wrap_camera(xcms.obj = xset4, CAMERA.par = CAMERA.par, IonMode = "Positive")
+#' }
+#'
+#' }
 wrap_camera = function(xcms.obj, CAMERA.par, IonMode) {
     best.perfwhm <- CAMERA.par$perfwhm
     best.sigma <- CAMERA.par$sigma
@@ -52,16 +104,25 @@ wrap_camera = function(xcms.obj, CAMERA.par, IonMode) {
     graph_method <- "lpc"
     CAMERA_IonMode <- tolower(IonMode)
     #me <
+
+
+    cat("\n\n")
     mz1setpos <- xsAnnotate(xs = xcms.obj, sample = NA)
+    cat("\n\n")
     mz1setpos <- groupFWHM(object = mz1setpos, perfwhm = best.perfwhm, sigma = best.sigma, intval = "into")
+    cat("\n\n")
     mz1setposIso <- findIsotopes(mz1setpos, maxcharge = 2, maxiso = best.maxiso, ppm = 3, mzabs = best.mzabs.iso,
         intval = "into", minfrac = best.minfrac, filter = TRUE)
+    cat("\n\n")
     mz1setposIso.new <- groupCorr(object = mz1setposIso, cor_eic_th = best.corval_eic, cor_exp_th = best.corval_exp,
         graphMethod = graph_method, pval = best.pval, calcIso = TRUE, calcCiS = TRUE, calcCaS = TRUE, psg_list = NULL,
         xraw = NULL)
+    cat("\n\n")
     anposGa <- findAdducts(mz1setposIso.new, polarity = CAMERA_IonMode, ppm = 3, mzabs = best.mzabs.add, multiplier = 2,
         rules = rules)
+    cat("\n\n")
     peakGa <- getPeaklist(object = anposGa)
+    cat("\n\n")
     EIC_ID <- row.names(peakGa)
     peak_data <- cbind(EIC_ID, peakGa)
     return(list(mz1setpos, anposGa))
@@ -70,13 +131,44 @@ wrap_camera = function(xcms.obj, CAMERA.par, IonMode) {
 #' @title Writes xlsx table
 #'
 #' @export
-#' @description Write xlsx table output from validate_metgroup.  Essentially a wrapper for xlsx::saveWorkbook
-#' @param file.base character return from gen_filebase function
-#' @param validate.sheets list of sheets to write to xlsx file.  Currently must be of length 2
-#' @param myname name to append to file.base to create file name for xlsx
-#' @param mysheets character vector to name sheets in xlsx file. Currently must be of length 2
-#' @return class jobjRef object
+#' @description Write xlsx table output from \code{plot_metgroup}.  Essentially
+#'   a wrapper for \code{openxlsx::saveWorkbook}
+#' @param file.base character return from \code{gen_filebase}.
+#' @param validate.sheets list of sheets to write to xlsx file.  Currently must
+#'   be of length 2
+#' @param myname character string to append to file.base to name xlsx file
+#' @param mysheets character vector to name sheets in xlsx file. Currently must
+#'   be of length 2
+#' @return \code{Workbook} from the \code{openxlsx} package
 #' @importFrom openxlsx createWorkbook addWorksheet writeDataTable saveWorkbook
+#' @examples
+#' library(LUMA)
+#' if(require(lcmsfishdata, quietly = TRUE)) {
+#'
+#'   file <- system.file("extdata/Sample_Class.txt", package = "lcmsfishdata")
+#'   Sample.df <- read.table(file, header = TRUE, sep = "\t")
+#'   file2 <- system.file("extdata/CAMERA_objects_Pos.Rdata", package = "lcmsfishdata")
+#'   load(file2, envir = environment())
+#'   Peak.list <- lcmsfishdata::Peaklist_Pos[["input_parsed"]]
+#'   file3 <- system.file("extdata/Sample_Data.csv", package = "lcmsfishdata")
+#'   sample_data <- read.table(file3, header = TRUE, sep = ",")
+#'   mzdatafiles <- sample_data$CT.ID
+#'
+#'   file.base <- gen_filebase(mzdatafiles = mzdatafiles, BLANK = FALSE, IonMode
+#'   = "Positive", ion.id = c("Pos","Neg"))
+#'
+#'   mylist <- plot_metgroup(CAMERA.obj = anposGa, Sample.df = Sample.df,
+#'   Peak.list = Peak.list, center = 2, BLANK = FALSE, gen.plots = FALSE,
+#'   IonMode = "Positive", file.base = file.base, QC.id = "Pooled_QC", maxlabel
+#'   = 10)
+#'   class(mylist) ##is list
+#'   length(mylist) ## with 2 elements
+#'   validate.sheets <- mylist[[2]]
+#'   myname <- "Validate_Metabolite_Groups"
+#'   test <- write_xlsx(validate.sheets = validate.sheets, file.base = file.base, myname = myname)
+#'   class(test) #returns Workbook object from the openxlsx package
+#'   file.remove(paste(file.base, paste(myname,".xlsx", sep = ""), sep = "_"))
+#'   }
 write_xlsx <- function(validate.sheets,file.base,myname,mysheets) {
   if(!is.list(validate.sheets) || length(validate.sheets) != 2)
     stop("validate.sheets must be a list with exactly two objects.", call. = FALSE)

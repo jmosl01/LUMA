@@ -7,17 +7,49 @@
 write_xlsx(validate.sheets, file.base, myname, mysheets)
 }
 \arguments{
-\item{validate.sheets}{list of sheets to write to xlsx file.  Currently must be of length 2}
+\item{validate.sheets}{list of sheets to write to xlsx file.  Currently must
+be of length 2}
 
-\item{file.base}{character return from gen_filebase function}
+\item{file.base}{character return from \code{gen_filebase}.}
 
-\item{myname}{name to append to file.base to create file name for xlsx}
+\item{myname}{character string to append to file.base to name xlsx file}
 
-\item{mysheets}{character vector to name sheets in xlsx file. Currently must be of length 2}
+\item{mysheets}{character vector to name sheets in xlsx file. Currently must
+be of length 2}
 }
 \value{
-class jobjRef object
+\code{Workbook} from the \code{openxlsx} package
 }
 \description{
-Write xlsx table output from validate_metgroup.  Essentially a wrapper for xlsx::saveWorkbook
+Write xlsx table output from \code{plot_metgroup}.  Essentially
+  a wrapper for \code{openxlsx::saveWorkbook}
+}
+\examples{
+library(LUMA)
+if(require(lcmsfishdata, quietly = TRUE)) {
+
+  file <- system.file("extdata/Sample_Class.txt", package = "lcmsfishdata")
+  Sample.df <- read.table(file, header = TRUE, sep = "\t")
+  file2 <- system.file("extdata/CAMERA_objects_Pos.Rdata", package = "lcmsfishdata")
+  load(file2, envir = environment())
+  Peak.list <- lcmsfishdata::Peaklist_Pos[["input_parsed"]]
+  file3 <- system.file("extdata/Sample_Data.csv", package = "lcmsfishdata")
+  sample_data <- read.table(file3, header = TRUE, sep = ",")
+  mzdatafiles <- sample_data$CT.ID
+
+  file.base <- gen_filebase(mzdatafiles = mzdatafiles, BLANK = FALSE, IonMode
+  = "Positive", ion.id = c("Pos","Neg"))
+
+  mylist <- plot_metgroup(CAMERA.obj = anposGa, Sample.df = Sample.df,
+  Peak.list = Peak.list, center = 2, BLANK = FALSE, gen.plots = FALSE,
+  IonMode = "Positive", file.base = file.base, QC.id = "Pooled_QC", maxlabel
+  = 10)
+  class(mylist) ##is list
+  length(mylist) ## with 2 elements
+  validate.sheets <- mylist[[2]]
+  myname <- "Validate_Metabolite_Groups"
+  test <- write_xlsx(validate.sheets = validate.sheets, file.base = file.base, myname = myname)
+  class(test) #returns Workbook object from the openxlsx package
+  file.remove(paste(file.base, paste(myname,".xlsx", sep = ""), sep = "_"))
+  }
 }

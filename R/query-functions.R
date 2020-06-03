@@ -102,7 +102,7 @@ match_Annotation = function(Peak.list, Annotated.library, Library.phenodata, rul
   ## search all of the search list at once; should speed ! things up considerably
   # i = 13 # Used for debugging purposes
   total = nrow(search.list)
-  cat("\nAnnotating features against the In House Library.\n\n\n")
+  cat("\n\nAnnotating features against the In House Library.\n\n\n")
   pb = txtProgressBar(min = 0, max = total, style = 3)
   cnt = 1
   for (i in 1:nrow(search.list)) {
@@ -389,12 +389,12 @@ find_Background.mz <- function(object, Peak.list, Solv.list, Sample.df, search.p
     MBmean <- rowMeans(Solvent.new.list)
     cur.Solvlist$mean <- MBmean
     if (cur.ion == "Positive") {
-      cat("\nRemoving Background Compounds in Positive mode:\n\n")
+      cat("\n\nRemoving Background Compounds in Positive mode:\n\n\n")
       copy_to(lib_db, cur.Solvlist, name = "Pos_list", temporary = FALSE, overwrite = TRUE)
       IHL <- tbl(lib_db, "Pos_list")
     } else {
       if (cur.ion == "Negative") {
-        cat("\nRemoving Background Compounds in Negative mode:\n\n")
+        cat("\n\nRemoving Background Compounds in Negative mode:\n\n\n")
         copy_to(lib_db, cur.Solvlist, name = "Neg_list", temporary = FALSE, overwrite = TRUE)
         IHL <- tbl(lib_db, "Neg_list")
       } else {
@@ -512,12 +512,12 @@ find_Background.monoMass <- function(object, Peak.list, Solv.list, Sample.df, se
     MBmean <- rowMeans(Solvent.new.list)
     cur.Solvlist$mean <- MBmean
     if (cur.ion == "Positive") {
-      cat("\n\nRemoving Background Compounds in Positive mode:\n\n")
+      cat("\n\nRemoving Background Compounds in Positive mode:\n\n\n")
       copy_to(lib_db, cur.Solvlist, name = "Pos_list", temporary = FALSE, overwrite = TRUE)
       IHL <- tbl(lib_db, "Pos_list")
     } else {
       if (cur.ion == "Negative") {
-        cat("\n\nRemoving Background Compounds in Negative mode:\n\n")
+        cat("\n\nRemoving Background Compounds in Negative mode:\n\n\n")
         copy_to(lib_db, cur.Solvlist, name = "Neg_list", temporary = FALSE, overwrite = TRUE)
         IHL <- tbl(lib_db, "Neg_list")
       } else {

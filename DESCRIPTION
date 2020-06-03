@@ -27,7 +27,6 @@ Imports:
     gtools,
     Hmisc,
     igraph,
-    lcmsfishdata,
     openxlsx,
     plyr,
     RSQLite,
@@ -39,6 +38,7 @@ Imports:
 Suggests: 
     BiocStyle,
     knitr,
+    lcmsfishdata,
     rmarkdown,
     xtable,
     testthat

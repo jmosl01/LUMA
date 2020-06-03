@@ -247,7 +247,8 @@ plot_metgroup = function(CAMERA.obj, Sample.df, Peak.list, center, BLANK, gen.pl
 #'
 #' Peak.list <- lcmsfishdata::Peaklist_db[["Peaklist_Combined_with_Duplicate_IDs"]]
 #'
-#' test <- plot_ionduplicate(anposGa = anposGa, annegGa = annegGa, Peak.list = Peak.list, gen.plots = FALSE)
+#' test <- plot_ionduplicate(anposGa = anposGa, annegGa = annegGa, Peak.list =
+#' Peak.list, gen.plots = FALSE)
 #' class(test) ##is list
 #' length(test) ## with 2 elements
 #'
@@ -480,7 +481,7 @@ plot_ionduplicate = function(anposGa, xpos, annegGa, xneg, rt.method, Peak.list,
               } else {
                 ## has duplicate in positive mode ONLY
                 pos = list()
-                cat("Pos mode only! EIC group No.", which(Un.ID[] %in% i), "out of a total of", length(Un.ID), "\n")
+                cat("\n\nPos mode only! EIC group No.", which(Un.ID[] %in% i), "out of a total of", length(Un.ID), "\n\n\n")
                 for (j in 1:length(EIC.pos)) {
                   pos[[j]] = getEIC(xpos, rt = rt.method, groupidx = EIC.pos[j], sampleidx = pos.QC.files)
                 }

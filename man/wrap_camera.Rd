@@ -7,15 +7,40 @@
 wrap_camera(xcms.obj, CAMERA.par, IonMode)
 }
 \arguments{
-\item{xcms.obj}{an xcms object that has had peak picking, retention time alignment, peak grouping, and imputing missing values performed}
+\item{xcms.obj}{an \code{xcmsSet} object that has had peak picking, retention time
+alignment, peak grouping, and imputing missing values performed.}
 
-\item{CAMERA.par}{a single-row data frame with 9 variables containing CAMERA parameters. The column names must be c('perfwhm','sigma','minfrac','mzabs','maxiso','corval_eic','corval_exp','pval','mzabs.1')}
+\item{CAMERA.par}{a single-row data frame with 9 variables containing CAMERA
+parameters. Must include columns \code{c("perfwhm","sigma","minfrac","mzabs",
+"maxiso","corval_eic","corval_exp","pval","mzabs.1")}.}
 
-\item{IonMode}{a character string defining the ionization mode.  Must be either 'positive' or 'negative'}
+\item{IonMode}{a character string defining the ionization mode.  Must be one
+of \code{c("Positive","Negative")}.}
 }
 \value{
-two grouped xsannotate objects mz1setpos and anposGa without and with annotated isotopes and ion adducts and fragments
+two grouped \code{xsannotate} objects \code{mz1setpos,anposGa}
+  without and with annotated isotopes and ion adducts and fragments,
+  respectively.
 }
 \description{
-Run CAMERA with user defined input parameters and return xsAnnotate objects
+Run a simple CAMERA workflow with user defined input parameters
+  and return xsAnnotate objects
+}
+\examples{
+library(LUMA)
+if(require(lcmsfishdata, quietly = TRUE)) {
+file <- system.file("extdata/XCMS_objects_pos.Rdata", package = "lcmsfishdata")
+load(file, envir = environment())
+file2 <- system.file("extdata/Best_CAMERA_parameters_positive.csv", package
+="lcmsfishdata")
+CAMERA.par <- read.table(file2, header = TRUE, sep = ",")
+
+\dontrun{
+
+#Runs CAMERA. This requires access to raw datafiles and won't work with
+#lcmsfishdata. Better to use your own data here.
+test <- wrap_camera(xcms.obj = xset4, CAMERA.par = CAMERA.par, IonMode = "Positive")
+}
+
+}
 }
