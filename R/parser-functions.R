@@ -437,11 +437,20 @@ parse_pos_results=function(raw,rule,IonMode){
 #' @title CAMERA Parser in negative mode
 #'
 #' @export
-#' @description Parses the CAMERA results using well-defined rules to eliminate conflicting annotations.
-#' @param raw a data frame with variables as columns.  Should contain all output columns from XCMS and CAMERA, additional columns from IHL.search and a Minfrac column.  The last columns must be the CAMERA columns "isotopes","adduct","pcgroup" in that order.
-#' @param rule a data frame containing the rule list used by CAMERA to annotate ion adducts and fragments.  Must contain the columns "name","nmol","charge","massdiff","oidscore","quasi","ips".
-#' @param IonMode a character string defining the ionization mode.  Must be "Negative"
-#' @return data frame parsed version of the original data frame with additional columns "mono_mass","metabolite_group","monoisotopic_flg","adduct_flg","isotope_flg","ambiguity_flg","Selection_flg"
+#' @description Parses the CAMERA results using well-defined rules to eliminate
+#'   conflicting annotations.
+#' @param raw a data frame with variables as columns.  Should contain all output
+#'   columns from XCMS and CAMERA, additional columns from \code{match_Annotation} and
+#'   \code{calc_minfrac}.  Must contain the CAMERA columns
+#'   \code{"isotopes","adduct","pcgroup"}.
+#' @param rule a data frame containing the rule list used by CAMERA to annotate
+#'   ion adducts and fragments.  Must contain the columns
+#'   \code{"name","nmol","charge","massdiff","oidscore","quasi","ips"}.
+#' @param IonMode a character string defining the ionization mode.  Must be
+#'   \code{"Negative"}
+#' @return data frame parsed version of the original data frame with additional
+#'   columns
+#'   \code{"mono_mass","metabolite_group","monoisotopic_flg","adduct_flg","isotope_flg","ambiguity_flg","Selection_flg"}
 #' @examples
 #' library(LUMA)
 #' if(require(lcmsfishdata, quietly = TRUE)) {
@@ -864,7 +873,6 @@ parse_neg_results=function(raw,rule,IonMode){
 #' @param search.par a single-row data frame with 11 variables containing
 #'   user-defined search parameters. Must contain the columns
 #'   \code{"ppm","rt","Voidrt","Corr.stat.pos","Corr.stat.neg","CV","Minfrac","Endogenous","Solvent","gen.plots","keep.singletons"}.
-#'
 #' @param BLANK a logical indicating whether blanks are being evaluated
 #' @param IonMode a character string defining the ionization mode.  Must be one
 #'   of \code{c("Positive","Negative"}.
@@ -930,7 +938,7 @@ combine_phenodata <- function(Sample.df, Peak.list, Summed.list, search.par, BLA
 
   # Combine munged pheno columns with summed data
   df1 <- Iso.only.list[order(Iso.only.list$metabolite_group), ]
-  df2 <- Summed.list[order(Summed.list$metabolite_group), ]
+  df2 <- Summed.list[order(Summed.list$metabolite_group), ] %>% select(-c("metabolite_group"))
   Peak.list.summed <- bind_cols(df1, df2)
   temp <- as.character(Peak.list.summed$MS.ID)
 

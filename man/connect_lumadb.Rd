@@ -47,5 +47,7 @@ bneg_db <- connect_peakdb(file.base = blanks.neg, mem = TRUE)
 new_db.list <- connect_lumadb(db.list = c("spos_db","sneg_db","bpos_db","bneg_db"), mem = TRUE)
 all(sapply(new_db.list, function(x) { #All valid databases are created
   dbIsValid(x)
-}))}
+}))
+all(sapply(new_db.list, dbDisconnect))
+}
 }

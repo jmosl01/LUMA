@@ -31,3 +31,21 @@ called. Default is 'Background Components Library'}
 Culls the Peak.list by removing background components. See
   \code{remove_background_peaks} for more details.
 }
+\examples{
+\dontrun{
+library(LUMA)
+if(require(lcmsfishdata, quietly = TRUE)){
+
+  db.dir <- system.file('extdata/', package = "LUMA")
+  InitWorkflow(db.dir = db.dir)
+  CullBackground(from.tables =
+  c("Trimmed by MinFrac","Combined Isotopes and Adducts"),
+               to.tables = c("Peaklist_Pos_Solvent Peaks Removed",
+                             "Peaklist_Neg_Solvent Peaks Removed",
+                             "Peaklist_Pos_Solvent Peaks Only",
+                             "Peaklist_Neg_Solvent Peaks Only"),
+               method = "monoMass")
+
+  }
+}
+}

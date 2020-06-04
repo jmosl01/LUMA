@@ -161,6 +161,23 @@ CullMF <- function(from.table,to.table,method) {
 #' @param lib.db what should the library containing the background components be
 #'   called. Default is 'Background Components Library'
 #' @return NULL
+#' @examples
+#' \dontrun{
+#' library(LUMA)
+#' if(require(lcmsfishdata, quietly = TRUE)){
+#'
+#'   db.dir <- system.file('extdata/', package = "LUMA")
+#'   InitWorkflow(db.dir = db.dir)
+#'   CullBackground(from.tables =
+#'   c("Trimmed by MinFrac","Combined Isotopes and Adducts"),
+#'                to.tables = c("Peaklist_Pos_Solvent Peaks Removed",
+#'                              "Peaklist_Neg_Solvent Peaks Removed",
+#'                              "Peaklist_Pos_Solvent Peaks Only",
+#'                              "Peaklist_Neg_Solvent Peaks Only"),
+#'                method = "monoMass")
+#'
+#'   }
+#' }
 CullBackground <- function(from.tables,to.tables,method,db.list,db.dir,new.db,lib.db) {
 
   #Initialize all other global variables

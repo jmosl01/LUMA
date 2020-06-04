@@ -7,19 +7,32 @@
 SimplyPeaklists(from.tables, to.table, peak.db, db.dir)
 }
 \arguments{
-\item{from.tables}{character vector of table names to draw from databases to be combined simply.}
+\item{from.tables}{character vector of table names to draw from databases to
+be combined simply.}
 
-\item{to.table}{to which table should LUMA save the modified Peak.list}
+\item{to.table}{to which table should LUMA save the modified Peaklist}
 
 \item{peak.db}{what database contains the Peaklists to be combined simply.
-Default is 'Peaklist_db'}
+Default is \code{"Peaklist_db"}}
 
-\item{db.dir}{directory containing the database.
-Default is 'db'}
+\item{db.dir}{directory containing the database. Default is 'db'}
 }
 \value{
-the file 'Peaklist_Combined.csv" is written to the working directory
+the file \code{"Peaklist_Combined.csv"} is written to the working
+  directory
 }
 \description{
-Combines Peaklists from positive and negative ionization modes without removing ion mode duplicates.
+Combines Peaklists from positive and negative ionization modes
+  without removing ion mode duplicates.
+}
+\examples{
+\dontrun{
+library(LUMA)
+db.dir <- system.file("extdata/", package = "LUMA")
+InitWorkflow(db.dir = db.dir)
+SimplyPeaklists(from.tables = c("Peaklist_Pos_Solvent Peaks Removed",
+"Peaklist_Neg_Solvent Peaks Removed"),
+to.table = "Peaklist_Combined",
+peak.db = peak_db, db.dir = db.dir)
+}
 }

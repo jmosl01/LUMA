@@ -138,7 +138,9 @@ replace_zeros_normalize = function(Peak.list = NULL, Sample.df, tbl.id = NULL, Q
 
 #' @title normalize_unit
 #'
-#' @description normalizes each column to unity
+#' @description normalizes each column to unity. See
+#'   \code{replace_zeros_normalize} and \code{NormalizePeaklists} for examples
+#'   that use this function.
 #' @param x dataframe containing only numeric vectors representing samples with
 #'   metabolite intensities.  Cannot contain zeros or NA values
 #' @return An array with the same shape as \code{x}, but with the summary

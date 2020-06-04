@@ -42,7 +42,8 @@ test_that("phenotype data is combined properly", {
                             Summed.list = Summed.list, search.par = search.par, BLANK = FALSE, IonMode =
                               "Positive")
   expect_equal(11,nrow(Peak.list) - nrow(test)) ##Combines multiple features into single entries per metabolite
-
+  expect_equal(33727702,test[which(test$metabolite_group %in% 230),"Pooled_QC_Pos_1"][[1]])
+  expect_equal(6024959878,test[which(test$metabolite_group %in% 898),"Pooled_QC_Pos_1"][[1]])
 
 
 })

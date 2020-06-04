@@ -89,7 +89,7 @@ if(require(lcmsfishdata, quietly = TRUE)) {
 
   \dontrun{
   #Runs with pdf plotting. This requires access to raw datafiles and won't
-  work with lcmsfishdata. Better to use your own data here.
+  #work with lcmsfishdata. Better to use your own data here.
   test <- plot_metgroup(CAMERA.obj = anposGa, Sample.df = Sample.df,
   Peak.list = Peak.list, center = 2, BLANK = FALSE, gen.plots = TRUE, IonMode
   = "Positive", file.base = file.base, QC.id = "Pooled_QC", maxlabel = 10)

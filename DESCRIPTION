@@ -1,7 +1,7 @@
 Package: LUMA
 Type: Package
 Title: LCMS-Based Untargeted Metabolomics Assistant
-Version: 1.1
+Version: 1.1-99
 Authors@R: as.person(c(
           "Jonathan Mosley <mosley.jonathan@epa.gov> [aut, cre]",
           "Marina Evich <evich.marina@epa.gov> [aut]",

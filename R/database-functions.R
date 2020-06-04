@@ -177,7 +177,9 @@ connect_libdb = function(lib.db, db.dir, mem) {
 #' new_db.list <- connect_lumadb(db.list = c("spos_db","sneg_db","bpos_db","bneg_db"), mem = TRUE)
 #' all(sapply(new_db.list, function(x) { #All valid databases are created
 #'   dbIsValid(x)
-#' }))}
+#' }))
+#' all(sapply(new_db.list, dbDisconnect))
+#' }
 connect_lumadb = function(db.list, db.dir, new.db, mem) {
 
     #Set default variables
@@ -286,6 +288,27 @@ write_tbl = function(mydf, peak.db, myname) {
 #' @param peak.db Formal class SQLiteConnection
 #' @param asdf logical indicating whether to return a data frame instead of a tibble. Default is FALSE
 #' @return tbl alternatively a data frame
+#' @examples
+#' library(LUMA)
+#' if(require(RSQLite, quietly = TRUE)) {
+#' file <- system.file("extdata/Sample_Data.csv", package =  "LUMA")
+#' sample_data <- read.table(file, header = TRUE, sep = ",")
+#' mzdatafiles <- sample_data$CT.ID
+#' file.base <- gen_filebase(mzdatafiles = mzdatafiles, BLANK = FALSE, IonMode =
+#' "Positive", ion.id = c("Pos","Neg")) #Returns "Peaklist_Pos"
+#' peak_db <- connect_peakdb(file.base = file.base, mem = TRUE)
+#' dbIsValid(peak_db) #Database is valid
+#' dbListTables(peak_db) #But no tables yet
+#' mydf <- Peaklist_Pos$From_CAMERA
+#' write_tbl(mydf = mydf, myname = "From_CAMERA", peak.db = peak_db)
+#' test_tbl <- LUMA:::get_features(mytbl = "From_CAMERA", peak.db = peak_db)
+#' test_tbl #Returns a tibble
+#'
+#' test_df <- LUMA:::get_features(mytbl = "From_CAMERA", peak.db = peak_db, asdf = TRUE)
+#' test_df #Returns a data frame
+#'
+#' dbDisconnect(peak_db)
+#' }
 get_features = function(mytbl, peak.db, asdf) {
     if (missing(asdf))
         asdf = FALSE

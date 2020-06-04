@@ -43,3 +43,14 @@ Default is to read from saved R objects by call to InitWorkflow}
 Combines Peaklists from positive and negative ionization modes while removing ion mode duplicates.
 See combine_ion_modes and search_IonDup for more details.
 }
+\examples{
+\dontrun{
+library(LUMA)
+db.dir <- system.file("extdata/", package = "LUMA")
+InitWorkflow(db.dir = db.dir)
+CombinePeaklists(from.tables = c("Peaklist_Pos_Solvent Peaks Removed",
+"Peaklist_Neg_Solvent Peaks Removed"),
+to.table = "Peaklist_Combined",
+method = "monoMass", peak.db = peak_db, db.dir = db.dir)
+}
+}

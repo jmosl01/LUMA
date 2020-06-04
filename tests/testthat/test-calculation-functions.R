@@ -5,7 +5,7 @@ test_that("Sums features", {
   search.par <- read.table(file, sep = "\t", header = TRUE) #Ignore Warning message
   file2 <- system.file('extdata/Sample_Class.txt', package = "LUMA")
   Sample.df <- read.table(file2, sep = "\t", header = TRUE) #Ignore Warning message
-  Peak.list <- Peaklist_Pos$output_parsed
+  Peak.list <- LUMA::Peaklist_Pos$output_parsed
   Sum.Peak.list <- sum_features(Peak.list = Peak.list, Sample.df = Sample.df ,
                          search.par = search.par, BLANK = FALSE, IonMode = "Positive")
   my_int <- Peak.list[["metabolite_group"]] %in% Peak.list$metabolite_group[[1]]

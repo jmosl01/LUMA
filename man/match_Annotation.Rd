@@ -29,17 +29,16 @@ Contain all columns with additional information from Annotated Library.}
 
 \item{rules}{a data frame containing the rule list used by CAMERA to annotate
 ion adducts and fragments.  Must contain the columns
-'name','nmol','charge','massdiff','oidscore','quasi','ips'.}
+\code{"name","nmol","charge","massdiff","oidscore","quasi","ips"}.}
 
 \item{search.par}{a single-row data frame with 11 variables containing
 user-defined search parameters. Must contain the columns
-'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous',
- 'Solvent','gen.plots','keep.singletons'.}
+\code{"ppm","rt","Voidrt","Corr.stat.pos","Corr.stat.neg","CV","Minfrac","Endogenous","Solvent","gen.plots","keep.singletons"}.}
 
-\item{IonMode}{a character string defining the ionization mode.  Must be
-either 'Positive' or 'Negative'}
+\item{IonMode}{a character string defining the ionization mode.  Must be one
+of \code{c("Positive","Negative"}.}
 
-\item{lib_db}{RSQLite connection}
+\item{lib_db}{\code{RSQLite connection}}
 
 \item{molweight}{character string defining the name of the molecular weight
 column in \code{Annotated.library}. Default is "Molecular.Weight"}

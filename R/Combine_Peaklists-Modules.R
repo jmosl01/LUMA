@@ -18,6 +18,16 @@
 #' Default is to read from saved R objects by call to InitWorkflow
 #' @param CAMERA.neg which CAMERA object to use to plot metabolite groups for negative mode.
 #' Default is to read from saved R objects by call to InitWorkflow
+#' @examples
+#' \dontrun{
+#' library(LUMA)
+#' db.dir <- system.file("extdata/", package = "LUMA")
+#' InitWorkflow(db.dir = db.dir)
+#' CombinePeaklists(from.tables = c("Peaklist_Pos_Solvent Peaks Removed",
+#' "Peaklist_Neg_Solvent Peaks Removed"),
+#' to.table = "Peaklist_Combined",
+#' method = "monoMass", peak.db = peak_db, db.dir = db.dir)
+#' }
 CombinePeaklists <- function(from.tables,to.table,method,peak.db,db.dir,gen.plots,CAMERA.pos,CAMERA.neg) {
 
   #Set default values
@@ -150,14 +160,26 @@ CombinePeaklists <- function(from.tables,to.table,method,peak.db,db.dir,gen.plot
 #' @title Combine Peaklists simply
 #'
 #' @export
-#' @description Combines Peaklists from positive and negative ionization modes without removing ion mode duplicates.
-#' @param from.tables character vector of table names to draw from databases to be combined simply.
-#' @param to.table to which table should LUMA save the modified Peak.list
+#' @description Combines Peaklists from positive and negative ionization modes
+#'   without removing ion mode duplicates.
+#' @param from.tables character vector of table names to draw from databases to
+#'   be combined simply.
+#' @param to.table to which table should LUMA save the modified Peaklist
 #' @param peak.db what database contains the Peaklists to be combined simply.
-#' Default is 'Peaklist_db'
-#' @param db.dir directory containing the database.
-#' Default is 'db'
-#' @return the file 'Peaklist_Combined.csv" is written to the working directory
+#'   Default is \code{"Peaklist_db"}
+#' @param db.dir directory containing the database. Default is 'db'
+#' @return the file \code{"Peaklist_Combined.csv"} is written to the working
+#'   directory
+#' @examples
+#' \dontrun{
+#' library(LUMA)
+#' db.dir <- system.file("extdata/", package = "LUMA")
+#' InitWorkflow(db.dir = db.dir)
+#' SimplyPeaklists(from.tables = c("Peaklist_Pos_Solvent Peaks Removed",
+#' "Peaklist_Neg_Solvent Peaks Removed"),
+#' to.table = "Peaklist_Combined",
+#' peak.db = peak_db, db.dir = db.dir)
+#' }
 SimplyPeaklists <- function(from.tables,to.table,peak.db,db.dir){
 
   #Set default values

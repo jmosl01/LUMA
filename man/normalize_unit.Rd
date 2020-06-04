@@ -15,5 +15,7 @@ An array with the same shape as \code{x}, but with the summary
   statistics swept out
 }
 \description{
-normalizes each column to unity
+normalizes each column to unity. See
+  \code{replace_zeros_normalize} and \code{NormalizePeaklists} for examples
+  that use this function.
 }

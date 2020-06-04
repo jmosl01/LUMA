@@ -85,7 +85,7 @@ length(test) ## with 2 elements
 
   \dontrun{
   #Runs with pdf plotting. This requires access to raw datafiles and won't
-  work with lcmsfishdata. Better to use your own data here.
+  #work with lcmsfishdata. Better to use your own data here.
   test <- plot_ionduplicate(anposGa = anposGa, annegGa = annegGa, Peak.list =
   Peak.list, gen.plots = TRUE)
 
