@@ -357,7 +357,6 @@ calc_minfrac = function(Sample.df, xset4, BLANK, Peak.list) {
 #' @param search.par a single-row data frame with 11 variables containing
 #'   user-defined search parameters. Must contain the columns
 #'   \code{"ppm","rt","Voidrt","Corr.stat.pos","Corr.stat.neg","CV","Minfrac","Endogenous","Solvent","gen.plots","keep.singletons"}.
-#'
 #' @param BLANK a logical indicating whether blanks are being evaluated
 #' @param IonMode a character string defining the ionization mode.  Must be
 #'   either 'Positive' or 'Negative'
@@ -397,18 +396,25 @@ sum_features = function(Peak.list, Sample.df, search.par, BLANK, IonMode) {
 #' @export
 #' @description Calculates the CV value across all pooled QC samples
 #' @param Peak.list a table of class 'tbl_df',tbl' or 'data.frame' with variables as columns.  Should contain all output columns from XCMS and CAMERA.
+#' @param QC.id character vector specifying identifier in filename designating a
+#'   Pooled QC sample.  Only the first value will be used.  Default is
+#'   \code{"Pooled_QC_"}
 #' @examples
 #' library(LUMA)
 #' test <- calc_cv(Peak.list = Peaklist_Pos$From_CAMERA)
 #' test[["%CV"]][11:23]
-calc_cv = function(Peak.list) {
+calc_cv = function(Peak.list, QC.id) {
+
+  #Set Default Values
+  if(missing(QC.id))
+    QC.id <- "Pooled_QC_"
 
   #Sanity Check
-  if(length(grep("Pooled_QC",colnames(Peak.list))) <= 2) {
+  if(length(grep(QC.id,colnames(Peak.list))) <= 2) {
     stop("Peak.list must contain columns for at least 3 pooled QC samples!")
   }
 
-  res <- lapply(colnames(Peak.list), function(ch) grep("Pooled_QC_", ch)) #Generates list equal in length to number of columns in Peak.list
+  res <- lapply(colnames(Peak.list), function(ch) grep(QC.id, ch)) #Generates list equal in length to number of columns in Peak.list
 
   QC.list <- Peak.list[sapply(res, function(x) length(x) > 0)] #Subsets a tibble containing only the pooled QC sample columns
 
@@ -418,7 +424,7 @@ calc_cv = function(Peak.list) {
 
   RSD <- QCsd/QCmean #Calculates the relative standard deviation vector from the mean and sd vectors
 
-  Peak.list[, "%CV"] <- RSD #Appends RSd's as a new column to the original Peak.list
+  Peak.list[, "X.CV"] <- RSD #Appends RSd's as a new column to the original Peak.list
 
   return(Peak.list)
 

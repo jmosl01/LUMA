@@ -4,10 +4,14 @@
 \alias{calc_cv}
 \title{Calculate coeffient of variation (CV) by pooled QCs}
 \usage{
-calc_cv(Peak.list)
+calc_cv(Peak.list, QC.id)
 }
 \arguments{
 \item{Peak.list}{a table of class 'tbl_df',tbl' or 'data.frame' with variables as columns.  Should contain all output columns from XCMS and CAMERA.}
+
+\item{QC.id}{character vector specifying identifier in filename designating a
+Pooled QC sample.  Only the first value will be used.  Default is
+\code{"Pooled_QC_"}}
 }
 \description{
 Calculates the CV value across all pooled QC samples

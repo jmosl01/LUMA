@@ -4,26 +4,40 @@
 \alias{trim_cv}
 \title{Trims by CV}
 \usage{
-trim_cv(Peak.list, search.par)
+trim_cv(Peak.list, search.par, QC.id)
 }
 \arguments{
-\item{Peak.list}{data frame. Must have QC sample columns that contain the string 'Pooled_QC_'.  Should contain output columns from XCMS and CAMERA, and additional columns from IHL.search, Calc.MinFrac, CAMERA.parser, Calc.corr.stat and Combine.phenodata base functions.}
+\item{Peak.list}{data frame. Must have QC sample columns that contain the
+string 'Pooled_QC_'.  Should contain output columns from XCMS and CAMERA,
+and additional columns from IHL.search, Calc.MinFrac, CAMERA.parser,
+Calc.corr.stat and Combine.phenodata base functions.}
 
-\item{search.par}{a single-row data frame with 11 variables containing user-defined search parameters. Must contain the columns 'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous','Solvent','gen.plots','keep.singletons'.}
+\item{search.par}{a single-row data frame with 11 variables containing
+user-defined search parameters. Must contain the columns
+\code{"ppm","rt","Voidrt","Corr.stat.pos","Corr.stat.neg","CV","Minfrac","Endogenous","Solvent","gen.plots","keep.singletons"}.}
+
+\item{QC.id}{character vector specifying identifier in filename designating a
+Pooled QC sample.  Only the first value will be used.  Default is
+\code{"Pooled_QC_"}}
 }
 \value{
-data frame Peak.list.trimmed original Peak.list without all metabolite groups with coefficient of variation greater than user specified threshold; if dataset contains blanks, data.frame with all NA values is returned
+data frame Peak.list.trimmed original Peak.list without all
+  metabolite groups with coefficient of variation greater than user specified
+  threshold; if dataset contains blanks, data.frame with all NA values is
+  returned
 }
 \description{
-Removes metabolites with coefficient of variation greater than the user specified threshold, calculated from the QC samples
+Removes metabolites with coefficient of variation greater than
+  the user specified threshold, calculated from the QC samples
 }
 \examples{
 library(LUMA)
 file <- system.file('extdata/Search_Parameters.txt', package = "LUMA")
 search.par <- read.table(file, sep = "\t", header = TRUE) #Ignore Warning message
 test <- trim_cv(Peak.list = Peaklist_Pos$From_CAMERA, search.par = search.par)
-nrow(Peaklist_Pos$From_CAMERA) -  nrow(test) #Equals 14
+nrow(Peaklist_Pos$From_CAMERA) -  nrow(test) #Equals 13
 
-test <- trim_cv(Peak.list = Peaklist_Pos$Combined_Isotopes_and_Adducts, search.par = search.par)
+test <- trim_cv(Peak.list = Peaklist_Pos$Combined_Isotopes_and_Adducts,
+search.par = search.par)
 nrow(Peaklist_Pos$Combined_Isotopes_and_Adducts) -  nrow(test) #Equals 9
 }

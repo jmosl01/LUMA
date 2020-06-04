@@ -30,8 +30,7 @@ columns 'Sex','Class','n','Endogenous'.}
 
 \item{search.par}{a single-row data frame with 11 variables containing
 user-defined search parameters. Must contain the columns
-'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous',
-'Solvent','gen.plots','keep.singletons'.}
+\code{"ppm","rt","Voidrt","Corr.stat.pos","Corr.stat.neg","CV","Minfrac","Endogenous","Solvent","gen.plots","keep.singletons"}.}
 
 \item{method}{which method to apply to search for background components.  See
 find_Background for details.}

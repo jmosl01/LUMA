@@ -47,6 +47,9 @@ CullVoidVolume <- function(from.table,to.table,method) {
 #'   all Pooled QC samples. See \code{trim_cv} for more details.
 #' @param from.table from which table should LUMA pull the Peak.list
 #' @param to.table to which should LUMA save the modified Peak.list
+#' @param QC.id character vector specifying identifier in filename designating a
+#'   Pooled QC sample.  Only the first value will be used.  Default is
+#'   \code{"Pooled_QC_"}
 #' @return NULL
 #' @examples
 #' \dontrun{
@@ -55,13 +58,19 @@ CullVoidVolume <- function(from.table,to.table,method) {
 #' InitWorkflow(db.dir = db.dir)
 #' CullCV(from.table = "From CAMERA", to.table = "Trimmed by CV")
 #' }
-CullCV <- function(from.table,to.table) {
+CullCV <- function(from.table,to.table,QC.id) {
+
+  #Set default values
+  if(missing(QC.id))
+    QC.id <- "Pooled_QC_"
+
   #Culls Peaklist by CV
   Peak.list <- read_tbl(mytable = from.table,
                         peak.db = peak_db,
                         asdf = TRUE)
 
   Peak.list.trimmed <- trim_cv(Peak.list = Peak.list,
+                               QC.id = QC.id,
                                search.par = data.frame(ppm = ppm.cutoff,
                                                        rt = rt.cutoff,
                                                        Voidrt = Voidrt,

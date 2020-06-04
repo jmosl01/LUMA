@@ -4,12 +4,16 @@
 \alias{CullCV}
 \title{Culls the Peak.list by Percent CV}
 \usage{
-CullCV(from.table, to.table)
+CullCV(from.table, to.table, QC.id)
 }
 \arguments{
 \item{from.table}{from which table should LUMA pull the Peak.list}
 
 \item{to.table}{to which should LUMA save the modified Peak.list}
+
+\item{QC.id}{character vector specifying identifier in filename designating a
+Pooled QC sample.  Only the first value will be used.  Default is
+\code{"Pooled_QC_"}}
 }
 \description{
 Culls the Peak.list by removing all components with a
