@@ -9,6 +9,7 @@ combine_phenodata(
   Peak.list,
   Summed.list,
   search.par,
+  QC.id,
   BLANK,
   IonMode
 )
@@ -29,6 +30,10 @@ the rest summed intensities for each sample}
 \item{search.par}{a single-row data frame with 11 variables containing
 user-defined search parameters. Must contain the columns
 \code{"ppm","rt","Voidrt","Corr.stat.pos","Corr.stat.neg","CV","Minfrac","Endogenous","Solvent","gen.plots","keep.singletons"}.}
+
+\item{QC.id}{character vector specifying identifier in filename designating a
+Pooled QC sample.  Only the first value will be used.  Default is
+\code{"Pooled_QC_"}}
 
 \item{BLANK}{a logical indicating whether blanks are being evaluated}
 

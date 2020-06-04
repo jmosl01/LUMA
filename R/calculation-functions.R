@@ -357,6 +357,9 @@ calc_minfrac = function(Sample.df, xset4, BLANK, Peak.list) {
 #' @param search.par a single-row data frame with 11 variables containing
 #'   user-defined search parameters. Must contain the columns
 #'   \code{"ppm","rt","Voidrt","Corr.stat.pos","Corr.stat.neg","CV","Minfrac","Endogenous","Solvent","gen.plots","keep.singletons"}.
+#' @param QC.id character vector specifying identifier in filename designating a
+#'   Pooled QC sample.  Only the first value will be used.  Default is
+#'   \code{"Pooled_QC_"}
 #' @param BLANK a logical indicating whether blanks are being evaluated
 #' @param IonMode a character string defining the ionization mode.  Must be
 #'   either 'Positive' or 'Negative'
@@ -367,8 +370,8 @@ calc_minfrac = function(Sample.df, xset4, BLANK, Peak.list) {
 #' library(LUMA)
 #' file <- system.file('extdata/Search_Parameters.txt', package = "LUMA")
 #' search.par <- read.table(file, sep = "\t", header = TRUE) #Ignore Warning message
-#' file2 <- system.file('extdata/Search_Parameters.txt', package = "LUMA")
-#' Sample.df <- read.table(file, sep = "\t", header = TRUE) #Ignore Warning message
+#' file2 <- system.file('extdata/Sample_Class.txt', package = "LUMA")
+#' Sample.df <- read.table(file2, sep = "\t", header = TRUE) #Ignore Warning message
 #' Peak.list <- LUMA::Peaklist_Pos$output_parsed
 #' if("metabolite_group" %in% colnames(Peak.list)) {
 #'   test <- sum_features(Peak.list = Peak.list, Sample.df = Sample.df ,
@@ -381,8 +384,13 @@ calc_minfrac = function(Sample.df, xset4, BLANK, Peak.list) {
 #'                        search.par = search.par, BLANK = FALSE, IonMode = "Positive")
 #' } else (stop("Peak.list must have a column called \"metabolite_group\""))
 #' }
-sum_features = function(Peak.list, Sample.df, search.par, BLANK, IonMode) {
-    mylist <- .gen_res(IonMode,search.par,Peak.list,Sample.df,BLANK)
+sum_features = function(Peak.list, Sample.df, search.par, QC.id, BLANK, IonMode) {
+
+    #Set Default Values
+    if(missing(QC.id))
+      QC.id <- "Pooled_QC_"
+
+    mylist <- .gen_res(IonMode,search.par,Peak.list,Sample.df,BLANK,QC.id)
     Peaklist_corstat <- mylist[[1]]
     res <- mylist[[2]]
     sum.range.list <- Peaklist_corstat[sapply(res, function(x) length(x) > 0)]  #Extracts all of the sample columns for summing by metabolite group

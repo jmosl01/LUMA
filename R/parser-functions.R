@@ -873,6 +873,9 @@ parse_neg_results=function(raw,rule,IonMode){
 #' @param search.par a single-row data frame with 11 variables containing
 #'   user-defined search parameters. Must contain the columns
 #'   \code{"ppm","rt","Voidrt","Corr.stat.pos","Corr.stat.neg","CV","Minfrac","Endogenous","Solvent","gen.plots","keep.singletons"}.
+#' @param QC.id character vector specifying identifier in filename designating a
+#'   Pooled QC sample.  Only the first value will be used.  Default is
+#'   \code{"Pooled_QC_"}
 #' @param BLANK a logical indicating whether blanks are being evaluated
 #' @param IonMode a character string defining the ionization mode.  Must be one
 #'   of \code{c("Positive","Negative"}.
@@ -895,9 +898,13 @@ parse_neg_results=function(raw,rule,IonMode){
 #' Summed.list = Summed.list, search.par = search.par, BLANK = FALSE, IonMode =
 #' "Positive")
 #' nrow(Peak.list) - nrow(test) ##Combines multiple features into single entries per metabolite
-combine_phenodata <- function(Sample.df, Peak.list, Summed.list, search.par, BLANK, IonMode) {
+combine_phenodata <- function(Sample.df, Peak.list, Summed.list, search.par, QC.id, BLANK, IonMode) {
 
-  mylist <- .gen_res(IonMode,search.par,Peak.list,Sample.df,BLANK)
+  #Set Default Values
+  if(missing(QC.id))
+    QC.id <- "Pooled_QC_"
+
+  mylist <- .gen_res(IonMode,search.par,Peak.list,Sample.df,BLANK,QC.id)
   Peaklist_corstat <- mylist[[1]]
   res <- mylist[[2]]
 

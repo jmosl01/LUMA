@@ -4,7 +4,7 @@
 \alias{sum_features}
 \title{Sum features by metabolite group}
 \usage{
-sum_features(Peak.list, Sample.df, search.par, BLANK, IonMode)
+sum_features(Peak.list, Sample.df, search.par, QC.id, BLANK, IonMode)
 }
 \arguments{
 \item{Peak.list}{data frame. Must have column \code{metabolite_group}.
@@ -19,6 +19,10 @@ columns \code{"Sex","Class","n","Endogenous"}.}
 \item{search.par}{a single-row data frame with 11 variables containing
 user-defined search parameters. Must contain the columns
 \code{"ppm","rt","Voidrt","Corr.stat.pos","Corr.stat.neg","CV","Minfrac","Endogenous","Solvent","gen.plots","keep.singletons"}.}
+
+\item{QC.id}{character vector specifying identifier in filename designating a
+Pooled QC sample.  Only the first value will be used.  Default is
+\code{"Pooled_QC_"}}
 
 \item{BLANK}{a logical indicating whether blanks are being evaluated}
 

@@ -45,7 +45,7 @@ of \code{c("Positive","Negative")}.}
 appended with \code{"_CorrPlots.pdf"}.}
 
 \item{QC.id}{character identifier for pooled QC samples. Default is
-\code{"Pooled_QC"}.}
+\code{"Pooled_QC_"}.}
 
 \item{maxlabel}{numeric How many m/z labels to print}
 }
@@ -78,7 +78,7 @@ if(require(lcmsfishdata, quietly = TRUE)) {
 
   test <- plot_metgroup(CAMERA.obj = anposGa, Sample.df = Sample.df,
   Peak.list = Peak.list, center = 2, BLANK = FALSE, gen.plots = FALSE,
-  IonMode = "Positive", file.base = file.base, QC.id = "Pooled_QC", maxlabel
+  IonMode = "Positive", file.base = file.base, QC.id = "Pooled_QC_", maxlabel
   = 10)
   class(test) ##is list
   length(test) ## with 2 elements
@@ -92,7 +92,7 @@ if(require(lcmsfishdata, quietly = TRUE)) {
   #work with lcmsfishdata. Better to use your own data here.
   test <- plot_metgroup(CAMERA.obj = anposGa, Sample.df = Sample.df,
   Peak.list = Peak.list, center = 2, BLANK = FALSE, gen.plots = TRUE, IonMode
-  = "Positive", file.base = file.base, QC.id = "Pooled_QC", maxlabel = 10)
+  = "Positive", file.base = file.base, QC.id = "Pooled_QC_", maxlabel = 10)
 
   }
 }

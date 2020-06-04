@@ -137,7 +137,8 @@ CombineFeatures <- function(from.table,to.table) {
                                                          gen.plots = gen.plots,
                                                          keep.singletons = keep.singletons),
                                  BLANK = BLANK,
-                                 IonMode = IonMode)
+                                 IonMode = IonMode,
+                                 QC.id = QC.id)
 
   #Combine phenotype data for each metabolite group with summed intensity values
   new.Peak.list <- combine_phenodata(Sample.df = data.frame(Sex = Sexes,
@@ -158,7 +159,8 @@ CombineFeatures <- function(from.table,to.table) {
                                                                 gen.plots = gen.plots,
                                                                 keep.singletons = keep.singletons),
                                         BLANK = BLANK,
-                                        IonMode = IonMode)
+                                        IonMode = IonMode,
+                                        QC.id = QC.id)
   write_tbl(mydf = new.Peak.list,
             peak.db = peak_db,
             myname = to.table)

@@ -18,7 +18,7 @@ test_that("generates correlation matrices for direct plotting of metabolite grou
 
     test <- plot_metgroup(CAMERA.obj = anposGa, Sample.df = Sample.df,
                           Peak.list = Peak.list, center = 2, BLANK = FALSE, gen.plots = FALSE,
-                          IonMode = "Positive", file.base = file.base, QC.id = "Pooled_QC", maxlabel
+                          IonMode = "Positive", file.base = file.base, QC.id = "Pooled_QC_", maxlabel
                           = 10)
     expect_equal(class(test),"list") ##is list
     expect_equal(2,length(test)) ##with 2 elements
@@ -27,7 +27,7 @@ test_that("generates correlation matrices for direct plotting of metabolite grou
     expect_equal(8.142202535,sum(test2[["Correlation.stat"]][1:10]))
     expect_error(plot_metgroup(CAMERA.obj = anposGa, Sample.df = Sample.df,
                                Peak.list = Peak.list, center = 2, BLANK = FALSE, gen.plots = TRUE, #Doesn't work with lcmsfishdata; Doesn't have access to raw datafiles
-                               IonMode = "Positive", file.base = file.base, QC.id = "Pooled_QC", maxlabel
+                               IonMode = "Positive", file.base = file.base, QC.id = "Pooled_QC_", maxlabel
                                = 10))
     expect_true(file.exists("Peaklist_Pos_Corrplots.pdf")) #Plotting file is created
     dev.off()

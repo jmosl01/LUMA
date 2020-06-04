@@ -503,7 +503,7 @@
 ## END
 
 ## Other module utility functions ----
-.gen_res = function(IonMode,search.par,Peak.list,Sample.df,BLANK) {
+.gen_res = function(IonMode,search.par,Peak.list,Sample.df,BLANK,QC.id) {
   if (IonMode == "Positive") {
     cor.stat <- as.numeric(search.par[1, "Corr.stat.pos"])
   } else {
@@ -516,7 +516,7 @@
     sexes <- unique(paste(Sample.df$Sex, "_", sep = ""))
     #Flags all of the sample columns and the metabolite group data
     res <- lapply(colnames(Peaklist_corstat),
-                  function(ch) unique(grep(paste("Pooled_QC_", paste(strsplit(sexes,"(?<=.[_]$)", perl = TRUE), collapse = "|"),
+                  function(ch) unique(grep(paste(QC.id, paste(strsplit(sexes,"(?<=.[_]$)", perl = TRUE), collapse = "|"),
                                                  "metabolite_group", sep = "|"), ch)))
   } else {
     if (IonMode == "Positive" && BLANK == TRUE) {

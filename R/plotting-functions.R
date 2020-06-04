@@ -24,7 +24,7 @@
 #' @param file.base character string used to name graphical output.  Will be
 #'   appended with \code{"_CorrPlots.pdf"}.
 #' @param QC.id character identifier for pooled QC samples. Default is
-#'   \code{"Pooled_QC"}.
+#'   \code{"Pooled_QC_"}.
 #' @param maxlabel numeric How many m/z labels to print
 #' @return List of length 2.  1st element is a data frame with all columns as
 #'   the original data frame with column \code{"Correlation.stat"}. 2nd element
@@ -53,7 +53,7 @@
 #'
 #'   test <- plot_metgroup(CAMERA.obj = anposGa, Sample.df = Sample.df,
 #'   Peak.list = Peak.list, center = 2, BLANK = FALSE, gen.plots = FALSE,
-#'   IonMode = "Positive", file.base = file.base, QC.id = "Pooled_QC", maxlabel
+#'   IonMode = "Positive", file.base = file.base, QC.id = "Pooled_QC_", maxlabel
 #'   = 10)
 #'   class(test) ##is list
 #'   length(test) ## with 2 elements
@@ -67,7 +67,7 @@
 #'   #work with lcmsfishdata. Better to use your own data here.
 #'   test <- plot_metgroup(CAMERA.obj = anposGa, Sample.df = Sample.df,
 #'   Peak.list = Peak.list, center = 2, BLANK = FALSE, gen.plots = TRUE, IonMode
-#'   = "Positive", file.base = file.base, QC.id = "Pooled_QC", maxlabel = 10)
+#'   = "Positive", file.base = file.base, QC.id = "Pooled_QC_", maxlabel = 10)
 #'
 #'   }
 #' }
@@ -80,7 +80,7 @@ plot_metgroup = function(CAMERA.obj, Sample.df, Peak.list, center, BLANK, gen.pl
     if (missing(gen.plots))
         gen.plots = FALSE
     if (missing(QC.id))
-        QC.id = "Pooled_QC"
+        QC.id = "Pooled_QC_"
     if (missing(maxlabel))
         maxlabel = 10
 
