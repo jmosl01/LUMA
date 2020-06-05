@@ -14,8 +14,9 @@
 #' library(LUMA)
 #' db.dir <- system.file('extdata/', package = "LUMA")
 #' InitWorkflow(db.dir = db.dir)
-#' NormalizePeaklists(from.table = "From CAMERA", to.table = "Normalized",
+#' NormalizePeaklists(from.table = "From_CAMERA", to.table = "Normalized",
 #' peak.db = peak_db, db.dir = db.dir)
+#' FinalWorkflow(peak_db = peak_db, lib_db = lib_db)
 #' }
 NormalizePeaklists <- function(from.table,to.table,peak.db,db.dir) {
 

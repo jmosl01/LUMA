@@ -12,7 +12,7 @@
 #' library(LUMA)
 #' db.dir <- system.file('extdata/', package = "LUMA")
 #' InitWorkflow(db.dir = db.dir)
-#' CullVoidVolume(from.table = "From CAMERA", to.table = "Trimmed by RT")
+#' CullVoidVolume(from.table = "From_CAMERA", to.table = "Trimmed_by_RT")
 #' }
 CullVoidVolume <- function(from.table,to.table,method) {
   ##Culls Peaklist by RT > void volume
@@ -56,7 +56,7 @@ CullVoidVolume <- function(from.table,to.table,method) {
 #' library(LUMA)
 #' db.dir <- system.file('extdata/', package = "LUMA")
 #' InitWorkflow(db.dir = db.dir)
-#' CullCV(from.table = "From CAMERA", to.table = "Trimmed by CV")
+#' CullCV(from.table = "From_CAMERA", to.table = "Trimmed_by_CV")
 #' }
 CullCV <- function(from.table,to.table,QC.id) {
 
@@ -108,7 +108,7 @@ CullCV <- function(from.table,to.table,QC.id) {
 #' library(LUMA)
 #' db.dir <- system.file('extdata/', package = "LUMA")
 #' InitWorkflow(db.dir = db.dir)
-#' CullMF(from.table = "From CAMERA with MinFrac", to.table = "Trimmed by MinFrac")
+#' CullMF(from.table = "From_CAMERA_with_MinFrac", to.table = "Trimmed_by_MinFrac")
 #' }
 CullMF <- function(from.table,to.table,method) {
   #Trims Peaklist by MinFrac
@@ -166,12 +166,12 @@ CullMF <- function(from.table,to.table,method) {
 #' library(LUMA)
 #' if(require(lcmsfishdata, quietly = TRUE)){
 #'
-#'   db.dir <- system.file('extdata/', package = "LUMA")
+#'   db.dir <- system.file('extdata/', package = "lcmsfishdata")
 #'   InitWorkflow(db.dir = db.dir)
 #'   CullBackground(from.tables =
-#'   c("Trimmed by MinFrac","Combined Isotopes and Adducts"),
-#'                to.tables = c("Peaklist_Pos_Solvent Peaks Removed",
-#'                              "Peaklist_Neg_Solvent Peaks Removed",
+#'   c("Trimmed_by_MinFrac","Combined_Isotopes_and_Adducts"),
+#'                to.tables = c("Peaklist_Pos_Solvent_Peaks_Removed",
+#'                              "Peaklist_Neg_Solvent_Peaks_Removed",
 #'                              "Peaklist_Pos_Solvent Peaks Only",
 #'                              "Peaklist_Neg_Solvent Peaks Only"),
 #'                method = "monoMass")

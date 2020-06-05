@@ -21,12 +21,20 @@
 #' @examples
 #' \dontrun{
 #' library(LUMA)
-#' db.dir <- system.file("extdata/", package = "LUMA")
-#' InitWorkflow(db.dir = db.dir)
-#' CombinePeaklists(from.tables = c("Peaklist_Pos_Solvent Peaks Removed",
-#' "Peaklist_Neg_Solvent Peaks Removed"),
-#' to.table = "Peaklist_Combined",
-#' method = "monoMass", peak.db = peak_db, db.dir = db.dir)
+#' if(require(lcmsfishdata, quietly = TRUE)) {
+#'   db.dir <- system.file("extdata/", package = "lcmsfishdata")
+#'   InitWorkflow(db.dir = db.dir)
+#'   AnnotatePeaklist(from.table = "From_CAMERA", to.table = "Annotated")
+#'   ParseCAMERA(from.table = "Annotated", to.table = "output_parsed", CAMERA.obj
+#'   = anposGa)
+#'   CombineFeatures(from.table = "output_parsed", to.table =
+#'   "Combined_Isotopes_and_Adducts")
+#'   CombinePeaklists(from.tables = c("Peaklist_Pos_Solvent Peaks Removed",
+#'   "Peaklist_Neg_Solvent Peaks Removed"),
+#'   to.table = "Peaklist_Combined",
+#'   method = "monoMass", peak.db = peak_db, db.dir = db.dir)
+#'   FinalWorkflow(peak_db = peak_db, lib_db = lib_db)
+#'   }
 #' }
 CombinePeaklists <- function(from.tables,to.table,method,peak.db,db.dir,gen.plots,CAMERA.pos,CAMERA.neg) {
 
@@ -173,12 +181,15 @@ CombinePeaklists <- function(from.tables,to.table,method,peak.db,db.dir,gen.plot
 #' @examples
 #' \dontrun{
 #' library(LUMA)
-#' db.dir <- system.file("extdata/", package = "LUMA")
-#' InitWorkflow(db.dir = db.dir)
-#' SimplyPeaklists(from.tables = c("Peaklist_Pos_Solvent Peaks Removed",
-#' "Peaklist_Neg_Solvent Peaks Removed"),
-#' to.table = "Peaklist_Combined",
-#' peak.db = peak_db, db.dir = db.dir)
+#' if(require(lcmsfishdata, quietly = TRUE)) {
+#'   db.dir <- system.file("extdata/", package = "lcmsfishdata")
+#'   InitWorkflow(db.dir = db.dir)
+#'   SimplyPeaklists(from.tables = c("Peaklist_Pos_Solvent Peaks Removed",
+#'   "Peaklist_Neg_Solvent Peaks Removed"),
+#'   to.table = "Peaklist_Combined",
+#'   peak.db = peak_db, db.dir = db.dir)
+#'   FinalWorkflow(peak_db = peak_db, lib_db = lib_db)
+#'   }
 #' }
 SimplyPeaklists <- function(from.tables,to.table,peak.db,db.dir){
 

@@ -4,11 +4,16 @@
 \alias{ScriptInfo_dlg}
 \title{Script Info Dialog Box}
 \usage{
-ScriptInfo_dlg(multiple = FALSE)
+ScriptInfo_dlg(multiple = FALSE, isdb, db.dir)
 }
 \arguments{
-\item{multiple}{should dialog box with multiple fields be used; default if
-FALSE}
+\item{multiple}{should dialog box with multiple fields be used; default is
+\code{FALSE}}
+
+\item{isdb}{\code{logical} database directory is provided by user}
+
+\item{db.dir}{character name of subdirectory to store databases. Default is
+\code{"db"}}
 }
 \value{
 named list
@@ -21,8 +26,9 @@ Creates dialog box for user to set basic workflow (used to be
 \dontrun{
 library(LUMA)
 if(require(lcmsfishdata, quietly = TRUE)) {
-  (mypath <- system.file("extdata", package = "LUMA"))
-  (test <- ScriptInfo_dlg(multiple = TRUE))
+  db.dir <- system.file("extdata", package = "LUMA")
+  test <- ScriptInfo_dlg(multiple = TRUE, isdb = TRUE, db.dir = db.dir)
+  test
   }
 }
 }

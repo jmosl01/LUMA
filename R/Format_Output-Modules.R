@@ -15,9 +15,10 @@
 #' library(LUMA)
 #' db.dir <- system.file('extdata/', package = "LUMA")
 #' InitWorkflow(db.dir = db.dir)
-#' AnnotatePeaklist(from.table = "From CAMERA", to.table = "Annotated")
+#' AnnotatePeaklist(from.table = "From_CAMERA", to.table = "Annotated")
 #' FormatForSIMCA(from.table = "Annotated", to.csv = "Peaklist_for_SIMCA",
 #' peak.db = peak_db, db.dir = db.dir)
+#' FinalWorkflow(peak_db = peak_db, lib_db = lib_db)
 #' }
 FormatForSIMCA <- function(from.table,to.csv,peak.db,db.dir) {
 
@@ -73,9 +74,10 @@ FormatForSIMCA <- function(from.table,to.csv,peak.db,db.dir) {
 #' library(LUMA)
 #' db.dir <- system.file('extdata/', package = "LUMA")
 #' InitWorkflow(db.dir = db.dir)
-#' AnnotatePeaklist(from.table = "From CAMERA", to.table = "Annotated")
+#' AnnotatePeaklist(from.table = "From_CAMERA", to.table = "Annotated")
 #' FormatForMetaboAnalystR(from.table = "Annotated", to.csv =
 #' "Peaklist_for_MetaboAnalyist", peak.db = peak_db, db.dir = db.dir)
+#' FinalWorkflow(peak_db = peak_db, lib_db = lib_db)
 #' }
 FormatForMetaboAnalystR <- function(from.table, to.csv, data.type = "pktable",
                                     anal.type = "stat", paired = FALSE, peak.db, db.dir)

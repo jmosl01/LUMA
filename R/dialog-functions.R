@@ -119,90 +119,179 @@ InputFiles_dlg <- function(WorkingDir,multiple = FALSE) {
 #' @export
 #' @description Creates dialog box for user to set basic workflow (used to be
 #'   called script) information
-#' @param multiple should dialog box with multiple fields be used; default if
-#'   FALSE
+#' @param multiple should dialog box with multiple fields be used; default is
+#'   \code{FALSE}
+#' @param isdb \code{logical} database directory is provided by user
+#' @param db.dir character name of subdirectory to store databases. Default is
+#'   \code{"db"}
 #' @return named list
 #' @examples
 #' \dontrun{
 #' library(LUMA)
 #' if(require(lcmsfishdata, quietly = TRUE)) {
-#'   (mypath <- system.file("extdata", package = "LUMA"))
-#'   (test <- ScriptInfo_dlg(multiple = TRUE))
+#'   db.dir <- system.file("extdata", package = "LUMA")
+#'   test <- ScriptInfo_dlg(multiple = TRUE, isdb = TRUE, db.dir = db.dir)
+#'   test
 #'   }
 #' }
-ScriptInfo_dlg <- function(multiple = FALSE) {
+ScriptInfo_dlg <- function(multiple = FALSE, isdb, db.dir) {
 
   #Set default values
-  if(missing(multiple)) multiple = FALSE
-
-  #Start Dialog Box; if multiple, then use dlg_form; otherwise, use individual dlg functions for each query
-
-  if(multiple) {
-
-    #Using dlgForm
-    form <- list(
-      "WorkingDir:DIR" = "Select your input directory or copy and paste into console",
-      "Are you using the LUMA recommended data directory:CHK" = FALSE,
-      "BLANK:CHK" = FALSE,
-      "IonMode:CB" = c("Positive","Negative")
-    )
-    myresults <- dlg_form(form, title = "Script Info")$res
-
-    while(length(myresults) == 0) {
-      myresults <- dlg_form(form, title = "Script Info")$res
-    }
-
-    #Convert escaped backslashes to forward slashes in directory
-    myresults$WorkingDir <- gsub("\\\\", "/", myresults$WorkingDir)
-
-    #Set names so I can access access elements of dialog results by name
-    names(myresults)[1:2] <- c("WorkingDir","DataDir")
-
-  } else {
-
-    #Using individual dlg functions for each query
-    WorkingDir <- dlg_dir(default = getwd(), title = "Select your input directory or copy and paste into console")$res
-    DataDir <- ok_cancel_box(message = "If you are using the LUMA recommended data directory, click OK. Otherwise click Cancel.")
-    BLANK <- ok_cancel_box(message = "If blank samples are being processed, click OK. Otherwise click Cancel.")
-    IonMode <- dlg_list(choices = c("Positive","Negative"))$res
-
-    myresults <- list(WorkingDir = WorkingDir, DataDir = DataDir, BLANK = BLANK, IonMode = IonMode)
-
-
-
+  if(missing(multiple))
+    multiple = FALSE
+  if(missing(db.dir)) {
+    db.dir <- "db"
+    isdb <- FALSE
   }
 
-  if(myresults[[2]]) {
-    DataDir <- dlg_dir(default = getwd(), title = "Data Directory")$res
-    mylist <- list.dirs(DataDir)
-    if(length(mylist) != 4) {
+  if(!isdb) {
 
-      stop("Your Data Directory must only contain three subdirectories called 'Samples', 'Blanks', and 'PooledQCs'")
+    #Start Dialog Box with Working Directory selection; if multiple, then use dlg_form; otherwise, use individual
+    #dlg functions for each query
+
+    if(multiple) {
+
+      #Using dlgForm
+      form <- list(
+        "WorkingDir:DIR" = "Select your input directory or copy and paste into console",
+        "Are you using the LUMA recommended data directory:CHK" = FALSE,
+        "BLANK:CHK" = FALSE,
+        "IonMode:CB" = c("Positive","Negative")
+      )
+      myresults <- dlg_form(form, title = "Script Info")$res
+
+      while(length(myresults) == 0) {
+        myresults <- dlg_form(form, title = "Script Info")$res
+      }
+
+      #Convert escaped backslashes to forward slashes in directory
+      myresults$WorkingDir <- gsub("\\\\", "/", myresults$WorkingDir)
+
+      #Set names so I can access access elements of dialog results by name
+      names(myresults)[1:2] <- c("WorkingDir","DataDir")
 
     } else {
 
-      mylist <- mylist[-1]
-      SamplesDir <- mylist[grep("Samples", ignore.case = T, mylist)]
-      BlanksDir <- mylist[grep("Blanks", ignore.case = T, mylist)]
-      PooledQCsDir <- mylist[grep("PooledQCs", ignore.case = T, mylist)]
-      mydir <- list(SamplesDir = SamplesDir, BlanksDir = BlanksDir, PooledQCsDir = PooledQCsDir)
+      #Using individual dlg functions for each query
+      WorkingDir <- dlg_dir(default = getwd(), title = "Select your input directory or copy and paste into console")$res
+      DataDir <- ok_cancel_box(message = "If you are using the LUMA recommended data directory, click OK. Otherwise click Cancel.")
+      BLANK <- ok_cancel_box(message = "If blank samples are being processed, click OK. Otherwise click Cancel.")
+      IonMode <- dlg_list(choices = c("Positive","Negative"))$res
+
+      myresults <- list(WorkingDir = WorkingDir, DataDir = DataDir, BLANK = BLANK, IonMode = IonMode)
+
+
+
     }
 
-  }  else {
+    if(myresults[[2]]) {
+      DataDir <- dlg_dir(default = getwd(), title = "Data Directory")$res
+      mylist <- list.dirs(DataDir)
+      if(length(mylist) != 4) {
 
-    form <- list(
-      "SamplesDir:DIR" = "Select your Samples directory (or copy and paste into console)",
-      "BlanksDir:DIR" = "Select your Blanks directory (or copy and paste into console)",
-      "PooledQCsDir:DIR" = "Select your Pooled QCs directory (or copy and paste into console)"
-    )
-    mydir <- dlg_form(form, title = "Data Directories")$res
+        stop("Your Data Directory must only contain three subdirectories called 'Samples', 'Blanks', and 'PooledQCs'")
+
+      } else {
+
+        mylist <- mylist[-1]
+        SamplesDir <- mylist[grep("Samples", ignore.case = T, mylist)]
+        BlanksDir <- mylist[grep("Blanks", ignore.case = T, mylist)]
+        PooledQCsDir <- mylist[grep("PooledQCs", ignore.case = T, mylist)]
+        mydir <- list(SamplesDir = SamplesDir, BlanksDir = BlanksDir, PooledQCsDir = PooledQCsDir)
+      }
+
+    }  else {
+
+      form <- list(
+        "SamplesDir:DIR" = "Select your Samples directory (or copy and paste into console)",
+        "BlanksDir:DIR" = "Select your Blanks directory (or copy and paste into console)",
+        "PooledQCsDir:DIR" = "Select your Pooled QCs directory (or copy and paste into console)"
+      )
+      mydir <- dlg_form(form, title = "Data Directories")$res
+
+    }
+
+    myresults$DataDir <- mydir
+
+    return(myresults)
+
+
+
+  } else {
+
+    #Start Dialog Box without Working Directory selection; if multiple, then use
+    #dlg_form; otherwise, use individual dlg functions for each query
+
+    if(multiple) {
+
+      #Using dlgForm
+      form <- list(
+        "Are you using the LUMA recommended data directory:CHK" = FALSE,
+        "BLANK:CHK" = FALSE,
+        "IonMode:CB" = c("Positive","Negative")
+      )
+      dirlist <- list(WorkingDir = db.dir)
+
+      myresults <-c(dirlist, dlg_form(form, title = "Script Info")$res)
+
+      while(length(myresults) == 0) {
+        myresults <- dlg_form(form, title = "Script Info")$res
+      }
+
+      #Convert escaped backslashes to forward slashes in directory
+      myresults$WorkingDir <- gsub("\\\\", "/", myresults$WorkingDir)
+
+      #Set names so I can access access elements of dialog results by name
+      names(myresults)[1:2] <- c("WorkingDir","DataDir")
+
+    } else {
+
+      #Using individual dlg functions for each query
+      WorkingDir <- db.dir
+      DataDir <- ok_cancel_box(message = "If you are using the LUMA recommended data directory, click OK. Otherwise click Cancel.")
+      BLANK <- ok_cancel_box(message = "If blank samples are being processed, click OK. Otherwise click Cancel.")
+      IonMode <- dlg_list(choices = c("Positive","Negative"))$res
+
+      myresults <- list(WorkingDir = WorkingDir, DataDir = DataDir, BLANK = BLANK, IonMode = IonMode)
+
+
+
+    }
+
+    if(myresults[[2]]) {
+      DataDir <- dlg_dir(default = getwd(), title = "Data Directory")$res
+      mylist <- list.dirs(DataDir)
+      if(length(mylist) != 4) {
+
+        stop("Your Data Directory must only contain three subdirectories called 'Samples', 'Blanks', and 'PooledQCs'")
+
+      } else {
+
+        mylist <- mylist[-1]
+        SamplesDir <- mylist[grep("Samples", ignore.case = T, mylist)]
+        BlanksDir <- mylist[grep("Blanks", ignore.case = T, mylist)]
+        PooledQCsDir <- mylist[grep("PooledQCs", ignore.case = T, mylist)]
+        mydir <- list(SamplesDir = SamplesDir, BlanksDir = BlanksDir, PooledQCsDir = PooledQCsDir)
+      }
+
+    }  else {
+
+      form <- list(
+        "SamplesDir:DIR" = "Select your Samples directory (or copy and paste into console)",
+        "BlanksDir:DIR" = "Select your Blanks directory (or copy and paste into console)",
+        "PooledQCsDir:DIR" = "Select your Pooled QCs directory (or copy and paste into console)"
+      )
+      mydir <- dlg_form(form, title = "Data Directories")$res
+
+    }
+
+    myresults$DataDir <- mydir
+
+    return(myresults)
+
+
 
   }
-
-  myresults$DataDir <- mydir
-
-  return(myresults)
-
 }
 
 #' @title CAMERA Files Dialog Box

@@ -1,36 +1,41 @@
 #' @title Constructor function to initiate LUMA Workflow
 #'
 #' @export
-#' @description All LUMA workflows must start with this function. Creates the first Peaklist and sets up storing and passing Peaklists and ancillary data between modules.
-#' @param ion.id character vector specifying identifier in mz data filenames designating positive or negative ionization or both. Must be a (case-insensitive) abbreviation of the ionization mode name.
-#' Default is c('Pos','Neg')
-#' @param db.dir character name of subdirectory to store databases
-#' Default is 'db'
-#' Positive identifier must come first. Default is c('Pos','Neg')
-#' @param use.CAMERA logical indicating whether to use existing CAMERA object in global environment.
-#' Default is to look for CAMERA objects saved by previous calls to this function and run CAMERA if missing.
-#' @param use.XCMS logical indicating whether to use existing XCMS object in global environment.
-#' Default is to look for XCMS objects saved by previous calls to this function and run XCMS if missing.
+#' @description All LUMA workflows must start with this function. Creates the
+#'   first Peaklist and sets up storing and passing Peaklists and ancillary data
+#'   between modules.
+#' @param ion.id character vector specifying identifier in mzdata filenames
+#'   designating positive or negative ionization or both. Must be a
+#'   (case-insensitive) abbreviation of the ionization mode name. Positive
+#'   identifier must come first. Default is \code{c("Pos","Neg")}.
+#' @param db.dir character name of subdirectory to store databases. Default is
+#'   \code{"db"}
+#' @param use.CAMERA logical indicating whether to use existing CAMERA object in
+#'   global environment. Default is to look for CAMERA objects saved by previous
+#'   calls to this function and run CAMERA if missing.
+#' @param use.XCMS logical indicating whether to use existing XCMS object in
+#'   global environment. Default is to look for XCMS objects saved by previous
+#'   calls to this function and run XCMS if missing.
 #' @param CAMERA.obj which CAMERA object to use to initialize LUMA workflow.
-#' Only relevant if use.CAMERA is TRUE
-#' @param XCMS.obj which XCMS object to use to initialize LUMA workflow.
-#' Only relevant if use.XCMS is TRUE
-#' @param graph.method graphing method to use for CAMERA.
-#' Default is 'lpc'. See CAMERA documentation for details.
-#' @param ion.mode which ion mode(s) will be processed for this data. Must be 'Positive', 'Negative', or both.
-#' Default is both; i.e. c('Positive','Negative').
-#' @param mytable character name of the first Peak.list table
-#' Default is 'From CAMERA'
-#' @param calc.minfrac logical should LUMA calculate the minimum fraction values for the initial Peak.list
-#' Default is TRUE
-#' @param multiple logical should multiple fields be allowed in dialog boxes
-#' Default is FALSE
+#'   Only relevant if \code{use.CAMERA == TRUE}.
+#' @param XCMS.obj which XCMS object to use to initialize LUMA workflow. Only
+#'   relevant if \code{use.XCMS == TRUE}.
+#' @param graph.method graphing method to use for CAMERA. Default is
+#'   \code{"lpc"}. See CAMERA documentation for details.
+#' @param ion.mode which ion mode(s) will be processed for this data. Must be
+#'   one or both of \code{c("Positive","Negative")}. Default is both.
+#' @param mytable character name of the first Peaklist table in the database.
+#'   Default is \code{"From_CAMERA"}.
+#' @param calc.minfrac logical should LUMA calculate the minimum fraction values
+#'   for the initial Peaklist. Default is \code{TRUE}.
+#' @param multiple logical should multiple fields be allowed in dialog boxes.
+#'   Default is \code{FALSE}.
 #' @return global variables and Peaklist in database are returned
 #' @importFrom utils read.csv
 #' @examples
 #' \dontrun{
 #' library(LUMA)
-#' db.dir <- system.file('extdata/', package = "LUMA")
+#' db.dir <- system.file("extdata/", package = "LUMA")
 #' InitWorkflow(db.dir = db.dir)
 #' }
 
@@ -70,14 +75,17 @@ InitWorkflow <- function(ion.id,db.dir,use.CAMERA,use.XCMS,CAMERA.obj,XCMS.obj,
   Plate.Position <- NULL
   Sample.phenodata <- NULL
   Library.phenodata <- NULL
+  isdb <- TRUE
 
   #Set default values for constructor function arguments
   if(missing(ion.id))
     ion.id <- c("Pos","Neg")
   if(missing(graph.method))
     graph.method <- "lpc"
-  if(missing(db.dir))
+  if(missing(db.dir)) {
     db.dir <- "db"
+    isdb <- FALSE
+  }
   if(missing(use.CAMERA))
     use.CAMERA <- FALSE
   if(missing(use.XCMS))
@@ -85,7 +93,7 @@ InitWorkflow <- function(ion.id,db.dir,use.CAMERA,use.XCMS,CAMERA.obj,XCMS.obj,
   if(missing(ion.mode))
     ion.mode <- c("Positive","Negative")
   if(missing(mytable))
-    mytable <- "From CAMERA"
+    mytable <- "From_CAMERA"
   if(missing(calc.minfrac))
     calc.minfrac <- TRUE
   if(missing(multiple))
@@ -94,7 +102,7 @@ InitWorkflow <- function(ion.id,db.dir,use.CAMERA,use.XCMS,CAMERA.obj,XCMS.obj,
   #Set Script Info globally
 
   #Initiate Dialog Boxes
-  script_dlg <- ScriptInfo_dlg(multiple = multiple)
+  script_dlg <- ScriptInfo_dlg(multiple = multiple, isdb, db.dir)
   BLANK = script_dlg$BLANK
   IonMode = script_dlg$IonMode
 

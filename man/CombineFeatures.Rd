@@ -18,8 +18,12 @@ See sum_features and combine_phenodata for more details.
 \examples{
 \dontrun{
 library(LUMA)
-db.dir <- system.file('extdata/', package = "LUMA")
+if(require(lcmsfishdata, quietly = TRUE)) {
+db.dir <- system.file('extdata/', package = "lcmsfishdata")
 InitWorkflow(db.dir = db.dir)
-CombineFeatures(from.table = "output_parsed", to.table = "Combined Isotopes and Adducts")
+ParseCAMERA(from.table = "From CAMERA", to.table = "output_parsed", CAMERA.obj <- anposGa)
+CombineFeatures(from.table = "output_parsed", to.table = "Combined Isotopes
+and Adducts")
+  }
 }
 }
