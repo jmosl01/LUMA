@@ -152,7 +152,7 @@ wrap_camera = function(xcms.obj, CAMERA.par, IonMode) {
 #'   be of length 2
 #' @param myname character string to append to file.base to name xlsx file
 #' @param mysheets character vector to name sheets in xlsx file. Currently must
-#'   be of length 2
+#'   be of length 2. Default is \code{c("clear","muddy")}
 #' @return \code{Workbook} from the \code{openxlsx} package
 #' @importFrom openxlsx createWorkbook addWorksheet writeDataTable saveWorkbook
 #' @examples
@@ -184,10 +184,14 @@ wrap_camera = function(xcms.obj, CAMERA.par, IonMode) {
 #'   file.remove(paste(file.base, paste(myname,".xlsx", sep = ""), sep = "_"))
 #'   }
 write_xlsx <- function(validate.sheets,file.base,myname,mysheets) {
-  if(!is.list(validate.sheets) || length(validate.sheets) != 2)
-    stop("validate.sheets must be a list with exactly two objects.", call. = FALSE)
+
+  #Set Default values
   if(missing(mysheets))
     mysheets <- c("clear","muddy")
+
+
+  if(!is.list(validate.sheets) || length(validate.sheets) != 2)
+    stop("validate.sheets must be a list with exactly two objects.", call. = FALSE)
   if(!is.vector(mysheets) || length(mysheets) != 2)
     stop("mysheets must be a vector of length 2!", call. = FALSE)
 

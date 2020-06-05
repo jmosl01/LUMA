@@ -12,9 +12,12 @@
 #' @examples
 #' \dontrun{
 #' library(LUMA)
-#' db.dir <- system.file('extdata/', package = "LUMA")
-#' InitWorkflow(db.dir = db.dir)
-#' AnnotatePeaklist(from.table = "From CAMERA", to.table = "Annotated")
+#' if(require(lcmsfishdata, quietly = TRUE)) {
+#'   db.dir <- system.file('extdata/', package = "lcmsfishdata")
+#'   InitWorkflow(db.dir = db.dir)
+#'   AnnotatePeaklist(from.table = "From CAMERA", to.table = "Annotated")
+#'   FinalWorkflow(peak_db = peak_db, lib_db = lib_db)
+#'   }
 #' }
 AnnotatePeaklist <- function(from.table,to.table,lib.db,...) {
 

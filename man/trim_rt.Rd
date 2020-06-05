@@ -13,14 +13,22 @@ trim_rt(object, Peak.list, void.rt, rt.list)
 \method{trim_rt}{monoMass}(object, Peak.list, void.rt, rt.list = Peak.list["rt"][[1]])
 }
 \arguments{
-\item{object}{used for method dispatch. Can be any object. See usage for details}
+\item{object}{used for method dispatch. Can be any object. See usage for
+details}
 
-\item{Peak.list}{data frame. Must have Correlation.stat column.  Should contain output columns from XCMS and CAMERA, and additional columns from IHL.search, Calc.MinFrac, Calc.corr.stat and EIC.plotter functions.}
+\item{Peak.list}{data frame. Must have column \code{Correlation.stat}.
+Should contain output columns from XCMS and CAMERA, and additional columns
+from \code{match_Annotation}, \code{calc_minfrac}, \code{calc_corrstat} and
+\code{plot_metgroup} functions.}
 
-\item{void.rt}{numeric retention time cutoff value corresponding to the LC void volume}
+\item{void.rt}{numeric retention time cutoff value corresponding to the LC
+void volume}
 
-\item{rt.list}{numeric vector containing retention times for all features or compounds}
+\item{rt.list}{numeric vector containing retention times for all features or
+compounds}
 }
 \description{
-Removes components with retention times smaller than the user specified threshold.
+Removes components with retention times smaller than the user
+  specified threshold. See \code{remove_void_volume} and
+  \code{CullVoidVolume} for examples that use this function.
 }

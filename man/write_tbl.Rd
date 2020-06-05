@@ -33,5 +33,6 @@ dbListTables(peak_db) #But no tables yet
 mydf <- Peaklist_Pos$From_CAMERA
 write_tbl(mydf = mydf, myname = "From_CAMERA", peak.db = peak_db)
 dbListTables(peak_db) #Now has tables
+dbDisconnect(peak_db)
 }
 }

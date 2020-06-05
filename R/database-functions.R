@@ -276,6 +276,7 @@ read_tbl = function(mytable, peak.db, asdf) {
 #' mydf <- Peaklist_Pos$From_CAMERA
 #' write_tbl(mydf = mydf, myname = "From_CAMERA", peak.db = peak_db)
 #' dbListTables(peak_db) #Now has tables
+#' dbDisconnect(peak_db)
 #' }
 write_tbl = function(mydf, peak.db, myname) {
     copy_to(peak.db, mydf, name = myname, temporary = FALSE, overwrite = TRUE)

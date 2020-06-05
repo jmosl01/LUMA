@@ -209,7 +209,7 @@ trim_cv = function(Peak.list, search.par,QC.id) {
 #'   class(method) = method
 #'   test <- trim_minfrac(Peak.list = Peaklist_Pos$From_CAMERA_with_MinFrac,
 #'   search.par = search.par, object = method)
-#'   nrow(Peaklist_Pos$From_CAMERA_with_MinFrac) -  nrow(test) #equals 7
+#'   nrow(Peaklist_Pos$From_CAMERA_with_MinFrac) -  nrow(test) #equals 6
 #'
 #'   method = "monoMass"
 #'   class(method) = method
@@ -261,11 +261,19 @@ trim_minfrac.monoMass = function(object, Peak.list, search.par) {
 #' @title Trims by retention time
 #'
 #' @export
-#' @description Removes components with retention times smaller than the user specified threshold.
-#' @param object used for method dispatch. Can be any object. See usage for details
-#' @param Peak.list data frame. Must have Correlation.stat column.  Should contain output columns from XCMS and CAMERA, and additional columns from IHL.search, Calc.MinFrac, Calc.corr.stat and EIC.plotter functions.
-#' @param void.rt numeric retention time cutoff value corresponding to the LC void volume
-#' @param rt.list numeric vector containing retention times for all features or compounds
+#' @description Removes components with retention times smaller than the user
+#'   specified threshold. See \code{remove_void_volume} and
+#'   \code{CullVoidVolume} for examples that use this function.
+#' @param object used for method dispatch. Can be any object. See usage for
+#'   details
+#' @param Peak.list data frame. Must have column \code{Correlation.stat}.
+#'   Should contain output columns from XCMS and CAMERA, and additional columns
+#'   from \code{match_Annotation}, \code{calc_minfrac}, \code{calc_corrstat} and
+#'   \code{plot_metgroup} functions.
+#' @param void.rt numeric retention time cutoff value corresponding to the LC
+#'   void volume
+#' @param rt.list numeric vector containing retention times for all features or
+#'   compounds
 #' @return NULL
 trim_rt <- function(object, Peak.list, void.rt, rt.list) {
   UseMethod("trim_rt", object)

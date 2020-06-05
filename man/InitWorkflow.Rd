@@ -19,50 +19,55 @@ InitWorkflow(
 )
 }
 \arguments{
-\item{ion.id}{character vector specifying identifier in mz data filenames designating positive or negative ionization or both. Must be a (case-insensitive) abbreviation of the ionization mode name.
-Default is c('Pos','Neg')}
+\item{ion.id}{character vector specifying identifier in mzdata filenames
+designating positive or negative ionization or both. Must be a
+(case-insensitive) abbreviation of the ionization mode name. Positive
+identifier must come first. Default is \code{c("Pos","Neg")}.}
 
-\item{db.dir}{character name of subdirectory to store databases
-Default is 'db'
-Positive identifier must come first. Default is c('Pos','Neg')}
+\item{db.dir}{character name of subdirectory to store databases. Default is
+\code{"db"}}
 
-\item{use.CAMERA}{logical indicating whether to use existing CAMERA object in global environment.
-Default is to look for CAMERA objects saved by previous calls to this function and run CAMERA if missing.}
+\item{use.CAMERA}{logical indicating whether to use existing CAMERA object in
+global environment. Default is to look for CAMERA objects saved by previous
+calls to this function and run CAMERA if missing.}
 
-\item{use.XCMS}{logical indicating whether to use existing XCMS object in global environment.
-Default is to look for XCMS objects saved by previous calls to this function and run XCMS if missing.}
+\item{use.XCMS}{logical indicating whether to use existing XCMS object in
+global environment. Default is to look for XCMS objects saved by previous
+calls to this function and run XCMS if missing.}
 
 \item{CAMERA.obj}{which CAMERA object to use to initialize LUMA workflow.
-Only relevant if use.CAMERA is TRUE}
+Only relevant if \code{use.CAMERA == TRUE}.}
 
-\item{XCMS.obj}{which XCMS object to use to initialize LUMA workflow.
-Only relevant if use.XCMS is TRUE}
+\item{XCMS.obj}{which XCMS object to use to initialize LUMA workflow. Only
+relevant if \code{use.XCMS == TRUE}.}
 
-\item{graph.method}{graphing method to use for CAMERA.
-Default is 'lpc'. See CAMERA documentation for details.}
+\item{graph.method}{graphing method to use for CAMERA. Default is
+\code{"lpc"}. See CAMERA documentation for details.}
 
-\item{ion.mode}{which ion mode(s) will be processed for this data. Must be 'Positive', 'Negative', or both.
-Default is both; i.e. c('Positive','Negative').}
+\item{ion.mode}{which ion mode(s) will be processed for this data. Must be
+one or both of \code{c("Positive","Negative")}. Default is both.}
 
-\item{mytable}{character name of the first Peak.list table
-Default is 'From CAMERA'}
+\item{mytable}{character name of the first Peaklist table in the database.
+Default is \code{"From_CAMERA"}.}
 
-\item{calc.minfrac}{logical should LUMA calculate the minimum fraction values for the initial Peak.list
-Default is TRUE}
+\item{calc.minfrac}{logical should LUMA calculate the minimum fraction values
+for the initial Peaklist. Default is \code{TRUE}.}
 
-\item{multiple}{logical should multiple fields be allowed in dialog boxes
-Default is FALSE}
+\item{multiple}{logical should multiple fields be allowed in dialog boxes.
+Default is \code{FALSE}.}
 }
 \value{
 global variables and Peaklist in database are returned
 }
 \description{
-All LUMA workflows must start with this function. Creates the first Peaklist and sets up storing and passing Peaklists and ancillary data between modules.
+All LUMA workflows must start with this function. Creates the
+  first Peaklist and sets up storing and passing Peaklists and ancillary data
+  between modules.
 }
 \examples{
 \dontrun{
 library(LUMA)
-db.dir <- system.file('extdata/', package = "LUMA")
+db.dir <- system.file("extdata/", package = "LUMA")
 InitWorkflow(db.dir = db.dir)
 }
 }

@@ -182,9 +182,9 @@ ScriptInfo_dlg <- function(multiple = FALSE) {
     } else {
 
       mylist <- mylist[-1]
-      SamplesDir <- mylist[grep("Sample", ignore.case = T, mylist)]
-      BlanksDir <- mylist[grep("Blank", ignore.case = T, mylist)]
-      PooledQCsDir <- mylist[grep("QC", ignore.case = T, mylist)]
+      SamplesDir <- mylist[grep("Samples", ignore.case = T, mylist)]
+      BlanksDir <- mylist[grep("Blanks", ignore.case = T, mylist)]
+      PooledQCsDir <- mylist[grep("PooledQCs", ignore.case = T, mylist)]
       mydir <- list(SamplesDir = SamplesDir, BlanksDir = BlanksDir, PooledQCsDir = PooledQCsDir)
     }
 

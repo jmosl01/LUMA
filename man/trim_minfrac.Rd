@@ -44,7 +44,7 @@ Removes metabolites with MinFrac smaller than the user specified
   class(method) = method
   test <- trim_minfrac(Peak.list = Peaklist_Pos$From_CAMERA_with_MinFrac,
   search.par = search.par, object = method)
-  nrow(Peaklist_Pos$From_CAMERA_with_MinFrac) -  nrow(test) #equals 7
+  nrow(Peaklist_Pos$From_CAMERA_with_MinFrac) -  nrow(test) #equals 6
 
   method = "monoMass"
   class(method) = method

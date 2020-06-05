@@ -15,7 +15,7 @@ be of length 2}
 \item{myname}{character string to append to file.base to name xlsx file}
 
 \item{mysheets}{character vector to name sheets in xlsx file. Currently must
-be of length 2}
+be of length 2. Default is \code{c("clear","muddy")}}
 }
 \value{
 \code{Workbook} from the \code{openxlsx} package
