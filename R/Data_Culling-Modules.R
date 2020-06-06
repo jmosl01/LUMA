@@ -1,11 +1,16 @@
 #' @title Culls the Peak.list by Void volume
 #'
 #' @export
-#' @description Culls the Peak.list by removing all components coming from the void volume.
-#' See \code{remove_void_volume} for more details.
+#' @description Culls the Peak.list by removing all components coming from the
+#'   void volume. See \code{remove_void_volume} for more details. For working
+#'   examples, see \code{InitWorkflow, AnnotatePeaklist, CombineFeatures,
+#'   CombinePeaklists, CullBackground, CullMF, CullCV, CullVoidVolume,
+#'   FormatForMetaboAnalystR, FormatForSIMCA, NormalizePeaklists, ParseCAMERA,
+#'   SimplyPeaklists, FinalWorkflow}.
 #' @param from.table from which table should LUMA pull the Peak.list
 #' @param to.table to which should LUMA save the modified Peak.list
-#' @param method which method to apply to trim by retention time.  See \code{trim_rt} for details.
+#' @param method which method to apply to trim by retention time.  See
+#'   \code{trim_rt} for details.
 #' @return NULL
 #' @examples
 #' \dontrun{
@@ -44,7 +49,11 @@ CullVoidVolume <- function(from.table,to.table,method) {
 #' @export
 #' @description Culls the Peak.list by removing all components with a
 #'   coefficient of variation (CV) greater than the user-specified cutoff across
-#'   all Pooled QC samples. See \code{trim_cv} for more details.
+#'   all Pooled QC samples. See \code{trim_cv} for more details. For working
+#'   examples, see \code{InitWorkflow, AnnotatePeaklist, CombineFeatures,
+#'   CombinePeaklists, CullBackground, CullMF, CullCV, CullVoidVolume,
+#'   FormatForMetaboAnalystR, FormatForSIMCA, NormalizePeaklists, ParseCAMERA,
+#'   SimplyPeaklists, FinalWorkflow}.
 #' @param from.table from which table should LUMA pull the Peak.list
 #' @param to.table to which should LUMA save the modified Peak.list
 #' @param QC.id character vector specifying identifier in filename designating a
@@ -97,7 +106,11 @@ CullCV <- function(from.table,to.table,QC.id) {
 #'
 #' @export
 #' @description Culls the Peak.list by removing all components with minimum
-#'   fraction less than the user-specified cutoff. See \code{trim_minfrac} for more details.
+#'   fraction less than the user-specified cutoff. See \code{trim_minfrac} for
+#'   more details. For working examples, see \code{InitWorkflow,
+#'   AnnotatePeaklist, CombineFeatures, CombinePeaklists, CullBackground,
+#'   CullMF, CullCV, CullVoidVolume, FormatForMetaboAnalystR, FormatForSIMCA,
+#'   NormalizePeaklists, ParseCAMERA, SimplyPeaklists, FinalWorkflow}.
 #' @param from.table from which table should LUMA pull the Peak.list
 #' @param to.table to which should LUMA save the modified Peak.list
 #' @param method which method to apply to trim by minimum fraction values.  See
@@ -146,7 +159,11 @@ CullMF <- function(from.table,to.table,method) {
 #'
 #' @export
 #' @description Culls the Peak.list by removing background components. See
-#'   \code{remove_background_peaks} for more details.
+#'   \code{remove_background_peaks} for more details. For working examples, see
+#'   \code{InitWorkflow, AnnotatePeaklist, CombineFeatures, CombinePeaklists,
+#'   CullBackground, CullMF, CullCV, CullVoidVolume, FormatForMetaboAnalystR,
+#'   FormatForSIMCA, NormalizePeaklists, ParseCAMERA, SimplyPeaklists,
+#'   FinalWorkflow}.
 #' @param from.tables character vector of table names to draw from databases.
 #'   First value should be table name from peak database, second should be table
 #'   name from solvent database.

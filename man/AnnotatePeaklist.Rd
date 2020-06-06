@@ -11,23 +11,16 @@ AnnotatePeaklist(from.table, to.table, lib.db, ...)
 
 \item{to.table}{to which should LUMA save the modified Peak.list}
 
-\item{lib.db}{character name of In House Library database.
-Default is 'Annotated Library'}
+\item{lib.db}{character name of In House Library database. Default is
+'Annotated Library'}
 
 \item{...}{arguments to pass to match_Annotation.}
 }
 \description{
-Compares isotope and adduct annotations within Peak.list (inherited from CAMERA) to user-defined annotation library.
-See match_Annotation for more details.
-}
-\examples{
-\dontrun{
-library(LUMA)
-if(require(lcmsfishdata, quietly = TRUE)) {
-  db.dir <- system.file('extdata/', package = "lcmsfishdata")
-  InitWorkflow(db.dir = db.dir)
-  AnnotatePeaklist(from.table = "From_CAMERA", to.table = "Annotated")
-  FinalWorkflow(peak_db = peak_db, lib_db = lib_db)
-  }
-}
+Compares isotope and adduct annotations within Peaklist to
+  user-defined annotation library. For more details, see
+  \code{match_Annotation}. For working examples, see \code{InitWorkflow,
+  AnnotatePeaklist, CombineFeatures, CombinePeaklists, CullBackground,
+  CullMF, CullCV, CullVoidVolume, FormatForMetaboAnalystR, FormatForSIMCA,
+  NormalizePeaklists, ParseCAMERA, SimplyPeaklists, FinalWorkflow}.
 }

@@ -7,23 +7,30 @@
 CombineFeatures(from.table, to.table)
 }
 \arguments{
-\item{from.table}{from which table should LUMA pull the Peak.list}
+\item{from.table}{from which table should LUMA pull the Peaklist.}
 
-\item{to.table}{to which should LUMA save the modified Peak.list}
+\item{to.table}{to which should LUMA save the modified Peaklist.}
 }
 \description{
-Combines all well-behaved features in metabolite groups into a single entry per metabolite.
-See sum_features and combine_phenodata for more details.
+Combines all well-behaved features in metabolite groups into a
+  single entry per metabolite. See \code{sum_features, combine_phenodata} for
+  more details. For working examples, see \code{InitWorkflow,
+  AnnotatePeaklist, CombineFeatures, CombinePeaklists, CullBackground,
+  CullMF, CullCV, CullVoidVolume, FormatForMetaboAnalystR, FormatForSIMCA,
+  NormalizePeaklists, ParseCAMERA, SimplyPeaklists, FinalWorkflow}.
 }
 \examples{
 \dontrun{
 library(LUMA)
 if(require(lcmsfishdata, quietly = TRUE)) {
-db.dir <- system.file('extdata/', package = "lcmsfishdata")
-InitWorkflow(db.dir = db.dir)
-ParseCAMERA(from.table = "From CAMERA", to.table = "output_parsed", CAMERA.obj <- anposGa)
-CombineFeatures(from.table = "output_parsed", to.table = "Combined Isotopes
-and Adducts")
+  db.dir <- system.file('extdata/', package = "lcmsfishdata")
+  InitWorkflow(db.dir = db.dir)
+  AnnotatePeaklist(from.table = "From_CAMERA", to.table = "Annotated")
+  ParseCAMERA(from.table = "Annotated", to.table = "output_parsed", CAMERA.obj
+  = anposGa)
+  CombineFeatures(from.table = "output_parsed", to.table =
+  "Combined_Isotopes_and_Adducts")
+  FinalWorkflow(peak_db = peak_db, lib_db = lib_db)
   }
 }
 }

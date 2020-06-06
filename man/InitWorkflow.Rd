@@ -2,7 +2,7 @@
 % Please edit documentation in R/Constructor-Modules.R
 \name{InitWorkflow}
 \alias{InitWorkflow}
-\title{Constructor function to initiate LUMA Workflow}
+\title{Constructor module to initiate LUMA Workflow}
 \usage{
 InitWorkflow(
   ion.id,
@@ -12,6 +12,7 @@ InitWorkflow(
   CAMERA.obj,
   XCMS.obj,
   graph.method,
+  QC.id,
   ion.mode,
   mytable,
   calc.minfrac,
@@ -44,6 +45,10 @@ relevant if \code{use.XCMS == TRUE}.}
 \item{graph.method}{graphing method to use for CAMERA. Default is
 \code{"lpc"}. See CAMERA documentation for details.}
 
+\item{QC.id}{character vector specifying identifier in filename designating a
+Pooled QC sample.  Only the first value will be used.  Default is
+\code{"Pooled_QC_"}}
+
 \item{ion.mode}{which ion mode(s) will be processed for this data. Must be
 one or both of \code{c("Positive","Negative")}. Default is both.}
 
@@ -60,14 +65,21 @@ Default is \code{FALSE}.}
 global variables and Peaklist in database are returned
 }
 \description{
-All LUMA workflows must start with this function. Creates the
+All LUMA workflows must start with this module Creates the
   first Peaklist and sets up storing and passing Peaklists and ancillary data
-  between modules.
+  between modules. For working examples, see \code{InitWorkflow, AnnotatePeaklist,
+  CombineFeatures, CombinePeaklists, CullBackground, CullMF, CullCV,
+  CullVoidVolume, FormatForMetaboAnalystR, FormatForSIMCA,
+  NormalizePeaklists, ParseCAMERA, SimplyPeaklists, FinalWorkflow}.
 }
 \examples{
 \dontrun{
 library(LUMA)
-db.dir <- system.file("extdata/", package = "LUMA")
-InitWorkflow(db.dir = db.dir)
+if(require(lcmsfishdata, quietly = TRUE)) {
+  db.dir <- system.file("extdata/", package = "lcmsfishdata")
+  InitWorkflow(db.dir = db.dir)
+  AnnotatePeaklist(from.table = "From CAMERA", to.table = "Annotated")
+  FinalWorkflow(peak_db = peak_db)
+  }
 }
 }

@@ -1,14 +1,17 @@
 #' @title Normalize Peaklists from different ion modes
 #'
 #' @export
-#' @description Normalizes Peaklists from positive and negative ionization modes separately.
-#' See replace_zeros_normalize for more details.
+#' @description Normalizes Peaklists from positive and negative ionization modes
+#'   separately. See \code{replace_zeros_normalize} for more details. For
+#'   working examples, see \code{InitWorkflow, AnnotatePeaklist,
+#'   CombineFeatures, CombinePeaklists, CullBackground, CullMF, CullCV,
+#'   CullVoidVolume, FormatForMetaboAnalystR, FormatForSIMCA,
+#'   NormalizePeaklists, ParseCAMERA, SimplyPeaklists, FinalWorkflow}.
 #' @param from.table from which table should LUMA read the Peaklist
 #' @param to.table to which table should LUMA save the modified Peaklist
-#' @param peak.db what database contains the Peaklists to be combined.
-#' Default is 'Peaklist_db'
-#' @param db.dir directory containing the database.
-#' Default is 'db'
+#' @param peak.db what database contains the Peaklists to be combined. Default
+#'   is 'Peaklist_db'
+#' @param db.dir directory containing the database. Default is 'db'
 #' @examples
 #' \dontrun{
 #' library(LUMA)

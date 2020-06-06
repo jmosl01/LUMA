@@ -1,23 +1,31 @@
 #' @title Combine Peaklists from different ion modes
 #'
 #' @export
-#' @description Combines Peaklists from positive and negative ionization modes while removing ion mode duplicates.
-#' See combine_ion_modes and search_IonDup for more details.
-#' @param from.tables character vector of table names to draw from databases to be combined.
-#' If gen.plots = TRUE, should be of length 2. Otherwise, only the first element will be used.
+#' @description Combines Peaklists from positive and negative ionization modes
+#'   while removing ion mode duplicates. See \code{combine_ion_modes,
+#'   search_IonDup} for more details. For working examples, see
+#'   \code{InitWorkflow, AnnotatePeaklist, CombineFeatures, CombinePeaklists,
+#'   CullBackground, CullMF, CullCV, CullVoidVolume, FormatForMetaboAnalystR,
+#'   FormatForSIMCA, NormalizePeaklists, ParseCAMERA, SimplyPeaklists,
+#'   FinalWorkflow}.
+#' @param from.tables character vector of table names to draw from databases to
+#'   be combined. If gen.plots = TRUE, should be of length 2. Otherwise, only
+#'   the first element will be used.
 #' @param to.table to which table should LUMA save the modified Peak.list
-#' @param method which method to use for removing ion mode duplicates.
-#' See search_IonDup for available methods.
-#' @param peak.db what database contains the Peaklists to be combined.
-#' Default is 'Peaklist_db'
-#' @param db.dir directory containing the database.
-#' Default is 'db'
-#' @param gen.plots logical indicating whether LUMA needs to generate plots to inspect ion mode duplicates.
-#' Default is to check whether this variable was assigned by a call to InitWorkflow
-#' @param CAMERA.pos which CAMERA object to use to plot metabolite groups for positive mode.
-#' Default is to read from saved R objects by call to InitWorkflow
-#' @param CAMERA.neg which CAMERA object to use to plot metabolite groups for negative mode.
-#' Default is to read from saved R objects by call to InitWorkflow
+#' @param method which method to use for removing ion mode duplicates. See
+#'   search_IonDup for available methods.
+#' @param peak.db what database contains the Peaklists to be combined. Default
+#'   is 'Peaklist_db'
+#' @param db.dir directory containing the database. Default is 'db'
+#' @param gen.plots logical indicating whether LUMA needs to generate plots to
+#'   inspect ion mode duplicates. Default is to check whether this variable was
+#'   assigned by a call to InitWorkflow
+#' @param CAMERA.pos which CAMERA object to use to plot metabolite groups for
+#'   positive mode. Default is to read from saved R objects by call to
+#'   InitWorkflow
+#' @param CAMERA.neg which CAMERA object to use to plot metabolite groups for
+#'   negative mode. Default is to read from saved R objects by call to
+#'   InitWorkflow
 #' @examples
 #' \dontrun{
 #' library(LUMA)
@@ -169,7 +177,11 @@ CombinePeaklists <- function(from.tables,to.table,method,peak.db,db.dir,gen.plot
 #'
 #' @export
 #' @description Combines Peaklists from positive and negative ionization modes
-#'   without removing ion mode duplicates.
+#'   without removing ion mode duplicates. For working examples, see
+#'   \code{InitWorkflow, AnnotatePeaklist, CombineFeatures, CombinePeaklists,
+#'   CullBackground, CullMF, CullCV, CullVoidVolume, FormatForMetaboAnalystR,
+#'   FormatForSIMCA, NormalizePeaklists, ParseCAMERA, SimplyPeaklists,
+#'   FinalWorkflow}.
 #' @param from.tables character vector of table names to draw from databases to
 #'   be combined simply.
 #' @param to.table to which table should LUMA save the modified Peaklist

@@ -116,6 +116,7 @@
 
   }
 
+  #NOTE: Do not pass CAMERA.obj = NULL if file.exists(CAMERA.file) == FALSE; it will only return NULL
   #Check if CAMERA.obj is an xsAnnotate object
   if(class(CAMERA.obj)[1] != "xsAnnotate") {
 
@@ -124,7 +125,7 @@
       if(file.exists(CAMERA.file)) {
 
         #Read in saved CAMERA objects file
-        cat("Reading in CAMERA objects.\n\n")
+        cat("\n\nReading in CAMERA objects.\n\n\n")
 
         load(file = CAMERA.file, verbose = TRUE)
         myvar <- mget(ls())

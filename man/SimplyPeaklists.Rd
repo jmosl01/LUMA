@@ -23,16 +23,23 @@ the file \code{"Peaklist_Combined.csv"} is written to the working
 }
 \description{
 Combines Peaklists from positive and negative ionization modes
-  without removing ion mode duplicates.
+  without removing ion mode duplicates. For working examples, see
+  \code{InitWorkflow, AnnotatePeaklist, CombineFeatures, CombinePeaklists,
+  CullBackground, CullMF, CullCV, CullVoidVolume, FormatForMetaboAnalystR,
+  FormatForSIMCA, NormalizePeaklists, ParseCAMERA, SimplyPeaklists,
+  FinalWorkflow}.
 }
 \examples{
 \dontrun{
 library(LUMA)
-db.dir <- system.file("extdata/", package = "LUMA")
-InitWorkflow(db.dir = db.dir)
-SimplyPeaklists(from.tables = c("Peaklist_Pos_Solvent Peaks Removed",
-"Peaklist_Neg_Solvent Peaks Removed"),
-to.table = "Peaklist_Combined",
-peak.db = peak_db, db.dir = db.dir)
+if(require(lcmsfishdata, quietly = TRUE)) {
+  db.dir <- system.file("extdata/", package = "lcmsfishdata")
+  InitWorkflow(db.dir = db.dir)
+  SimplyPeaklists(from.tables = c("Peaklist_Pos_Solvent Peaks Removed",
+  "Peaklist_Neg_Solvent Peaks Removed"),
+  to.table = "Peaklist_Combined",
+  peak.db = peak_db, db.dir = db.dir)
+  FinalWorkflow(peak_db = peak_db, lib_db = lib_db)
+  }
 }
 }

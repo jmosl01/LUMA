@@ -1,9 +1,12 @@
-#' @title Constructor function to initiate LUMA Workflow
+#' @title Constructor module to initiate LUMA Workflow
 #'
 #' @export
-#' @description All LUMA workflows must start with this function. Creates the
+#' @description All LUMA workflows must start with this module Creates the
 #'   first Peaklist and sets up storing and passing Peaklists and ancillary data
-#'   between modules.
+#'   between modules. For working examples, see \code{InitWorkflow, AnnotatePeaklist,
+#'   CombineFeatures, CombinePeaklists, CullBackground, CullMF, CullCV,
+#'   CullVoidVolume, FormatForMetaboAnalystR, FormatForSIMCA,
+#'   NormalizePeaklists, ParseCAMERA, SimplyPeaklists, FinalWorkflow}.
 #' @param ion.id character vector specifying identifier in mzdata filenames
 #'   designating positive or negative ionization or both. Must be a
 #'   (case-insensitive) abbreviation of the ionization mode name. Positive
@@ -22,6 +25,9 @@
 #'   relevant if \code{use.XCMS == TRUE}.
 #' @param graph.method graphing method to use for CAMERA. Default is
 #'   \code{"lpc"}. See CAMERA documentation for details.
+#' @param QC.id character vector specifying identifier in filename designating a
+#'   Pooled QC sample.  Only the first value will be used.  Default is
+#'   \code{"Pooled_QC_"}
 #' @param ion.mode which ion mode(s) will be processed for this data. Must be
 #'   one or both of \code{c("Positive","Negative")}. Default is both.
 #' @param mytable character name of the first Peaklist table in the database.
@@ -35,12 +41,15 @@
 #' @examples
 #' \dontrun{
 #' library(LUMA)
-#' db.dir <- system.file("extdata/", package = "LUMA")
-#' InitWorkflow(db.dir = db.dir)
+#' if(require(lcmsfishdata, quietly = TRUE)) {
+#'   db.dir <- system.file("extdata/", package = "lcmsfishdata")
+#'   InitWorkflow(db.dir = db.dir)
+#'   AnnotatePeaklist(from.table = "From CAMERA", to.table = "Annotated")
+#'   FinalWorkflow(peak_db = peak_db)
+#'   }
 #' }
-
 InitWorkflow <- function(ion.id,db.dir,use.CAMERA,use.XCMS,CAMERA.obj,XCMS.obj,
-                         graph.method,ion.mode,mytable,calc.minfrac,multiple) {
+                         graph.method,QC.id,ion.mode,mytable,calc.minfrac,multiple) {
 
   #Initialize all global variables
   BLANK <- NULL
@@ -82,6 +91,8 @@ InitWorkflow <- function(ion.id,db.dir,use.CAMERA,use.XCMS,CAMERA.obj,XCMS.obj,
     ion.id <- c("Pos","Neg")
   if(missing(graph.method))
     graph.method <- "lpc"
+  if(missing(QC.id))
+    QC.id <- "Pooled_QC_"
   if(missing(db.dir)) {
     db.dir <- "db"
     isdb <- FALSE
@@ -122,6 +133,7 @@ InitWorkflow <- function(ion.id,db.dir,use.CAMERA,use.XCMS,CAMERA.obj,XCMS.obj,
   rules <<- rules
   ion.mode <<- ion.mode
   ion.id <<- ion.id
+  QC.id <<- QC.id
   BLANK <<- BLANK
   IonMode <<- IonMode
 
@@ -266,22 +278,19 @@ InitWorkflow <- function(ion.id,db.dir,use.CAMERA,use.XCMS,CAMERA.obj,XCMS.obj,
   }
 }
 
-#' @title Constructor function to finalize LUMA workflow
+#' @title Constructor module to finalize LUMA workflow
 #'
 #' @export
-#' @description All LUMA workflows must end with this function.  Records the names of existing data tables and writes out the LUMA log file for traceability.
+#' @description All LUMA workflows must end with this module. Records the names
+#'   of existing data tables and writes out the LUMA log file for traceability.
+#'   For working examples, see \code{InitWorkflow, AnnotatePeaklist,
+#'   CombineFeatures, CombinePeaklists, CullBackground, CullMF, CullCV,
+#'   CullVoidVolume, FormatForMetaboAnalystR, FormatForSIMCA,
+#'   NormalizePeaklists, ParseCAMERA, SimplyPeaklists, FinalWorkflow}.
 #' @param peak_db existing peak database connection
 #' @param lib_db existing library database connection
 #' @return NULL
 #' @importFrom DBI dbListTables dbDisconnect
-#' @examples
-#' \dontrun{
-#' library(LUMA)
-#' db.dir <- system.file('extdata/', package = "LUMA")
-#' InitWorkflow(db.dir = db.dir)
-#' AnnotatePeaklist(from.table = "From CAMERA", to.table = "Annotated")
-#' FinalWorkflow(peak_db = peak_db, lib_db = lib_db)
-#' }
 FinalWorkflow <- function(peak_db,lib_db) {
 
   #Initialize all global variables

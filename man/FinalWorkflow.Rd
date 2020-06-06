@@ -2,7 +2,7 @@
 % Please edit documentation in R/Constructor-Modules.R
 \name{FinalWorkflow}
 \alias{FinalWorkflow}
-\title{Constructor function to finalize LUMA workflow}
+\title{Constructor module to finalize LUMA workflow}
 \usage{
 FinalWorkflow(peak_db, lib_db)
 }
@@ -12,14 +12,10 @@ FinalWorkflow(peak_db, lib_db)
 \item{lib_db}{existing library database connection}
 }
 \description{
-All LUMA workflows must end with this function.  Records the names of existing data tables and writes out the LUMA log file for traceability.
-}
-\examples{
-\dontrun{
-library(LUMA)
-db.dir <- system.file('extdata/', package = "LUMA")
-InitWorkflow(db.dir = db.dir)
-AnnotatePeaklist(from.table = "From CAMERA", to.table = "Annotated")
-FinalWorkflow(peak_db = peak_db, lib_db = lib_db)
-}
+All LUMA workflows must end with this module. Records the names
+  of existing data tables and writes out the LUMA log file for traceability.
+  For working examples, see \code{InitWorkflow, AnnotatePeaklist,
+  CombineFeatures, CombinePeaklists, CullBackground, CullMF, CullCV,
+  CullVoidVolume, FormatForMetaboAnalystR, FormatForSIMCA,
+  NormalizePeaklists, ParseCAMERA, SimplyPeaklists, FinalWorkflow}.
 }

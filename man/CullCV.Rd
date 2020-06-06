@@ -18,13 +18,17 @@ Pooled QC sample.  Only the first value will be used.  Default is
 \description{
 Culls the Peak.list by removing all components with a
   coefficient of variation (CV) greater than the user-specified cutoff across
-  all Pooled QC samples. See \code{trim_cv} for more details.
+  all Pooled QC samples. See \code{trim_cv} for more details. For working
+  examples, see \code{InitWorkflow, AnnotatePeaklist, CombineFeatures,
+  CombinePeaklists, CullBackground, CullMF, CullCV, CullVoidVolume,
+  FormatForMetaboAnalystR, FormatForSIMCA, NormalizePeaklists, ParseCAMERA,
+  SimplyPeaklists, FinalWorkflow}.
 }
 \examples{
 \dontrun{
 library(LUMA)
 db.dir <- system.file('extdata/', package = "LUMA")
 InitWorkflow(db.dir = db.dir)
-CullCV(from.table = "From CAMERA", to.table = "Trimmed by CV")
+CullCV(from.table = "From_CAMERA", to.table = "Trimmed_by_CV")
 }
 }

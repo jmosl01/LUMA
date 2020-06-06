@@ -1,22 +1,18 @@
 #' @title Annotates Peak.list with In House Library
 #'
 #' @export
-#' @description Compares isotope and adduct annotations within Peak.list (inherited from CAMERA) to user-defined annotation library.
-#' See match_Annotation for more details.
+#' @description Compares isotope and adduct annotations within Peaklist to
+#'   user-defined annotation library. For more details, see
+#'   \code{match_Annotation}. For working examples, see \code{InitWorkflow,
+#'   AnnotatePeaklist, CombineFeatures, CombinePeaklists, CullBackground,
+#'   CullMF, CullCV, CullVoidVolume, FormatForMetaboAnalystR, FormatForSIMCA,
+#'   NormalizePeaklists, ParseCAMERA, SimplyPeaklists, FinalWorkflow}.
 #' @param from.table from which table should LUMA pull the Peak.list
 #' @param to.table to which should LUMA save the modified Peak.list
-#' @param lib.db character name of In House Library database.
-#' Default is 'Annotated Library'
+#' @param lib.db character name of In House Library database. Default is
+#'   'Annotated Library'
 #' @param ... arguments to pass to match_Annotation.
 #' @return NULL
-#' @examples
-#' \dontrun{
-#' library(LUMA)
-#'   db.dir <- system.file('extdata/', package = "LUMA")
-#'   InitWorkflow(db.dir = db.dir)
-#'   AnnotatePeaklist(from.table = "From_CAMERA", to.table = "Annotated")
-#'   FinalWorkflow(peak_db = peak_db, lib_db = lib_db)
-#' }
 AnnotatePeaklist <- function(from.table,to.table,lib.db,...) {
 
   #Initialize global variables

@@ -3,7 +3,11 @@
 #' @export
 #' @description Formats Peaklists processed by LUMA and exports a csv file for
 #'   direct import into the multivariate statistical software SIMCA. See
-#'   format_simca for more details.
+#'   \code{format_simca} for more details. For working examples, see
+#'   \code{InitWorkflow, AnnotatePeaklist, CombineFeatures, CombinePeaklists,
+#'   CullBackground, CullMF, CullCV, CullVoidVolume, FormatForMetaboAnalystR,
+#'   FormatForSIMCA, NormalizePeaklists, ParseCAMERA, SimplyPeaklists,
+#'   FinalWorkflow}.
 #' @param from.table from which table should LUMA read the Peaklist
 #' @param to.csv to what filename (excluding .csv extension) should LUMA save
 #'   the formatted Peaklist
@@ -55,7 +59,11 @@ FormatForSIMCA <- function(from.table,to.csv,peak.db,db.dir) {
 #' @export
 #' @description This function initializes objects that will hold the metabolite
 #'   data, formats peak intensity data into one of the formats acceptable by
-#'   MetaboAnalystR, and sets the metabolite data object.
+#'   MetaboAnalystR, and sets the metabolite data object. For working examples,
+#'   see \code{InitWorkflow, AnnotatePeaklist, CombineFeatures,
+#'   CombinePeaklists, CullBackground, CullMF, CullCV, CullVoidVolume,
+#'   FormatForMetaboAnalystR, FormatForSIMCA, NormalizePeaklists, ParseCAMERA,
+#'   SimplyPeaklists, FinalWorkflow}.
 #' @param from.table from which table should LUMA read the Peaklist
 #' @param to.csv to what filename (excluding .csv extension) should LUMA save
 #'   the formatted Peaklist

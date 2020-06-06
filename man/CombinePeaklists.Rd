@@ -16,41 +16,57 @@ CombinePeaklists(
 )
 }
 \arguments{
-\item{from.tables}{character vector of table names to draw from databases to be combined.
-If gen.plots = TRUE, should be of length 2. Otherwise, only the first element will be used.}
+\item{from.tables}{character vector of table names to draw from databases to
+be combined. If gen.plots = TRUE, should be of length 2. Otherwise, only
+the first element will be used.}
 
 \item{to.table}{to which table should LUMA save the modified Peak.list}
 
-\item{method}{which method to use for removing ion mode duplicates.
-See search_IonDup for available methods.}
+\item{method}{which method to use for removing ion mode duplicates. See
+search_IonDup for available methods.}
 
-\item{peak.db}{what database contains the Peaklists to be combined.
-Default is 'Peaklist_db'}
+\item{peak.db}{what database contains the Peaklists to be combined. Default
+is 'Peaklist_db'}
 
-\item{db.dir}{directory containing the database.
-Default is 'db'}
+\item{db.dir}{directory containing the database. Default is 'db'}
 
-\item{gen.plots}{logical indicating whether LUMA needs to generate plots to inspect ion mode duplicates.
-Default is to check whether this variable was assigned by a call to InitWorkflow}
+\item{gen.plots}{logical indicating whether LUMA needs to generate plots to
+inspect ion mode duplicates. Default is to check whether this variable was
+assigned by a call to InitWorkflow}
 
-\item{CAMERA.pos}{which CAMERA object to use to plot metabolite groups for positive mode.
-Default is to read from saved R objects by call to InitWorkflow}
+\item{CAMERA.pos}{which CAMERA object to use to plot metabolite groups for
+positive mode. Default is to read from saved R objects by call to
+InitWorkflow}
 
-\item{CAMERA.neg}{which CAMERA object to use to plot metabolite groups for negative mode.
-Default is to read from saved R objects by call to InitWorkflow}
+\item{CAMERA.neg}{which CAMERA object to use to plot metabolite groups for
+negative mode. Default is to read from saved R objects by call to
+InitWorkflow}
 }
 \description{
-Combines Peaklists from positive and negative ionization modes while removing ion mode duplicates.
-See combine_ion_modes and search_IonDup for more details.
+Combines Peaklists from positive and negative ionization modes
+  while removing ion mode duplicates. See \code{combine_ion_modes,
+  search_IonDup} for more details. For working examples, see
+  \code{InitWorkflow, AnnotatePeaklist, CombineFeatures, CombinePeaklists,
+  CullBackground, CullMF, CullCV, CullVoidVolume, FormatForMetaboAnalystR,
+  FormatForSIMCA, NormalizePeaklists, ParseCAMERA, SimplyPeaklists,
+  FinalWorkflow}.
 }
 \examples{
 \dontrun{
 library(LUMA)
-db.dir <- system.file("extdata/", package = "LUMA")
-InitWorkflow(db.dir = db.dir)
-CombinePeaklists(from.tables = c("Peaklist_Pos_Solvent Peaks Removed",
-"Peaklist_Neg_Solvent Peaks Removed"),
-to.table = "Peaklist_Combined",
-method = "monoMass", peak.db = peak_db, db.dir = db.dir)
+if(require(lcmsfishdata, quietly = TRUE)) {
+  db.dir <- system.file("extdata/", package = "lcmsfishdata")
+  InitWorkflow(db.dir = db.dir)
+  AnnotatePeaklist(from.table = "From_CAMERA", to.table = "Annotated")
+  ParseCAMERA(from.table = "Annotated", to.table = "output_parsed", CAMERA.obj
+  = anposGa)
+  CombineFeatures(from.table = "output_parsed", to.table =
+  "Combined_Isotopes_and_Adducts")
+  CombinePeaklists(from.tables = c("Peaklist_Pos_Solvent Peaks Removed",
+  "Peaklist_Neg_Solvent Peaks Removed"),
+  to.table = "Peaklist_Combined",
+  method = "monoMass", peak.db = peak_db, db.dir = db.dir)
+  FinalWorkflow(peak_db = peak_db, lib_db = lib_db)
+  }
 }
 }
