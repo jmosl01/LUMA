@@ -4,17 +4,27 @@
 # see the wiki:
 #   https://github.com/craigcitro/r-travis/wiki
 
+#Use R
 language: r
 cache: packages
 warnings_are_errors: false
 dist: xenial
 os: linux
 
+# environment variables set for all builds
+env:
+  global:
+    - BIOC_USE_DEVEL="FALSE" ## Use the current release version
+
 addons:
   apt:
     packages:
       - libnetcdf-dev # for mzR, a dependency of xcms
       - netcdf-bin # for ncdf4, a dependency of mzR
+
+r:
+ - release
+ - devel
 
 bioc_packages:
  - BiocParallel
@@ -27,3 +37,8 @@ r_github_packages:
 
 after_success:
  - Rscript -e 'covr::codecov()'
+
+notifications:
+  email:
+    on_success: change
+    on_failure: change
