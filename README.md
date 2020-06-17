@@ -1,4 +1,4 @@
-[![Travis-CI Build Status](https://travis-ci.com/USEPA/LUMA.svg?branch=master)](https://travis-ci.com/USEPA/LUMA)
+[![Travis-CI Build Status](https://travis-ci.com/jmosl01/LUMA.svg?branch=master)](https://travis-ci.com/jmosl01/LUMA)
 
 # LUMA
 
