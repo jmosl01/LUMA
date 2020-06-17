@@ -43,5 +43,7 @@ Suggests:
     testthat,
     xcms,
     covr
+Remotes:
+    jmosl01/lcmsfishdata
 VignetteBuilder: 
     knitr
