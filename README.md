@@ -1,8 +1,12 @@
-[![Travis-CI Build Status](https://travis-ci.com/USEPA/LUMA.svg?branch=master)](https://travis-ci.com/USEPA/LUMA)
+<!-- badges: start -->
+  [![Travis-CI Build Status](https://travis-ci.com/jmosl01/LUMA.svg?branch=master)](https://travis-ci.com/jmosl01/LUMA)
+  [![Codecov test coverage](https://codecov.io/gh/jmosl01/LUMA/branch/master/graph/badge.svg)](https://codecov.io/gh/jmosl01/LUMA?branch=master)
+  <!-- badges: end -->
 
 # LUMA
 
   The `LUMA` (LCMS-Based Untargeted Metabolomics Assistant) R package is an automated data processing tool, bridging the outputs of `XCMS` and `CAMERA` to a comprehensive data matrix in the R environment for discovery-based studies. The intended users of this R package are LC-MS-based untargeted metabolomics practitioners with minimal to advanced experience in the R environment who process raw LC-MS data files in preparation for downstream statistical analysis. The `LUMA` package performs feature-reduction by minimizing single features which do not pass quality control (QC) checks and can negatively impact downstream analyses. This package contains self-contained functions (herein referred to as modules) that allow for rapid, automated workflows to perform these QC steps with minimal user input. Furthermore, to expedite manual data curation for potentially conflicting isotope and ion adduct annotations, data visualization is consolidated to a single graphic per metabolite group. This graphic contains all EIC plots and psSpectra from `CAMERA` and new correlation matrices and dendrograms for all features attributed to a single metabolite. Final processed metabolite data, containing normalized intensities and user-defined meta-data, can be exported to worksheets which are directly formatted to a number of analytical tools including `MetaboAnalyst`, while retaining traceability in the R environment.  
+
 
 ## Installation
 
@@ -25,6 +29,7 @@ install_github('USEPA/LUMA', build_vignettes=TRUE)
 library(LUMA)
 ```
 
+
 ## Example
 An overview of the `LUMA` package is provided in the users guide that is included with the package.  The documentation includes a number of examples for use of the various functions and self-contained modules to enable workflow creation.  Vignettes are also available for typical LUMA workflows.
 
@@ -34,22 +39,18 @@ An overview of the `LUMA` package is provided in the users guide that is include
 We encourage users to submit issues and enhancement requests so we may
 continue to improve our package.
 
+
 ## Repositories
 
 The source code for this repository is maintained at https://github.com/jmosl01/LUMA which is also mirrored at https://github.com/usepa/luma
-
-Repository is registered in the Reusable Component Services (RCS) system:
-
-https://sor.epa.gov/sor_extranet/registry2/reusereg/searchandretrieve/details/general/24957
-
 
 
 ## EPA Disclaimer
 
 *This software/application was developed by the U.S. Environmental Protection Agency (USEPA).  No warranty expressed or implied is made regarding the accuracy or utility of the system, nor shall the act of distribution constitute any such warranty.  The USEPA has relinquished control of the information and no longer has responsibility to protect the integrity, confidentiality or availability of the information.  Any reference to specific commercial products, processes, or services by service mark, trademark, manufacturer, or otherwise, does not constiutite or imply their endorsement, recommendation or favoring by the USEPA.  The USEPA seal and logo shall not be used in any manner to imply endorsement of any commercial product or activity by the USEPA or the United States Government.*
 
-
 ____
+
 
 ### License
 
