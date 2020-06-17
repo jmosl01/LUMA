@@ -21,5 +21,8 @@ bioc_packages:
  - CAMERA
  - xcms
 
+r_github_packages:
+ - jmosl01/lcmsfishdata
+
  after_success:
     - Rscript -e 'covr::codecov()'
