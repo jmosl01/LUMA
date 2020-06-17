@@ -6,8 +6,9 @@
 
 language: r
 cache: packages
-sudo: false
 warnings_are_errors: false
+dist: xenial
+os: linux
 
 addons:
   apt:
