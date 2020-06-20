@@ -6,7 +6,7 @@ test_that("background removal works as planned", {
   if(require(lcmsfishdata, quietly = TRUE)) {
     file <- system.file('extdata','Sample_Class.txt', package = "LUMA")
     Sample.df <- read.table(file, header = TRUE, sep = "\t")
-    file2 <- system.file('extdata','Search_parameters.txt', package = "LUMA")
+    file2 <- system.file('extdata','Search_Parameters.txt', package = "LUMA") # is case sensitive on Linux
     search.par <- read.table(file2, header = TRUE, sep = "\t")
 
     #From combined features

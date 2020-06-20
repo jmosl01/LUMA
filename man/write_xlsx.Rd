@@ -28,12 +28,12 @@ Write xlsx table output from \code{plot_metgroup}.  Essentially
 library(LUMA)
 if(require(lcmsfishdata, quietly = TRUE)) {
 
-  file <- system.file("extdata","Sample_Class.txt", package = "lcmsfishdata")
+  file <- system.file("extdata","Sample_Class.txt", package = "lcmsfishdata") # is case sensitive on Linux
   Sample.df <- read.table(file, header = TRUE, sep = "\t")
-  file2 <- system.file("extdata","CAMERA_objects_Pos.Rdata", package = "lcmsfishdata")
+  file2 <- system.file("extdata","CAMERA_objects_Pos.Rdata", package = "lcmsfishdata") # is case sensitive on Linux
   load(file2, envir = environment())
   Peak.list <- lcmsfishdata::Peaklist_Pos[["input_parsed"]]
-  file3 <- system.file("extdata","Sample_Data.csv", package = "lcmsfishdata")
+  file3 <- system.file("extdata","Sample_Data.csv", package = "lcmsfishdata") # is case sensitive on Linux
   sample_data <- read.table(file3, header = TRUE, sep = ",")
   mzdatafiles <- sample_data$CT.ID
 

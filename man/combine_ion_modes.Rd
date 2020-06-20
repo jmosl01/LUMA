@@ -40,7 +40,8 @@ Combines the two single adduct ion mode feature tables into one
 \examples{
 library(LUMA)
 if(require(lcmsfishdata, quietly = TRUE)) {
-file <- system.file("extdata","Search_parameters.txt", package = "lcmsfishdata")
+file <- system.file("extdata","Search_Parameters.txt", package =
+"lcmsfishdata") # is case sensitive on Linux
 search.par <- read.table(file, header = TRUE, sep = "\t")
 class(method) <- method <- "monoMass"
 Peak.list <- list(Positive =

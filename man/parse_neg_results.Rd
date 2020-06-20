@@ -32,7 +32,8 @@ Parses the CAMERA results using well-defined rules to eliminate
 library(LUMA)
 if(require(lcmsfishdata, quietly = TRUE)) {
 
-  file <- system.file("extdata","primary_adducts_neg.csv", package = "lcmsfishdata")
+  file <- system.file("extdata","primary_adducts_neg.csv", package =
+  "lcmsfishdata") # is case sensitive on Linux
   rules <- read.csv(file, header = TRUE)
   Peak.list <- as.data.frame(lcmsfishdata::Peaklist_Neg[["Annotated"]])
   test <- parse_neg_results(raw = Peak.list, rule = rules, IonMode = "Negative")

@@ -22,7 +22,7 @@ Writes Peak.list to an RSQLite database. Peak.list can be a tibble or data frame
 \examples{
 library(LUMA)
 if(require(RSQLite, quietly = TRUE)) {
-file <- system.file("extdata","Sample_Data.csv", package =  "LUMA")
+file <- system.file("extdata","Sample_Data.csv", package =  "LUMA") # is case sensitive on Linux
 sample_data <- read.table(file, header = TRUE, sep = ",")
 mzdatafiles <- sample_data$CT.ID
 file.base <- gen_filebase(mzdatafiles = mzdatafiles, BLANK = FALSE, IonMode =

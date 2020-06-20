@@ -36,8 +36,10 @@ Formats Peak.list for import into SIMCA
 \examples{
 library(LUMA)
 if(require(lcmsfishdata, quietly = TRUE)) {
+  # is case sensitive on Linux
   file <- system.file('extdata','Sample_Class.txt', package = "lcmsfishdata")
   Sample.df <- read.table(file, header = TRUE, sep = "\t")
+ # is case sensitive on Linux
  file2 <- system.file('extdata','Sample_Data.csv', package = "lcmsfishdata")
   Sample.data <- read.table(file2, header = TRUE, sep = ",")
  Peak.list <- Peaklist_db$Peaklist_Normalized

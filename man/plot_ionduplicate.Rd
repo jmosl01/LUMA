@@ -71,9 +71,11 @@ Plots EICs from ion mode duplicates using
 library(LUMA)
 if(require(lcmsfishdata, quietly = TRUE)) {
 
-file <- system.file("extdata","CAMERA_objects_Pos.Rdata", package = "lcmsfishdata")
+file <- system.file("extdata","CAMERA_objects_Pos.Rdata", package =
+"lcmsfishdata") # is case sensitive on Linux
 load(file, envir = environment())
-file2 <- system.file("extdata","CAMERA_objects_Neg.Rdata", package = "lcmsfishdata")
+file2 <- system.file("extdata","CAMERA_objects_Neg.Rdata", package =
+"lcmsfishdata") # is case sensitive on Linux
 load(file2, envir = environment())
 
 Peak.list <- lcmsfishdata::Peaklist_db[["Peaklist_Combined_with_Duplicate_IDs"]]

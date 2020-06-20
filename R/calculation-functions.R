@@ -25,11 +25,13 @@
 #' @examples
 #' library(LUMA)
 #' if(require(lcmsfishdata, quietly = TRUE)) {
-#' file <- system.file('extdata','CAMERA_objects_Pos.Rdata', package = "lcmsfishdata")
+#' file <- system.file('extdata','CAMERA_objects_Pos.Rdata', package =
+#' "lcmsfishdata") # is case sensitive on Linux
 #' load(file)
 #' pspec.length <- sapply(anposGa@pspectra, function(x) length(x))
 #' get.mg <- which(pspec.length > 1)
-#' file2 <- system.file('extdata','Sample_Class.txt', package = "LUMA")
+#' file2 <- system.file('extdata','Sample_Class.txt', package = "LUMA") # is
+#' # case sensitive on Linux
 #' Sample.df <- read.table(file2, sep = "\t", header = TRUE) #Ignore Warning message
 #' Peak.list <-  lcmsfishdata::Peaklist_Pos$input_parsed
 #' test <- calc_corrstat(Sample.df = Sample.df, Peak.list = Peak.list,
@@ -126,10 +128,12 @@ calc_corrstat = function(Sample.df, Peak.list, get.mg, BLANK, IonMode) {
 #' @examples
 #'   library(LUMA)
 #'   if(require(lcmsfishdata, quietly = TRUE)) {
-#'   file <- system.file('extdata','XCMS_objects_Pos.Rdata', package = "lcmsfishdata")
+#'   file <- system.file('extdata','XCMS_objects_Pos.Rdata', package =
+#'   "lcmsfishdata") # is case sensitive on Linux
 #'   load(file)
-#'   file2 <- system.file('extdata','Sample_Class.txt', package = "LUMA")
-#'   Sample.df <- read.table(file2, sep = "\t", header = TRUE) #Ignore Warning message
+#'   # case sensitive on Linux
+#'   file2 <- system.file('extdata','Sample_Class.txt', package = "LUMA") # is
+#'   Sample.df <- read.table(file2, sep = "\t", header = TRUE)
 #'   Peak.list <- lcmsfishdata::Peaklist_Pos$From_CAMERA
 #'   test <- calc_minfrac(Sample.df = Sample.df, xset4 = xset4, BLANK = FALSE,
 #'   Peak.list = Peak.list)
@@ -368,10 +372,12 @@ calc_minfrac = function(Sample.df, xset4, BLANK, Peak.list) {
 #' @importFrom data.table as.data.table
 #' @examples
 #' library(LUMA)
+#' # is case sensitive on Linux
 #' file <- system.file('extdata','Search_Parameters.txt', package = "LUMA")
-#' search.par <- read.table(file, sep = "\t", header = TRUE) #Ignore Warning message
+#' search.par <- read.table(file, sep = "\t", header = TRUE)
+#' # is case sensitive on Linux
 #' file2 <- system.file('extdata','Sample_Class.txt', package = "LUMA")
-#' Sample.df <- read.table(file2, sep = "\t", header = TRUE) #Ignore Warning message
+#' Sample.df <- read.table(file2, sep = "\t", header = TRUE)
 #' Peak.list <- LUMA::Peaklist_Pos$output_parsed
 #' if("metabolite_group" %in% colnames(Peak.list)) {
 #'   test <- sum_features(Peak.list = Peak.list, Sample.df = Sample.df ,

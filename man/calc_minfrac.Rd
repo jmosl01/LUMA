@@ -25,10 +25,12 @@ Only the minimum fraction across all sample classes is returned.
 \examples{
   library(LUMA)
   if(require(lcmsfishdata, quietly = TRUE)) {
-  file <- system.file('extdata','XCMS_objects_Pos.Rdata', package = "lcmsfishdata")
+  file <- system.file('extdata','XCMS_objects_Pos.Rdata', package =
+  "lcmsfishdata") # is case sensitive on Linux
   load(file)
-  file2 <- system.file('extdata','Sample_Class.txt', package = "LUMA")
-  Sample.df <- read.table(file2, sep = "\t", header = TRUE) #Ignore Warning message
+  # case sensitive on Linux
+  file2 <- system.file('extdata','Sample_Class.txt', package = "LUMA") # is
+  Sample.df <- read.table(file2, sep = "\t", header = TRUE)
   Peak.list <- lcmsfishdata::Peaklist_Pos$From_CAMERA
   test <- calc_minfrac(Sample.df = Sample.df, xset4 = xset4, BLANK = FALSE,
   Peak.list = Peak.list)

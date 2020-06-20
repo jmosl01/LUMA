@@ -32,10 +32,13 @@
 #' library(LUMA)
 #' if(require(RSQLite, quietly = TRUE)) {
 #'   Peak.list <- LUMA::Peaklist_Pos$From_CAMERA
+#'   # is case sensitive on Linux
 #'   file <- system.file('extdata','primary_adducts_pos.csv', package = "LUMA")
 #'   rules <- read.table(file, header = TRUE, sep = ",")
+#'   # is case sensitive on Linux
 #'   file2 <- system.file('extdata','Search_Parameters.txt', package = "LUMA")
 #'   search.par <- read.table(file2, header = TRUE, sep = "\t")
+#'   # is case sensitive on Linux
 #'   file3 <- system.file('extdata','Annotated_library.csv', package = "LUMA")
 #'   temp.library <- read.table(file3, header = TRUE, sep = ",")
 #'   Library.phenodata <- temp.library[,-which(colnames(temp.library) %in%
@@ -171,7 +174,8 @@ match_Annotation = function(Peak.list, Annotated.library, Library.phenodata, rul
 #' @examples
 #' library(LUMA)
 #' if(require(lcmsfishdata, quietly = TRUE)) {
-#'   file <- system.file("extdata","Search_parameters.txt", package = "lcmsfishdata")
+#'   file <- system.file("extdata","Search_Parameters.txt", package =
+#'   "lcmsfishdata") # is case sensitive on Linux
 #'   search.par <- read.table(file, header = TRUE, sep = "\t")
 #'   class(method) <- method <- "monoMass"
 #'   Peak.list.neg <- lcmsfishdata::Peaklist_db$Peaklist_Neg_Solvent_Peaks_Removed

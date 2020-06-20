@@ -16,8 +16,10 @@
 #' @examples
 #' library(LUMA)
 #' if(require(lcmsfishdata, quietly = TRUE)) {
+#'   # is case sensitive on Linux
 #'   file <- system.file('extdata','Sample_Class.txt', package = "lcmsfishdata")
 #'   Sample.df <- read.table(file, header = TRUE, sep = "\t")
+#'  # is case sensitive on Linux
 #'  file2 <- system.file('extdata','Sample_Data.csv', package = "lcmsfishdata")
 #'   Sample.data <- read.table(file2, header = TRUE, sep = ",")
 #'  Peak.list <- Peaklist_db$Peaklist_Normalized
@@ -172,9 +174,9 @@ format_simca = function(Peak.list = NULL, Sample.df, Sample.data, tbl.id = NULL,
 #' @examples
 #' library(LUMA)
 #' if(require(lcmsfishdata, quietly = TRUE)) {
-#' file <- system.file("extdata","Sample_Class.txt", package = "LUMA")
+#' file <- system.file("extdata","Sample_Class.txt", package = "LUMA") # is case sensitive on Linux
 #' Sample.df <- read.table(file, header = TRUE, sep = "\t")
-#' file2 <- system.file("extdata","Sample_Data.csv", package = "LUMA")
+#' file2 <- system.file("extdata","Sample_Data.csv", package = "LUMA") # is case sensitive on Linux
 #' Sample.data <- read.table(file2, header = TRUE, sep = ",")
 #' Peak.list <- Peaklist_db$Peaklist_Normalized
 #' class(mSetObj) <- "pktable"
@@ -324,9 +326,9 @@ format_MetabolomicData.default <- function(mSetObj, Peak.list, Sample.df, Sample
 #' @examples
 #' \dontrun{
 #' library(LUMA)
-#' file <- system.file("extdata","Sample_Class.txt", package = "LUMA")
+#' file <- system.file("extdata","Sample_Class.txt", package = "LUMA") # is case sensitive on Linux
 #' Sample.df <- read.table(file, header = TRUE, sep = "\t")
-#' file2 <- system.file("extdata","Sample_Data.csv", package = "LUMA")
+#' file2 <- system.file("extdata","Sample_Data.csv", package = "LUMA") # is case sensitive on Linux
 #' Sample.data <- read.table(file2, header = TRUE, sep = ",")
 #' Peak.list <- Peaklist_db$Peaklist_Normalized
 #' mSetObj <- NULL

@@ -29,14 +29,15 @@ Run a simple XCMS workflow with user defined input parameters
 library(LUMA)
 if(require(lcmsfishdata, quietly = TRUE)) {
 
-    file <- system.file("extdata","Sample_Data.csv", package = "lcmsfishdata")
+    file <- system.file("extdata","Sample_Data.csv", package =
+    "lcmsfishdata") # is case sensitive on Linux
     sample_data <- read.table(file, header = TRUE, sep = ",")
     mzdatafiles <- sample_data$CT.ID
 
     file.base <- gen_filebase(mzdatafiles = mzdatafiles, BLANK = FALSE, IonMode
     = "Positive", ion.id = c("Pos","Neg"))
-    file2 <- system.file("extdata","Best_XCMS_parameters_positive.csv", package
-    ="lcmsfishdata")
+    file2 <- system.file("extdata","Best_XCMS_parameters_positive.csv",
+    package = "lcmsfishdata")  # is case sensitive on Linux
     XCMS.par <- read.table(file2, header = TRUE, sep = ",")
 
     \dontrun{

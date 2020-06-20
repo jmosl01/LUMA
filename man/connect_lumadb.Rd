@@ -28,7 +28,7 @@ Establishes a connection to an RSQLite database for combining
 \examples{
 library(LUMA)
 if(require(RSQLite, quietly = TRUE)) {
-file <- system.file("extdata","Sample_Data.csv", package =  "LUMA")
+file <- system.file("extdata","Sample_Data.csv", package =  "LUMA") # is case sensitive on Linux
 sample_data <- read.table(file, header = TRUE, sep = ",")
 mzdatafiles <- sample_data$CT.ID
 samples.pos <- gen_filebase(mzdatafiles = mzdatafiles, BLANK = FALSE, IonMode

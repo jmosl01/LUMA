@@ -68,9 +68,11 @@ Searches features or compounds in Peak.list that are present in
 \examples{
 library(LUMA)
 if(require(lcmsfishdata, quietly = TRUE)) {
-file <- system.file('extdata','Sample_Class.txt', package = "LUMA")
+file <- system.file('extdata','Sample_Class.txt', package = "LUMA") # is case
+# sensitive on Linux
 Sample.df <- read.table(file, header = TRUE, sep = "\t")
-file2 <- system.file('extdata','Search_parameters.txt', package = "LUMA")
+# is case sensitive on Linux
+file2 <- system.file('extdata','Search_Parameters.txt', package = "LUMA")
 search.par <- read.table(file2, header = TRUE, sep = "\t")
 \donttest{
   #From m/z features

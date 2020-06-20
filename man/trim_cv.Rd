@@ -32,6 +32,7 @@ Removes metabolites with coefficient of variation greater than
 }
 \examples{
 library(LUMA)
+# is case sensitive on Linux
 file <- system.file('extdata','Search_Parameters.txt', package = "LUMA")
 search.par <- read.table(file, sep = "\t", header = TRUE) #Ignore Warning message
 test <- trim_cv(Peak.list = Peaklist_Pos$From_CAMERA, search.par = search.par)

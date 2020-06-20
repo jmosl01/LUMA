@@ -27,9 +27,11 @@ Removes the ion mode duplicates based on user-modified indices after visual insp
 library(LUMA)
 if(require(lcmsfishdata, quietly = TRUE)) {
 
-  file <- system.file("extdata","EIC_index_pos.txt", package = "lcmsfishdata")
+  file <- system.file("extdata","EIC_index_pos.txt", package =
+  "lcmsfishdata") # is case sensitive on Linux
   EIC_index_pos <- read.table(file, header = TRUE, sep = "\t")
-  file2 <- system.file("extdata","EIC_index_neg.txt", package = "lcmsfishdata")
+  file2 <- system.file("extdata","EIC_index_neg.txt", package =
+  "lcmsfishdata") # is case sensitive on Linux
   EIC_index_neg <- read.table(file2, header = TRUE, sep = "\t")
 
   Peak.list <- Peaklist_db$Peaklist_Combined_with_Duplicate_IDs

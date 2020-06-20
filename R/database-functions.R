@@ -13,7 +13,7 @@
 #' @return character
 #' @examples
 #' library(LUMA)
-#' file <- system.file("extdata","Sample_Data.csv", package =  "LUMA")
+#' file <- system.file("extdata","Sample_Data.csv", package =  "LUMA") # is case sensitive on Linux
 #' sample_data <- read.table(file, header = TRUE, sep = ",")
 #' mzdatafiles <- sample_data$CT.ID
 #' test <- gen_filebase(mzdatafiles = mzdatafiles, BLANK = FALSE, IonMode =
@@ -64,7 +64,7 @@ gen_filebase = function(mzdatafiles, BLANK, ion.id, IonMode) {
 #' @examples
 #' library(LUMA)
 #' if(require(RSQLite, quietly = TRUE)) {
-#' file <- system.file('extdata','Sample_Data.csv', package =  "LUMA")
+#' file <- system.file('extdata','Sample_Data.csv', package =  "LUMA") # is case sensitive on Linux
 #' sample_data <- read.table(file, header = TRUE, sep = ",")
 #' mzdatafiles <- sample_data$CT.ID
 #' file.base <- gen_filebase(mzdatafiles = mzdatafiles, BLANK = FALSE, IonMode =
@@ -158,7 +158,7 @@ connect_libdb = function(lib.db, db.dir, mem) {
 #' @examples
 #' library(LUMA)
 #' if(require(RSQLite, quietly = TRUE)) {
-#' file <- system.file("extdata","Sample_Data.csv", package =  "LUMA")
+#' file <- system.file("extdata","Sample_Data.csv", package =  "LUMA") # is case sensitive on Linux
 #' sample_data <- read.table(file, header = TRUE, sep = ",")
 #' mzdatafiles <- sample_data$CT.ID
 #' samples.pos <- gen_filebase(mzdatafiles = mzdatafiles, BLANK = FALSE, IonMode
@@ -227,7 +227,7 @@ connect_lumadb = function(db.list, db.dir, new.db, mem) {
 #' @examples
 #' library(LUMA)
 #' if(require(RSQLite, quietly = TRUE)) {
-#' file <- system.file("extdata","Sample_Data.csv", package =  "LUMA")
+#' file <- system.file("extdata","Sample_Data.csv", package =  "LUMA") # is case sensitive on Linux
 #' sample_data <- read.table(file, header = TRUE, sep = ",")
 #' mzdatafiles <- sample_data$CT.ID
 #' file.base <- gen_filebase(mzdatafiles = mzdatafiles, BLANK = FALSE, IonMode =
@@ -265,7 +265,7 @@ read_tbl = function(mytable, peak.db, asdf) {
 #' @examples
 #' library(LUMA)
 #' if(require(RSQLite, quietly = TRUE)) {
-#' file <- system.file("extdata","Sample_Data.csv", package =  "LUMA")
+#' file <- system.file("extdata","Sample_Data.csv", package =  "LUMA") # is case sensitive on Linux
 #' sample_data <- read.table(file, header = TRUE, sep = ",")
 #' mzdatafiles <- sample_data$CT.ID
 #' file.base <- gen_filebase(mzdatafiles = mzdatafiles, BLANK = FALSE, IonMode =
@@ -292,7 +292,7 @@ write_tbl = function(mydf, peak.db, myname) {
 #' @examples
 #' library(LUMA)
 #' if(require(RSQLite, quietly = TRUE)) {
-#' file <- system.file("extdata","Sample_Data.csv", package =  "LUMA")
+#' file <- system.file("extdata","Sample_Data.csv", package =  "LUMA") # is case sensitive on Linux
 #' sample_data <- read.table(file, header = TRUE, sep = ",")
 #' mzdatafiles <- sample_data$CT.ID
 #' file.base <- gen_filebase(mzdatafiles = mzdatafiles, BLANK = FALSE, IonMode =

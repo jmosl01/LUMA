@@ -32,7 +32,8 @@ Parses the CAMERA results using well-defined rules to eliminate
 library(LUMA)
 if(require(lcmsfishdata, quietly = TRUE)) {
 
-  file <- system.file("extdata","primary_adducts_pos.csv", package = "lcmsfishdata")
+  file <- system.file("extdata","primary_adducts_pos.csv", package =
+  "lcmsfishdata") # is case sensitive on Linux
   rules <- read.csv(file, header = TRUE)
   Peak.list <- as.data.frame(lcmsfishdata::Peaklist_Pos[["Annotated"]])
   test <- parse_pos_results(raw = Peak.list, rule = rules, IonMode = "Positive")

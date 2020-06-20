@@ -3,7 +3,7 @@ context("test-ion-mode-functions")
 test_that("combines ion modes correctly", {
 
   if(require(lcmsfishdata, quietly = TRUE)) { file <-
-  system.file("extdata","Search_parameters.txt", package = "lcmsfishdata")
+  system.file("extdata","Search_Parameters.txt", package = "lcmsfishdata") # is case sensitive on Linux
   search.par <- read.table(file, header = TRUE, sep = "\t")
   class(method) <-  method <- "monoMass"
   Peak.list <- list(Positive = lcmsfishdata::Peaklist_db$Peaklist_Pos_Solvent_Peaks_Removed,

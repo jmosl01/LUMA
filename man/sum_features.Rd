@@ -39,10 +39,12 @@ Sums all features belonging to the same metabolite into a single
 }
 \examples{
 library(LUMA)
+# is case sensitive on Linux
 file <- system.file('extdata','Search_Parameters.txt', package = "LUMA")
-search.par <- read.table(file, sep = "\t", header = TRUE) #Ignore Warning message
+search.par <- read.table(file, sep = "\t", header = TRUE)
+# is case sensitive on Linux
 file2 <- system.file('extdata','Sample_Class.txt', package = "LUMA")
-Sample.df <- read.table(file2, sep = "\t", header = TRUE) #Ignore Warning message
+Sample.df <- read.table(file2, sep = "\t", header = TRUE)
 Peak.list <- LUMA::Peaklist_Pos$output_parsed
 if("metabolite_group" \%in\% colnames(Peak.list)) {
   test <- sum_features(Peak.list = Peak.list, Sample.df = Sample.df ,
