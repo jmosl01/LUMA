@@ -24,7 +24,7 @@ test_that("formats for MetaboAnalystR correctly", {
     class(mSetObj) <- "pktable"
     new_mSetObj <- format_MetabolomicData(mSetObj = mSetObj, Peak.list =
                                             Peak.list, Sample.df = Sample.df, Sample.data = Sample.data)
-    expect_equal(new_mSetObj$dataSet$orig.cls[1:5],rep("F_100_Effluent",5))
+    expect_equal(as.character(new_mSetObj$dataSet$orig.cls)[1:5],rep("F_100_Effluent",5))
 
     class(mSetObj) <- "mass_all"
     new_mSetObj <- format_MetabolomicData(mSetObj = mSetObj, Peak.list =

@@ -262,6 +262,7 @@ read_tbl = function(mytable, peak.db, asdf) {
 #' @param peak.db Formal class SQLiteConnection
 #' @param myname character what should the table be called
 #' @return a tbl object in the remote source
+#' @import dbplyr
 #' @examples
 #' library(LUMA)
 #' if(require(RSQLite, quietly = TRUE)) {
@@ -291,7 +292,7 @@ write_tbl = function(mydf, peak.db, myname) {
 #' @return tbl alternatively a data frame
 #' @examples
 #' library(LUMA)
-#' if(require(RSQLite, quietly = TRUE)) {
+#' if(require(dbplyr, quietly = TRUE)) {
 #' file <- system.file("extdata","Sample_Data.csv", package =  "LUMA") # is case sensitive on Linux
 #' sample_data <- read.table(file, header = TRUE, sep = ",")
 #' mzdatafiles <- sample_data$CT.ID

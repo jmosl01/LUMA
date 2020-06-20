@@ -21,7 +21,6 @@ Imports:
     DBI,
     dplyr,
     flashClust,
-    glue,
     graphics,
     grDevices,
     gtools,
@@ -33,7 +32,8 @@ Imports:
     stats,
     stringr,
     svDialogs,
-    utils
+    utils,
+    dbplyr
 Suggests: 
     BiocParallel,
     BiocStyle,
