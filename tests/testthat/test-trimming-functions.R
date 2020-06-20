@@ -4,9 +4,9 @@ context("test-trimming-functions")
 test_that("background removal works as planned", {
 
   if(require(lcmsfishdata, quietly = TRUE)) {
-    file <- system.file('extdata/Sample_Class.txt', package = "LUMA")
+    file <- system.file('extdata','Sample_Class.txt', package = "LUMA")
     Sample.df <- read.table(file, header = TRUE, sep = "\t")
-    file2 <- system.file('extdata/Search_parameters.txt', package = "LUMA")
+    file2 <- system.file('extdata','Search_parameters.txt', package = "LUMA")
     search.par <- read.table(file2, header = TRUE, sep = "\t")
 
     #From combined features
@@ -23,7 +23,7 @@ test_that("background removal works as planned", {
 })
 
 test_that("removes void volume", {
-file <- system.file('extdata/Search_Parameters.txt', package = "LUMA")
+file <- system.file('extdata','Search_Parameters.txt', package = "LUMA")
 search.par <- read.table(file, sep = "\t", header = TRUE) #Ignore Warning message
 Peak.list <- LUMA::Peaklist_Pos$From_CAMERA
 test <- remove_void_volume(Peak.list = Peak.list, search.par = search.par, method = "mz")
@@ -31,7 +31,7 @@ expect_equal(nrow(Peak.list) - nrow(test),10)
 })
 
 test_that("trims by cv values", {
-  file <- system.file('extdata/Search_Parameters.txt', package = "LUMA")
+  file <- system.file('extdata','Search_Parameters.txt', package = "LUMA")
   search.par <- read.table(file, sep = "\t", header = TRUE) #Ignore Warning message
   Peak.list <- LUMA::Peaklist_Pos$From_CAMERA
   test <- trim_cv(Peak.list = Peak.list, search.par = search.par)
@@ -44,7 +44,7 @@ test_that("trims by cv values", {
 })
 
 test_that("trims by minimum fraction values", {
-  file <- system.file('extdata/Search_Parameters.txt', package = "LUMA")
+  file <- system.file('extdata','Search_Parameters.txt', package = "LUMA")
   search.par <- read.table(file, sep = "\t", header = TRUE) #Ignore Warning message
   method = "mz"
   class(method) = method

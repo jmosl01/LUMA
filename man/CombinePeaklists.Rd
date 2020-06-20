@@ -55,7 +55,7 @@ Combines Peaklists from positive and negative ionization modes
 \dontrun{
 library(LUMA)
 if(require(lcmsfishdata, quietly = TRUE)) {
-  db.dir <- system.file("extdata/", package = "lcmsfishdata")
+  db.dir <- system.file("extdata", package = "lcmsfishdata")
   InitWorkflow(db.dir = db.dir)
   AnnotatePeaklist(from.table = "From_CAMERA", to.table = "Annotated")
   ParseCAMERA(from.table = "Annotated", to.table = "output_parsed", CAMERA.obj

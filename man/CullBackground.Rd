@@ -40,7 +40,7 @@ Culls the Peak.list by removing background components. See
 library(LUMA)
 if(require(lcmsfishdata, quietly = TRUE)){
 
-  db.dir <- system.file('extdata/', package = "lcmsfishdata")
+  db.dir <- system.file('extdata', package = "lcmsfishdata")
   InitWorkflow(db.dir = db.dir)
   CullBackground(from.tables =
   c("Trimmed_by_MinFrac","Combined_Isotopes_and_Adducts"),

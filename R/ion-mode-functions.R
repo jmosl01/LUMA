@@ -26,7 +26,7 @@
 #' @examples
 #' library(LUMA)
 #' if(require(lcmsfishdata, quietly = TRUE)) {
-#' file <- system.file("extdata/Search_parameters.txt", package = "lcmsfishdata")
+#' file <- system.file("extdata","Search_parameters.txt", package = "lcmsfishdata")
 #' search.par <- read.table(file, header = TRUE, sep = "\t")
 #' class(method) <- method <- "monoMass"
 #' Peak.list <- list(Positive =
@@ -100,9 +100,9 @@ combine_ion_modes = function(Peak.list, search.par, tbl.id, method, peak.db, ...
 #' library(LUMA)
 #' if(require(lcmsfishdata, quietly = TRUE)) {
 #'
-#'   file <- system.file("extdata/EIC_index_pos.txt", package = "lcmsfishdata")
+#'   file <- system.file("extdata","EIC_index_pos.txt", package = "lcmsfishdata")
 #'   EIC_index_pos <- read.table(file, header = TRUE, sep = "\t")
-#'   file2 <- system.file("extdata/EIC_index_neg.txt", package = "lcmsfishdata")
+#'   file2 <- system.file("extdata","EIC_index_neg.txt", package = "lcmsfishdata")
 #'   EIC_index_neg <- read.table(file2, header = TRUE, sep = "\t")
 #'
 #'   Peak.list <- Peaklist_db$Peaklist_Combined_with_Duplicate_IDs

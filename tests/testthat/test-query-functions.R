@@ -4,11 +4,11 @@ test_that("mz features are annotated correctly", {
 
   if(require(RSQLite, quietly = TRUE)) {
     Peak.list <- LUMA::Peaklist_Pos$From_CAMERA
-    file <- system.file('extdata/primary_adducts_pos.csv', package = "LUMA")
+    file <- system.file('extdata','primary_adducts_pos.csv', package = "LUMA")
     rules <- read.table(file, header = TRUE, sep = ",")
-    file2 <- system.file('extdata/Search_Parameters.txt', package = "LUMA")
+    file2 <- system.file('extdata','Search_Parameters.txt', package = "LUMA")
     search.par <- read.table(file2, header = TRUE, sep = "\t")
-    file3 <- system.file('extdata/Annotated_library.csv', package = "LUMA")
+    file3 <- system.file('extdata','Annotated_library.csv', package = "LUMA")
     temp.library <- read.table(file3, header = TRUE, sep = ",")
     Library.phenodata <- temp.library[,-which(colnames(temp.library) %in% c("Name","Formula","Molecular.Weight","RT..Min.","Ion.Mode"))]
     Annotated.library <- cbind.data.frame(Name = temp.library[["Name"]],
@@ -31,7 +31,7 @@ test_that("mz features are annotated correctly", {
 test_that("ion duplicates are found", {
 
   if(require(lcmsfishdata, quietly = TRUE)) {
-    file <- system.file("extdata/Search_parameters.txt", package = "lcmsfishdata")
+    file <- system.file("extdata","Search_parameters.txt", package = "lcmsfishdata")
     search.par <- read.table(file, header = TRUE, sep = "\t")
     class(method) <- method <- "monoMass"
     Peak.list.neg <- Peaklist_db$Peaklist_Neg_Solvent_Peaks_Removed

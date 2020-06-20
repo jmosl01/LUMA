@@ -15,7 +15,7 @@
 #' @examples
 #' \dontrun{
 #' library(LUMA)
-#' db.dir <- system.file('extdata/', package = "LUMA")
+#' db.dir <- system.file('extdata', package = "LUMA")
 #' InitWorkflow(db.dir = db.dir)
 #' CullVoidVolume(from.table = "From_CAMERA", to.table = "Trimmed_by_RT")
 #' }
@@ -63,7 +63,7 @@ CullVoidVolume <- function(from.table,to.table,method) {
 #' @examples
 #' \dontrun{
 #' library(LUMA)
-#' db.dir <- system.file('extdata/', package = "LUMA")
+#' db.dir <- system.file('extdata', package = "LUMA")
 #' InitWorkflow(db.dir = db.dir)
 #' CullCV(from.table = "From_CAMERA", to.table = "Trimmed_by_CV")
 #' }
@@ -119,7 +119,7 @@ CullCV <- function(from.table,to.table,QC.id) {
 #' @examples
 #' \dontrun{
 #' library(LUMA)
-#' db.dir <- system.file('extdata/', package = "LUMA")
+#' db.dir <- system.file('extdata', package = "LUMA")
 #' InitWorkflow(db.dir = db.dir)
 #' CullMF(from.table = "From_CAMERA_with_MinFrac", to.table = "Trimmed_by_MinFrac")
 #' }
@@ -183,7 +183,7 @@ CullMF <- function(from.table,to.table,method) {
 #' library(LUMA)
 #' if(require(lcmsfishdata, quietly = TRUE)){
 #'
-#'   db.dir <- system.file('extdata/', package = "lcmsfishdata")
+#'   db.dir <- system.file('extdata', package = "lcmsfishdata")
 #'   InitWorkflow(db.dir = db.dir)
 #'   CullBackground(from.tables =
 #'   c("Trimmed_by_MinFrac","Combined_Isotopes_and_Adducts"),

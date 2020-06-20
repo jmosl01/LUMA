@@ -40,7 +40,7 @@ Searches Peak.list with combined ionization mode data tables for
 \examples{
 library(LUMA)
 if(require(lcmsfishdata, quietly = TRUE)) {
-  file <- system.file("extdata/Search_parameters.txt", package = "lcmsfishdata")
+  file <- system.file("extdata","Search_parameters.txt", package = "lcmsfishdata")
   search.par <- read.table(file, header = TRUE, sep = "\t")
   class(method) <- method <- "monoMass"
   Peak.list.neg <- lcmsfishdata::Peaklist_db$Peaklist_Neg_Solvent_Peaks_Removed

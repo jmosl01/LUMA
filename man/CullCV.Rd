@@ -27,7 +27,7 @@ Culls the Peak.list by removing all components with a
 \examples{
 \dontrun{
 library(LUMA)
-db.dir <- system.file('extdata/', package = "LUMA")
+db.dir <- system.file('extdata', package = "LUMA")
 InitWorkflow(db.dir = db.dir)
 CullCV(from.table = "From_CAMERA", to.table = "Trimmed_by_CV")
 }

@@ -29,7 +29,7 @@ Formats Peaklists processed by LUMA and exports a csv file for
 \examples{
 \dontrun{
 library(LUMA)
-db.dir <- system.file('extdata/', package = "LUMA")
+db.dir <- system.file('extdata', package = "LUMA")
 InitWorkflow(db.dir = db.dir)
 AnnotatePeaklist(from.table = "From_CAMERA", to.table = "Annotated")
 FormatForSIMCA(from.table = "Annotated", to.csv = "Peaklist_for_SIMCA",

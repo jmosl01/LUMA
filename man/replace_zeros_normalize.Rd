@@ -48,7 +48,7 @@ Replaces zero values with half of the minimum value from all
 library(LUMA)
 if(require(lcmsfishdata, quietly = TRUE)) {
 
-  file <- system.file("extdata/Sample_Class.txt", package = "lcmsfishdata")
+  file <- system.file("extdata","Sample_Class.txt", package = "lcmsfishdata")
   Sample.df <- read.table(file, header = TRUE, sep = "\t")
   Peak.list <- lcmsfishdata::Peaklist_db$Peaklist_Combined_FINAL
   QC.ID <- "Pooled_QC"

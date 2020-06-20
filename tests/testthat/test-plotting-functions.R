@@ -4,12 +4,12 @@ test_that("generates correlation matrices for direct plotting of metabolite grou
 
   if(require(lcmsfishdata, quietly = TRUE)) {
 
-    file <- system.file("extdata/Sample_Class.txt", package = "lcmsfishdata")
+    file <- system.file("extdata","Sample_Class.txt", package = "lcmsfishdata")
     Sample.df <- read.table(file, header = TRUE, sep = "\t")
-    file2 <- system.file("extdata/CAMERA_objects_Pos.Rdata", package = "lcmsfishdata")
+    file2 <- system.file("extdata","CAMERA_objects_Pos.Rdata", package = "lcmsfishdata")
     load(file2, envir = environment())
     Peak.list <- lcmsfishdata::Peaklist_Pos[["input_parsed"]]
-    file3 <- system.file("extdata/Sample_Data.csv", package = "lcmsfishdata")
+    file3 <- system.file("extdata","Sample_Data.csv", package = "lcmsfishdata")
     sample_data <- read.table(file3, header = TRUE, sep = ",")
     mzdatafiles <- sample_data$CT.ID
 
@@ -41,9 +41,9 @@ test_that("prepares peaklist for direct plotting of ion duplicates correctly", {
 
   if(require(lcmsfishdata, quietly = TRUE)) {
 
-    file <- system.file("extdata/CAMERA_objects_Pos.Rdata", package = "lcmsfishdata")
+    file <- system.file("extdata","CAMERA_objects_Pos.Rdata", package = "lcmsfishdata")
     load(file, envir = environment())
-    file2 <- system.file("extdata/CAMERA_objects_Neg.Rdata", package = "lcmsfishdata")
+    file2 <- system.file("extdata","CAMERA_objects_Neg.Rdata", package = "lcmsfishdata")
     load(file2, envir = environment())
 
     Peak.list <- lcmsfishdata::Peaklist_db[["Peaklist_Combined_with_Duplicate_IDs"]]

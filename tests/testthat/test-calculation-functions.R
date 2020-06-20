@@ -1,9 +1,9 @@
 context("test-calculation-functions")
 
 test_that("Sums features", {
-  file <- system.file('extdata/Search_Parameters.txt', package = "LUMA")
+  file <- system.file('extdata','Search_Parameters.txt', package = "LUMA")
   search.par <- read.table(file, sep = "\t", header = TRUE) #Ignore Warning message
-  file2 <- system.file('extdata/Sample_Class.txt', package = "LUMA")
+  file2 <- system.file('extdata','Sample_Class.txt', package = "LUMA")
   Sample.df <- read.table(file2, sep = "\t", header = TRUE) #Ignore Warning message
   Peak.list <- LUMA::Peaklist_Pos$output_parsed
   Sum.Peak.list <- sum_features(Peak.list = Peak.list, Sample.df = Sample.df ,
@@ -17,9 +17,9 @@ test_that("Sums features", {
 
 test_that("calculates minimum fraction values", {
   if(require(lcmsfishdata, quietly = TRUE)) {
-  file <- system.file('extdata/XCMS_objects_Pos.Rdata', package = "lcmsfishdata")
+  file <- system.file('extdata','XCMS_objects_Pos.Rdata', package = "lcmsfishdata")
   load(file)
-  file2 <- system.file('extdata/Sample_Class.txt', package = "LUMA")
+  file2 <- system.file('extdata','Sample_Class.txt', package = "LUMA")
   Sample.df <- read.table(file2, sep = "\t", header = TRUE) #Ignore Warning message
   test <- calc_minfrac(Sample.df = Sample.df, xset4 = xset4, BLANK = FALSE, Peak.list = lcmsfishdata::Peaklist_Pos$From_CAMERA)
   expect_equal(sum(test$MinFrac),4952.333333)
@@ -29,11 +29,11 @@ test_that("calculates minimum fraction values", {
 test_that("calculates correlation statistic value", {
   if(require(lcmsfishdata, quietly = TRUE)) {
 
-  file <- system.file('extdata/CAMERA_objects_Pos.Rdata', package = "lcmsfishdata")
+  file <- system.file('extdata','CAMERA_objects_Pos.Rdata', package = "lcmsfishdata")
   load(file)
   pspec.length <- sapply(anposGa@pspectra, function(x) length(x))
   get.mg <- which(pspec.length > 1)
-  file2 <- system.file('extdata/Sample_Class.txt', package = "LUMA")
+  file2 <- system.file('extdata','Sample_Class.txt', package = "LUMA")
   Sample.df <- read.table(file2, sep = "\t", header = TRUE) #Ignore Warning message
   test <- calc_corrstat(Sample.df = Sample.df, Peak.list = lcmsfishdata::Peaklist_Pos$input_parsed, get.mg = get.mg, BLANK = FALSE, IonMode = "Positive")
   expect_equal(sum(test$Correlation.stat),261.1041613)

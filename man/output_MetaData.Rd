@@ -33,9 +33,9 @@ This function prints the metabolite and sample metadata to CSV files.
 \examples{
 \dontrun{
 library(LUMA)
-file <- system.file("extdata/Sample_Class.txt", package = "LUMA")
+file <- system.file("extdata","Sample_Class.txt", package = "LUMA")
 Sample.df <- read.table(file, header = TRUE, sep = "\t")
-file2 <- system.file("extdata/Sample_Data.csv", package = "LUMA")
+file2 <- system.file("extdata","Sample_Data.csv", package = "LUMA")
 Sample.data <- read.table(file2, header = TRUE, sep = ",")
 Peak.list <- Peaklist_db$Peaklist_Normalized
 mSetObj <- NULL

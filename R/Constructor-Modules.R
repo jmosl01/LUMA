@@ -42,7 +42,7 @@
 #' \dontrun{
 #' library(LUMA)
 #' if(require(lcmsfishdata, quietly = TRUE)) {
-#'   db.dir <- system.file("extdata/", package = "lcmsfishdata")
+#'   db.dir <- system.file("extdata", package = "lcmsfishdata")
 #'   InitWorkflow(db.dir = db.dir)
 #'   AnnotatePeaklist(from.table = "From_CAMERA", to.table = "Annotated")
 #'   FinalWorkflow(peak_db = peak_db, lib_db = lib_db)

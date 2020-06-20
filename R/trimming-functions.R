@@ -37,9 +37,9 @@
 #' @examples
 #' library(LUMA)
 #' if(require(lcmsfishdata, quietly = TRUE)) {
-#' file <- system.file('extdata/Sample_Class.txt', package = "LUMA")
+#' file <- system.file('extdata','Sample_Class.txt', package = "LUMA")
 #' Sample.df <- read.table(file, header = TRUE, sep = "\t")
-#' file2 <- system.file('extdata/Search_parameters.txt', package = "LUMA")
+#' file2 <- system.file('extdata','Search_parameters.txt', package = "LUMA")
 #' search.par <- read.table(file2, header = TRUE, sep = "\t")
 #' \donttest{
 #'   #From m/z features
@@ -125,7 +125,7 @@ remove_background_peaks = function(Peak.list = NULL, Sample.df, search.par, meth
 #' @examples
 #' library(LUMA)
 #' if(require(lcmsfishdata, quietly = TRUE)){
-#' file <- system.file('extdata/Search_Parameters.txt', package = "LUMA")
+#' file <- system.file('extdata','Search_Parameters.txt', package = "LUMA")
 #' search.par <- read.table(file, sep = "\t", header = TRUE)
 #' test <- remove_void_volume(Peak.list = lcmsfishdata::Peaklist_Pos$From_CAMERA, search.par =
 #' search.par, method = "mz")
@@ -162,7 +162,7 @@ remove_void_volume = function(Peak.list, search.par, method,...) {
 #' @importFrom stats sd
 #' @examples
 #' library(LUMA)
-#' file <- system.file('extdata/Search_Parameters.txt', package = "LUMA")
+#' file <- system.file('extdata','Search_Parameters.txt', package = "LUMA")
 #' search.par <- read.table(file, sep = "\t", header = TRUE) #Ignore Warning message
 #' test <- trim_cv(Peak.list = Peaklist_Pos$From_CAMERA, search.par = search.par)
 #' nrow(Peaklist_Pos$From_CAMERA) -  nrow(test) #Equals 13
@@ -202,7 +202,7 @@ trim_cv = function(Peak.list, search.par,QC.id) {
 #'   greater than user specified threshold; if all MinFrac values are NA (i.e.
 #'   dataset contains blanks), NULL is returned
 #' @examples
-#'   file <- system.file('extdata/Search_Parameters.txt', package = "LUMA")
+#'   file <- system.file('extdata','Search_Parameters.txt', package = "LUMA")
 #'   search.par <- read.table(file, sep = "\t", header = TRUE) #Ignore Warning message
 #'
 #'   method = "mz"

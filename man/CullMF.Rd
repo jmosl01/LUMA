@@ -25,7 +25,7 @@ Culls the Peak.list by removing all components with minimum
 \examples{
 \dontrun{
 library(LUMA)
-db.dir <- system.file('extdata/', package = "LUMA")
+db.dir <- system.file('extdata', package = "LUMA")
 InitWorkflow(db.dir = db.dir)
 CullMF(from.table = "From_CAMERA_with_MinFrac", to.table = "Trimmed_by_MinFrac")
 }

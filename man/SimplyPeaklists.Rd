@@ -33,7 +33,7 @@ Combines Peaklists from positive and negative ionization modes
 \dontrun{
 library(LUMA)
 if(require(lcmsfishdata, quietly = TRUE)) {
-  db.dir <- system.file("extdata/", package = "lcmsfishdata")
+  db.dir <- system.file("extdata", package = "lcmsfishdata")
   InitWorkflow(db.dir = db.dir)
   SimplyPeaklists(from.tables = c("Peaklist_Pos_Solvent Peaks Removed",
   "Peaklist_Neg_Solvent Peaks Removed"),

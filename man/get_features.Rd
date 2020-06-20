@@ -22,7 +22,7 @@ Returns mz/rt features from Peak.list stored in SQLite database
 \examples{
 library(LUMA)
 if(require(RSQLite, quietly = TRUE)) {
-file <- system.file("extdata/Sample_Data.csv", package =  "LUMA")
+file <- system.file("extdata","Sample_Data.csv", package =  "LUMA")
 sample_data <- read.table(file, header = TRUE, sep = ",")
 mzdatafiles <- sample_data$CT.ID
 file.base <- gen_filebase(mzdatafiles = mzdatafiles, BLANK = FALSE, IonMode =

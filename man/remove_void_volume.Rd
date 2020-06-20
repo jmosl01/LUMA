@@ -31,7 +31,7 @@ chromatographic run from the Peak.list
 \examples{
 library(LUMA)
 if(require(lcmsfishdata, quietly = TRUE)){
-file <- system.file('extdata/Search_Parameters.txt', package = "LUMA")
+file <- system.file('extdata','Search_Parameters.txt', package = "LUMA")
 search.par <- read.table(file, sep = "\t", header = TRUE)
 test <- remove_void_volume(Peak.list = lcmsfishdata::Peaklist_Pos$From_CAMERA, search.par =
 search.par, method = "mz")

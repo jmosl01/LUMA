@@ -1,7 +1,7 @@
 context("test-database-functions")
 
 test_that("filebases are generated", {
-  file <- system.file("extdata/Sample_Data.csv", package =  "LUMA")
+  file <- system.file("extdata","Sample_Data.csv", package =  "LUMA")
   sample_data <- read.table(file, header = TRUE, sep = ",")
   mzdatafiles <- sample_data$CT.ID
   test.spos <- gen_filebase(mzdatafiles = mzdatafiles, BLANK = FALSE, IonMode = "Positive", ion.id = c("Pos","Neg")) #Returns "Peaklist_Pos"
@@ -16,7 +16,7 @@ test_that("filebases are generated", {
 
 test_that("valid databases are created", {
   if(require(RSQLite, quietly = TRUE)) {
-    file <- system.file("extdata/Sample_Data.csv", package =  "LUMA")
+    file <- system.file("extdata","Sample_Data.csv", package =  "LUMA")
     sample_data <- read.table(file, header = TRUE, sep = ",")
     mzdatafiles <- sample_data$CT.ID
     file.base <- gen_filebase(mzdatafiles = mzdatafiles, BLANK = FALSE, IonMode = "Positive", ion.id = c("Pos","Neg")) #Returns "Peaklist_Pos"

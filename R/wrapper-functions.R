@@ -16,13 +16,13 @@
 #' library(LUMA)
 #' if(require(lcmsfishdata, quietly = TRUE)) {
 #'
-#'     file <- system.file("extdata/Sample_Data.csv", package = "lcmsfishdata")
+#'     file <- system.file("extdata","Sample_Data.csv", package = "lcmsfishdata")
 #'     sample_data <- read.table(file, header = TRUE, sep = ",")
 #'     mzdatafiles <- sample_data$CT.ID
 #'
 #'     file.base <- gen_filebase(mzdatafiles = mzdatafiles, BLANK = FALSE, IonMode
 #'     = "Positive", ion.id = c("Pos","Neg"))
-#'     file2 <- system.file("extdata/Best_XCMS_parameters_positive.csv", package
+#'     file2 <- system.file("extdata","Best_XCMS_parameters_positive.csv", package
 #'     ="lcmsfishdata")
 #'     XCMS.par <- read.table(file2, header = TRUE, sep = ",")
 #'
@@ -90,9 +90,9 @@ wrap_xcms = function(mzdatafiles, XCMS.par, file.base) {
 #' @examples
 #' library(LUMA)
 #' if(require(lcmsfishdata, quietly = TRUE)) {
-#' file <- system.file("extdata/XCMS_objects_pos.Rdata", package = "lcmsfishdata")
+#' file <- system.file("extdata","XCMS_objects_pos.Rdata", package = "lcmsfishdata")
 #' load(file, envir = environment())
-#' file2 <- system.file("extdata/Best_CAMERA_parameters_positive.csv", package
+#' file2 <- system.file("extdata","Best_CAMERA_parameters_positive.csv", package
 #' ="lcmsfishdata")
 #' CAMERA.par <- read.table(file2, header = TRUE, sep = ",")
 #'
@@ -159,12 +159,12 @@ wrap_camera = function(xcms.obj, CAMERA.par, IonMode) {
 #' library(LUMA)
 #' if(require(lcmsfishdata, quietly = TRUE)) {
 #'
-#'   file <- system.file("extdata/Sample_Class.txt", package = "lcmsfishdata")
+#'   file <- system.file("extdata","Sample_Class.txt", package = "lcmsfishdata")
 #'   Sample.df <- read.table(file, header = TRUE, sep = "\t")
-#'   file2 <- system.file("extdata/CAMERA_objects_Pos.Rdata", package = "lcmsfishdata")
+#'   file2 <- system.file("extdata","CAMERA_objects_Pos.Rdata", package = "lcmsfishdata")
 #'   load(file2, envir = environment())
 #'   Peak.list <- lcmsfishdata::Peaklist_Pos[["input_parsed"]]
-#'   file3 <- system.file("extdata/Sample_Data.csv", package = "lcmsfishdata")
+#'   file3 <- system.file("extdata","Sample_Data.csv", package = "lcmsfishdata")
 #'   sample_data <- read.table(file3, header = TRUE, sep = ",")
 #'   mzdatafiles <- sample_data$CT.ID
 #'

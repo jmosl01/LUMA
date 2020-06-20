@@ -4,7 +4,7 @@ test_that("Peaklists are parsed correctly", {
 
   if(require(lcmsfishdata, quietly = TRUE)) {
 
-    file <- system.file("extdata/primary_adducts_pos.csv", package = "lcmsfishdata")
+    file <- system.file("extdata","primary_adducts_pos.csv", package = "lcmsfishdata")
     rules <- read.csv(file, header = TRUE)
     Peak.list <- as.data.frame(lcmsfishdata::Peaklist_Pos[["Annotated"]])
     test <- parse_pos_results(raw = Peak.list, rule = rules, IonMode = "Positive")
@@ -14,7 +14,7 @@ test_that("Peaklists are parsed correctly", {
     expect_equal(343,length(unique(Peak.list[["pcgroup"]]))) #Originally were this many metabolite groupings
     expect_equal(3347,length(unique(test[["metabolite_group"]]))) #Now there are many more metabolite groupings
 
-    file <- system.file("extdata/primary_adducts_neg.csv", package = "lcmsfishdata")
+    file <- system.file("extdata","primary_adducts_neg.csv", package = "lcmsfishdata")
     rules <- read.csv(file, header = TRUE)
     Peak.list <- as.data.frame(lcmsfishdata::Peaklist_Neg[["Annotated"]])
     test <- parse_neg_results(raw = Peak.list, rule = rules, IonMode = "Negative")
@@ -31,9 +31,9 @@ test_that("Peaklists are parsed correctly", {
 
 test_that("phenotype data is combined properly", {
 
-  file <- system.file('extdata/Search_Parameters.txt', package = "LUMA")
+  file <- system.file('extdata','Search_Parameters.txt', package = "LUMA")
   search.par <- read.table(file, sep = "\t", header = TRUE) #Ignore Warning message
-  file2 <- system.file('extdata/Sample_Class.txt', package = "LUMA")
+  file2 <- system.file('extdata','Sample_Class.txt', package = "LUMA")
   Sample.df <- read.table(file2, sep = "\t", header = TRUE) #Ignore Warning message
   Peak.list <- LUMA::Peaklist_Pos$output_parsed
   Summed.list <- sum_features(Peak.list = Peak.list, Sample.df = Sample.df ,
