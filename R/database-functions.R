@@ -292,7 +292,7 @@ write_tbl = function(mydf, peak.db, myname) {
 #' @return tbl alternatively a data frame
 #' @examples
 #' library(LUMA)
-#' if(require(dbplyr, quietly = TRUE)) {
+#' if(require(RSQLite, quietly = TRUE)) {
 #' file <- system.file("extdata","Sample_Data.csv", package =  "LUMA") # is case sensitive on Linux
 #' sample_data <- read.table(file, header = TRUE, sep = ",")
 #' mzdatafiles <- sample_data$CT.ID
