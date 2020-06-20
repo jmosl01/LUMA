@@ -6,8 +6,11 @@
 
 #Use R
 language: r
-cache: packages
+cache:
+  - packages
 warnings_are_errors: false
+r_build_args: "--no-build-vignettes"
+r_check_args: "--no-build-vignettes --ignore-vignettes"
 dist: xenial
 os: linux
 
@@ -21,16 +24,12 @@ addons:
     packages:
       - libnetcdf-dev # for mzR, a dependency of xcms
       - netcdf-bin # for ncdf4, a dependency of mzR
+      - ghostscript # for checking size of PDFs
 
 r:
+ - oldrel
  - release
  - devel
-
-bioc_packages:
- - BiocParallel
- - BiocStyle
- - CAMERA
- - xcms
 
 r_github_packages:
  - jmosl01/lcmsfishdata
