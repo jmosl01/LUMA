@@ -36,7 +36,7 @@ test_that("xlsx file is correctly written", {
 test_that("CAMERA run is setup correctly", {
 
   if(require(lcmsfishdata, quietly = TRUE)) {
-    file <- system.file("extdata","XCMS_objects_pos.Rdata", package = "lcmsfishdata")
+    file <- system.file("extdata","XCMS_objects_Pos.Rdata", package = "lcmsfishdata")
     load(file, envir = environment())
     file2 <- system.file("extdata","Best_CAMERA_parameters_positive.csv", package = "lcmsfishdata")
     CAMERA.par <- read.table(file2, header = TRUE, sep = ",")
