@@ -29,9 +29,15 @@ test_that("generates correlation matrices for direct plotting of metabolite grou
                                Peak.list = Peak.list, center = 2, BLANK = FALSE, gen.plots = TRUE, #Doesn't work with lcmsfishdata; Doesn't have access to raw datafiles
                                IonMode = "Positive", file.base = file.base, QC.id = "Pooled_QC_", maxlabel
                                = 10))
-    expect_true(file.exists("Peaklist_Pos_Corrplots.pdf")) #Plotting file is created
+    mydir <- getwd()
+    if(grep("testthat", mydir) == 1) {
+      myfile <- paste0(mydir,"/Peaklist_Pos_Corrplots.pdf")
+    } else {
+      myfile <- paste0(mydir, "/tests/testthat/Peaklist_Pos_Corrplots.pdf")
+    }
+    expect_true(file.exists(myfile)) #Plotting file is created
     dev.off()
-    file.remove("Peaklist_Pos_Corrplots.pdf") #Cleanup change to working directory
+    file.remove(myfile) #Cleanup change to working directory
 
   }
 
