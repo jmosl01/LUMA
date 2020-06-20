@@ -30,6 +30,13 @@ install_github('USEPA/LUMA', build_vignettes=TRUE)
 library(LUMA)
 ```
 
+To install from GitHub on Linux or MacOSX:
+```r
+library(devtools)
+install_github('USEPA/LUMA', type = "source")
+library(LUMA)
+```
+
 
 ## Example
 An overview of the `LUMA` package is provided in the users guide that is included with the package.  The documentation includes a number of examples for use of the various functions and self-contained modules to enable workflow creation.  Vignettes are also available for typical LUMA workflows.
