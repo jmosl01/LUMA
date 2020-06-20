@@ -31,9 +31,9 @@ test_that("generates correlation matrices for direct plotting of metabolite grou
                                = 10))
     mydir <- getwd()
     if(grep("testthat", mydir) == 1) {
-      myfile <- paste0(mydir,"/Peaklist_Pos_Corrplots.pdf")
+      myfile <- paste0(mydir,"/Peaklist_Pos_CorrPlots.pdf")
     } else {
-      myfile <- paste0(mydir, "/tests/testthat/Peaklist_Pos_Corrplots.pdf")
+      myfile <- paste0(mydir, "/tests/testthat/Peaklist_Pos_CorrPlots.pdf")
     }
     expect_true(file.exists(myfile)) #Plotting file is created
     dev.off()
