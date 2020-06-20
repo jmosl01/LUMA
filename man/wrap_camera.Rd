@@ -29,7 +29,7 @@ Run a simple CAMERA workflow with user defined input parameters
 \examples{
 library(LUMA)
 if(require(lcmsfishdata, quietly = TRUE)) {
-file <- system.file("extdata","XCMS_objects_pos.Rdata", package =
+file <- system.file("extdata","XCMS_objects_Pos.Rdata", package =
 "lcmsfishdata") # is case sensitive on Linux
 load(file, envir = environment())
 file2 <- system.file("extdata","Best_CAMERA_parameters_positive.csv", package
