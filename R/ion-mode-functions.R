@@ -5,20 +5,21 @@
 #'   for EIC plotting
 #' @param Peak.list a named list of data frames (one per ionization mode)
 #'   containing intensity matrices across all study samples and Pooled QCs.
-#'   Names must be \code{c("Positive","Negative")}.  Alternatively may use existing
-#'   database connections by setting to NULL
+#'   Names must be \code{c("Positive","Negative")}.  Alternatively may use
+#'   existing database connections by setting to NULL
 #' @param search.par a single-row data frame with 11 variables containing
 #'   user-defined search parameters. Must contain the columns
-#'   \code{'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac',
-#'   'Endogenous','Solvent','gen.plots','keep.singletons'}.
+#'   \code{"ppm"},\code{"rt"},\code{"Voidrt"},\code{"Corr.stat.pos"},\code{"Corr.stat.neg"},
+#'    \code{"CV"},\code{"Minfrac"}, \code{"Endogenous"},
+#'   \code{"Solvent"},\code{"gen.plots"}, \code{"keep.singletons"}.
 #' @param tbl.id character vector of table names to draw from databases.  First
 #'   value should be table containing compounds from positive ionization, second
 #'   should be table containing compounds from negative ionization. Default is
 #'   NULL.
 #' @param method which method to apply to search for duplicate entries. See
-#'   \code{search_IonDup} for details.
+#'   \code{search_IonDup()} for details.
 #' @param peak.db Formal class SQLiteConnection
-#' @param ... Arguments to pass parameters to \code{search_IonDup}
+#' @param ... Arguments to pass parameters to \code{search_IonDup()}
 #' @return data frame containing the intensity matrix for the peaklist with
 #'   Duplicate IDs
 #' @importFrom igraph clusters graph.adjacency
@@ -89,12 +90,16 @@ combine_ion_modes = function(Peak.list, search.par, tbl.id, method, peak.db, ...
 #' @title Removes Ion Mode Duplicates
 #'
 #' @export
-#' @description Removes the ion mode duplicates based on user-modified indices after visual inspection of EIC_plots
-#' @param Peak.list a data frame containing combined ion mode peaklist with Duplicate IDs.
-#' Alternatively can be retrieved from databases.  Default is NULL
-#' @param Key.list list containing two numeric vectors \(one per ionization mode\) of ion mode duplicates to keep. Key (vector) corresponding to positive mode duplicates should be first.
-#' @param tbl.id character string corresponding to table name to draw from database.
-#' Default is NULL
+#' @description Removes the ion mode duplicates based on user-modified indices
+#'   after visual inspection of EIC_plots
+#' @param Peak.list a data frame containing combined ion mode peaklist with
+#'   Duplicate IDs. Alternatively can be retrieved from databases.  Default is
+#'   NULL
+#' @param Key.list list containing two numeric vectors (one per ionization
+#'   mode) of ion mode duplicates to keep. Key (vector) corresponding to
+#'   positive mode duplicates should be first.
+#' @param tbl.id character string corresponding to table name to draw from
+#'   database. Default is NULL
 #' @param ... Arguments to pass parameters to database functions
 #' @return NULL testing
 #' @examples

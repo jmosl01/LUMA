@@ -30,27 +30,30 @@ columns 'Sex','Class','n','Endogenous'.}
 
 \item{search.par}{a single-row data frame with 11 variables containing
 user-defined search parameters. Must contain the columns
-\code{"ppm","rt","Voidrt","Corr.stat.pos","Corr.stat.neg","CV","Minfrac","Endogenous","Solvent","gen.plots","keep.singletons"}.}
+\code{"ppm"},\code{"rt"},\code{"Voidrt"},\code{"Corr.stat.pos"},\code{"Corr.stat.neg"},
+ \code{"CV"},\code{"Minfrac"}, \code{"Endogenous"},
+\code{"Solvent"},\code{"gen.plots"}, \code{"keep.singletons"}.}
 
 \item{method}{which method to apply to search for background components.  See
-find_Background for details.}
+\code{find_Background()} for details.}
 
 \item{lib.db}{character name of database to contain Solvent Library}
 
 \item{tbl.id}{character vector of table names to draw from databases. First
 value should be table name from peak database, second should be table name
-from solvent database. Default is NULL}
+from solvent database. Default is \code{NULL}.}
 
 \item{db.list}{list chracter names of databases containing results from
 processing positive mode (1,3) and negative mode (2,4) data for samples
-(1,2) and blanks (3,4) Default is NULL}
+(1,2) and blanks (3,4) Default is \code{NULL}.}
 
-\item{db.dir}{character directory containing the databases Default is 'db'}
+\item{db.dir}{character directory containing the databases Default is
+\code{"db"}.}
 
 \item{new.db}{character what should the new database be called Default is
-'Peaklist_db'}
+\code{"Peaklist_db"}.}
 
-\item{mem}{logical should database be in-memory. Default is FALSE}
+\item{mem}{logical should database be in-memory. Default is \code{FALSE}.}
 
 \item{...}{Arguments to pass parameters to find_Background}
 }

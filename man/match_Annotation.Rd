@@ -21,22 +21,26 @@ with samples as columns.  Should contain all output columns from XCMS and
 CAMERA, both metadata and sample data. Retention times must be in min.}
 
 \item{Annotated.library}{a data frame with annotated metabolite entries. Must
-contain the five columns called 'Name', 'Formula', Molecular.Weight',
-'RT..Min.', and 'Ion.Mode' respectively.  Can contain additional columns.}
+contain at least five columns \code{"Name"}, \code{"Formula"},
+\code{"Molecular.Weight"}, \code{"RT..Min."}, and \code{"Ion.Mode"}. Can
+contain additional columns.}
 
 \item{Library.phenodata}{a data frame with annotated metabolite entries.
 Contain all columns with additional information from Annotated Library.}
 
 \item{rules}{a data frame containing the rule list used by CAMERA to annotate
 ion adducts and fragments.  Must contain the columns
-\code{"name","nmol","charge","massdiff","oidscore","quasi","ips"}.}
+\code{"name"},\code{"nmol"},\code{"charge"},\code{"massdiff"},\code{"oidscore"},
+ \code{"quasi"},\code{"ips"}.}
 
 \item{search.par}{a single-row data frame with 11 variables containing
 user-defined search parameters. Must contain the columns
-\code{"ppm","rt","Voidrt","Corr.stat.pos","Corr.stat.neg","CV","Minfrac","Endogenous","Solvent","gen.plots","keep.singletons"}.}
+\code{"ppm"},\code{"rt"},\code{"Voidrt"},\code{"Corr.stat.pos"},\code{"Corr.stat.neg"},
+ \code{"CV"},\code{"Minfrac"}, \code{"Endogenous"},
+\code{"Solvent"},\code{"gen.plots"}, \code{"keep.singletons"}.}
 
 \item{IonMode}{a character string defining the ionization mode.  Must be one
-of \code{c("Positive","Negative"}.}
+of \code{c("Positive","Negative")}.}
 
 \item{lib_db}{\code{RSQLite connection}}
 

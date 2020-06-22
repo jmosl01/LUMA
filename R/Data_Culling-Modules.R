@@ -2,23 +2,13 @@
 #'
 #' @export
 #' @description Culls the Peak.list by removing all components coming from the
-#'   void volume. See \code{remove_void_volume} for more details. For working
-#'   examples, see \code{InitWorkflow, AnnotatePeaklist, CombineFeatures,
-#'   CombinePeaklists, CullBackground, CullMF, CullCV, CullVoidVolume,
-#'   FormatForMetaboAnalystR, FormatForSIMCA, NormalizePeaklists, ParseCAMERA,
-#'   SimplyPeaklists, FinalWorkflow}.
+#'   void volume. See \code{remove_void_volume()} for more details. For
+#'   examples, see \code{InitWorkflow()} and vignettes.
 #' @param from.table from which table should LUMA pull the Peak.list
 #' @param to.table to which should LUMA save the modified Peak.list
 #' @param method which method to apply to trim by retention time.  See
 #'   \code{trim_rt} for details.
 #' @return NULL
-#' @examples
-#' \dontrun{
-#' library(LUMA)
-#' db.dir <- system.file('extdata', package = "LUMA")
-#' InitWorkflow(db.dir = db.dir)
-#' CullVoidVolume(from.table = "From_CAMERA", to.table = "Trimmed_by_RT")
-#' }
 CullVoidVolume <- function(from.table,to.table,method) {
   ##Culls Peaklist by RT > void volume
   Peak.list <- read_tbl(mytable = from.table,
@@ -49,24 +39,14 @@ CullVoidVolume <- function(from.table,to.table,method) {
 #' @export
 #' @description Culls the Peak.list by removing all components with a
 #'   coefficient of variation (CV) greater than the user-specified cutoff across
-#'   all Pooled QC samples. See \code{trim_cv} for more details. For working
-#'   examples, see \code{InitWorkflow, AnnotatePeaklist, CombineFeatures,
-#'   CombinePeaklists, CullBackground, CullMF, CullCV, CullVoidVolume,
-#'   FormatForMetaboAnalystR, FormatForSIMCA, NormalizePeaklists, ParseCAMERA,
-#'   SimplyPeaklists, FinalWorkflow}.
+#'   all Pooled QC samples. See \code{trim_cv()} for more details. For examples,
+#'   see \code{InitWorkflow()} and vignettes.
 #' @param from.table from which table should LUMA pull the Peak.list
 #' @param to.table to which should LUMA save the modified Peak.list
 #' @param QC.id character vector specifying identifier in filename designating a
 #'   Pooled QC sample.  Only the first value will be used.  Default is
 #'   \code{"Pooled_QC_"}
 #' @return NULL
-#' @examples
-#' \dontrun{
-#' library(LUMA)
-#' db.dir <- system.file('extdata', package = "LUMA")
-#' InitWorkflow(db.dir = db.dir)
-#' CullCV(from.table = "From_CAMERA", to.table = "Trimmed_by_CV")
-#' }
 CullCV <- function(from.table,to.table,QC.id) {
 
   #Set default values
@@ -106,23 +86,13 @@ CullCV <- function(from.table,to.table,QC.id) {
 #'
 #' @export
 #' @description Culls the Peak.list by removing all components with minimum
-#'   fraction less than the user-specified cutoff. See \code{trim_minfrac} for
-#'   more details. For working examples, see \code{InitWorkflow,
-#'   AnnotatePeaklist, CombineFeatures, CombinePeaklists, CullBackground,
-#'   CullMF, CullCV, CullVoidVolume, FormatForMetaboAnalystR, FormatForSIMCA,
-#'   NormalizePeaklists, ParseCAMERA, SimplyPeaklists, FinalWorkflow}.
+#'   fraction less than the user-specified cutoff. See \code{trim_minfrac()} for
+#'   more details. For examples, see \code{InitWorkflow()} and vignettes.
 #' @param from.table from which table should LUMA pull the Peak.list
 #' @param to.table to which should LUMA save the modified Peak.list
 #' @param method which method to apply to trim by minimum fraction values.  See
-#'   \code{trim_minfrac} for details.
+#'   \code{trim_minfrac()} for details.
 #' @return NULL
-#' @examples
-#' \dontrun{
-#' library(LUMA)
-#' db.dir <- system.file('extdata', package = "LUMA")
-#' InitWorkflow(db.dir = db.dir)
-#' CullMF(from.table = "From_CAMERA_with_MinFrac", to.table = "Trimmed_by_MinFrac")
-#' }
 CullMF <- function(from.table,to.table,method) {
   #Trims Peaklist by MinFrac
   Peak.list <- read_tbl(mytable = from.table,
@@ -159,11 +129,8 @@ CullMF <- function(from.table,to.table,method) {
 #'
 #' @export
 #' @description Culls the Peak.list by removing background components. See
-#'   \code{remove_background_peaks} for more details. For working examples, see
-#'   \code{InitWorkflow, AnnotatePeaklist, CombineFeatures, CombinePeaklists,
-#'   CullBackground, CullMF, CullCV, CullVoidVolume, FormatForMetaboAnalystR,
-#'   FormatForSIMCA, NormalizePeaklists, ParseCAMERA, SimplyPeaklists,
-#'   FinalWorkflow}.
+#'   \code{remove_background_peaks()} for more details. For examples, see
+#'   \code{InitWorkflow()}.
 #' @param from.tables character vector of table names to draw from databases.
 #'   First value should be table name from peak database, second should be table
 #'   name from solvent database.
@@ -171,30 +138,13 @@ CullMF <- function(from.table,to.table,method) {
 #'   Should be twice as long as the number of processed ion modes.
 #' @param method which method to use to remove background components.
 #' @param db.list vector of database names containing results from processing
-#'   modules. Can be left blank. See connect_lumadb for details.
-#' @param db.dir directory containing the databases. Default is 'db'
+#'   modules. Can be left blank. See \code{connect_lumadb()} for details.
+#' @param db.dir directory containing the databases. Default is \code{"db"}.
 #' @param new.db what should the new database be called. Default is
-#'   'Peaklist_db'
+#'   \code{"Peaklist_db"}.
 #' @param lib.db what should the library containing the background components be
-#'   called. Default is 'Background Components Library'
+#'   called. Default is \code{"Background Components Library"}.
 #' @return NULL
-#' @examples
-#' \dontrun{
-#' library(LUMA)
-#' if(require(lcmsfishdata, quietly = TRUE)){
-#'
-#'   db.dir <- system.file('extdata', package = "lcmsfishdata")
-#'   InitWorkflow(db.dir = db.dir)
-#'   CullBackground(from.tables =
-#'   c("Trimmed_by_MinFrac","Combined_Isotopes_and_Adducts"),
-#'                to.tables = c("Peaklist_Pos_Solvent_Peaks_Removed",
-#'                              "Peaklist_Neg_Solvent_Peaks_Removed",
-#'                              "Peaklist_Pos_Solvent Peaks Only",
-#'                              "Peaklist_Neg_Solvent Peaks Only"),
-#'                method = "monoMass")
-#'
-#'   }
-#' }
 CullBackground <- function(from.tables,to.tables,method,db.list,db.dir,new.db,lib.db) {
 
   #Initialize all other global variables

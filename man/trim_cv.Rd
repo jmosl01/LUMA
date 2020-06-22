@@ -14,7 +14,9 @@ Calc.corr.stat and Combine.phenodata base functions.}
 
 \item{search.par}{a single-row data frame with 11 variables containing
 user-defined search parameters. Must contain the columns
-\code{"ppm","rt","Voidrt","Corr.stat.pos","Corr.stat.neg","CV","Minfrac","Endogenous","Solvent","gen.plots","keep.singletons"}.}
+\code{"ppm"},\code{"rt"},\code{"Voidrt"},\code{"Corr.stat.pos"},\code{"Corr.stat.neg"},
+ \code{"CV"},\code{"Minfrac"}, \code{"Endogenous"},
+\code{"Solvent"},\code{"gen.plots"}, \code{"keep.singletons"}.}
 
 \item{QC.id}{character vector specifying identifier in filename designating a
 Pooled QC sample.  Only the first value will be used.  Default is

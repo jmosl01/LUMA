@@ -13,20 +13,23 @@
 #'   columns 'Sex','Class','n','Endogenous'.
 #' @param search.par a single-row data frame with 11 variables containing
 #'   user-defined search parameters. Must contain the columns
-#'   \code{"ppm","rt","Voidrt","Corr.stat.pos","Corr.stat.neg","CV","Minfrac","Endogenous","Solvent","gen.plots","keep.singletons"}.
+#'   \code{"ppm"},\code{"rt"},\code{"Voidrt"},\code{"Corr.stat.pos"},\code{"Corr.stat.neg"},
+#'    \code{"CV"},\code{"Minfrac"}, \code{"Endogenous"},
+#'   \code{"Solvent"},\code{"gen.plots"}, \code{"keep.singletons"}.
 #' @param method which method to apply to search for background components.  See
-#'   find_Background for details.
+#'   \code{find_Background()} for details.
 #' @param lib.db character name of database to contain Solvent Library
 #' @param tbl.id character vector of table names to draw from databases. First
 #'   value should be table name from peak database, second should be table name
-#'   from solvent database. Default is NULL
+#'   from solvent database. Default is \code{NULL}.
 #' @param db.list list chracter names of databases containing results from
 #'   processing positive mode (1,3) and negative mode (2,4) data for samples
-#'   (1,2) and blanks (3,4) Default is NULL
-#' @param db.dir character directory containing the databases Default is 'db'
+#'   (1,2) and blanks (3,4) Default is \code{NULL}.
+#' @param db.dir character directory containing the databases Default is
+#'   \code{"db"}.
 #' @param new.db character what should the new database be called Default is
-#'   'Peaklist_db'
-#' @param mem logical should database be in-memory. Default is FALSE
+#'   \code{"Peaklist_db"}.
+#' @param mem logical should database be in-memory. Default is \code{FALSE}.
 #' @param ... Arguments to pass parameters to find_Background
 #' @return nested list a list for each ionization mode, each containing a list
 #'   of two dataframes: the first contains the intensity matrix for the peaklist
@@ -117,10 +120,12 @@ remove_background_peaks = function(Peak.list = NULL, Sample.df, search.par, meth
 #'   IHL.search, Calc.MinFrac, Calc.corr.stat and EIC.plotter functions.
 #' @param search.par a single-row data frame with 11 variables containing
 #'   user-defined search parameters. Must contain the columns
-#'   \code{"ppm","rt","Voidrt","Corr.stat.pos","Corr.stat.neg","CV","Minfrac","Endogenous","Solvent","gen.plots","keep.singletons"}.
-#' @param method which method to apply to trim by retention time.  See trim_rt
-#'   for details
-#' @param ... Arguments to pass to trim_rt
+#'   \code{"ppm"},\code{"rt"},\code{"Voidrt"},\code{"Corr.stat.pos"},\code{"Corr.stat.neg"},
+#'    \code{"CV"},\code{"Minfrac"}, \code{"Endogenous"},
+#'   \code{"Solvent"},\code{"gen.plots"}, \code{"keep.singletons"}.
+#' @param method which method to apply to trim by retention time.  See
+#'   \code{trim_rt()} for details.
+#' @param ... Arguments to pass to \code{trim_rt()}.
 #' @return data frame Peak.list.trimmed original Peak.list without all
 #'   metabolite groups containing at least one feature in the void volume
 #' @md
@@ -154,7 +159,9 @@ remove_void_volume = function(Peak.list, search.par, method,...) {
 #'   Calc.corr.stat and Combine.phenodata base functions.
 #' @param search.par a single-row data frame with 11 variables containing
 #'   user-defined search parameters. Must contain the columns
-#'   \code{"ppm","rt","Voidrt","Corr.stat.pos","Corr.stat.neg","CV","Minfrac","Endogenous","Solvent","gen.plots","keep.singletons"}.
+#'   \code{"ppm"},\code{"rt"},\code{"Voidrt"},\code{"Corr.stat.pos"},\code{"Corr.stat.neg"},
+#'    \code{"CV"},\code{"Minfrac"}, \code{"Endogenous"},
+#'   \code{"Solvent"},\code{"gen.plots"}, \code{"keep.singletons"}.
 #' @param QC.id character vector specifying identifier in filename designating a
 #'   Pooled QC sample.  Only the first value will be used.  Default is
 #'   \code{"Pooled_QC_"}
@@ -200,7 +207,9 @@ trim_cv = function(Peak.list, search.par,QC.id) {
 #'   functions.
 #' @param search.par a single-row data frame with 11 variables containing
 #'   user-defined search parameters. Must contain the columns
-#'   \code{"ppm","rt","Voidrt","Corr.stat.pos","Corr.stat.neg","CV","Minfrac","Endogenous","Solvent","gen.plots","keep.singletons"}.
+#'   \code{"ppm"},\code{"rt"},\code{"Voidrt"},\code{"Corr.stat.pos"},\code{"Corr.stat.neg"},
+#'    \code{"CV"},\code{"Minfrac"}, \code{"Endogenous"},
+#'   \code{"Solvent"},\code{"gen.plots"}, \code{"keep.singletons"}.
 #' @return data frame Peak.list.trimmed original Peak.list containing all
 #'   metabolite groups containing at least one feature that has MinFrac value
 #'   greater than user specified threshold; if all MinFrac values are NA (i.e.

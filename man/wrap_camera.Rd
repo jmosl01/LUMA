@@ -7,12 +7,14 @@
 wrap_camera(xcms.obj, CAMERA.par, IonMode)
 }
 \arguments{
-\item{xcms.obj}{an \code{xcmsSet} object that has had peak picking, retention time
-alignment, peak grouping, and imputing missing values performed.}
+\item{xcms.obj}{an \code{xcmsSet} object that has had peak picking, retention
+time alignment, peak grouping, and imputing missing values performed.}
 
 \item{CAMERA.par}{a single-row data frame with 9 variables containing CAMERA
-parameters. Must include columns \code{c("perfwhm","sigma","minfrac","mzabs",
-"maxiso","corval_eic","corval_exp","pval","mzabs.1")}.}
+parameters. Must include columns
+\code{"perfwhm"},\code{"sigma"},\code{minfrac"},
+\code{"mzabs"},\code{"maxiso"},\code{"corval_eic"},\code{"corval_exp"},\code{"pval"},
+ \code{"mzabs.1"}.}
 
 \item{IonMode}{a character string defining the ionization mode.  Must be one
 of \code{c("Positive","Negative")}.}

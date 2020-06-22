@@ -8,18 +8,22 @@
 #'   with samples as columns.  Should contain all output columns from XCMS and
 #'   CAMERA, both metadata and sample data. Retention times must be in min.
 #' @param Annotated.library a data frame with annotated metabolite entries. Must
-#'   contain the five columns called 'Name', 'Formula', Molecular.Weight',
-#'   'RT..Min.', and 'Ion.Mode' respectively.  Can contain additional columns.
+#'   contain at least five columns \code{"Name"}, \code{"Formula"},
+#'   \code{"Molecular.Weight"}, \code{"RT..Min."}, and \code{"Ion.Mode"}. Can
+#'   contain additional columns.
 #' @param Library.phenodata a data frame with annotated metabolite entries.
 #'   Contain all columns with additional information from Annotated Library.
 #' @param rules a data frame containing the rule list used by CAMERA to annotate
 #'   ion adducts and fragments.  Must contain the columns
-#'   \code{"name","nmol","charge","massdiff","oidscore","quasi","ips"}.
+#'   \code{"name"},\code{"nmol"},\code{"charge"},\code{"massdiff"},\code{"oidscore"},
+#'    \code{"quasi"},\code{"ips"}.
 #' @param search.par a single-row data frame with 11 variables containing
 #'   user-defined search parameters. Must contain the columns
-#'   \code{"ppm","rt","Voidrt","Corr.stat.pos","Corr.stat.neg","CV","Minfrac","Endogenous","Solvent","gen.plots","keep.singletons"}.
+#'   \code{"ppm"},\code{"rt"},\code{"Voidrt"},\code{"Corr.stat.pos"},\code{"Corr.stat.neg"},
+#'    \code{"CV"},\code{"Minfrac"}, \code{"Endogenous"},
+#'   \code{"Solvent"},\code{"gen.plots"}, \code{"keep.singletons"}.
 #' @param IonMode a character string defining the ionization mode.  Must be one
-#'   of \code{c("Positive","Negative"}.
+#'   of \code{c("Positive","Negative")}.
 #' @param lib_db \code{RSQLite connection}
 #' @param molweight character string defining the name of the molecular weight
 #'   column in \code{Annotated.library}. Default is "Molecular.Weight"
@@ -164,8 +168,9 @@ match_Annotation = function(Peak.list, Annotated.library, Library.phenodata, rul
 #' @param Peak.list.neg Negative ionization mode data table
 #' @param search.par a single-row data frame with 11 variables containing
 #'   user-defined search parameters. Must contain the columns
-#'   'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous',
-#'   'Solvent','gen.plots','keep.singletons'.
+#'   \code{"ppm"},\code{"rt"},\code{"Voidrt"},\code{"Corr.stat.pos"},\code{"Corr.stat.neg"},
+#'    \code{"CV"},\code{"Minfrac"}, \code{"Endogenous"},
+#'   \code{"Solvent"},\code{"gen.plots"}, \code{"keep.singletons"}.
 #' @param col.names character vector of column names to include when searching
 #'   for duplicate entries. Default is to include the ion mode, unique EIC_ID,
 #'   monomolecular mass and retention time
@@ -305,8 +310,9 @@ search_IonDup.monoMass  <- function(object,Peak.list.pos,Peak.list.neg,search.pa
 #'
 #' @export
 #' @description Find components within Peak.list that are also present in the
-#'   process blanks below a user-defined sample:blank ratio.
-#'   See \code{remove_background_peaks} and \code{CullBackground} for examples that use this function.
+#'   process blanks below a user-defined sample:blank ratio. See
+#'   \code{remove_background_peaks} and \code{CullBackground} for examples that
+#'   use this function.
 #' @param object used for method dispatch. Can be any object. See usage for
 #'   details
 #' @param Peak.list data table containing sample data
@@ -316,9 +322,9 @@ search_IonDup.monoMass  <- function(object,Peak.list.pos,Peak.list.neg,search.pa
 #'   columns 'Sex','Class','n','Endogenous'.
 #' @param search.par a single-row data frame with 11 variables containing
 #'   user-defined search parameters. Must contain the columns
-#'   'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous',
-#'   'Solvent','gen.plots','keep.singletons'.
-#'
+#'   \code{"ppm"},\code{"rt"},\code{"Voidrt"},\code{"Corr.stat.pos"},\code{"Corr.stat.neg"},
+#'    \code{"CV"},\code{"Minfrac"}, \code{"Endogenous"},
+#'   \code{"Solvent"},\code{"gen.plots"}, \code{"keep.singletons"}.
 #' @param ion.id character vector specifying identifier in filename designating
 #'   positive or negative ionization mode or both.  Positive identifier must
 #'   come first. Default is c('Pos','Neg')

@@ -13,16 +13,16 @@ columns \code{"Sex","Class","n","Endogenous"}.}
 
 \item{Peak.list}{a data frame from CAMERA that has been parsed.  Should
 contain all output columns from XCMS and CAMERA, and additional columns
-from \code{match_Annotation}, \code{calc_minfrac} and either
-\code{parse_pos_results} or \code{parse_neg_results}.}
+from \code{match_Annotation()}, \code{calc_minfrac()} and either
+\code{parse_pos_results()} or \code{parse_neg_results()}.}
 
 \item{get.mg}{numerical vector of metabolite groups that have more than one
 feature}
 
 \item{BLANK}{a logical indicating whether blanks are being evaluated}
 
-\item{IonMode}{a character string defining the ionization mode.  Must be one
-of  \code{c("Positive","Negative")}}
+\item{IonMode}{a character string defining the ionization mode.
+Must be one of  \code{c("Positive","Negative")}.}
 }
 \value{
 Peak.list of class \code{'tbl_df','tbl' or 'data.frame'} with

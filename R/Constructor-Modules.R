@@ -1,12 +1,9 @@
 #' @title Constructor module to initiate LUMA Workflow
 #'
 #' @export
-#' @description All LUMA workflows must start with this module Creates the
-#'   first Peaklist and sets up storing and passing Peaklists and ancillary data
-#'   between modules. For working examples, see \code{InitWorkflow, AnnotatePeaklist,
-#'   CombineFeatures, CombinePeaklists, CullBackground, CullMF, CullCV,
-#'   CullVoidVolume, FormatForMetaboAnalystR, FormatForSIMCA,
-#'   NormalizePeaklists, ParseCAMERA, SimplyPeaklists, FinalWorkflow}.
+#' @description All LUMA workflows must start with this module Creates the first
+#'   Peaklist and sets up storing and passing Peaklists and ancillary data
+#'   between modules. For examples, see \code{InitWorkflow()} and vignettes.
 #' @param ion.id character vector specifying identifier in mzdata filenames
 #'   designating positive or negative ionization or both. Must be a
 #'   (case-insensitive) abbreviation of the ionization mode name. Positive
@@ -283,10 +280,7 @@ InitWorkflow <- function(ion.id,db.dir,use.CAMERA,use.XCMS,CAMERA.obj,XCMS.obj,
 #' @export
 #' @description All LUMA workflows must end with this module. Records the names
 #'   of existing data tables and writes out the LUMA log file for traceability.
-#'   For working examples, see \code{InitWorkflow, AnnotatePeaklist,
-#'   CombineFeatures, CombinePeaklists, CullBackground, CullMF, CullCV,
-#'   CullVoidVolume, FormatForMetaboAnalystR, FormatForSIMCA,
-#'   NormalizePeaklists, ParseCAMERA, SimplyPeaklists, FinalWorkflow}.
+#'   For examples, see \code{InitWorkflow()} and vignettes.
 #' @param peak_db existing peak database connection
 #' @param lib_db existing library database connection
 #' @return NULL

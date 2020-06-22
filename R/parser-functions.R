@@ -9,12 +9,14 @@
 #'   \code{"isotopes","adduct","pcgroup"}.
 #' @param rule a data frame containing the rule list used by CAMERA to annotate
 #'   ion adducts and fragments.  Must contain the columns
-#'   \code{"name","nmol","charge","massdiff","oidscore","quasi","ips"}.
+#'   \code{"name"},\code{"nmol"},\code{"charge"},\code{"massdiff"},\code{"oidscore"},
+#'   \code{"quasi"},\code{"ips"}.
 #' @param IonMode a character string defining the ionization mode.  Must be
 #'   \code{"Positive"}
 #' @return data frame parsed version of the original data frame with additional
 #'   columns
-#'   \code{"mono_mass","metabolite_group","monoisotopic_flg","adduct_flg","isotope_flg","ambiguity_flg","Selection_flg"}
+#'   \code{"mono_mass"},\code{"metabolite_group"},\code{"monoisotopic_flg"},
+#'   \code{"adduct_flg"},\code{"isotope_flg"},\code{"ambiguity_flg"},\code{"Selection_flg"}.
 #' @examples
 #' library(LUMA)
 #' if(require(lcmsfishdata, quietly = TRUE)) {
@@ -446,12 +448,14 @@ parse_pos_results=function(raw,rule,IonMode){
 #'   \code{"isotopes","adduct","pcgroup"}.
 #' @param rule a data frame containing the rule list used by CAMERA to annotate
 #'   ion adducts and fragments.  Must contain the columns
-#'   \code{"name","nmol","charge","massdiff","oidscore","quasi","ips"}.
+#'   \code{"name"},\code{"nmol"},\code{"charge"},\code{"massdiff"},\code{"oidscore"},
+#'   \code{"quasi"},\code{"ips"}.
 #' @param IonMode a character string defining the ionization mode.  Must be
 #'   \code{"Negative"}
 #' @return data frame parsed version of the original data frame with additional
 #'   columns
-#'   \code{"mono_mass","metabolite_group","monoisotopic_flg","adduct_flg","isotope_flg","ambiguity_flg","Selection_flg"}
+#'   \code{"mono_mass"},\code{"metabolite_group"},\code{"monoisotopic_flg"},
+#'   \code{"adduct_flg"},\code{"isotope_flg"},\code{"ambiguity_flg"},\code{"Selection_flg"}.
 #' @examples
 #' library(LUMA)
 #' if(require(lcmsfishdata, quietly = TRUE)) {
@@ -866,21 +870,24 @@ parse_neg_results=function(raw,rule,IonMode){
 #' @param Sample.df a data frame with class info as columns.  Must contain a
 #'   separate row entry for each unique sex/class combination. Must contain the
 #'   columns \code{"Sex","Class","n","Endogenous"}.
-#' @param Peak.list data frame. Must have the columns \code{Correlation.stat,
-#'   metabolite_group, mono_mass}.  Should contain output columns from XCMS and
-#'   CAMERA, and additional columns from functions \code{match_Annotation,
-#'   calc_minfrac, CAMERAParser, plot_metgroup}.
+#' @param Peak.list data frame. Must have the columns \code{"Correlation.stat",
+#'   "metabolite_group", "mono_mass"}.  Should contain output columns from
+#'   \code{XCMS} and ]code{CAMERA}, and additional columns from functions
+#'   \code{match_Annotation()}, \code{calc_minfrac()}, \code{CAMERAParser()},
+#'   \code{plot_metgroup()}.
 #' @param Summed.list data frame containing metabolite group as first column and
 #'   the rest summed intensities for each sample
 #' @param search.par a single-row data frame with 11 variables containing
 #'   user-defined search parameters. Must contain the columns
-#'   \code{"ppm","rt","Voidrt","Corr.stat.pos","Corr.stat.neg","CV","Minfrac","Endogenous","Solvent","gen.plots","keep.singletons"}.
+#'   \code{"ppm"},\code{"rt"},\code{"Voidrt"},\code{"Corr.stat.pos"},\code{"Corr.stat.neg"},
+#'    \code{"CV"},\code{"Minfrac"}, \code{"Endogenous"},
+#'   \code{"Solvent"},\code{"gen.plots"}, \code{"keep.singletons"}.
 #' @param QC.id character vector specifying identifier in filename designating a
 #'   Pooled QC sample.  Only the first value will be used.  Default is
 #'   \code{"Pooled_QC_"}
 #' @param BLANK a logical indicating whether blanks are being evaluated
 #' @param IonMode a character string defining the ionization mode.  Must be one
-#'   of \code{c("Positive","Negative"}.
+#'   of \code{c("Positive","Negative")}.
 #' @return Peak.list.summed with the munged phenotype columns up front followed
 #'   by QC and sample columns
 #' @importFrom plyr ddply

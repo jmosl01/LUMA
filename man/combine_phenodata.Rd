@@ -19,17 +19,20 @@ combine_phenodata(
 separate row entry for each unique sex/class combination. Must contain the
 columns \code{"Sex","Class","n","Endogenous"}.}
 
-\item{Peak.list}{data frame. Must have the columns \code{Correlation.stat,
-metabolite_group, mono_mass}.  Should contain output columns from XCMS and
-CAMERA, and additional columns from functions \code{match_Annotation,
-calc_minfrac, CAMERAParser, plot_metgroup}.}
+\item{Peak.list}{data frame. Must have the columns \code{"Correlation.stat",
+"metabolite_group", "mono_mass"}.  Should contain output columns from
+\code{XCMS} and ]code{CAMERA}, and additional columns from functions
+\code{match_Annotation()}, \code{calc_minfrac()}, \code{CAMERAParser()},
+\code{plot_metgroup()}.}
 
 \item{Summed.list}{data frame containing metabolite group as first column and
 the rest summed intensities for each sample}
 
 \item{search.par}{a single-row data frame with 11 variables containing
 user-defined search parameters. Must contain the columns
-\code{"ppm","rt","Voidrt","Corr.stat.pos","Corr.stat.neg","CV","Minfrac","Endogenous","Solvent","gen.plots","keep.singletons"}.}
+\code{"ppm"},\code{"rt"},\code{"Voidrt"},\code{"Corr.stat.pos"},\code{"Corr.stat.neg"},
+ \code{"CV"},\code{"Minfrac"}, \code{"Endogenous"},
+\code{"Solvent"},\code{"gen.plots"}, \code{"keep.singletons"}.}
 
 \item{QC.id}{character vector specifying identifier in filename designating a
 Pooled QC sample.  Only the first value will be used.  Default is
@@ -38,7 +41,7 @@ Pooled QC sample.  Only the first value will be used.  Default is
 \item{BLANK}{a logical indicating whether blanks are being evaluated}
 
 \item{IonMode}{a character string defining the ionization mode.  Must be one
-of \code{c("Positive","Negative"}.}
+of \code{c("Positive","Negative")}.}
 }
 \value{
 Peak.list.summed with the munged phenotype columns up front followed

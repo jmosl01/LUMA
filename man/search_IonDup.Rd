@@ -22,8 +22,9 @@ details}
 
 \item{search.par}{a single-row data frame with 11 variables containing
 user-defined search parameters. Must contain the columns
-'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous',
-'Solvent','gen.plots','keep.singletons'.}
+\code{"ppm"},\code{"rt"},\code{"Voidrt"},\code{"Corr.stat.pos"},\code{"Corr.stat.neg"},
+ \code{"CV"},\code{"Minfrac"}, \code{"Endogenous"},
+\code{"Solvent"},\code{"gen.plots"}, \code{"keep.singletons"}.}
 
 \item{col.names}{character vector of column names to include when searching
 for duplicate entries. Default is to include the ion mode, unique EIC_ID,

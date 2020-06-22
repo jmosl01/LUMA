@@ -3,15 +3,13 @@
 #' @export
 #' @description Compares isotope and adduct annotations within Peaklist to
 #'   user-defined annotation library. For more details, see
-#'   \code{match_Annotation}. For working examples, see \code{InitWorkflow,
-#'   AnnotatePeaklist, CombineFeatures, CombinePeaklists, CullBackground,
-#'   CullMF, CullCV, CullVoidVolume, FormatForMetaboAnalystR, FormatForSIMCA,
-#'   NormalizePeaklists, ParseCAMERA, SimplyPeaklists, FinalWorkflow}.
+#'   \code{match_Annotation}. For examples, see \code{InitWorkflow()} and
+#'   vignettes.
 #' @param from.table from which table should LUMA pull the Peak.list
 #' @param to.table to which should LUMA save the modified Peak.list
 #' @param lib.db character name of In House Library database. Default is
-#'   'Annotated Library'
-#' @param ... arguments to pass to match_Annotation.
+#'   \code{"Annotated Library"}.
+#' @param ... arguments to pass to \code{match_Annotation()}.
 #' @return NULL
 AnnotatePeaklist <- function(from.table,to.table,lib.db,...) {
 

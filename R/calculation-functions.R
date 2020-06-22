@@ -9,13 +9,13 @@
 #'   columns \code{"Sex","Class","n","Endogenous"}.
 #' @param Peak.list a data frame from CAMERA that has been parsed.  Should
 #'   contain all output columns from XCMS and CAMERA, and additional columns
-#'   from \code{match_Annotation}, \code{calc_minfrac} and either
-#'   \code{parse_pos_results} or \code{parse_neg_results}.
+#'   from \code{match_Annotation()}, \code{calc_minfrac()} and either
+#'   \code{parse_pos_results()} or \code{parse_neg_results()}.
 #' @param get.mg numerical vector of metabolite groups that have more than one
 #'   feature
 #' @param BLANK a logical indicating whether blanks are being evaluated
-#' @param IonMode a character string defining the ionization mode.  Must be one
-#'   of  \code{c("Positive","Negative")}
+#' @param IonMode a character string defining the ionization mode.
+#'   Must be one of  \code{c("Positive","Negative")}.
 #' @return Peak.list of class \code{'tbl_df','tbl' or 'data.frame'} with
 #'   variables as columns.  Has all of the columns as the original data frame
 #'   with one additional column \code{"Correlation.stat"}
@@ -116,13 +116,21 @@ calc_corrstat = function(Sample.df, Peak.list, get.mg, BLANK, IonMode) {
 #' @title Calculate minimum fraction of features across sample classes
 #'
 #' @export
-#' @description Calculates the fraction of samples within each class that contains a given feature.
-#' Only the minimum fraction across all sample classes is returned.
-#' @param Sample.df a data frame with class info as columns.  Must contain a separate row entry for each unique sex and class combination. Must contain the columns \code{"Sex","Class","n","Endogenous"}.
-#' @param xset4 an xcms object that has had peak picking, retention time alignment, peak grouping, and imputing missing values performed
+#' @description Calculates the fraction of samples within each class that
+#'   contains a given feature. Only the minimum fraction across all sample
+#'   classes is returned.
+#' @param Sample.df a data frame with class info as columns.  Must contain a
+#'   separate row entry for each unique sex and class combination. Must contain
+#'   the columns \code{"Sex","Class","n","Endogenous"}.
+#' @param xset4 an xcms object that has had peak picking, retention time
+#'   alignment, peak grouping, and imputing missing values performed
 #' @param BLANK a logical indicating whether blanks are being evaluated
-#' @param Peak.list a table of class 'tbl_df',tbl' or 'data.frame' with variables as columns.  Should contain all output columns from \code{XCMS} and \code{CAMERA}, and additional columns from \code{match_Annotation}.
-#' @return data frame containing the original table with one additional column 'Minfrac' at the end, followed by the CAMERA columns 'isotopes','adduct','pcgroup'
+#' @param Peak.list a table of class 'tbl_df',tbl' or 'data.frame' with
+#'   variables as columns.  Should contain all output columns from \code{XCMS}
+#'   and \code{CAMERA}, and additional columns from \code{match_Annotation()}.
+#' @return data frame containing the original table with one additional column
+#'   'Minfrac' at the end, followed by the CAMERA columns
+#'   'isotopes','adduct','pcgroup'
 #' @importFrom utils read.table write.table str head
 #' @importFrom stats variable.names
 #' @examples
@@ -351,22 +359,24 @@ calc_minfrac = function(Sample.df, xset4, BLANK, Peak.list) {
 #' @export
 #' @description Sums all features belonging to the same metabolite into a single
 #'   intensity value per metabolite group per sample
-#' @param Peak.list data frame. Must have column \code{metabolite_group}.
+#' @param Peak.list data frame. Must have column \code{"metabolite_group"}.
 #'   Should contain output columns from XCMS and CAMERA. Can contain columns
-#'   from functions \code{match_Annotation, calc_minfrac, ParseCAMERA,
-#'   plot_metgroup}.
+#'   from functions \code{match_Annotation(), calc_minfrac(), ParseCAMERA(),
+#'   plot_metgroup()}.
 #' @param Sample.df a data frame with class info as columns.  Must contain a
 #'   separate row entry for each unique sex/class combination. Must contain the
 #'   columns \code{"Sex","Class","n","Endogenous"}.
 #' @param search.par a single-row data frame with 11 variables containing
 #'   user-defined search parameters. Must contain the columns
-#'   \code{"ppm","rt","Voidrt","Corr.stat.pos","Corr.stat.neg","CV","Minfrac","Endogenous","Solvent","gen.plots","keep.singletons"}.
+#'   \code{"ppm"},\code{"rt"},\code{"Voidrt"},\code{"Corr.stat.pos"},\code{"Corr.stat.neg"},
+#'    \code{"CV"},\code{"Minfrac"}, \code{"Endogenous"},
+#'   \code{"Solvent"},\code{"gen.plots"}, \code{"keep.singletons"}.
 #' @param QC.id character vector specifying identifier in filename designating a
 #'   Pooled QC sample.  Only the first value will be used.  Default is
 #'   \code{"Pooled_QC_"}
 #' @param BLANK a logical indicating whether blanks are being evaluated
-#' @param IonMode a character string defining the ionization mode.  Must be
-#'   either 'Positive' or 'Negative'
+#' @param IonMode a character string defining the ionization mode.  Must be one
+#'   of \code{"Positive","Negative"}.
 #' @return sum.range.list with the first column containing metabolite group and
 #'   the rest containing sample and QC columns
 #' @importFrom data.table as.data.table
@@ -409,7 +419,9 @@ sum_features = function(Peak.list, Sample.df, search.par, QC.id, BLANK, IonMode)
 #'
 #' @export
 #' @description Calculates the CV value across all pooled QC samples
-#' @param Peak.list a table of class 'tbl_df',tbl' or 'data.frame' with variables as columns.  Should contain all output columns from XCMS and CAMERA.
+#' @param Peak.list a table of class 'tbl_df',tbl' or 'data.frame' with
+#'   variables as columns.  Should contain all output columns from \code{XCMS} and
+#'   \code{CAMERA}.
 #' @param QC.id character vector specifying identifier in filename designating a
 #'   Pooled QC sample.  Only the first value will be used.  Default is
 #'   \code{"Pooled_QC_"}

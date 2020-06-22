@@ -62,8 +62,9 @@ columns 'Sex','Class','n','Endogenous'.}
 
 \item{search.par}{a single-row data frame with 11 variables containing
 user-defined search parameters. Must contain the columns
-'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac','Endogenous',
-'Solvent','gen.plots','keep.singletons'.}
+\code{"ppm"},\code{"rt"},\code{"Voidrt"},\code{"Corr.stat.pos"},\code{"Corr.stat.neg"},
+ \code{"CV"},\code{"Minfrac"}, \code{"Endogenous"},
+\code{"Solvent"},\code{"gen.plots"}, \code{"keep.singletons"}.}
 
 \item{lib_db}{RSQLite connection}
 
@@ -93,6 +94,7 @@ nested list a list for each ionization mode, each containing a list
 }
 \description{
 Find components within Peak.list that are also present in the
-  process blanks below a user-defined sample:blank ratio.
-  See \code{remove_background_peaks} and \code{CullBackground} for examples that use this function.
+  process blanks below a user-defined sample:blank ratio. See
+  \code{remove_background_peaks} and \code{CullBackground} for examples that
+  use this function.
 }

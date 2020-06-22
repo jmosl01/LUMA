@@ -7,13 +7,16 @@
 remove_ion_dup(Peak.list, Key.list, tbl.id, ...)
 }
 \arguments{
-\item{Peak.list}{a data frame containing combined ion mode peaklist with Duplicate IDs.
-Alternatively can be retrieved from databases.  Default is NULL}
+\item{Peak.list}{a data frame containing combined ion mode peaklist with
+Duplicate IDs. Alternatively can be retrieved from databases.  Default is
+NULL}
 
-\item{Key.list}{list containing two numeric vectors \(one per ionization mode\) of ion mode duplicates to keep. Key (vector) corresponding to positive mode duplicates should be first.}
+\item{Key.list}{list containing two numeric vectors (one per ionization
+mode) of ion mode duplicates to keep. Key (vector) corresponding to
+positive mode duplicates should be first.}
 
-\item{tbl.id}{character string corresponding to table name to draw from database.
-Default is NULL}
+\item{tbl.id}{character string corresponding to table name to draw from
+database. Default is NULL}
 
 \item{...}{Arguments to pass parameters to database functions}
 }
@@ -21,7 +24,8 @@ Default is NULL}
 NULL testing
 }
 \description{
-Removes the ion mode duplicates based on user-modified indices after visual inspection of EIC_plots
+Removes the ion mode duplicates based on user-modified indices
+  after visual inspection of EIC_plots
 }
 \examples{
 library(LUMA)

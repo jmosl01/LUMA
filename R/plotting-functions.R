@@ -2,15 +2,15 @@
 #'
 #' @export
 #' @description Plots EICs and Pseudospectra from parsed metabolite groups using
-#'   \code{plotEICs-methods, plotPsSpectrum-methods} from \code{CAMERA}. Also plots
-#'   correlation matrices and clustered dendrograms for each parsed metabolite
-#'   group.
+#'   \code{plotEICs-methods()} and \code{plotPsSpectrum-methods()} from
+#'   \code{CAMERA}. Also plots correlation matrices and clustered dendrograms
+#'   for each parsed metabolite group.
 #' @param Sample.df a data frame with class info as columns.  Must contain a
 #'   separate row entry for each unique sex/class combination. Must contain the
 #'   columns \code{"Sex","Class","n","Endogenous"}.
 #' @param Peak.list a data frame from CAMERA that has been parsed.  Must contain
-#'   all output columns from \code{XCMS, CAMERA, ParseCAMERA}. Can contain
-#'   additional columns from \code{match_Annotation, calc_minfrac}.
+#'   all output columns from \code{XCMS, CAMERA, ParseCAMERA()}. Can contain
+#'   additional columns from \code{match_Annotation(), calc_minfrac()}.
 #' @param center numeric value indicating which sample to pick for plotting
 #'   purposes
 #' @param BLANK a logical indicating whether blanks are being evaluated. Default

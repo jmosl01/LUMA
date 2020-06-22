@@ -14,7 +14,8 @@ columns from XCMS and CAMERA, additional columns from \code{match_Annotation} an
 
 \item{rule}{a data frame containing the rule list used by CAMERA to annotate
 ion adducts and fragments.  Must contain the columns
-\code{"name","nmol","charge","massdiff","oidscore","quasi","ips"}.}
+\code{"name"},\code{"nmol"},\code{"charge"},\code{"massdiff"},\code{"oidscore"},
+\code{"quasi"},\code{"ips"}.}
 
 \item{IonMode}{a character string defining the ionization mode.  Must be
 \code{"Negative"}}
@@ -22,7 +23,8 @@ ion adducts and fragments.  Must contain the columns
 \value{
 data frame parsed version of the original data frame with additional
   columns
-  \code{"mono_mass","metabolite_group","monoisotopic_flg","adduct_flg","isotope_flg","ambiguity_flg","Selection_flg"}
+  \code{"mono_mass"},\code{"metabolite_group"},\code{"monoisotopic_flg"},
+  \code{"adduct_flg"},\code{"isotope_flg"},\code{"ambiguity_flg"},\code{"Selection_flg"}.
 }
 \description{
 Parses the CAMERA results using well-defined rules to eliminate

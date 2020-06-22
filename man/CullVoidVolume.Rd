@@ -16,17 +16,6 @@ CullVoidVolume(from.table, to.table, method)
 }
 \description{
 Culls the Peak.list by removing all components coming from the
-  void volume. See \code{remove_void_volume} for more details. For working
-  examples, see \code{InitWorkflow, AnnotatePeaklist, CombineFeatures,
-  CombinePeaklists, CullBackground, CullMF, CullCV, CullVoidVolume,
-  FormatForMetaboAnalystR, FormatForSIMCA, NormalizePeaklists, ParseCAMERA,
-  SimplyPeaklists, FinalWorkflow}.
-}
-\examples{
-\dontrun{
-library(LUMA)
-db.dir <- system.file('extdata', package = "LUMA")
-InitWorkflow(db.dir = db.dir)
-CullVoidVolume(from.table = "From_CAMERA", to.table = "Trimmed_by_RT")
-}
+  void volume. See \code{remove_void_volume()} for more details. For
+  examples, see \code{InitWorkflow()} and vignettes.
 }

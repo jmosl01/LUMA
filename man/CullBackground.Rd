@@ -17,39 +17,18 @@ Should be twice as long as the number of processed ion modes.}
 \item{method}{which method to use to remove background components.}
 
 \item{db.list}{vector of database names containing results from processing
-modules. Can be left blank. See connect_lumadb for details.}
+modules. Can be left blank. See \code{connect_lumadb()} for details.}
 
-\item{db.dir}{directory containing the databases. Default is 'db'}
+\item{db.dir}{directory containing the databases. Default is \code{"db"}.}
 
 \item{new.db}{what should the new database be called. Default is
-'Peaklist_db'}
+\code{"Peaklist_db"}.}
 
 \item{lib.db}{what should the library containing the background components be
-called. Default is 'Background Components Library'}
+called. Default is \code{"Background Components Library"}.}
 }
 \description{
 Culls the Peak.list by removing background components. See
-  \code{remove_background_peaks} for more details. For working examples, see
-  \code{InitWorkflow, AnnotatePeaklist, CombineFeatures, CombinePeaklists,
-  CullBackground, CullMF, CullCV, CullVoidVolume, FormatForMetaboAnalystR,
-  FormatForSIMCA, NormalizePeaklists, ParseCAMERA, SimplyPeaklists,
-  FinalWorkflow}.
-}
-\examples{
-\dontrun{
-library(LUMA)
-if(require(lcmsfishdata, quietly = TRUE)){
-
-  db.dir <- system.file('extdata', package = "lcmsfishdata")
-  InitWorkflow(db.dir = db.dir)
-  CullBackground(from.tables =
-  c("Trimmed_by_MinFrac","Combined_Isotopes_and_Adducts"),
-               to.tables = c("Peaklist_Pos_Solvent_Peaks_Removed",
-                             "Peaklist_Neg_Solvent_Peaks_Removed",
-                             "Peaklist_Pos_Solvent Peaks Only",
-                             "Peaklist_Neg_Solvent Peaks Only"),
-               method = "monoMass")
-
-  }
-}
+  \code{remove_background_peaks()} for more details. For examples, see
+  \code{InitWorkflow()}.
 }

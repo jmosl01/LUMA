@@ -24,15 +24,15 @@ the formatted Peaklist}
 format_MetabolomicData for options.}
 
 \item{anal.type}{character Indicates the analysis module the data will be
-used for. See usage and documentation for MetaboAnalystR::InitDataObjects()
-for options.}
+used for. See usage and documentation for
+\code{MetaboAnalystR::InitDataObjects()} for options.}
 
 \item{paired}{logical Indicate if the data is paired or not. Default is FALSE}
 
 \item{peak.db}{what database contains the Peaklists to be combined. Default
-is 'Peaklist_db'}
+is \code{"Peaklist_db"}.}
 
-\item{db.dir}{directory containing the database. Default is 'db'}
+\item{db.dir}{directory containing the database. Default is \code{"db"}.}
 }
 \value{
 mSetObj
@@ -40,20 +40,6 @@ mSetObj
 \description{
 This function initializes objects that will hold the metabolite
   data, formats peak intensity data into one of the formats acceptable by
-  MetaboAnalystR, and sets the metabolite data object. For working examples,
-  see \code{InitWorkflow, AnnotatePeaklist, CombineFeatures,
-  CombinePeaklists, CullBackground, CullMF, CullCV, CullVoidVolume,
-  FormatForMetaboAnalystR, FormatForSIMCA, NormalizePeaklists, ParseCAMERA,
-  SimplyPeaklists, FinalWorkflow}.
-}
-\examples{
-\dontrun{
-library(LUMA)
-db.dir <- system.file('extdata', package = "LUMA")
-InitWorkflow(db.dir = db.dir)
-AnnotatePeaklist(from.table = "From_CAMERA", to.table = "Annotated")
-FormatForMetaboAnalystR(from.table = "Annotated", to.csv =
-"Peaklist_for_MetaboAnalyist", peak.db = peak_db, db.dir = db.dir)
-FinalWorkflow(peak_db = peak_db, lib_db = lib_db)
-}
+  MetaboAnalystR, and sets the metabolite data object. For examples, see
+  \code{InitWorkflow()} and vignettes.
 }

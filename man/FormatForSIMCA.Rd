@@ -13,27 +13,13 @@ FormatForSIMCA(from.table, to.csv, peak.db, db.dir)
 the formatted Peaklist}
 
 \item{peak.db}{what database contains the Peaklists to be combined. Default
-is 'Peaklist_db'}
+is \code{"Peaklist_db"}.}
 
-\item{db.dir}{directory containing the database. Default is 'db'}
+\item{db.dir}{directory containing the database. Default is \code{"db"}.}
 }
 \description{
 Formats Peaklists processed by LUMA and exports a csv file for
   direct import into the multivariate statistical software SIMCA. See
-  \code{format_simca} for more details. For working examples, see
-  \code{InitWorkflow, AnnotatePeaklist, CombineFeatures, CombinePeaklists,
-  CullBackground, CullMF, CullCV, CullVoidVolume, FormatForMetaboAnalystR,
-  FormatForSIMCA, NormalizePeaklists, ParseCAMERA, SimplyPeaklists,
-  FinalWorkflow}.
-}
-\examples{
-\dontrun{
-library(LUMA)
-db.dir <- system.file('extdata', package = "LUMA")
-InitWorkflow(db.dir = db.dir)
-AnnotatePeaklist(from.table = "From_CAMERA", to.table = "Annotated")
-FormatForSIMCA(from.table = "Annotated", to.csv = "Peaklist_for_SIMCA",
-peak.db = peak_db, db.dir = db.dir)
-FinalWorkflow(peak_db = peak_db, lib_db = lib_db)
-}
+  \code{format_simca()} for more details. For examples, see
+  \code{InitWorkflow()} and vignettes.
 }

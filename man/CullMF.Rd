@@ -12,21 +12,10 @@ CullMF(from.table, to.table, method)
 \item{to.table}{to which should LUMA save the modified Peak.list}
 
 \item{method}{which method to apply to trim by minimum fraction values.  See
-\code{trim_minfrac} for details.}
+\code{trim_minfrac()} for details.}
 }
 \description{
 Culls the Peak.list by removing all components with minimum
-  fraction less than the user-specified cutoff. See \code{trim_minfrac} for
-  more details. For working examples, see \code{InitWorkflow,
-  AnnotatePeaklist, CombineFeatures, CombinePeaklists, CullBackground,
-  CullMF, CullCV, CullVoidVolume, FormatForMetaboAnalystR, FormatForSIMCA,
-  NormalizePeaklists, ParseCAMERA, SimplyPeaklists, FinalWorkflow}.
-}
-\examples{
-\dontrun{
-library(LUMA)
-db.dir <- system.file('extdata', package = "LUMA")
-InitWorkflow(db.dir = db.dir)
-CullMF(from.table = "From_CAMERA_with_MinFrac", to.table = "Trimmed_by_MinFrac")
-}
+  fraction less than the user-specified cutoff. See \code{trim_minfrac()} for
+  more details. For examples, see \code{InitWorkflow()} and vignettes.
 }

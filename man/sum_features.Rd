@@ -7,10 +7,10 @@
 sum_features(Peak.list, Sample.df, search.par, QC.id, BLANK, IonMode)
 }
 \arguments{
-\item{Peak.list}{data frame. Must have column \code{metabolite_group}.
+\item{Peak.list}{data frame. Must have column \code{"metabolite_group"}.
 Should contain output columns from XCMS and CAMERA. Can contain columns
-from functions \code{match_Annotation, calc_minfrac, ParseCAMERA,
-plot_metgroup}.}
+from functions \code{match_Annotation(), calc_minfrac(), ParseCAMERA(),
+plot_metgroup()}.}
 
 \item{Sample.df}{a data frame with class info as columns.  Must contain a
 separate row entry for each unique sex/class combination. Must contain the
@@ -18,7 +18,9 @@ columns \code{"Sex","Class","n","Endogenous"}.}
 
 \item{search.par}{a single-row data frame with 11 variables containing
 user-defined search parameters. Must contain the columns
-\code{"ppm","rt","Voidrt","Corr.stat.pos","Corr.stat.neg","CV","Minfrac","Endogenous","Solvent","gen.plots","keep.singletons"}.}
+\code{"ppm"},\code{"rt"},\code{"Voidrt"},\code{"Corr.stat.pos"},\code{"Corr.stat.neg"},
+ \code{"CV"},\code{"Minfrac"}, \code{"Endogenous"},
+\code{"Solvent"},\code{"gen.plots"}, \code{"keep.singletons"}.}
 
 \item{QC.id}{character vector specifying identifier in filename designating a
 Pooled QC sample.  Only the first value will be used.  Default is
@@ -26,8 +28,8 @@ Pooled QC sample.  Only the first value will be used.  Default is
 
 \item{BLANK}{a logical indicating whether blanks are being evaluated}
 
-\item{IonMode}{a character string defining the ionization mode.  Must be
-either 'Positive' or 'Negative'}
+\item{IonMode}{a character string defining the ionization mode.  Must be one
+of \code{"Positive","Negative"}.}
 }
 \value{
 sum.range.list with the first column containing metabolite group and

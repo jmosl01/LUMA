@@ -26,8 +26,8 @@ separate row entry for each unique sex/class combination. Must contain the
 columns \code{"Sex","Class","n","Endogenous"}.}
 
 \item{Peak.list}{a data frame from CAMERA that has been parsed.  Must contain
-all output columns from \code{XCMS, CAMERA, ParseCAMERA}. Can contain
-additional columns from \code{match_Annotation, calc_minfrac}.}
+all output columns from \code{XCMS, CAMERA, ParseCAMERA()}. Can contain
+additional columns from \code{match_Annotation(), calc_minfrac()}.}
 
 \item{center}{numeric value indicating which sample to pick for plotting
 purposes}
@@ -56,9 +56,9 @@ List of length 2.  1st element is a data frame with all columns as
 }
 \description{
 Plots EICs and Pseudospectra from parsed metabolite groups using
-  \code{plotEICs-methods, plotPsSpectrum-methods} from \code{CAMERA}. Also plots
-  correlation matrices and clustered dendrograms for each parsed metabolite
-  group.
+  \code{plotEICs-methods()} and \code{plotPsSpectrum-methods()} from
+  \code{CAMERA}. Also plots correlation matrices and clustered dendrograms
+  for each parsed metabolite group.
 }
 \examples{
 library(LUMA)

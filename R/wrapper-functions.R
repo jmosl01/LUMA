@@ -5,9 +5,11 @@
 #'   and return xcms objects
 #' @param mzdatafiles a character vector of data files with full path names
 #' @param XCMS.par a single-row data frame with 13 variables containing
-#'   parameters for \code{xcms}. Must include the columns \code{c("Peakwidth1",
-#'   "Peakwidth2","ppm","noise","snthresh","mzdiff","prefilter1","prefilter2",
-#'   "center","gapInit","bw","mzwid","minfrac")}.
+#'   parameters for \code{xcms}. Must include the columns \code{"Peakwidth1"},
+#'   \code{"Peakwidth2"},\code{"ppm"},\code{"noise"},\code{"snthresh"},\code{"mzdiff"},
+#'
+#'   \code{"prefilter1"},\code{"prefilter2"},\code{"center"},\code{"gapInit"},\code{"bw"},
+#'    \code{"mzwid"},\code{"minfrac"}.
 #' @param file.base character return from \code{gen_filebase}.
 #' @return two \code{xcmsSet} objects \code{xset,xset4} without and with
 #'   retention time alignment, peak grouping, and imputed missing values,
@@ -31,7 +33,8 @@
 #'
 #'     #Runs XCMS This requires access to raw datafiles and won't work with
 #'     #lcmsfishdata. Better to use your own data here.
-#'     test <- wrap_xcms(mzdatafiles = mzdatafiles, XCMS.par = XCMS.par, file.base = file.base)
+#'     test <- wrap_xcms(mzdatafiles = mzdatafiles, XCMS.par = XCMS.par,
+#'     file.base = file.base)
 #'     }
 #'
 #' }
@@ -77,17 +80,20 @@ wrap_xcms = function(mzdatafiles, XCMS.par, file.base) {
 #' @export
 #' @description Run a simple CAMERA workflow with user defined input parameters
 #'   and return xsAnnotate objects
-#' @param xcms.obj an \code{xcmsSet} object that has had peak picking, retention time
-#'   alignment, peak grouping, and imputing missing values performed.
+#' @param xcms.obj an \code{xcmsSet} object that has had peak picking, retention
+#'   time alignment, peak grouping, and imputing missing values performed.
 #' @param CAMERA.par a single-row data frame with 9 variables containing CAMERA
-#'   parameters. Must include columns \code{c("perfwhm","sigma","minfrac","mzabs",
-#'   "maxiso","corval_eic","corval_exp","pval","mzabs.1")}.
+#'   parameters. Must include columns
+#'   \code{"perfwhm"},\code{"sigma"},\code{minfrac"},
+#'   \code{"mzabs"},\code{"maxiso"},\code{"corval_eic"},\code{"corval_exp"},\code{"pval"},
+#'    \code{"mzabs.1"}.
 #' @param IonMode a character string defining the ionization mode.  Must be one
 #'   of \code{c("Positive","Negative")}.
 #' @return two grouped \code{xsannotate} objects \code{mz1setpos,anposGa}
 #'   without and with annotated isotopes and ion adducts and fragments,
 #'   respectively.
-#' @importFrom CAMERA xsAnnotate groupFWHM groupCorr findIsotopes findAdducts getPeaklist
+#' @importFrom CAMERA xsAnnotate groupFWHM groupCorr findIsotopes findAdducts
+#'   getPeaklist
 #' @examples
 #' library(LUMA)
 #' if(require(lcmsfishdata, quietly = TRUE)) {

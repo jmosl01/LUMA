@@ -7,7 +7,9 @@
 calc_cv(Peak.list, QC.id)
 }
 \arguments{
-\item{Peak.list}{a table of class 'tbl_df',tbl' or 'data.frame' with variables as columns.  Should contain all output columns from XCMS and CAMERA.}
+\item{Peak.list}{a table of class 'tbl_df',tbl' or 'data.frame' with
+variables as columns.  Should contain all output columns from \code{XCMS} and
+\code{CAMERA}.}
 
 \item{QC.id}{character vector specifying identifier in filename designating a
 Pooled QC sample.  Only the first value will be used.  Default is

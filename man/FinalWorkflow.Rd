@@ -14,8 +14,5 @@ FinalWorkflow(peak_db, lib_db)
 \description{
 All LUMA workflows must end with this module. Records the names
   of existing data tables and writes out the LUMA log file for traceability.
-  For working examples, see \code{InitWorkflow, AnnotatePeaklist,
-  CombineFeatures, CombinePeaklists, CullBackground, CullMF, CullCV,
-  CullVoidVolume, FormatForMetaboAnalystR, FormatForSIMCA,
-  NormalizePeaklists, ParseCAMERA, SimplyPeaklists, FinalWorkflow}.
+  For examples, see \code{InitWorkflow()} and vignettes.
 }

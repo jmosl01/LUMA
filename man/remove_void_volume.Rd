@@ -13,12 +13,14 @@ IHL.search, Calc.MinFrac, Calc.corr.stat and EIC.plotter functions.}
 
 \item{search.par}{a single-row data frame with 11 variables containing
 user-defined search parameters. Must contain the columns
-\code{"ppm","rt","Voidrt","Corr.stat.pos","Corr.stat.neg","CV","Minfrac","Endogenous","Solvent","gen.plots","keep.singletons"}.}
+\code{"ppm"},\code{"rt"},\code{"Voidrt"},\code{"Corr.stat.pos"},\code{"Corr.stat.neg"},
+\code{"CV"},\code{"Minfrac"}, \code{"Endogenous"},
+\code{"Solvent"},\code{"gen.plots"}, \code{"keep.singletons"}.}
 
-\item{method}{which method to apply to trim by retention time.  See trim_rt
-for details}
+\item{method}{which method to apply to trim by retention time.  See
+\code{trim_rt()} for details.}
 
-\item{...}{Arguments to pass to trim_rt}
+\item{...}{Arguments to pass to \code{trim_rt()}.}
 }
 \value{
 data frame Peak.list.trimmed original Peak.list without all

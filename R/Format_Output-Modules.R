@@ -3,27 +3,14 @@
 #' @export
 #' @description Formats Peaklists processed by LUMA and exports a csv file for
 #'   direct import into the multivariate statistical software SIMCA. See
-#'   \code{format_simca} for more details. For working examples, see
-#'   \code{InitWorkflow, AnnotatePeaklist, CombineFeatures, CombinePeaklists,
-#'   CullBackground, CullMF, CullCV, CullVoidVolume, FormatForMetaboAnalystR,
-#'   FormatForSIMCA, NormalizePeaklists, ParseCAMERA, SimplyPeaklists,
-#'   FinalWorkflow}.
+#'   \code{format_simca()} for more details. For examples, see
+#'   \code{InitWorkflow()} and vignettes.
 #' @param from.table from which table should LUMA read the Peaklist
 #' @param to.csv to what filename (excluding .csv extension) should LUMA save
 #'   the formatted Peaklist
 #' @param peak.db what database contains the Peaklists to be combined. Default
-#'   is 'Peaklist_db'
-#' @param db.dir directory containing the database. Default is 'db'
-#' @examples
-#' \dontrun{
-#' library(LUMA)
-#' db.dir <- system.file('extdata', package = "LUMA")
-#' InitWorkflow(db.dir = db.dir)
-#' AnnotatePeaklist(from.table = "From_CAMERA", to.table = "Annotated")
-#' FormatForSIMCA(from.table = "Annotated", to.csv = "Peaklist_for_SIMCA",
-#' peak.db = peak_db, db.dir = db.dir)
-#' FinalWorkflow(peak_db = peak_db, lib_db = lib_db)
-#' }
+#'   is \code{"Peaklist_db"}.
+#' @param db.dir directory containing the database. Default is \code{"db"}.
 FormatForSIMCA <- function(from.table,to.csv,peak.db,db.dir) {
 
   #Set default values
@@ -59,34 +46,21 @@ FormatForSIMCA <- function(from.table,to.csv,peak.db,db.dir) {
 #' @export
 #' @description This function initializes objects that will hold the metabolite
 #'   data, formats peak intensity data into one of the formats acceptable by
-#'   MetaboAnalystR, and sets the metabolite data object. For working examples,
-#'   see \code{InitWorkflow, AnnotatePeaklist, CombineFeatures,
-#'   CombinePeaklists, CullBackground, CullMF, CullCV, CullVoidVolume,
-#'   FormatForMetaboAnalystR, FormatForSIMCA, NormalizePeaklists, ParseCAMERA,
-#'   SimplyPeaklists, FinalWorkflow}.
+#'   MetaboAnalystR, and sets the metabolite data object. For examples, see
+#'   \code{InitWorkflow()} and vignettes.
 #' @param from.table from which table should LUMA read the Peaklist
 #' @param to.csv to what filename (excluding .csv extension) should LUMA save
 #'   the formatted Peaklist
 #' @param data.type What type of data will be generated. See usage and
 #'   format_MetabolomicData for options.
 #' @param anal.type character Indicates the analysis module the data will be
-#'   used for. See usage and documentation for MetaboAnalystR::InitDataObjects()
-#'   for options.
+#'   used for. See usage and documentation for
+#'   \code{MetaboAnalystR::InitDataObjects()} for options.
 #' @param paired logical Indicate if the data is paired or not. Default is FALSE
 #' @param peak.db what database contains the Peaklists to be combined. Default
-#'   is 'Peaklist_db'
-#' @param db.dir directory containing the database. Default is 'db'
+#'   is \code{"Peaklist_db"}.
+#' @param db.dir directory containing the database. Default is \code{"db"}.
 #' @return mSetObj
-#' @examples
-#' \dontrun{
-#' library(LUMA)
-#' db.dir <- system.file('extdata', package = "LUMA")
-#' InitWorkflow(db.dir = db.dir)
-#' AnnotatePeaklist(from.table = "From_CAMERA", to.table = "Annotated")
-#' FormatForMetaboAnalystR(from.table = "Annotated", to.csv =
-#' "Peaklist_for_MetaboAnalyist", peak.db = peak_db, db.dir = db.dir)
-#' FinalWorkflow(peak_db = peak_db, lib_db = lib_db)
-#' }
 FormatForMetaboAnalystR <- function(from.table, to.csv, data.type = "pktable",
                                     anal.type = "stat", paired = FALSE, peak.db, db.dir)
 {

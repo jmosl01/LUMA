@@ -23,11 +23,8 @@ the file \code{"Peaklist_Combined.csv"} is written to the working
 }
 \description{
 Combines Peaklists from positive and negative ionization modes
-  without removing ion mode duplicates. For working examples, see
-  \code{InitWorkflow, AnnotatePeaklist, CombineFeatures, CombinePeaklists,
-  CullBackground, CullMF, CullCV, CullVoidVolume, FormatForMetaboAnalystR,
-  FormatForSIMCA, NormalizePeaklists, ParseCAMERA, SimplyPeaklists,
-  FinalWorkflow}.
+  without removing ion mode duplicates. For examples, see
+  \code{InitWorkflow()} and vignettes.
 }
 \examples{
 \dontrun{

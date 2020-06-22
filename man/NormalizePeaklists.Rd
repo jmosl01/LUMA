@@ -14,23 +14,10 @@ NormalizePeaklists(from.table, to.table, peak.db, db.dir)
 \item{peak.db}{what database contains the Peaklists to be combined. Default
 is 'Peaklist_db'}
 
-\item{db.dir}{directory containing the database. Default is 'db'}
+\item{db.dir}{directory containing the database. Default is \code{"db"}.}
 }
 \description{
 Normalizes Peaklists from positive and negative ionization modes
-  separately. See \code{replace_zeros_normalize} for more details. For
-  working examples, see \code{InitWorkflow, AnnotatePeaklist,
-  CombineFeatures, CombinePeaklists, CullBackground, CullMF, CullCV,
-  CullVoidVolume, FormatForMetaboAnalystR, FormatForSIMCA,
-  NormalizePeaklists, ParseCAMERA, SimplyPeaklists, FinalWorkflow}.
-}
-\examples{
-\dontrun{
-library(LUMA)
-db.dir <- system.file('extdata', package = "LUMA")
-InitWorkflow(db.dir = db.dir)
-NormalizePeaklists(from.table = "From_CAMERA", to.table = "Normalized",
-peak.db = peak_db, db.dir = db.dir)
-FinalWorkflow(peak_db = peak_db, lib_db = lib_db)
-}
+  separately. See \code{replace_zeros_normalize()} for more details. For
+  examples, see \code{InitWorkflow()} and vignettes.
 }

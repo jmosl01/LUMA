@@ -12,15 +12,13 @@ AnnotatePeaklist(from.table, to.table, lib.db, ...)
 \item{to.table}{to which should LUMA save the modified Peak.list}
 
 \item{lib.db}{character name of In House Library database. Default is
-'Annotated Library'}
+\code{"Annotated Library"}.}
 
-\item{...}{arguments to pass to match_Annotation.}
+\item{...}{arguments to pass to \code{match_Annotation()}.}
 }
 \description{
 Compares isotope and adduct annotations within Peaklist to
   user-defined annotation library. For more details, see
-  \code{match_Annotation}. For working examples, see \code{InitWorkflow,
-  AnnotatePeaklist, CombineFeatures, CombinePeaklists, CullBackground,
-  CullMF, CullCV, CullVoidVolume, FormatForMetaboAnalystR, FormatForSIMCA,
-  NormalizePeaklists, ParseCAMERA, SimplyPeaklists, FinalWorkflow}.
+  \code{match_Annotation}. For examples, see \code{InitWorkflow()} and
+  vignettes.
 }

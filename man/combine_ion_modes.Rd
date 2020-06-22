@@ -9,13 +9,14 @@ combine_ion_modes(Peak.list, search.par, tbl.id, method, peak.db, ...)
 \arguments{
 \item{Peak.list}{a named list of data frames (one per ionization mode)
 containing intensity matrices across all study samples and Pooled QCs.
-Names must be \code{c("Positive","Negative")}.  Alternatively may use existing
-database connections by setting to NULL}
+Names must be \code{c("Positive","Negative")}.  Alternatively may use
+existing database connections by setting to NULL}
 
 \item{search.par}{a single-row data frame with 11 variables containing
 user-defined search parameters. Must contain the columns
-\code{'ppm','rt','Voidrt','Corr.stat.pos','Corr.stat.neg','CV','Minfrac',
-'Endogenous','Solvent','gen.plots','keep.singletons'}.}
+\code{"ppm"},\code{"rt"},\code{"Voidrt"},\code{"Corr.stat.pos"},\code{"Corr.stat.neg"},
+ \code{"CV"},\code{"Minfrac"}, \code{"Endogenous"},
+\code{"Solvent"},\code{"gen.plots"}, \code{"keep.singletons"}.}
 
 \item{tbl.id}{character vector of table names to draw from databases.  First
 value should be table containing compounds from positive ionization, second
@@ -23,11 +24,11 @@ should be table containing compounds from negative ionization. Default is
 NULL.}
 
 \item{method}{which method to apply to search for duplicate entries. See
-\code{search_IonDup} for details.}
+\code{search_IonDup()} for details.}
 
 \item{peak.db}{Formal class SQLiteConnection}
 
-\item{...}{Arguments to pass parameters to \code{search_IonDup}}
+\item{...}{Arguments to pass parameters to \code{search_IonDup()}}
 }
 \value{
 data frame containing the intensity matrix for the peaklist with

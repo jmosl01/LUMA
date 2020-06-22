@@ -13,24 +13,6 @@ CombineFeatures(from.table, to.table)
 }
 \description{
 Combines all well-behaved features in metabolite groups into a
-  single entry per metabolite. See \code{sum_features, combine_phenodata} for
-  more details. For working examples, see \code{InitWorkflow,
-  AnnotatePeaklist, CombineFeatures, CombinePeaklists, CullBackground,
-  CullMF, CullCV, CullVoidVolume, FormatForMetaboAnalystR, FormatForSIMCA,
-  NormalizePeaklists, ParseCAMERA, SimplyPeaklists, FinalWorkflow}.
-}
-\examples{
-\dontrun{
-library(LUMA)
-if(require(lcmsfishdata, quietly = TRUE)) {
-  db.dir <- system.file('extdata', package = "lcmsfishdata")
-  InitWorkflow(db.dir = db.dir)
-  AnnotatePeaklist(from.table = "From_CAMERA", to.table = "Annotated")
-  ParseCAMERA(from.table = "Annotated", to.table = "output_parsed", CAMERA.obj
-  = anposGa)
-  CombineFeatures(from.table = "output_parsed", to.table =
-  "Combined_Isotopes_and_Adducts")
-  FinalWorkflow(peak_db = peak_db, lib_db = lib_db)
-  }
-}
+  single entry per metabolite. See \code{sum_features(), combine_phenodata()}
+  for more details. For examples, see \code{InitWorkflow()} and vignettes.
 }

@@ -10,9 +10,11 @@ wrap_xcms(mzdatafiles, XCMS.par, file.base)
 \item{mzdatafiles}{a character vector of data files with full path names}
 
 \item{XCMS.par}{a single-row data frame with 13 variables containing
-parameters for \code{xcms}. Must include the columns \code{c("Peakwidth1",
-"Peakwidth2","ppm","noise","snthresh","mzdiff","prefilter1","prefilter2",
-"center","gapInit","bw","mzwid","minfrac")}.}
+  parameters for \code{xcms}. Must include the columns \code{"Peakwidth1"},
+  \code{"Peakwidth2"},\code{"ppm"},\code{"noise"},\code{"snthresh"},\code{"mzdiff"},
+
+  \code{"prefilter1"},\code{"prefilter2"},\code{"center"},\code{"gapInit"},\code{"bw"},
+   \code{"mzwid"},\code{"minfrac"}.}
 
 \item{file.base}{character return from \code{gen_filebase}.}
 }
@@ -44,7 +46,8 @@ if(require(lcmsfishdata, quietly = TRUE)) {
 
     #Runs XCMS This requires access to raw datafiles and won't work with
     #lcmsfishdata. Better to use your own data here.
-    test <- wrap_xcms(mzdatafiles = mzdatafiles, XCMS.par = XCMS.par, file.base = file.base)
+    test <- wrap_xcms(mzdatafiles = mzdatafiles, XCMS.par = XCMS.par,
+    file.base = file.base)
     }
 
 }

@@ -13,7 +13,8 @@
 #' @return character
 #' @examples
 #' library(LUMA)
-#' file <- system.file("extdata","Sample_Data.csv", package =  "LUMA") # is case sensitive on Linux
+#' # is case sensitive on Linux
+#' file <- system.file("extdata","Sample_Data.csv", package =  "LUMA")
 #' sample_data <- read.table(file, header = TRUE, sep = ",")
 #' mzdatafiles <- sample_data$CT.ID
 #' test <- gen_filebase(mzdatafiles = mzdatafiles, BLANK = FALSE, IonMode =
@@ -56,15 +57,16 @@ gen_filebase = function(mzdatafiles, BLANK, ion.id, IonMode) {
 #'   Peak.list; if doesn't exist, creates new database
 #' @param file.base character return from gen_filebase function
 #' @param db.dir character what should the database directory be called.
-#'   Default is 'db'
-#' @param mem logical should database be in-memory. Default is FALSE
+#'   Default is \code{"db"}.
+#' @param mem logical should database be in-memory. Default is \code{FALSE}.
 #' @return Formal class SQLiteConnection
 #' @importFrom DBI dbConnect
 #' @importFrom RSQLite SQLite
 #' @examples
 #' library(LUMA)
 #' if(require(RSQLite, quietly = TRUE)) {
-#' file <- system.file('extdata','Sample_Data.csv', package =  "LUMA") # is case sensitive on Linux
+#' # is case sensitive on Linux
+#' file <- system.file('extdata','Sample_Data.csv', package =  "LUMA")
 #' sample_data <- read.table(file, header = TRUE, sep = ",")
 #' mzdatafiles <- sample_data$CT.ID
 #' file.base <- gen_filebase(mzdatafiles = mzdatafiles, BLANK = FALSE, IonMode =

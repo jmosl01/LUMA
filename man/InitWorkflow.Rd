@@ -65,12 +65,9 @@ Default is \code{FALSE}.}
 global variables and Peaklist in database are returned
 }
 \description{
-All LUMA workflows must start with this module Creates the
-  first Peaklist and sets up storing and passing Peaklists and ancillary data
-  between modules. For working examples, see \code{InitWorkflow, AnnotatePeaklist,
-  CombineFeatures, CombinePeaklists, CullBackground, CullMF, CullCV,
-  CullVoidVolume, FormatForMetaboAnalystR, FormatForSIMCA,
-  NormalizePeaklists, ParseCAMERA, SimplyPeaklists, FinalWorkflow}.
+All LUMA workflows must start with this module Creates the first
+  Peaklist and sets up storing and passing Peaklists and ancillary data
+  between modules. For examples, see \code{InitWorkflow()} and vignettes.
 }
 \examples{
 \dontrun{
