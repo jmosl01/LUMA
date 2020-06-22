@@ -118,10 +118,10 @@ calc_corrstat = function(Sample.df, Peak.list, get.mg, BLANK, IonMode) {
 #' @export
 #' @description Calculates the fraction of samples within each class that contains a given feature.
 #' Only the minimum fraction across all sample classes is returned.
-#' @param Sample.df a data frame with class info as columns.  Must contain a separate row entry for each unique sex/class combination. Must contain the columns 'Sex','Class','n','Endogenous'.
+#' @param Sample.df a data frame with class info as columns.  Must contain a separate row entry for each unique sex and class combination. Must contain the columns \code{"Sex","Class","n","Endogenous"}.
 #' @param xset4 an xcms object that has had peak picking, retention time alignment, peak grouping, and imputing missing values performed
 #' @param BLANK a logical indicating whether blanks are being evaluated
-#' @param Peak.list a table of class 'tbl_df',tbl' or 'data.frame' with variables as columns.  Should contain all output columns from XCMS and CAMERA, and additional columns from IHL.search.
+#' @param Peak.list a table of class 'tbl_df',tbl' or 'data.frame' with variables as columns.  Should contain all output columns from \code{XCMS} and \code{CAMERA}, and additional columns from \code{match_Annotation}.
 #' @return data frame containing the original table with one additional column 'Minfrac' at the end, followed by the CAMERA columns 'isotopes','adduct','pcgroup'
 #' @importFrom utils read.table write.table str head
 #' @importFrom stats variable.names

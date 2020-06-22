@@ -9,7 +9,7 @@
 #'   separate row entry for each unique sex/class combination. Must contain the
 #'   columns \code{"Sex","Class","n","Endogenous"}.
 #' @param Peak.list a data frame from CAMERA that has been parsed.  Must contain
-#'   all output columns from \code{XCMS, CAMERA, ParseCAMERA}.Can contain
+#'   all output columns from \code{XCMS, CAMERA, ParseCAMERA}. Can contain
 #'   additional columns from \code{match_Annotation, calc_minfrac}.
 #' @param center numeric value indicating which sample to pick for plotting
 #'   purposes

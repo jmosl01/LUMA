@@ -2,10 +2,16 @@ Package: LUMA
 Type: Package
 Title: LCMS-Based Untargeted Metabolomics Assistant
 Version: 2.0
-Authors@R: as.person(c(
-          "Jonathan Mosley <mosley.jonathan@epa.gov> [aut, cre]",
-          "Marina Evich <evich.marina@epa.gov> [aut]",
-          "Wilson Melendez <melendez.wilson@epa.gov> [aut]"
+Authors@R: c(
+      person( c("Jonathan" , "D.") , "Mosley" , 
+      email = "mosley.jonathan@epa.gov", 
+      role = c("aut" , "cre"), 
+      comment = c(ORCID = "0000-0002-9300-6924")),
+      person( c("Marina" , "G.") , "Evich" , 
+      email = "evich.marina@epa.gov", role = "aut", 
+      comment = c(ORCID = "0000-0002-2386-0682")),
+      person( c("Wilson") , "Melendez" , 
+      email = "melendez.wilson@epa.gov", role = "aut"
       ))
 Description: Performs quality control and feature reduction steps on discovery-based metabolomics data.  
 License: CC0
