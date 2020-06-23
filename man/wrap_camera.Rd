@@ -12,9 +12,9 @@ time alignment, peak grouping, and imputing missing values performed.}
 
 \item{CAMERA.par}{a single-row data frame with 9 variables containing CAMERA
 parameters. Must include columns
-\code{"perfwhm"},\code{"sigma"},\code{minfrac"},
+\code{"perfwhm"},\code{"sigma"},\code{"minfrac"},
 \code{"mzabs"},\code{"maxiso"},\code{"corval_eic"},\code{"corval_exp"},\code{"pval"},
- \code{"mzabs.1"}.}
+\code{"mzabs.1"}.}
 
 \item{IonMode}{a character string defining the ionization mode.  Must be one
 of \code{c("Positive","Negative")}.}

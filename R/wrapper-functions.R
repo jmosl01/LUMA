@@ -84,9 +84,9 @@ wrap_xcms = function(mzdatafiles, XCMS.par, file.base) {
 #'   time alignment, peak grouping, and imputing missing values performed.
 #' @param CAMERA.par a single-row data frame with 9 variables containing CAMERA
 #'   parameters. Must include columns
-#'   \code{"perfwhm"},\code{"sigma"},\code{minfrac"},
+#'   \code{"perfwhm"},\code{"sigma"},\code{"minfrac"},
 #'   \code{"mzabs"},\code{"maxiso"},\code{"corval_eic"},\code{"corval_exp"},\code{"pval"},
-#'    \code{"mzabs.1"}.
+#'   \code{"mzabs.1"}.
 #' @param IonMode a character string defining the ionization mode.  Must be one
 #'   of \code{c("Positive","Negative")}.
 #' @return two grouped \code{xsannotate} objects \code{mz1setpos,anposGa}
