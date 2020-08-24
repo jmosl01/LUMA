@@ -48,6 +48,16 @@ We encourage users to submit issues and enhancement requests so we may
 continue to improve our package.
 
 
+## Citation
+
+Please cite the LUMA package when using for data processing:
+
+```{r}
+citation("LUMA")
+
+```
+
+
 ## Repositories
 
 The source code for this repository is maintained at https://github.com/jmosl01/LUMA which is also mirrored at https://github.com/usepa/luma

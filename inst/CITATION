@@ -1,0 +1,11 @@
+bibentry(
+
+bibtype = "Manual",
+title = "The LCMS-Based Untargeted Metabolomics Assistant (LUMA) R package",
+author = "Marina G. Evich and Wilson Melendez and Jonathan D. Mosley",
+organization = "U.S. Environmental Protection Agency",
+address = "Washington, DC",
+year = "2020",
+url = "https://cfpub.epa.gov/si/si_public_record_report.cfm?Lab=CEMM&dirEntryId=349142",
+textVersion = "M. Evich, W. Melendez, AND J. Mosley. The LCMS-Based Untargeted Metabolomics Assistant (LUMA) R package. U.S. Environmental Protection Agency, Washington, DC, 2020."
+)
