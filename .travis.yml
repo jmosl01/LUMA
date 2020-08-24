@@ -36,7 +36,7 @@ r_github_packages:
 
 install:
  - Rscript -e 'install.packages(c("remotes"));if (!all(c("remotes") %in% installed.packages())) { q(status = 1, save = "no")}'
- - Rscript -e 'remotes::install_version("XML", "3.99-0.3");remotes::install_github("jmosl01/lcmsfishdata)'
+ - Rscript -e 'remotes::install_version("XML", "3.99-0.3")'
  - Rscript --verbose -e 'deps <- remotes::dev_package_deps(dependencies = NA);remotes::install_deps(dependencies = TRUE);if (!all(deps$package %in% installed.packages())) { message("missing:", paste(setdiff(deps$package, installed.packages()), collapse=", ")); q(status = 1, save = "no")}'
 
 after_success:
