@@ -77,7 +77,10 @@ match_Annotation = function(Peak.list, Annotated.library, Library.phenodata, rul
     }
   }
 
-  myresults <- .gen_IHL(Peak.list, Annotated.library, rules, IonMode, lib_db, molweight)
+  #Combine Library data
+  Annotated.library.full <- cbind.data.frame(Annotated.library,Library.phenodata)
+  myresults <- .gen_IHL(Peak.list, Annotated.library.full, rules, IonMode, lib_db, molweight)
+
   search.list <- myresults[[1]]
   bin <- myresults[[2]]
   myion.mode <- myresults[[3]]

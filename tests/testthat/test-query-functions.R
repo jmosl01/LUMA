@@ -21,8 +21,13 @@ test_that("mz features are annotated correctly", {
     test <- match_Annotation(Peak.list = Peak.list, Annotated.library = Annotated.library,
                              Library.phenodata = Library.phenodata, rules = rules,
                              search.par = search.par, IonMode = "Positive", lib_db = lib_db)
+
+    test_colnames <- sort(colnames(test))
+    Annlib_colnames <- sort(colnames(temp.library))
+
     expect_equal(grep("GUANOSINE",test$Name),19)
     expect_equal(grep("INOSINE",test$Name),c(15,21,22))
+    expect_true(all(Annlib_colnames %in% test_colnames))
     dbDisconnect(lib_db)
   }
 })
